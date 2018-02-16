@@ -29,6 +29,7 @@ allprojects {
         archLifecycleVersion = "1.1.0"
         archRoomVersion = "1.0.0"
         roomVersion = '1.0.3'
+        playServices = '11.8.0'
         kotlin_version = '1.2.0'
     }
 }

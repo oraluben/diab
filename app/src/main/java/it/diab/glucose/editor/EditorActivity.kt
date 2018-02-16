@@ -1,8 +1,10 @@
 package it.diab.glucose.editor
 
+import android.app.Activity
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.arch.lifecycle.ViewModelProviders
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.support.annotation.IdRes
@@ -12,9 +14,18 @@ import android.support.design.widget.FloatingActionButton
 import android.support.design.widget.Snackbar
 import android.support.transition.TransitionManager
 import android.support.v7.app.AppCompatActivity
+import android.util.Log
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.TextView
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.common.Scopes
+import com.google.android.gms.common.api.GoogleApiClient
+import com.google.android.gms.common.api.Scope
+import com.google.android.gms.fitness.Fitness
+import com.google.android.gms.fitness.FitnessOptions
+import com.google.android.gms.fitness.data.*
+import com.google.android.gms.fitness.request.DataUpdateRequest
 import com.robinhood.spark.SparkView
 import it.diab.R
 import it.diab.db.entities.Glucose
@@ -23,11 +34,15 @@ import it.diab.ui.NumericKeyboardView
 import it.diab.ui.graph.SimpleSparkAdapter
 import it.diab.util.DateUtils
 import it.diab.util.extensions.asTimeFrame
+import it.diab.util.extensions.toFitMealRelation
+import it.diab.util.extensions.toFitSleepRelation
 import java.util.*
+import java.util.concurrent.TimeUnit
 
 class EditorActivity : AppCompatActivity() {
 
     private lateinit var mViewModel: EditorViewModel
+    private lateinit var mGoogleApiClient: GoogleApiClient
 
     private lateinit var mConstraintRoot: ConstraintLayout
     private lateinit var mValueView: TextView
@@ -72,6 +87,13 @@ class EditorActivity : AppCompatActivity() {
         mViewModel = ViewModelProviders.of(this).get(EditorViewModel::class.java)
         mViewModel.setGlucose(id)
 
+        mGoogleApiClient = GoogleApiClient.Builder(this)
+                .addApi(Fitness.HISTORY_API)
+                .addScope(Scope(Scopes.FITNESS_ACTIVITY_READ_WRITE))
+                .enableAutoManage(this, 0, { e -> Log.e(TAG, e.errorMessage) })
+                .build()
+
+        initFit()
         setup()
     }
 
@@ -80,6 +102,30 @@ class EditorActivity : AppCompatActivity() {
 
         change()
     }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (requestCode == GOOGLE_FIT_REQUEST_CODE) {
+            if (resultCode != Activity.RESULT_OK) {
+                Log.e(TAG, "Unable to sign in to fit. Error code $resultCode")
+            }
+        }
+    }
+
+    private fun initFit() {
+        val options = FitnessOptions.builder()
+                .addDataType(HealthDataTypes.TYPE_BLOOD_GLUCOSE, FitnessOptions.ACCESS_READ)
+                .addDataType(HealthDataTypes.TYPE_BLOOD_GLUCOSE, FitnessOptions.ACCESS_WRITE)
+                .build()
+
+        if (!GoogleSignIn.hasPermissions(GoogleSignIn.getLastSignedInAccount(this), options)) {
+            GoogleSignIn.requestPermissions(
+                    this,
+                    GOOGLE_FIT_REQUEST_CODE,
+                    GoogleSignIn.getLastSignedInAccount(this),
+                    options)
+        }
+    }
+
 
     private fun setup() {
         mValueView.text = mViewModel.glucose.value.toString()
@@ -117,13 +163,46 @@ class EditorActivity : AppCompatActivity() {
         Snackbar.make(mConstraintRoot, getString(R.string.saved), 800).show()
         Handler().postDelayed({
             saveData()
-            finish()
+            saveToFit()
         }, 1000)
     }
 
     private fun saveData() {
         mViewModel.glucose.value = mKeyboardView.input
         mViewModel.save()
+    }
+
+    private fun saveToFit() {
+        val origin = mViewModel.glucose
+        val source = DataSource.Builder()
+                .setType(DataSource.TYPE_RAW)
+                .setDataType(HealthDataTypes.TYPE_BLOOD_GLUCOSE)
+                .setDevice(Device.getLocalDevice(this))
+                .build()
+        val set = DataSet.create(source)
+
+        val data = DataPoint.create(source)
+        val timeStamp = origin.date.time
+        data.setTimestamp(timeStamp, TimeUnit.MILLISECONDS)
+        data.getValue(HealthFields.FIELD_BLOOD_GLUCOSE_LEVEL)
+                .setFloat(origin.value / 18f)
+        data.getValue(HealthFields.FIELD_TEMPORAL_RELATION_TO_MEAL)
+                .setInt(origin.date.toFitMealRelation())
+        data.getValue(HealthFields.FIELD_TEMPORAL_RELATION_TO_SLEEP)
+                .setInt(origin.date.toFitSleepRelation())
+        data.getValue(HealthFields.FIELD_BLOOD_GLUCOSE_SPECIMEN_SOURCE)
+                .setInt(HealthFields.BLOOD_GLUCOSE_SPECIMEN_SOURCE_CAPILLARY_BLOOD)
+        set.add(data)
+
+        val updateReq = DataUpdateRequest.Builder()
+                .setDataSet(set)
+                .setTimeInterval(timeStamp, timeStamp, TimeUnit.MILLISECONDS)
+                .build()
+        Fitness.getHistoryClient(this, GoogleSignIn.getLastSignedInAccount(this))
+                .updateData(updateReq)
+                .addOnSuccessListener { Log.d(TAG, "Pushed successfully") }
+                .addOnFailureListener { e -> Log.e(TAG, e.message + " SAD") }
+                .addOnCompleteListener { finish() } // Quit activity when done
     }
 
     private fun edit() {
@@ -370,5 +449,7 @@ class EditorActivity : AppCompatActivity() {
     companion object {
         const val EXTRA_ADD_MODE = "GlucoseViewer_Extra_Add"
         const val EXTRA_GLUCOSE_ID = "GlucoseViewer_Extra_Id"
+        private const val TAG = "EditorActivity"
+        private const val GOOGLE_FIT_REQUEST_CODE = 23
     }
 }

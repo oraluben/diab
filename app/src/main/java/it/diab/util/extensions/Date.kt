@@ -1,5 +1,6 @@
 package it.diab.util.extensions
 
+import com.google.android.gms.fitness.data.HealthFields
 import it.diab.util.timeFrame.TimeFrame
 import java.util.*
 
@@ -30,3 +31,13 @@ fun Date.isToday(): Boolean {
 }
 
 fun Date.getHour() = getCalendar()[Calendar.HOUR_OF_DAY]
+
+fun Date.toFitMealRelation() = when (asTimeFrame().toInt()) {
+    1,
+    5 -> HealthFields.FIELD_TEMPORAL_RELATION_TO_MEAL_AFTER_MEAL
+    else -> HealthFields.FIELD_TEMPORAL_RELATION_TO_MEAL_BEFORE_MEAL
+}
+
+fun Date.toFitSleepRelation() =
+        if (asTimeFrame() == TimeFrame.MORNING) HealthFields.TEMPORAL_RELATION_TO_SLEEP_ON_WAKING
+        else HealthFields.TEMPORAL_RELATION_TO_SLEEP_FULLY_AWAKE

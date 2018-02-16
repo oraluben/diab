@@ -40,11 +40,15 @@ dependencies {
     kapt "android.arch.lifecycle:compiler:$archLifecycleVersion"
     kapt "android.arch.persistence.room:compiler:$archRoomVersion"
 
+    implementation "com.google.android.gms:play-services-fitness:$playServices"
+    implementation "com.google.android.gms:play-services-auth:$playServices"
+
     compile('com.afollestad.material-dialogs:core:0.9.4.5') { transitive = true }
-    compile 'com.robinhood.spark:spark:1.2.0'
+    implementation 'com.robinhood.spark:spark:1.2.0'
     implementation 'com.github.PhilJay:MPAndroidChart:v3.0.3'
 }
 
 repositories {
     mavenCentral()
+    google()
 }
