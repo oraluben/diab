@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingStart="16dp"
+    android:clickable="true"
+    android:paddingTop="8dp"
+    android:foreground="?attr/selectableItemBackground"
+    android:minHeight="64dp"
+    android:paddingBottom="8dp"
+    android:paddingEnd="16dp"
+    android:focusable="true">
+
+    <ImageView
+        android:id="@+id/item_glucose_timezone"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:padding="8dp"
+        android:adjustViewBounds="true"
+        android:background="@drawable/bg_circle"
+        app:srcCompat="@drawable/ic_time_dinner" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingEnd="24dp"
+        android:paddingStart="64dp">
+
+        <TextView
+            style="@style/TextAppearance.AppCompat.Title"
+            android:id="@+id/item_glucose_value"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxLines="1"
+            tools:text="123 (19:02)" />
+
+        <TextView
+            style="@style/TextAppearance.AppCompat.Medium"
+            android:id="@+id/item_glucose_insulin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxLines="1"
+            tools:text="6.5 Novorapid, 20 Lantus" />
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/item_glucose_heavy_meal"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_alignParentEnd="true"
+        app:srcCompat="@drawable/ic_heavy_meal" />
+</RelativeLayout>

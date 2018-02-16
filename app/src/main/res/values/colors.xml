@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#fbfcfc</color>
+    <color name="colorPrimaryDark">#f0f4f4</color>
+    <color name="colorAccent">#fe8500</color>
+    <color name="colorAccentDark">#ad6418</color>
+
+    <color name="white">#fafafa</color>
+    <color name="black">#000000</color>
+
+    <color name="background_activity">@color/colorPrimary</color>
+    <color name="background_card">@color/colorPrimaryDark</color>
+
+    <color name="action_dangerous">#f71976</color>
+
+    <color name="graph_overview_today">@color/colorAccent</color>
+    <color name="graph_overview_average">@color/colorAccentDark</color>
+
+</resources>

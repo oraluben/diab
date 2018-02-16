@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="transition_insulin_item" translatable="false">transition_insulin_item</string>
+    <string name="transition_glucose_fab" translatable="false">transition_glucose_fab</string>
+</resources>
