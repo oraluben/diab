@@ -23,6 +23,7 @@ class NumericKeyboardView(context: Context, attrs: AttributeSet) : LinearLayout(
     private lateinit var mButtonDel: View
 
     private lateinit var mInputTextView: TextView
+    private var mOnTextChanged: (String) -> Unit = {}
 
     val input: Int
         get() = 
@@ -34,8 +35,9 @@ class NumericKeyboardView(context: Context, attrs: AttributeSet) : LinearLayout(
         setup()
     }
 
-    fun bindTextView(textView: TextView) {
+    fun bindTextView(textView: TextView, onTextChanged: (String) -> Unit = {}) {
         mInputTextView = textView
+        mOnTextChanged = onTextChanged
         setupKeys()
     }
 
@@ -83,6 +85,7 @@ class NumericKeyboardView(context: Context, attrs: AttributeSet) : LinearLayout(
         }
         input += n.toString()
         mInputTextView.text = input
+        mOnTextChanged(input)
     }
 
     private fun del() {

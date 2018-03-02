@@ -7,15 +7,15 @@ import it.diab.R
 
 class OverviewGraphView : LineChart {
 
-    constructor(context: Context): super(context) {
+    constructor(context: Context) : super(context) {
         setup(context)
     }
 
-    constructor(context: Context, attrs: AttributeSet): super(context, attrs) {
+    constructor(context: Context, attrs: AttributeSet) : super(context, attrs) {
         setup(context)
     }
 
-    constructor(context: Context, attrs: AttributeSet, defs: Int): super(context, attrs, defs) {
+    constructor(context: Context, attrs: AttributeSet, defs: Int) : super(context, attrs, defs) {
         setup(context)
     }
 
@@ -41,6 +41,9 @@ class OverviewGraphView : LineChart {
 
         // Marker
         marker = OverviewMarker(context)
+
+        // Empty status
+        setNoDataTextColor(R.color.colorAccentDark)
 
         // Offset
         val horizontalOffset = context.resources.getDimension(R.dimen.overview_graph_offset)

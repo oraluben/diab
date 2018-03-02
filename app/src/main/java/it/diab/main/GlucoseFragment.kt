@@ -35,7 +35,7 @@ class GlucoseFragment : MainFragment() {
 
     private fun onItemClick(id: Long) {
         if (activity is MainActivity) {
-            (activity as MainActivity).onFabClick(id)
+            (activity as MainActivity).onItemClick(id)
         }
     }
 

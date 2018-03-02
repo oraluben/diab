@@ -2,5 +2,4 @@
 <it.diab.ui.recyclerview.RecyclerViewExt xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/glucose_recyclerview"
     android:layout_width="match_parent"
-    android:paddingTop="8dp"
     android:layout_height="match_parent" />

@@ -10,19 +10,22 @@ class Insulin {
     @PrimaryKey(autoGenerate = true)
     var uid: Long = 0
 
-    @ColumnInfo(name = KEY_NAME)
+    @ColumnInfo(name = "name")
     var name: String = ""
-    @ColumnInfo(name = KEY_TIMEFRAME)
+    @ColumnInfo(name = "timeFrame")
     @TypeConverters(TimeFrameConverter::class)
     var timeFrame: TimeFrame = TimeFrame.EXTRA
+    @ColumnInfo(name = "isBasal")
+    var isBasal: Boolean = false
 
     @Ignore
     constructor()
 
-    constructor(uid: Long, name: String, timeFrame: TimeFrame) {
+    constructor(uid: Long, name: String, timeFrame: TimeFrame, isBasal: Boolean) {
         this.uid = uid
         this.name = name
         this.timeFrame = timeFrame
+        this.isBasal = isBasal
     }
 
     fun setTimeFrame(timeFrame: Int) {
@@ -42,10 +45,4 @@ class Insulin {
     override fun hashCode() = super.hashCode() + 1
 
     override fun toString() = "$name: $uid, ${timeFrame.toInt()}"
-
-    companion object {
-        const val KEY_UID = "uid"
-        const val KEY_NAME = "name"
-        const val KEY_TIMEFRAME = "timeFrame"
-    }
 }

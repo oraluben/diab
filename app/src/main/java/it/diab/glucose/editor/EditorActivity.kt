@@ -1,10 +1,13 @@
 package it.diab.glucose.editor
 
+import android.animation.ValueAnimator
 import android.app.Activity
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.arch.lifecycle.ViewModelProviders
+import android.content.DialogInterface
 import android.content.Intent
+import android.graphics.PorterDuff
 import android.os.Bundle
 import android.os.Handler
 import android.support.annotation.IdRes
@@ -13,9 +16,12 @@ import android.support.constraint.ConstraintSet
 import android.support.design.widget.FloatingActionButton
 import android.support.design.widget.Snackbar
 import android.support.transition.TransitionManager
+import android.support.v4.content.ContextCompat
+import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.View
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -27,17 +33,19 @@ import com.google.android.gms.fitness.FitnessOptions
 import com.google.android.gms.fitness.data.*
 import com.google.android.gms.fitness.request.DataUpdateRequest
 import com.robinhood.spark.SparkView
+import it.diab.BuildConfig
 import it.diab.R
 import it.diab.db.entities.Glucose
 import it.diab.db.entities.Insulin
+import it.diab.ui.EatBar
 import it.diab.ui.NumericKeyboardView
 import it.diab.ui.graph.SimpleSparkAdapter
 import it.diab.util.DateUtils
-import it.diab.util.extensions.asTimeFrame
-import it.diab.util.extensions.toFitMealRelation
-import it.diab.util.extensions.toFitSleepRelation
+import it.diab.util.VibrationUtil
+import it.diab.util.extensions.*
 import java.util.*
 import java.util.concurrent.TimeUnit
+import kotlin.math.roundToInt
 
 class EditorActivity : AppCompatActivity() {
 
@@ -46,117 +54,245 @@ class EditorActivity : AppCompatActivity() {
 
     private lateinit var mConstraintRoot: ConstraintLayout
     private lateinit var mValueView: TextView
+    private lateinit var mValueIcon: ImageView
     private lateinit var mDateView: TextView
-    private lateinit var mInsulin0: InsulinView
-    private lateinit var mInsulin1: InsulinView
+    private lateinit var mDateIcon: ImageView
+    private lateinit var mEatBar: EatBar
+    private lateinit var mInsulinView: InsulinView
+    private lateinit var mBasalView: InsulinView
     private lateinit var mGraphView: SparkView
     private lateinit var mInfoView: TextView
     private lateinit var mKeyboardView: NumericKeyboardView
     private lateinit var mFab: FloatingActionButton
 
     private var mEditMode = false
+    private var mErrorStatus = 0
 
-    public override fun onCreate(savedInstance: Bundle?) {
-        super.onCreate(savedInstance)
-        setContentView(R.layout.activity_glucose_view)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_glucose_editor)
 
-        // Common Views
+        // Common views
         mConstraintRoot = findViewById(R.id.glucose_editor_root)
+        mValueIcon = findViewById(R.id.glucose_editor_value_icon)
         mValueView = findViewById(R.id.glucose_editor_edit_value)
+        mDateIcon = findViewById(R.id.glucose_editor_date_icon)
         mDateView = findViewById(R.id.glucose_editor_edit_date)
-        mInsulin0 = InsulinView(
-                R.id.glucose_editor_insulin_0_layout,
-                R.id.glucose_editor_insulin_0_title,
-                R.id.glucose_editor_insulin_0_value)
-        mInsulin1 = InsulinView(
-                R.id.glucose_editor_insulin_1_layout,
-                R.id.glucose_editor_insulin_1_title,
-                R.id.glucose_editor_insulin_1_value)
+        mEatBar = findViewById(R.id.glucose_editor_eat_bar)
         mFab = findViewById(R.id.fab)
 
-        // Viewer Views
+        // Edit views
+        mKeyboardView = findViewById(R.id.glucose_editor_keyboard)
+
+        // Show views
+        mInsulinView = InsulinView(
+                R.id.glucose_editor_insulin_layout,
+                R.id.glucose_editor_insulin_value)
+        mBasalView = InsulinView(
+                R.id.glucose_editor_insulin_basal_layout,
+                R.id.glucose_editor_insulin_basal_value)
         mGraphView = findViewById(R.id.glucose_editor_graph)
         mInfoView = findViewById(R.id.glucose_editor_info)
 
-        // Editor Views
-        mKeyboardView = findViewById(R.id.glucose_editor_keyboard)
-
-        mEditMode = intent.getBooleanExtra(EXTRA_ADD_MODE, false)
         val id = intent.getLongExtra(EXTRA_GLUCOSE_ID, -1)
-
         mViewModel = ViewModelProviders.of(this).get(EditorViewModel::class.java)
         mViewModel.setGlucose(id)
 
-        mGoogleApiClient = GoogleApiClient.Builder(this)
-                .addApi(Fitness.HISTORY_API)
-                .addScope(Scope(Scopes.FITNESS_ACTIVITY_READ_WRITE))
-                .enableAutoManage(this, 0, { e -> Log.e(TAG, e.errorMessage) })
-                .build()
+        mEditMode = intent.getBooleanExtra(EXTRA_INSERT_MODE, false)
 
-        initFit()
         setup()
+        setupFit()
     }
 
-    public override fun onResume() {
+    override fun onResume() {
         super.onResume()
 
-        change()
+        refresh()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (requestCode == GOOGLE_FIT_REQUEST_CODE) {
-            if (resultCode != Activity.RESULT_OK) {
-                Log.e(TAG, "Unable to sign in to fit. Error code $resultCode")
-            }
+        if (resultCode == GOOGLE_FIT_REQUEST_CODE && resultCode != Activity.RESULT_OK) {
+            Log.e(TAG, "Unable to sign in to Fit. Error code $resultCode")
         }
+
+        super.onActivityResult(requestCode, resultCode, data)
     }
-
-    private fun initFit() {
-        val options = FitnessOptions.builder()
-                .addDataType(HealthDataTypes.TYPE_BLOOD_GLUCOSE, FitnessOptions.ACCESS_READ)
-                .addDataType(HealthDataTypes.TYPE_BLOOD_GLUCOSE, FitnessOptions.ACCESS_WRITE)
-                .build()
-
-        if (!GoogleSignIn.hasPermissions(GoogleSignIn.getLastSignedInAccount(this), options)) {
-            GoogleSignIn.requestPermissions(
-                    this,
-                    GOOGLE_FIT_REQUEST_CODE,
-                    GoogleSignIn.getLastSignedInAccount(this),
-                    options)
-        }
-    }
-
 
     private fun setup() {
         mValueView.text = mViewModel.glucose.value.toString()
+        mKeyboardView.bindTextView(mValueView, this::onValueTextChanged)
+
         mDateView.text = DateUtils.dateToString(mViewModel.glucose.date)
+        mDateView.setOnClickListener { onDateClicked() }
+        mEatBar.progress = mViewModel.glucose.eatLevel
 
-        mKeyboardView.bindTextView(mValueView)
+        mInsulinView.value.setOnClickListener { onInsulinClicked() }
+        mBasalView.value.setOnClickListener { onBasalClicked() }
 
-        mFab.setOnClickListener { _ ->
-            if (mEditMode) {
-                save()
-            } else {
-                edit()
-            }
-        }
+        mFab.setOnClickListener { onFabClicked() }
 
-        mDateView.setOnClickListener { _ ->
-            if (mEditMode) {
-                pickDate()
-            }
-        }
+        refresh()
+    }
 
-        mInsulin0.layout.setOnClickListener { _ -> showInsulinDialog(true) }
-        mInsulin1.layout.setOnClickListener { _ ->
-            if (mViewModel.glucose.insulinId0 != -1L) {
-                showInsulinDialog(false)
-            }
+    private fun refresh() {
+        if (mEditMode) {
+            setEditUi()
+        } else {
+            setShowUi()
         }
     }
 
+    private fun setEditUi() {
+        if (intent.getBooleanExtra(EXTRA_INSERT_MODE, false)) {
+            val editMode = ConstraintSet()
+            editMode.clone(this, R.layout.constraint_glucose_edit)
+            editMode.applyTo(mConstraintRoot)
+        }
+
+        mInsulinView.layout.visibility = View.GONE
+        mBasalView.layout.visibility = View.GONE
+        mInsulinView.layout.alpha = 1f
+        mBasalView.layout.alpha = 1f
+        mEatBar.isEnabled = true
+
+        mFab.setImageResource(R.drawable.ic_done)
+    }
+
+    private fun setShowUi() {
+        mInsulinView.layout.visibility = View.VISIBLE
+        mBasalView.layout.visibility = View.VISIBLE
+        mEatBar.isEnabled = false
+
+        val ids = Pair(mViewModel.glucose.insulinId0, mViewModel.glucose.insulinId1)
+
+        if (ids.first == -1L) {
+            mInsulinView.value.text = getString(R.string.glucose_editor_insulin_add)
+        } else {
+            val insulin = mViewModel.getInsulin(ids.first)
+            val value = mViewModel.glucose.insulinValue0
+            mInsulinView.value.text = insulin.getDisplayedString(value)
+        }
+
+        if (ids.second == -1L) {
+            mBasalView.value.text = getString(R.string.glucose_editor_basal_add)
+        } else {
+            val basal = mViewModel.getInsulin(ids.second)
+            val value = mViewModel.glucose.insulinValue1
+            mBasalView.value.text = basal.getDisplayedString(value)
+        }
+
+        val data = mViewModel.previousWeek
+        mGraphView.adapter = SimpleSparkAdapter(data)
+        mInfoView.text = getInfo(data)
+        mDateView.text = DateUtils.dateToString(mViewModel.glucose.date)
+
+        mFab.setImageResource(R.drawable.ic_edit)
+    }
+
+    private fun onDateClicked() {
+        if (!mEditMode) {
+            return
+        }
+
+        if (mErrorStatus and (1 shl 1) != 0) {
+            mErrorStatus = mErrorStatus or (1 shl 1)
+            mDateIcon.setErrorStatus(false)
+        }
+
+        val glucoseCal = mViewModel.glucose.date.getCalendar()
+        val newTime = Calendar.getInstance()
+
+        val options = arrayOf(
+                getString(R.string.time_today),
+                getString(R.string.time_yesterday),
+                getString(R.string.time_pick))
+
+        val onTimeSet = { _: View, hour: Int, minute: Int ->
+            newTime[Calendar.HOUR_OF_DAY] = hour
+            newTime[Calendar.MINUTE] = minute
+
+            mViewModel.glucose.date = newTime.time
+            mDateView.text = DateUtils.dateToString(newTime.time)
+        }
+
+        val onCustomDateSet = { _: View, year: Int, month: Int, day: Int ->
+            newTime.set(year, month, day)
+            TimePickerDialog(this, onTimeSet, glucoseCal[Calendar.HOUR_OF_DAY],
+                    glucoseCal[Calendar.MINUTE], true).show()
+        }
+
+        val onPredefinedDateSet = { _: DialogInterface, i: Int ->
+            when (i) {
+                0 -> {}
+                1 -> newTime.time = Date()[1]
+                else -> DatePickerDialog(this, onCustomDateSet,
+                        glucoseCal[Calendar.YEAR], glucoseCal[Calendar.MONTH],
+                        glucoseCal[Calendar.DAY_OF_MONTH]).show()
+            }
+
+            if (i == 0 || i == 1) {
+                TimePickerDialog(this, onTimeSet, glucoseCal[Calendar.HOUR_OF_DAY],
+                        glucoseCal[Calendar.MINUTE], true).show()
+            }
+        }
+
+        AlertDialog.Builder(this)
+                .setItems(options, onPredefinedDateSet)
+                .setTitle(R.string.glucose_editor_time_dialog)
+                .show()
+    }
+
+    private fun onInsulinClicked() {
+        if (mEditMode) {
+            return
+        }
+
+        val dialog = AddInsulinDialog(this, mViewModel.glucose, true)
+        dialog.setInsulins(mViewModel.insulins)
+
+        dialog.show(
+                { insulin, value -> onInsulinPositive(insulin, value, false) },
+                { onInsulinNeutral(false) },
+                { setShowUi() })
+    }
+
+    private fun onBasalClicked() {
+        if (mEditMode) {
+            return
+        }
+
+        val dialog = AddInsulinDialog(this, mViewModel.glucose, false)
+        dialog.setInsulins(mViewModel.basalInsulins)
+
+        dialog.show(
+                { insulin, value -> onInsulinPositive(insulin, value, true) },
+                { onInsulinNeutral(true) },
+                { setShowUi() })
+    }
+
+    private fun onFabClicked() {
+        if (mEditMode) {
+            save()
+        } else {
+            edit()
+        }
+    }
+
+    private fun onValueTextChanged(value: String) {
+        if (mErrorStatus and 1 == 0) {
+            return
+        }
+
+        mErrorStatus = mErrorStatus and 1
+        mValueIcon.setErrorStatus(value == "0")
+    }
+
     private fun save() {
-        if (hasErrors()) {
+        checkForErrors()
+        if (mErrorStatus != 0) {
+            Snackbar.make(mConstraintRoot, getString(R.string.glucose_editor_save_error),
+                    Snackbar.LENGTH_LONG).show()
+            VibrationUtil.vibrateForError(this)
             return
         }
 
@@ -169,258 +305,165 @@ class EditorActivity : AppCompatActivity() {
 
     private fun saveData() {
         mViewModel.glucose.value = mKeyboardView.input
+        mViewModel.glucose.eatLevel = mEatBar.progress
         mViewModel.save()
     }
 
+    private fun checkForErrors() {
+        if ("0" == mValueView.text) {
+            mValueIcon.setErrorStatus(true)
+            mErrorStatus = mErrorStatus or 1
+        }
+
+        if (Date().time < mViewModel.glucose.date.time) {
+            mDateIcon.setErrorStatus(true)
+            mErrorStatus = mErrorStatus or (1 shl 1)
+        }
+    }
+
+    private fun edit() {
+        mInsulinView.layout.animate()
+                .alpha(0f)
+                .start()
+        mBasalView.layout.animate()
+                .alpha(0f)
+                .start()
+
+        val editSet = ConstraintSet()
+        editSet.clone(this, R.layout.constraint_glucose_edit)
+        TransitionManager.beginDelayedTransition(mConstraintRoot)
+        editSet.applyTo(mConstraintRoot)
+
+
+        Handler().postDelayed({
+            mEditMode = true
+            refresh()
+        }, 350)
+    }
+
+    private fun onInsulinPositive(insulin: Insulin, value: Float, isBasal: Boolean) {
+        if (isBasal) {
+            mViewModel.glucose.insulinId1 = insulin.uid
+            mViewModel.glucose.insulinValue1 = value
+            mBasalView.value.text = insulin.getDisplayedString(value)
+        } else {
+            mViewModel.glucose.insulinId0 = insulin.uid
+            mViewModel.glucose.insulinValue0 = value
+            mInsulinView.value.text = insulin.getDisplayedString(value)
+        }
+
+        saveData()
+    }
+
+    private fun onInsulinNeutral(isBasal: Boolean) {
+        if (isBasal) {
+            mViewModel.glucose.insulinId1 = -1
+            mViewModel.glucose.insulinValue1 = 0f
+            mBasalView.value.text = getString(R.string.glucose_editor_insulin_add)
+        } else {
+            mViewModel.glucose.insulinId0 = -1
+            mViewModel.glucose.insulinValue0 = 0f
+            mInsulinView.value.text = getString(R.string.glucose_editor_basal_add)
+        }
+
+        saveData()
+    }
+
+    private fun setupFit() {
+        if (BuildConfig.DEBUG) {
+            return
+        }
+
+        mGoogleApiClient = GoogleApiClient.Builder(this)
+                .addApi(Fitness.HISTORY_API)
+                .addScope(Scope(Scopes.FITNESS_ACTIVITY_READ_WRITE))
+                .enableAutoManage(this, 0, { e -> Log.e(TAG, e.errorMessage)} )
+                .build()
+
+        val options = FitnessOptions.builder()
+                .addDataType(HealthDataTypes.TYPE_BLOOD_GLUCOSE, FitnessOptions.ACCESS_WRITE)
+                .build()
+
+        if (!GoogleSignIn.hasPermissions(GoogleSignIn.getLastSignedInAccount(this), options)) {
+            GoogleSignIn.requestPermissions(this, GOOGLE_FIT_REQUEST_CODE,
+                    GoogleSignIn.getLastSignedInAccount(this), options)
+        }
+    }
+
     private fun saveToFit() {
+        if (BuildConfig.DEBUG) {
+            finish()
+            return
+        }
+
         val origin = mViewModel.glucose
+        val timeStamp = origin.date.time
         val source = DataSource.Builder()
                 .setType(DataSource.TYPE_RAW)
                 .setDataType(HealthDataTypes.TYPE_BLOOD_GLUCOSE)
                 .setDevice(Device.getLocalDevice(this))
                 .build()
-        val set = DataSet.create(source)
 
         val data = DataPoint.create(source)
-        val timeStamp = origin.date.time
         data.setTimestamp(timeStamp, TimeUnit.MILLISECONDS)
-        data.getValue(HealthFields.FIELD_BLOOD_GLUCOSE_LEVEL)
-                .setFloat(origin.value / 18f)
-        data.getValue(HealthFields.FIELD_TEMPORAL_RELATION_TO_MEAL)
-                .setInt(origin.date.toFitMealRelation())
-        data.getValue(HealthFields.FIELD_TEMPORAL_RELATION_TO_SLEEP)
-                .setInt(origin.date.toFitSleepRelation())
-        data.getValue(HealthFields.FIELD_BLOOD_GLUCOSE_SPECIMEN_SOURCE)
-                .setInt(HealthFields.BLOOD_GLUCOSE_SPECIMEN_SOURCE_CAPILLARY_BLOOD)
+        data[HealthFields.FIELD_BLOOD_GLUCOSE_LEVEL] = origin.value / 18f
+        data[HealthFields.FIELD_BLOOD_GLUCOSE_SPECIMEN_SOURCE] =
+                HealthFields.BLOOD_GLUCOSE_SPECIMEN_SOURCE_CAPILLARY_BLOOD
+        data[HealthFields.FIELD_TEMPORAL_RELATION_TO_MEAL] =
+                origin.date.toFitMealRelation()
+        data[HealthFields.FIELD_TEMPORAL_RELATION_TO_SLEEP] =
+                origin.date.toFitSleepRelation()
+
+        val set = DataSet.create(source)
         set.add(data)
 
-        val updateReq = DataUpdateRequest.Builder()
+        val request = DataUpdateRequest.Builder()
                 .setDataSet(set)
                 .setTimeInterval(timeStamp, timeStamp, TimeUnit.MILLISECONDS)
                 .build()
-        Fitness.getHistoryClient(this, GoogleSignIn.getLastSignedInAccount(this))
-                .updateData(updateReq)
-                .addOnSuccessListener { Log.d(TAG, "Pushed successfully") }
-                .addOnFailureListener { e -> Log.e(TAG, e.message + " SAD") }
-                .addOnCompleteListener { finish() } // Quit activity when done
+        Fitness.getHistoryClient(this, GoogleSignIn.getLastSignedInAccount(this)!!)
+                .updateData(request)
+                .addOnFailureListener { e -> Log.e(TAG, e.message) }
+                .addOnCompleteListener { finish() }
     }
 
-    private fun edit() {
-        Handler().postDelayed({
-            mEditMode = true
-            val editSet = ConstraintSet()
-            editSet.clone(this, R.layout.constraint_glucose_edit)
-            TransitionManager.beginDelayedTransition(mConstraintRoot)
-            editSet.applyTo(mConstraintRoot)
-
-            change()
-        }, 350)
-    }
-
-    private fun change() {
-        if (mEditMode) {
-            changeToEdit()
-        } else {
-            changeToShow()
-        }
-
-        mFab.setImageResource(if (mEditMode) R.drawable.ic_done else R.drawable.ic_edit)
-    }
-
-    private fun changeToEdit() {
-        val editMode = ConstraintSet()
-        editMode.clone(this, R.layout.constraint_glucose_edit)
-        editMode.applyTo(mConstraintRoot)
-
-        mInsulin0.layout.visibility = View.GONE
-        mInsulin1.layout.visibility = View.GONE
-    }
-
-    private fun changeToShow() {
-        mInsulin0.layout.visibility = View.VISIBLE
-
-        val id = Pair(mViewModel.glucose.insulinId0, mViewModel.glucose.insulinId1)
-
-
-
-        if (id.first == -1L) {
-            mInsulin0.title.text = getString(R.string.glucose_editor_insulin_add)
-            mInsulin0.value.text = ""
-
-            mInsulin1.title.text = ""
-        } else {
-            val i0 = mViewModel.getInsulin(id.first)
-            mInsulin0.title.text = getString(R.string.glucose_editor_insulin)
-            mInsulin0.value.text = i0.getDisplayedString(mViewModel.glucose.insulinValue0)
-
-            mInsulin1.layout.visibility = View.VISIBLE
-            mInsulin1.title.text = getString(R.string.glucose_editor_insulin_add)
-        }
-
-        if (id.second == -1L) {
-            mInsulin1.value.text = ""
-        } else {
-            val i1 = mViewModel.getInsulin(id.second)
-            mInsulin1.title.text = ""
-            mInsulin1.value.text = i1.getDisplayedString(mViewModel.glucose.insulinValue1)
-        }
-
-        val data = mViewModel.previousWeek
-        mGraphView.adapter = SimpleSparkAdapter(data)
-        mInfoView.text = getInformation(data)
-
-        mDateView.text = DateUtils.dateToString(mViewModel.glucose.date)
-    }
-
-    private fun pickDate() {
-        val calendar = Calendar.getInstance()
-        calendar.time = mViewModel.glucose.date
-
-        val newTime = Calendar.getInstance()
-
-        val onTimeSet = { _: View, hour: Int, minute: Int ->
-            newTime.set(Calendar.HOUR_OF_DAY, hour)
-            newTime.set(Calendar.MINUTE, minute)
-            mViewModel.glucose.date = newTime.time
-            mDateView.text = DateUtils.dateToString(newTime.time)
-        }
-        val onDateSet = { _: View, year: Int, month: Int, day: Int ->
-            newTime.set(year, month, day)
-            TimePickerDialog(this, onTimeSet, calendar.get(Calendar.HOUR_OF_DAY),
-                    calendar.get(Calendar.MINUTE), true).show()
-        }
-
-        DatePickerDialog(this, onDateSet, calendar.get(Calendar.YEAR),
-                calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)).show()
-    }
-
-    private fun showInsulinDialog(isFirst: Boolean) {
-        val dialog = AddInsulinDialog(this, mViewModel.glucose, isFirst)
-        dialog.setInsulins(mViewModel.insulins)
-
-        dialog.show(
-                { insulin, value -> onInsulinPositive(insulin, value, isFirst) },
-                { onInsulinNeutral(isFirst) },
-                { changeToShow() })
-    }
-
-    private fun onInsulinPositive(insulin: Insulin, value: Float, isFirst: Boolean) {
-        if (isFirst) {
-            mViewModel.glucose.insulinId0 = insulin.uid
-            mViewModel.glucose.insulinValue0 = value
-            mInsulin0.value.text = insulin.getDisplayedString(value)
-        } else {
-            mViewModel.glucose.insulinId1 = insulin.uid
-            mViewModel.glucose.insulinValue1 = value
-            mInsulin1.value.text = insulin.getDisplayedString(value)
-        }
-
-        saveData()
-    }
-
-    private fun onInsulinNeutral(isFirst: Boolean) {
-        if (isFirst) {
-            mViewModel.glucose.insulinId0 = -1
-            mViewModel.glucose.insulinValue0 = 0F
-            mInsulin0.title.text = getString(R.string.glucose_editor_insulin_add)
-        } else {
-            mViewModel.glucose.insulinId1 = -1
-            mViewModel.glucose.insulinValue1 = 0F
-            mInsulin1.title.text =
-                    if (mViewModel.glucose.insulinId0 == -1L) ""
-                    else getString(R.string.glucose_editor_insulin_add)
-        }
-
-        saveData()
-    }
-
-    private fun hasErrors(): Boolean {
-        if ("0" == mValueView.text) {
-            mValueView.animate()
-                    .translationY(-5f)
-                    .setDuration(50)
-                    .withEndAction {
-                        mValueView.animate()
-                                .translationY(10f)
-                                .setDuration(100)
-                                .withEndAction {
-                                    mValueView.animate()
-                                            .translationY(-5f)
-                                            .setDuration(50)
-                                            .start()
-                                }
-                                .start()
-                    }
-                    .start()
-
-            Snackbar.make(mConstraintRoot, getString(R.string.glucose_editor_save_error),
-                    Snackbar.LENGTH_LONG).show()
-            return true
-        }
-
-        if (Date().time < mViewModel.glucose.date.time) {
-            mDateView.animate()
-                    .translationY(-5f)
-                    .setDuration(50)
-                    .withEndAction {
-                        mDateView.animate()
-                                .translationY(10f)
-                                .setDuration(100)
-                                .withEndAction {
-                                    mDateView.animate()
-                                            .translationX(-5f)
-                                            .setDuration(50)
-                                            .start()
-                                }
-                                .start()
-                    }
-                    .start()
-
-            Snackbar.make(mConstraintRoot, getString(R.string.glucose_editor_save_error),
-                    Snackbar.LENGTH_LONG).show()
-            return true
-        }
-
-        return false
-    }
-
-    // TODO expose those magic numbers to userland
-    private fun getInformation(list: List<Glucose>): String {
+    private fun getInfo(list: List<Glucose>): String {
         var average = 0f
         val values = IntArray(list.size)
+
         for (i in list.indices) {
             values[i] = list[i].value
             average += values[i].toFloat()
         }
-        average /= list.size.toFloat()
+        average /= list.size
 
         val builder = StringBuilder()
         val timeFrame = mViewModel.glucose.date.asTimeFrame()
         val status = when {
-            average > 180 -> R.string.glucose_type_high
-            average > 70 -> R.string.glucose_type_medium
+            average > HIGH_THRESHOLD -> R.string.glucose_type_high
+            average > LOW_THRESHOLD -> R.string.glucose_type_medium
             else -> R.string.glucose_type_low
         }
 
         builder.append(getString(R.string.glucose_report_base,
-                getString(timeFrame.string).toLowerCase(), getString(status), average.toInt()))
+                getString(timeFrame.string).toLowerCase(), getString(status),
+                average.roundToInt()))
                 .append('\n')
 
         if (status != R.string.glucose_type_medium) {
             var correction = 0
-            val isLow = average > 70
-            while (average >= 180 || average <= 70) {
-                if (average >= 180) {
+            val isLow = average > LOW_THRESHOLD
+            while (average >= HIGH_THRESHOLD || average <= LOW_THRESHOLD) {
+                if (average >= HIGH_THRESHOLD) {
                     correction++
-                    average -= 40f
+                    average -= FIX_RATE
                 } else {
                     correction--
-                    average += 40f
+                    average += FIX_RATE
                 }
             }
 
             correction = Math.abs(correction)
-
             builder.append(getString(R.string.glucose_report_advice,
                     getString(if (isLow)
                         R.string.glucose_report_advice_increase
@@ -438,18 +481,48 @@ class EditorActivity : AppCompatActivity() {
         return builder.toString()
     }
 
-    private inner class InsulinView(@IdRes layoutInt: Int,
-                                    @IdRes titleInt: Int,
-                                    @IdRes valueInt: Int) {
-        val layout: LinearLayout = findViewById(layoutInt)
-        val title: TextView = findViewById(titleInt)
-        val value: TextView = findViewById(valueInt)
+    private fun ImageView.setErrorStatus(toError: Boolean) {
+        val originalColor = ContextCompat.getColor(this@EditorActivity, R.color.colorAccent)
+        val errorColor = ContextCompat.getColor(this@EditorActivity, R.color.action_dangerous)
+
+        val animator = ValueAnimator.ofArgb(
+                if (toError) originalColor else errorColor,
+                if (toError) errorColor else originalColor)
+
+        animator.addUpdateListener { animation ->
+            setColorFilter(animation.animatedValue as Int, PorterDuff.Mode.SRC_ATOP)
+        }
+
+        animator.start()
+    }
+
+    private operator fun DataPoint.set(field: Field, any: Any) {
+        val value = getValue(field)
+        when (any) {
+            is Float -> value.setFloat(any)
+            is Int -> value.setInt(any)
+            is String -> value.setString(any)
+            else -> throw IllegalArgumentException(
+                    "Cannot set a ${any::class.java.canonicalName} value to Field")
+        }
+    }
+
+    private inner class InsulinView(@IdRes layoutId: Int,
+                                    @IdRes valueId: Int) {
+        val layout: LinearLayout = findViewById(layoutId)
+        val value: TextView = findViewById(valueId)
     }
 
     companion object {
-        const val EXTRA_ADD_MODE = "GlucoseViewer_Extra_Add"
-        const val EXTRA_GLUCOSE_ID = "GlucoseViewer_Extra_Id"
+        const val EXTRA_INSERT_MODE = "extra_insert"
+        const val EXTRA_GLUCOSE_ID = "glucose_id"
+
         private const val TAG = "EditorActivity"
-        private const val GOOGLE_FIT_REQUEST_CODE = 23
+        private const val GOOGLE_FIT_REQUEST_CODE = 281
+
+        // TODO: expose these to userland
+        private const val LOW_THRESHOLD = 70
+        private const val HIGH_THRESHOLD = 180
+        private const val FIX_RATE = 40
     }
 }

@@ -1,0 +1,56 @@
+<resources>
+    <string name="app_name">Diab</string>
+
+    <string name="cancel">Annulla</string>
+    <string name="save">Salva</string>
+    <string name="add">Aggiungi</string>
+    <string name="saved">Salvato</string>
+    <string name="remove">Rimuovi</string>
+
+    <string name="fragment_overview">Panoramica</string>
+    <string name="fragment_glucose">Glicemia</string>
+
+    <!-- Time -->
+    <string name="time_today">Oggi</string>
+    <string name="time_yesterday">Ieri</string>
+    <string name="time_last_x">%1$s scorso</string>
+    <string name="time_x_y_ago">%1$d %2$s fa</string>
+    <string name="time_day_month_short_format">dd MMM</string>
+    <string name="time_pick">Seleziona un\'altra data\u2026</string>
+
+    <!-- Time zone -->
+    <string name="time_extra">Extra</string>
+    <string name="time_morning">Mattina</string>
+    <string name="time_late_morning">Tarda mattinata</string>
+    <string name="time_lunch">Pranzo</string>
+    <string name="time_afternoon">Pomeriggio</string>
+    <string name="time_dinner">Cena</string>
+    <string name="time_night">Notte</string>
+
+    <!-- Insulin Editor -->
+    <string name="insulin_editor_name">Nome</string>
+    <string name="insulin_item_add">Aggiungi insulina\u2026</string>
+
+    <!-- Glcuose Editor -->
+    <string name="glucose_editor_time_dialog">Seleziona la data</string>
+    <string name="glucose_editor_insulin_add">Aggiungi insulina</string>
+    <string name="glucose_editor_basal_add">Aggiungi basale \u2026</string>
+    <string name="glucose_editor_insulin_value">Quantit\u00E0</string>
+    <string name="glucose_editor_save_error">Controlla di nuovo i valori</string>
+
+    <!-- Glucose report -->
+    <string name="glucose_report_base">Nella scorsa settimana, di %1$s, la glicemia \u00E9 stata %2$s (media %3$d).</string>
+    <string name="glucose_report_advice">Prova %1$s l\'insulina di %2$d.</string>
+    <string name="glucose_report_advice_increase">ad aumentare</string>
+    <string name="glucose_report_advice_decrease">a diminuire</string>
+    <string name="glucose_type_high">alta</string>
+    <string name="glucose_type_medium">giusta</string>
+    <string name="glucose_type_low">bassa</string>
+
+    <!-- Insulin list -->
+    <string name="insulin_name">Insuline</string>
+
+    <!-- Settings -->
+    <string name="settings_name">Preferenze</string>
+    <string name="insulin_item_basal">Basale</string>
+</resources>

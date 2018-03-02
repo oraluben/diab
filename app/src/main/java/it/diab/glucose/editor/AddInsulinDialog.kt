@@ -1,14 +1,13 @@
 package it.diab.glucose.editor
 
 import android.annotation.SuppressLint
+import android.app.AlertDialog
 import android.content.Context
-import android.support.v4.content.ContextCompat
 import android.support.v7.widget.AppCompatSpinner
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.EditText
-import com.afollestad.materialdialogs.MaterialDialog
 import it.diab.R
 import it.diab.db.entities.Glucose
 import it.diab.db.entities.Insulin
@@ -61,21 +60,18 @@ class AddInsulinDialog(private val mContext: Context,
     }
 
     fun show(onPositive: (Insulin, Float) -> Unit, onNeutral: () -> Unit, onDismiss: () -> Unit) {
-        MaterialDialog.Builder(mContext)
-                .title(R.string.glucose_editor_insulin_add)
-                .customView(mView, false)
-                .backgroundColor(ContextCompat.getColor(mContext, R.color.background_card))
-                .dismissListener { _ -> onDismiss() }
-                .positiveText(R.string.add)
-                .onPositive { _, _ ->
+        AlertDialog.Builder(mContext)
+                .setTitle(R.string.glucose_editor_insulin_add)
+                .setView(mView)
+                .setPositiveButton(R.string.add, { _, _ ->
                     val selected = insulins[mNameSpinner.selectedItemPosition]
                     val value = mValueEditText.text.toString().toFloatOrNull() ?: 0F
 
                     onPositive(selected, value)
-                }
-                .negativeText(R.string.cancel)
-                .neutralText(R.string.remove)
-                .onNeutral { _, _ -> onNeutral() }
+                })
+                .setNegativeButton(R.string.cancel, null)
+                .setNeutralButton(R.string.remove, { _, _ -> onNeutral() })
+                .setOnDismissListener { onDismiss() }
                 .show()
     }
 }

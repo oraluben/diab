@@ -1,55 +1,112 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingStart="16dp"
-    android:clickable="true"
-    android:paddingTop="8dp"
-    android:foreground="?attr/selectableItemBackground"
     android:minHeight="64dp"
-    android:paddingBottom="8dp"
-    android:paddingEnd="16dp"
-    android:focusable="true">
-
-    <ImageView
-        android:id="@+id/item_glucose_timezone"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:padding="8dp"
-        android:adjustViewBounds="true"
-        android:background="@drawable/bg_circle"
-        app:srcCompat="@drawable/ic_time_dinner" />
+    android:orientation="vertical">
 
     <LinearLayout
+        android:id="@+id/item_glucose_header"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="48dp"
+        android:clickable="false"
+        android:focusable="false"
         android:orientation="vertical"
-        android:paddingEnd="24dp"
-        android:paddingStart="64dp">
+        android:visibility="gone"
+        tools:visibility="visible">
 
-        <TextView
-            style="@style/TextAppearance.AppCompat.Title"
-            android:id="@+id/item_glucose_value"
+        <View
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:maxLines="1"
-            tools:text="123 (19:02)" />
+            android:layout_height="1dp"
+            android:background="@color/item_header_divider" />
 
-        <TextView
-            style="@style/TextAppearance.AppCompat.Medium"
-            android:id="@+id/item_glucose_insulin"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:maxLines="1"
-            tools:text="6.5 Novorapid, 20 Lantus" />
+            android:layout_height="47dp"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:paddingTop="15dp">
+
+            <TextView
+                android:id="@+id/item_glucose_header_description"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="8dp"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textColor="?android:attr/textColorSecondary"
+                android:textSize="18sp"
+                tools:text="30 feb" />
+
+            <TextView
+                android:id="@+id/item_glucose_header_title"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_toStartOf="@id/item_glucose_header_description"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textColor="?android:attr/textColorPrimary"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                tools:text="Today" />
+        </RelativeLayout>
     </LinearLayout>
 
-    <ImageView
-        android:id="@+id/item_glucose_heavy_meal"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
-        android:layout_alignParentEnd="true"
-        app:srcCompat="@drawable/ic_heavy_meal" />
-</RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/item_glucose_layout"
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:foreground="?attr/selectableItemBackground"
+        android:paddingBottom="8dp"
+        android:paddingEnd="16dp"
+        android:paddingStart="16dp"
+        android:paddingTop="8dp">
+
+
+        <ImageView
+            android:id="@+id/item_glucose_timezone"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:adjustViewBounds="true"
+            android:background="@drawable/bg_circle"
+            android:padding="8dp"
+            app:srcCompat="@drawable/ic_time_dinner" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="64dp"
+            android:gravity="center_vertical"
+            android:orientation="vertical"
+            android:paddingEnd="24dp"
+            android:paddingStart="64dp">
+
+            <TextView
+                android:id="@+id/item_glucose_value"
+                style="@style/TextAppearance.AppCompat.Title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                tools:text="123 (19:02)" />
+
+            <TextView
+                android:id="@+id/item_glucose_insulin"
+                style="@style/TextAppearance.AppCompat.Medium"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:textSize="16sp"
+                tools:text="6.5 Novorapid, 20 Lantus" />
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/item_glucose_heavy_meal"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_alignParentEnd="true"
+            android:visibility="gone"
+            app:srcCompat="@drawable/ic_heavy_meal" />
+    </RelativeLayout>
+</LinearLayout>

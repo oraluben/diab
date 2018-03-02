@@ -2,24 +2,24 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:clipToPadding="false"
+    android:paddingStart="?android:attr/listPreferredItemPaddingStart"
+    android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
+    android:orientation="vertical"
     android:gravity="center_vertical"
     android:minHeight="?attr/listPreferredItemHeightSmall"
-    android:orientation="vertical"
-    android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
     android:foreground="?android:attr/selectableItemBackground"
     android:clickable="true"
-    android:focusable="true"
-    android:paddingStart="?android:attr/listPreferredItemPaddingStart">
+    android:clipToPadding="false"
+    android:focusable="true">
 
     <LinearLayout
         android:id="@+id/item_insulin_view"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:orientation="vertical"
+        android:paddingTop="16dp"
         android:paddingBottom="16dp"
-        android:paddingTop="16dp">
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/item_insulin_name"
@@ -27,7 +27,7 @@
             android:layout_height="wrap_content"
             android:ellipsize="marquee"
             android:singleLine="true"
-            android:textAppearance="?attr/textAppearanceListItem" />
+            android:textAppearance="?attr/textAppearanceListItem"/>
 
         <TextView
             android:id="@+id/item_insulin_time_zone"
@@ -36,18 +36,18 @@
             android:ellipsize="end"
             android:maxLines="3"
             android:textAppearance="?attr/textAppearanceListItemSecondary"
-            android:textColor="?android:attr/textColorSecondary" />
+            android:textColor="?android:attr/textColorSecondary"/>
     </LinearLayout>
 
     <TextView
         android:id="@+id/item_insulin_add"
-        android:ellipsize="marquee"
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
         android:gravity="center_vertical"
-        android:text="@string/insulin_item_add"
+        android:ellipsize="marquee"
         android:singleLine="true"
         android:textAppearance="?attr/textAppearanceListItem"
-        android:visibility="gone" />
+        android:text="@string/insulin_item_add"/>
 </LinearLayout>

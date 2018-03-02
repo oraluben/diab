@@ -4,9 +4,9 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:windowBackground">@color/background_activity</item>
         <item name="preferenceTheme">@style/PreferenceThemeOverlay.v14.Material</item>
         <item name="isLightTheme">true</item>
+        <item name="android:windowBackground">@color/background_activity</item>
         <item name="android:windowLightStatusBar">true</item>
     </style>
 
@@ -36,31 +36,35 @@
 
     <!-- Glucose editor -->
 
-    <style name="AppTheme.GlucoseEditor_Info" parent="@style/TextAppearance.AppCompat.Headline">
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_width">0dp</item>
-        <item name="android:maxLines">1</item>
-        <item name="android:layout_weight">2</item>
-        <item name="android:layout_alignParentStart">true</item>
-        <item name="android:textColor">@color/colorAccent</item>
-    </style>
-
-    <style name="AppTheme.GlucoseEditor_Edit" parent="@style/TextAppearance.AppCompat.Headline">
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_width">0dp</item>
-        <item name="android:layout_weight">3</item>
-        <item name="android:maxLines">2</item>
-        <item name="android:layout_alignParentEnd">true</item>
-        <item name="android:textAlignment">viewEnd</item>
-    </style>
-
-    <style name="Apptheme.GlucoseEditor_Key" parent="@style/TextAppearance.AppCompat.Display1">
+    <style name="AppTheme.GlucoseEditor_Key" parent="@style/TextAppearance.AppCompat.Display1">
         <item name="android:layout_weight">1</item>
         <item name="android:clickable">true</item>
         <item name="android:focusable">true</item>
         <item name="android:textAlignment">center</item>
         <item name="android:background">?selectableItemBackground</item>
     </style>
+
+    <!-- Glucose Editor 2 -->
+    <style name="AppTheme.GlucoseEditor_Layout">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:paddingTop">8dp</item>
+    </style>
+
+    <style name="AppTheme.GlucoseEditor_Icon">
+        <item name="android:layout_height">32dp</item>
+        <item name="android:layout_width">32dp</item>
+        <item name="android:tint">@color/colorAccent</item>
+    </style>
+
+    <style name="AppTheme.GlucoseEditor_Editable" parent="@style/TextAppearance.AppCompat.Headline">
+        <item name="android:layout_height">32dp</item>
+        <item name="android:layout_marginStart">16dp</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:maxLines">1</item>
+    </style>
+
 
     <!-- Settings -->
 

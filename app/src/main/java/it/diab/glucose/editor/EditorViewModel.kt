@@ -17,7 +17,7 @@ class EditorViewModel(owner: Application) : AndroidViewModel(owner) {
 
     internal val insulins: List<Insulin>
         get() {
-            var list: List<Insulin>? = ArrayList()
+            var list = emptyList<Insulin>()
             val task = GetInsulinListTask(mDatabase)
             task.execute()
             try {
@@ -26,7 +26,21 @@ class EditorViewModel(owner: Application) : AndroidViewModel(owner) {
             } catch (ignored: ExecutionException) {
             }
 
-            return list ?: emptyList()
+            return list
+        }
+
+    internal val basalInsulins: List<Insulin>
+        get() {
+            var list = emptyList<Insulin>()
+            val task = GetBasalInsulinListTask(mDatabase)
+            task.execute()
+            try {
+                list = task.get()
+            } catch (ignored: InterruptedException) {
+            } catch (ignored: ExecutionException) {
+            }
+
+            return list
         }
 
     internal val previousWeek: List<Glucose>
@@ -38,9 +52,9 @@ class EditorViewModel(owner: Application) : AndroidViewModel(owner) {
             return try {
                 task.get()
             } catch (e: InterruptedException) {
-                ArrayList()
+                emptyList()
             } catch (e: ExecutionException) {
-                ArrayList()
+                emptyList()
             }
         }
 
@@ -75,7 +89,6 @@ class EditorViewModel(owner: Application) : AndroidViewModel(owner) {
         } catch (e: ExecutionException) {
             Insulin()
         }
-
     }
 
     class GetGlucoseTask(db: AppDatabase) : DatabaseTask<Long, Glucose>(db) {
@@ -108,6 +121,12 @@ class EditorViewModel(owner: Application) : AndroidViewModel(owner) {
 
         public override fun doInBackground(vararg params: Unit): List<Insulin> {
             return mDatabase.insulin().allStatic
+        }
+    }
+
+    class GetBasalInsulinListTask(db: AppDatabase) : DatabaseTask<Unit, List<Insulin>>(db) {
+        override fun doInBackground(vararg params: Unit?): List<Insulin> {
+            return mDatabase.insulin().basalInsulins
         }
     }
 

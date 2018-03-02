@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#fbfcfc</color>
-    <color name="colorPrimaryDark">#f0f4f4</color>
-    <color name="colorAccent">#fe8500</color>
-    <color name="colorAccentDark">#ad6418</color>
+    <color name="colorPrimary">#FAFBFC</color>
+    <color name="colorPrimaryDark">#EBECF0</color>
+    <color name="colorAccent">#0065FF</color>
+    <color name="colorAccentDark">#0747A6</color>
 
     <color name="white">#fafafa</color>
     <color name="black">#000000</color>
@@ -11,9 +11,25 @@
     <color name="background_activity">@color/colorPrimary</color>
     <color name="background_card">@color/colorPrimaryDark</color>
 
-    <color name="action_dangerous">#f71976</color>
+    <color name="action_dangerous">#FF5630</color>
+    <color name="action_warning">#FFAB00</color>
 
     <color name="graph_overview_today">@color/colorAccent</color>
-    <color name="graph_overview_average">@color/colorAccentDark</color>
+    <color name="graph_overview_average">#B2D4FF</color>
 
+    <color name="glucose_background_high">#90FFEBE5</color>
+    <color name="glucose_background_low">#90EAE6FF</color>
+
+    <color name="item_header_divider">#8993A4</color>
+
+    <color name="eat_bar_low">#6554C0</color>
+    <color name="eat_bar_medium">@color/colorAccent</color>
+    <color name="eat_bar_high">@color/action_warning</color>
+    <color name="eat_bar_max">@color/action_dangerous</color>
+
+    <color name="overview_glucose_high">#FF3366</color>
+    <color name="overview_glucose_low">#F7B538</color>
+    <color name="overview_hemoglobin_high">#B80C09</color>
+    <color name="overview_hemoglobin_low">#2EC4B6</color>
+    <color name="overview_hemoglobin_normal">#81b532</color>
 </resources>

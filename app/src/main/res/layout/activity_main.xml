@@ -31,17 +31,17 @@
                 android:id="@+id/tabs"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/colorAccent"
                 app:tabMode="fixed"
-                app:tabGravity="fill" />
+                app:tabGravity="fill"
+                android:textColor="@color/colorAccent"/>
         </android.support.design.widget.AppBarLayout>
 
         <android.support.v4.view.ViewPager
             android:id="@+id/viewpager"
-            android:layout_height="match_parent"
             android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_below="@+id/app_bar"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
     </android.support.design.widget.CoordinatorLayout>
 
     <android.support.design.widget.FloatingActionButton
@@ -52,7 +52,6 @@
         android:layout_centerHorizontal="true"
         android:layout_margin="@dimen/fab_margin"
         android:transitionName="@string/transition_glucose_fab"
-        app:backgroundTint="@color/white"
         app:srcCompat="@drawable/ic_add_glucose"
-        tools:targetApi="lollipop" />
+        tools:targetApi="lollipop"/>
 </RelativeLayout>

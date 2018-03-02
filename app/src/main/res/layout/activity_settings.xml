@@ -11,12 +11,12 @@
         android:layout_height="?attr/actionBarSize"
         android:elevation="0dp"
         android:theme="@style/AppTheme.ToolbarTheme"
-        tools:targetApi="lollipop" />
+        tools:targetApi="lollipop"/>
 
     <fragment
-        android:name="it.diab.settings.PreferencesFragment"
+        android:tag="it.diab.settings.PreferencesFragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/toolbar"
-        android:tag="it.diab.settings.PreferencesFragment" />
+        android:name="it.diab.settings.PreferencesFragment"/>
 </RelativeLayout>

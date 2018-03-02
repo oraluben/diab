@@ -20,7 +20,7 @@ enum class TimeFrame : ITimeFrame {
         override val icon = R.drawable.ic_time_morning
         @StringRes
         override val string = R.string.time_morning
-        override val reprHour = 7
+        override val reprHour = 6
         override fun toInt() = 0
     },
 

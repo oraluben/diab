@@ -16,7 +16,9 @@ class OverviewMarker(context: Context) : MarkerView(context, R.layout.item_overv
 
     override fun refreshContent(e: Entry?, highlight: Highlight?) {
         if (e != null) {
-            val text = "%1\$.0f:%2\$.0f".format(e.x / 60, e.x % 60)
+            val h = Math.floor(e.x / 60.toDouble())
+            val m = e.x % 60
+            val text = "%1\$.0f:%2\$.0f".format(h, m)
             mTextView.text = text
         }
 

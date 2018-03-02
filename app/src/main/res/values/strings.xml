@@ -11,6 +11,12 @@
     <string name="fragment_glucose">Glucose</string>
 
     <!-- Time -->
+    <string name="time_today">Today</string>
+    <string name="time_yesterday">Yesterday</string>
+    <string name="time_last_x">Last %1$s</string>
+    <string name="time_x_y_ago">%1$d %2$s ago</string>
+    <string name="time_day_month_short_format">dd MMM</string>
+    <string name="time_pick">Select another date\u2026</string>
 
     <!-- Time zone -->
     <string name="time_extra">Extra</string>
@@ -24,12 +30,12 @@
     <!-- Insulin Editor -->
     <string name="insulin_editor_name">Name</string>
     <string name="insulin_item_add">Add insulin\u2026</string>
+    <string name="insulin_item_basal">Basal</string>
 
-    <!-- Glcuose Editor -->
-    <string name="glucose_editor_value">Value</string>
-    <string name="glucose_editor_time">Time</string>
-    <string name="glucose_editor_insulin">Insulin</string>
+    <!-- Glucose Editor -->
+    <string name="glucose_editor_time_dialog">Select the time</string>
     <string name="glucose_editor_insulin_add">Add insulin</string>
+    <string name="glucose_editor_basal_add">Add basal\u2026</string>
     <string name="glucose_editor_insulin_value">Quantity</string>
     <string name="glucose_editor_save_error">Check the values again</string>
 

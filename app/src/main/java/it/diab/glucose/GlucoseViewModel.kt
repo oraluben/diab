@@ -85,11 +85,4 @@ class GlucoseViewModel(owner: Application) : AndroidViewModel(owner) {
                     .sum() / list.size
         }
     }
-
-    private class DeleteTask(db: AppDatabase) : DatabaseTask<Glucose, Unit>(db) {
-
-        override fun doInBackground(vararg params: Glucose) {
-            mDatabase.glucose().delete(params[0])
-        }
-    }
 }
