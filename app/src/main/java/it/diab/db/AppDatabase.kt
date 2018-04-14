@@ -20,10 +20,18 @@ abstract class AppDatabase protected constructor() : RoomDatabase() {
     abstract fun insulin(): InsulinDao
 
     companion object : SingletonHolder<AppDatabase, Context>({
-        Room.databaseBuilder(it.applicationContext, AppDatabase::class.java, "diab_database")
+        if (AppDatabase.TEST_MODE)
+            Room.inMemoryDatabaseBuilder(it, AppDatabase::class.java)
+                    .allowMainThreadQueries()
+                    .build()
+        else
+            Room.databaseBuilder(it.applicationContext, AppDatabase::class.java, "diab_database")
                 .addMigrations(Companion.MIGRATION_1_2)
                 .build()
     }) {
+        // This is used during unit tests
+        var TEST_MODE = false
+
         /**
          * DB version 2
          *
