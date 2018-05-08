@@ -30,6 +30,7 @@
 
     <!-- Hide unused views -->
     <View
+        android:id="@+id/glucose_editor_show_view"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintLeft_toLeftOf="parent"

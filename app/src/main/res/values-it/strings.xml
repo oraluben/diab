@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">Diab</string>
+    <string name="app_shortcut_add_glucose">Aggiungi glicemia</string>
 
     <string name="cancel">Annulla</string>
     <string name="save">Salva</string>
