@@ -1,9 +1,11 @@
 package it.diab
 
+import android.Manifest
 import android.annotation.TargetApi
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.content.pm.ShortcutInfo
 import android.content.pm.ShortcutManager
 import android.graphics.Bitmap
@@ -16,11 +18,13 @@ import android.os.Handler
 import android.support.annotation.DrawableRes
 import android.support.design.widget.FloatingActionButton
 import android.support.design.widget.TabLayout
+import android.support.v4.app.ActivityCompat
 import android.support.v4.app.ActivityOptionsCompat
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
 import android.support.v4.content.ContextCompat
 import android.support.v4.view.ViewPager
+import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.preference.PreferenceManager
 import android.support.v7.widget.Toolbar
@@ -29,6 +33,7 @@ import android.view.MenuItem
 import android.view.View
 import it.diab.glucose.GlucoseViewModel
 import it.diab.glucose.editor.EditorActivity
+import it.diab.glucose.export.ExportGlucoseService
 import it.diab.insulin.InsulinActivity
 import it.diab.main.GlucoseFragment
 import it.diab.main.OverviewFragment
@@ -78,12 +83,30 @@ class MainActivity : AppCompatActivity() {
     override fun onCreateOptionsMenu(menu: Menu) =
             true.also { menuInflater.inflate(R.menu.activity_main, menu) }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == R.id.menu_insulin) {
-            startActivity(Intent(this, InsulinActivity::class.java))
+    override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
+        R.id.menu_insulin -> onMenuInsulin()
+        R.id.menu_export -> onMenuExport()
+        else -> false
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>,
+                                            grantResults: IntArray) {
+        if (requestCode != REQUEST_STORAGE_ACCESS) {
+            return
         }
 
-        return true
+        if (hasStorageAccess()) {
+            startExport()
+            return
+        }
+
+        AlertDialog.Builder(this)
+                .setTitle(R.string.export_ask_title)
+                .setMessage(R.string.export_ask_permission_message)
+                .setPositiveButton(R.string.export_ask_permission_positive,
+                        { _, _ -> startExport() })
+                .setNegativeButton(android.R.string.cancel, null)
+                .show()
     }
 
     fun onItemClick(uid: Long) {
@@ -156,6 +179,40 @@ class MainActivity : AppCompatActivity() {
         return bm
     }
 
+    private fun onMenuInsulin(): Boolean {
+        val intent = Intent(this, InsulinActivity::class.java)
+        startActivity(intent)
+        return true
+    }
+
+    private fun onMenuExport(): Boolean {
+        AlertDialog.Builder(this)
+                .setTitle(R.string.export_ask_title)
+                .setMessage(R.string.export_ask_message)
+                .setPositiveButton(R.string.export_ask_positive, { _, _ -> startExport() })
+                .setNegativeButton(android.R.string.cancel, null)
+                .show()
+
+        return true
+    }
+
+    private fun startExport() {
+        if (!hasStorageAccess()) {
+            ActivityCompat.requestPermissions(this,
+                    arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), REQUEST_STORAGE_ACCESS)
+            return
+        }
+
+        val intent = Intent(this, ExportGlucoseService::class.java)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            startForegroundService(intent)
+        } else {
+            startService(intent)
+        }
+    }
+
+    private fun hasStorageAccess() = ContextCompat.checkSelfPermission(this,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
 
     inner class ViewPagerAdapter(manager: FragmentManager) : FragmentPagerAdapter(manager) {
         private val mFragments = arrayOf(mOverviewFragment, mGlucoseFragment)
@@ -169,5 +226,6 @@ class MainActivity : AppCompatActivity() {
     companion object {
         private const val SHORTCUTS_VERSION = 0
         private const val KEY_SHORTCUTS = "pref_home_shortcuts"
+        private const val REQUEST_STORAGE_ACCESS = 391
     }
 }

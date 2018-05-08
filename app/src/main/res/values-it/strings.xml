@@ -31,6 +31,7 @@
     <!-- Insulin Editor -->
     <string name="insulin_editor_name">Nome</string>
     <string name="insulin_item_add">Aggiungi insulina\u2026</string>
+    <string name="insulin_item_basal">Basale</string>
 
     <!-- Glcuose Editor -->
     <string name="glucose_editor_time_dialog">Seleziona la data</string>
@@ -53,5 +54,15 @@
 
     <!-- Settings -->
     <string name="settings_name">Preferenze</string>
-    <string name="insulin_item_basal">Basale</string>
+
+    <!-- Export database -->
+    <string name="export_ask_title">Esporta dati</string>
+    <string name="export_ask_message">Vuoi esportare i dati delle glicemie per il machine learning nella memoria interna?</string>
+    <string name="export_ask_positive">Esporta</string>
+    <string name="export_ask_permission_message">L\'accesso alla memoria interna \u00E8 necessario per esportare i dati. Per favore concedilo.</string>
+    <string name="export_ask_permission_positive">Chiedi di nuovo</string>
+    <string name="export_notification_title">Esportazione dati glicemie</string>
+    <string name="export_notification_channel">Operazioni di esportazione</string>
+    <string name="export_completed_success">I dati sono stati esportati nelle memoria interna</string>
+    <string name="export_completed_failure">Impossibile esportare i dati nella memoria interna</string>
 </resources>

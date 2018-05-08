@@ -6,4 +6,9 @@
         android:title="@string/insulin_name"
         app:showAsAction="ifRoom" />
 
+    <item
+        android:id="@+id/menu_export"
+        android:icon="@drawable/ic_export"
+        android:title="@string/export_ask_title"
+        app:showAsAction="ifRoom" />
 </menu>

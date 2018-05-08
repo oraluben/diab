@@ -54,4 +54,16 @@
 
     <!-- Settings -->
     <string name="settings_name">Preferences</string>
+
+
+    <!-- Export database -->
+    <string name="export_ask_title">Export data</string>
+    <string name="export_ask_message">Do you want to export the glucose data for machine learning to the internal memory?</string>
+    <string name="export_ask_positive">Export</string>
+    <string name="export_ask_permission_message">Storage access is needed to export the data to the internal memory. Please grant it.</string>
+    <string name="export_ask_permission_positive">Ask again</string>
+    <string name="export_notification_title">Export glucose data</string>
+    <string name="export_notification_channel">Export operations</string>
+    <string name="export_completed_success">The data has been exported to the internal memory</string>
+    <string name="export_completed_failure">Unable to export the data to the internal memory</string>
 </resources>
