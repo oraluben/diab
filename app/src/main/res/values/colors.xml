@@ -2,8 +2,9 @@
 <resources>
     <color name="colorPrimary">#FAFBFC</color>
     <color name="colorPrimaryDark">#EBECF0</color>
-    <color name="colorAccent">#0065FF</color>
-    <color name="colorAccentDark">#0747A6</color>
+    <color name="colorAccentLight">#B2D4FF</color>
+    <color name="colorAccent">#0065ff</color>
+    <color name="colorAccentDark">#003ccb</color>
 
     <color name="white">#fafafa</color>
     <color name="black">#000000</color>
@@ -11,15 +12,16 @@
     <color name="background_activity">@color/colorPrimary</color>
     <color name="background_card">@color/colorPrimaryDark</color>
 
-    <color name="action_dangerous">#FF5630</color>
-    <color name="action_warning">#FFAB00</color>
+    <color name="action_dangerous">#f44336</color>
+    <color name="action_warning">#ff9800</color>
 
     <color name="graph_overview_today">@color/colorAccent</color>
-    <color name="graph_overview_average">#B2D4FF</color>
+    <color name="graph_overview_average">@color/colorAccentLight</color>
 
     <color name="glucose_background_high">#90FFEBE5</color>
     <color name="glucose_background_low">#90EAE6FF</color>
 
+    <color name="item_circle_bg">#EBECF0</color>
     <color name="item_header_divider">#8993A4</color>
 
     <color name="eat_bar_low">#6554C0</color>
