@@ -13,25 +13,18 @@ import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
 import it.diab.R
 import it.diab.db.entities.Glucose
 import it.diab.ui.MainFragment
-import it.diab.ui.graph.CircularProgressBar
 import it.diab.ui.graph.OverviewGraphView
 import it.diab.util.extensions.getAsMinutes
 import it.diab.util.extensions.isToday
 
 class OverviewFragment : MainFragment() {
     private lateinit var mChart: OverviewGraphView
-    private lateinit var mGlucoseProgressBar: CircularProgressBar
-    private lateinit var mHemoglobinProgressBar: CircularProgressBar
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View {
         val view = inflater.inflate(R.layout.fragment_overview, container, false)
         mChart = view.findViewById(R.id.overview_chart)
-        mGlucoseProgressBar = view.findViewById(R.id.overview_average_glucose)
-        mHemoglobinProgressBar = view.findViewById(R.id.overview_hemoglobin)
 
-        mGlucoseProgressBar.setTreshold(179, 70)
-        mHemoglobinProgressBar.setTreshold(10, 8)
         return view
     }
 

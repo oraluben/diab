@@ -54,9 +54,6 @@
     <!-- Insulin list -->
     <string name="insulin_name">Insuline</string>
 
-    <!-- Settings -->
-    <string name="settings_name">Preferenze</string>
-
     <!-- Export database -->
     <string name="export_ask_title">Esporta dati</string>
     <string name="export_ask_message">Vuoi esportare i dati delle glicemie per il machine learning nella memoria interna?</string>

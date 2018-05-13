@@ -2,7 +2,6 @@ package it.diab.insulin.ml
 
 import android.content.res.Resources
 import android.os.AsyncTask
-import android.util.Log
 import it.diab.R
 import it.diab.db.entities.Glucose
 import it.diab.util.extensions.asTimeFrame

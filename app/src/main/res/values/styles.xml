@@ -64,15 +64,4 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:maxLines">1</item>
     </style>
-
-    <!-- Settings -->
-
-    <style name="AppTheme.SettingsTheme" parent="@style/AppTheme.NoActionBar">
-        <item name="android:statusBarColor">@color/colorPrimary</item>
-        <item name="alertDialogTheme">@style/AppTheme.PreferenceDialog</item>
-    </style>
-
-    <style name="AppTheme.PreferenceDialog" parent="ThemeOverlay.AppCompat.Dialog.Alert">
-        <item name="colorAccent">@color/colorAccent</item>
-    </style>
 </resources>

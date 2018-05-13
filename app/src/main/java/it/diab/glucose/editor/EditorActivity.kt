@@ -495,6 +495,5 @@ class EditorActivity : AppCompatActivity() {
         // TODO: expose these to userland
         private const val LOW_THRESHOLD = 70
         private const val HIGH_THRESHOLD = 180
-        private const val FIX_RATE = 40
     }
 }

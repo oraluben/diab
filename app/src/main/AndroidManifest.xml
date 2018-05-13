@@ -38,11 +38,6 @@
             android:label="@string/insulin_editor_name"
             android:theme="@style/AppTheme.DialogActivity" />
 
-        <activity
-            android:name=".settings.SettingsActivity"
-            android:label="@string/settings_name"
-            android:theme="@style/AppTheme.SettingsTheme" />
-
         <service
             android:name=".glucose.export.ExportGlucoseService"
             android:enabled="true" />

@@ -76,5 +76,5 @@ fun Date.toFitSleepRelation() =
         if (asTimeFrame() == TimeFrame.MORNING) HealthFields.TEMPORAL_RELATION_TO_SLEEP_ON_WAKING
         else HealthFields.TEMPORAL_RELATION_TO_SLEEP_FULLY_AWAKE
 
-fun Date.format(format: String) =
+fun Date.format(format: String): String =
         SimpleDateFormat(format, Locale.getDefault()).format(this)

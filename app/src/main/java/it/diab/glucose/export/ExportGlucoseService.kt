@@ -17,7 +17,6 @@ import it.diab.db.entities.Glucose
 import it.diab.util.DateUtils
 import it.diab.util.extensions.asTimeFrame
 import it.diab.util.extensions.format
-import it.diab.util.extensions.get
 import it.diab.util.timeFrame.TimeFrame
 import java.io.File
 import java.io.FileWriter

@@ -54,10 +54,6 @@
     <!-- Insulin list -->
     <string name="insulin_name">Insulins</string>
 
-    <!-- Settings -->
-    <string name="settings_name">Preferences</string>
-
-
     <!-- Export database -->
     <string name="export_ask_title">Export data</string>
     <string name="export_ask_message">Do you want to export the glucose data for machine learning to the internal memory?</string>
