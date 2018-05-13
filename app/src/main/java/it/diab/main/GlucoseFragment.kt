@@ -21,7 +21,7 @@ class GlucoseFragment : MainFragment() {
         mRecyclerView = view.findViewById(R.id.glucose_recyclerview)
 
         val list = arguments?.getParcelableArrayList<Glucose>(ARG_DATA)
-        mAdapter = GlucoseAdapter(context, list, this::onItemClick)
+        mAdapter = GlucoseAdapter(context!!, list, this::onItemClick)
 
         mRecyclerView.adapter = mAdapter
         return view

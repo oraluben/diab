@@ -3,4 +3,5 @@
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="overview_graph_text">6sp</dimen>
     <dimen name="overview_graph_offset">8dp</dimen>
+    <dimen name="item_glucose_indicator">24dp</dimen>
 </resources>

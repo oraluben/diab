@@ -19,11 +19,11 @@
     <color name="graph_overview_today">@color/colorAccent</color>
     <color name="graph_overview_average">@color/colorAccentLight</color>
 
-    <color name="glucose_background_high">#90FFEBE5</color>
-    <color name="glucose_background_low">#90EAE6FF</color>
+    <color name="glucose_indicator_high">#ffa826</color>
+    <color name="glucose_indicator_low">#ff3a7e</color>
 
     <color name="item_circle_bg">#EBECF0</color>
-    <color name="item_header_divider">#8993A4</color>
+    <color name="item_header_divider">#0c000000</color>
 
     <color name="eat_bar_low">#6554C0</color>
     <color name="eat_bar_medium">@color/colorAccent</color>
