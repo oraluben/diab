@@ -14,8 +14,10 @@ import android.widget.Toast
 import it.diab.R
 import it.diab.db.AppDatabase
 import it.diab.db.entities.Glucose
+import it.diab.util.DateUtils
 import it.diab.util.extensions.asTimeFrame
 import it.diab.util.extensions.format
+import it.diab.util.extensions.get
 import it.diab.util.timeFrame.TimeFrame
 import java.io.File
 import java.io.FileWriter
@@ -89,7 +91,9 @@ class ExportGlucoseService : Service() {
             AsyncTask<Unit, Unit, Boolean>() {
 
         override fun doInBackground(vararg params: Unit?): Boolean {
-            val list = db.glucose().allStatic
+            val end = System.currentTimeMillis()
+            val start = end - DateUtils.DAY * 40
+            val list = db.glucose().getInDateRange(start, end)
 
             try {
                 val docsDir = Environment.getExternalStoragePublicDirectory(

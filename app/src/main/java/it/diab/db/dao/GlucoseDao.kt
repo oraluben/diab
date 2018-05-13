@@ -12,9 +12,6 @@ interface GlucoseDao {
     @get:Query("SELECT * FROM glucose ORDER BY date DESC")
     val all: LiveData<List<Glucose>>
 
-    @get:Query("SELECT * FROM glucose ORDER BY date DESC")
-    val allStatic: List<Glucose>
-
     @Query("SELECT * FROM glucose WHERE uid IN (:uids)")
     fun getById(vararg uids: Long): List<Glucose>
 

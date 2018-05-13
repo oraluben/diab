@@ -30,8 +30,11 @@ All you need to do is execute the python script:
 
 ## Save the data into the app
 
-Copy the content of the export/estimator_*.json into the respective files in the assets folder
+Copy the content of the export/estimator_*.json into the respective files in the res/raw folder
 
-## Disable tracking git changes to train files
+## Disable tracking git changes of sensitive files
 
-`git update-index --assume-unchanged ml/data/*`
+```
+ git update-index --skip-worktree ml/data/*
+ git update-index --skip-worktree app/src/main/res/raw/*
+```

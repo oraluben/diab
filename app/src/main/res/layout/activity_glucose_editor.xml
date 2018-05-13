@@ -136,28 +136,27 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingBottom="32dp"
+            android:paddingTop="32dp">
 
-            <com.robinhood.spark.SparkView
-                android:id="@+id/glucose_editor_graph"
-                android:layout_width="match_parent"
-                android:layout_height="128dp"
-                android:paddingEnd="16dp"
-                android:paddingStart="16dp"
-                android:paddingTop="16dp"
-                app:spark_lineColor="@color/colorAccent" />
+            <it.diab.ui.InsulinSuggestionView
+                android:id="@+id/glucose_editor_insulin_suggestion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"/>
 
             <android.support.v7.widget.AppCompatTextView
                 android:id="@+id/glucose_editor_info"
                 style="@style/TextAppearance.AppCompat.Medium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:drawablePadding="16dp"
+                android:drawableStart="@drawable/ic_info"
                 android:paddingEnd="16dp"
                 android:paddingStart="16dp"
-                android:paddingTop="16dp"
-                android:drawableStart="@drawable/ic_info"
-                android:drawablePadding="8dp"
-                tools:text="Hello world" />
+                android:textColor="@color/text_secondary"
+                tools:text="During the last week the glucose at this time of the day has been fine  (average 123)." />
         </LinearLayout>
     </ScrollView>
 </android.support.constraint.ConstraintLayout>

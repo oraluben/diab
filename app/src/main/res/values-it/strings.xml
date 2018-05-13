@@ -40,14 +40,16 @@
     <string name="glucose_editor_insulin_value">Quantit\u00E0</string>
     <string name="glucose_editor_save_error">Controlla di nuovo i valori</string>
 
-    <!-- Glucose report -->
-    <string name="glucose_report_base">Nella scorsa settimana, di %1$s, la glicemia \u00E9 stata %2$s (media %3$d).</string>
-    <string name="glucose_report_advice">Prova %1$s l\'insulina di %2$d.</string>
-    <string name="glucose_report_advice_increase">ad aumentare</string>
-    <string name="glucose_report_advice_decrease">a diminuire</string>
+    <!-- Glucose suggestions -->
+    <string name="glucose_report_base">Durante la scorsa settimana, in questo periodo della giornata la tua glicemia \u00E8 stata %1$s (media %2$d).</string>
     <string name="glucose_type_high">alta</string>
     <string name="glucose_type_medium">giusta</string>
     <string name="glucose_type_low">bassa</string>
+    <string name="insulin_suggestion_loading">Calcolo\u2026</string>
+    <string name="insulin_suggestion_warning_low">Troppo bassa</string>
+    <string name="insulin_suggestion_warning_high">Troppo alta</string>
+    <string name="insulin_suggestion_value">Dose suggerita: %1$.2f</string>
+    <string name="insulin_suggestion_error">Impossibile determinare dose</string>
 
     <!-- Insulin list -->
     <string name="insulin_name">Insuline</string>

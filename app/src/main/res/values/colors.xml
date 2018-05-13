@@ -7,7 +7,9 @@
     <color name="colorAccentDark">#003ccb</color>
 
     <color name="white">#fafafa</color>
-    <color name="black">#000000</color>
+    <color name="black">#000000</color
+        >
+    <color name="text_secondary">#9a000000</color>
 
     <color name="background_activity">@color/colorPrimary</color>
     <color name="background_card">@color/colorPrimaryDark</color>
@@ -20,6 +22,7 @@
 
     <color name="glucose_background_high">#90FFEBE5</color>
     <color name="glucose_background_low">#90EAE6FF</color>
+
 
     <color name="item_circle_bg">#EBECF0</color>
     <color name="item_header_divider">#8993A4</color>

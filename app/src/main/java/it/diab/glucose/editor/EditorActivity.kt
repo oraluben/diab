@@ -32,14 +32,13 @@ import com.google.android.gms.fitness.Fitness
 import com.google.android.gms.fitness.FitnessOptions
 import com.google.android.gms.fitness.data.*
 import com.google.android.gms.fitness.request.DataUpdateRequest
-import com.robinhood.spark.SparkView
 import it.diab.BuildConfig
 import it.diab.R
 import it.diab.db.entities.Glucose
 import it.diab.db.entities.Insulin
 import it.diab.ui.EatBar
+import it.diab.ui.InsulinSuggestionView
 import it.diab.ui.NumericKeyboardView
-import it.diab.ui.graph.SimpleSparkAdapter
 import it.diab.util.DateUtils
 import it.diab.util.VibrationUtil
 import it.diab.util.extensions.*
@@ -60,7 +59,7 @@ class EditorActivity : AppCompatActivity() {
     private lateinit var mEatBar: EatBar
     private lateinit var mInsulinView: InsulinView
     private lateinit var mBasalView: InsulinView
-    private lateinit var mGraphView: SparkView
+    private lateinit var mSuggestionView: InsulinSuggestionView
     private lateinit var mInfoView: TextView
     private lateinit var mKeyboardView: NumericKeyboardView
     private lateinit var mFab: FloatingActionButton
@@ -91,7 +90,7 @@ class EditorActivity : AppCompatActivity() {
         mBasalView = InsulinView(
                 R.id.glucose_editor_insulin_basal_layout,
                 R.id.glucose_editor_insulin_basal_value)
-        mGraphView = findViewById(R.id.glucose_editor_graph)
+        mSuggestionView = findViewById(R.id.glucose_editor_insulin_suggestion)
         mInfoView = findViewById(R.id.glucose_editor_info)
 
         val id = intent.getLongExtra(EXTRA_GLUCOSE_ID, -1)
@@ -130,8 +129,6 @@ class EditorActivity : AppCompatActivity() {
         mBasalView.value.setOnClickListener { onBasalClicked() }
 
         mFab.setOnClickListener { onFabClicked() }
-
-        refresh()
     }
 
     private fun refresh() {
@@ -182,9 +179,10 @@ class EditorActivity : AppCompatActivity() {
         }
 
         val data = mViewModel.previousWeek
-        mGraphView.adapter = SimpleSparkAdapter(data)
         mInfoView.text = getInfo(data)
         mDateView.text = DateUtils.dateToString(mViewModel.glucose.date)
+
+        mSuggestionView.bind(mViewModel.glucose, this::onSuggestionApply)
 
         mFab.setImageResource(R.drawable.ic_edit)
     }
@@ -341,7 +339,8 @@ class EditorActivity : AppCompatActivity() {
         }, 350)
     }
 
-    private fun onInsulinPositive(insulin: Insulin, value: Float, isBasal: Boolean) {
+    private fun onInsulinPositive(insulin: Insulin, value: Float, isBasal: Boolean,
+                                  shouldSaveData: Boolean = true) {
         if (isBasal) {
             mViewModel.glucose.insulinId1 = insulin.uid
             mViewModel.glucose.insulinValue1 = value
@@ -352,7 +351,9 @@ class EditorActivity : AppCompatActivity() {
             mInsulinView.value.text = insulin.getDisplayedString(value)
         }
 
-        saveData()
+        if (shouldSaveData) {
+            saveData()
+        }
     }
 
     private fun onInsulinNeutral(isBasal: Boolean) {
@@ -429,16 +430,12 @@ class EditorActivity : AppCompatActivity() {
 
     private fun getInfo(list: List<Glucose>): String {
         var average = 0f
-        val values = IntArray(list.size)
-
         for (i in list.indices) {
-            values[i] = list[i].value
-            average += values[i].toFloat()
+            average += list[i].value.toFloat()
         }
         average /= list.size
 
         val builder = StringBuilder()
-        val timeFrame = mViewModel.glucose.date.asTimeFrame()
         val status = when {
             average > HIGH_THRESHOLD -> R.string.glucose_type_high
             average > LOW_THRESHOLD -> R.string.glucose_type_medium
@@ -446,39 +443,14 @@ class EditorActivity : AppCompatActivity() {
         }
 
         builder.append(getString(R.string.glucose_report_base,
-                getString(timeFrame.string).toLowerCase(), getString(status),
-                average.roundToInt()))
+                getString(status), average.roundToInt()))
                 .append('\n')
 
-        if (status != R.string.glucose_type_medium) {
-            var correction = 0
-            val isLow = average > LOW_THRESHOLD
-            while (average >= HIGH_THRESHOLD || average <= LOW_THRESHOLD) {
-                if (average >= HIGH_THRESHOLD) {
-                    correction++
-                    average -= FIX_RATE
-                } else {
-                    correction--
-                    average += FIX_RATE
-                }
-            }
-
-            correction = Math.abs(correction)
-            builder.append(getString(R.string.glucose_report_advice,
-                    getString(if (isLow)
-                        R.string.glucose_report_advice_increase
-                    else
-                        R.string.glucose_report_advice_decrease), correction))
-                    .append('\n')
-        }
-
-        for (i in values) {
-            builder.append('\n')
-                    .append("\u2022 ")
-                    .append(i)
-        }
-
         return builder.toString()
+    }
+
+    private fun onSuggestionApply(suggestion: Float) {
+        mViewModel.applyInsulinSuggestion(suggestion, this::refresh)
     }
 
     private fun ImageView.setErrorStatus(toError: Boolean) {

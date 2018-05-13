@@ -91,6 +91,10 @@ class EditorViewModel(owner: Application) : AndroidViewModel(owner) {
         }
     }
 
+    internal fun applyInsulinSuggestion(value: Float, onPostExecute: () -> Unit) {
+        ApplyInsulinSuggestionTask(mDatabase, onPostExecute).execute(Pair(value, glucose))
+    }
+
     class GetGlucoseTask(db: AppDatabase) : DatabaseTask<Long, Glucose>(db) {
 
         override fun doInBackground(vararg params: Long?): Glucose {
@@ -135,6 +139,38 @@ class EditorViewModel(owner: Application) : AndroidViewModel(owner) {
         override fun doInBackground(vararg params: Long?): Insulin {
             val list = mDatabase.insulin().getById(params[0] ?: -1)
             return if (list.isNotEmpty()) list[0] else Insulin()
+        }
+    }
+
+    class ApplyInsulinSuggestionTask(db: AppDatabase, private val onPost: () -> Unit):
+            DatabaseTask<Pair<Float, Glucose>, Unit>(db) {
+
+        override fun doInBackground(vararg params: Pair<Float, Glucose>?) {
+            val pair = params[0] ?: return
+            val suggestion = pair.first
+            val glucose = pair.second
+            val targetTimeFrame = glucose.date.asTimeFrame()
+
+            val insulins = mDatabase.insulin().allStatic
+            var targetInsulin: Insulin? = null
+            for (insulin in insulins) {
+                if (insulin.timeFrame == targetTimeFrame) {
+                    targetInsulin = insulin
+                    break
+                }
+            }
+
+            if (targetInsulin == null) {
+                return
+            }
+
+            glucose.insulinId0 = targetInsulin.uid
+            glucose.insulinValue0 = suggestion
+            mDatabase.glucose().insert(glucose)
+        }
+
+        override fun onPostExecute(result: Unit?) {
+            onPost()
         }
     }
 

@@ -7,7 +7,7 @@ object DateUtils {
     private var SECOND: Long = 1000 // Millisecond * 1000
     private var MINUTE = 60 * SECOND
     private var HOUR = 60 * MINUTE
-    private var DAY = 24 * HOUR
+    var DAY = 24 * HOUR
     var WEEK = 7 * DAY
 
     fun dateToString(date: Date): String {
