@@ -7,6 +7,7 @@ import android.support.v7.widget.AppCompatButton
 import android.support.v7.widget.AppCompatEditText
 import android.support.v7.widget.AppCompatSpinner
 import android.support.v7.widget.SwitchCompat
+import android.view.View
 import android.view.Window
 import android.widget.ArrayAdapter
 
@@ -18,6 +19,7 @@ class EditorActivity : AppCompatActivity() {
     private lateinit var mEditText: AppCompatEditText
     private lateinit var mSpinner: AppCompatSpinner
     private lateinit var mSwitch: SwitchCompat
+    private lateinit var mDeleteButton: AppCompatButton
 
     private lateinit var mViewModel: EditorViewModel
     private lateinit var mTimeFrames: Array<String>
@@ -34,6 +36,7 @@ class EditorActivity : AppCompatActivity() {
         mEditText = findViewById(R.id.insulin_edit_name)
         mSpinner = findViewById(R.id.insulin_edit_time)
         mSwitch = findViewById(R.id.insulin_edit_basal)
+        mDeleteButton = findViewById(R.id.insulin_edit_btn_neutral)
         val cancelButton = findViewById<AppCompatButton>(R.id.insulin_edit_btn_negative)
         val saveButton = findViewById<AppCompatButton>(R.id.insulin_edit_btn_positive)
 
@@ -67,10 +70,17 @@ class EditorActivity : AppCompatActivity() {
                 mTimeFrames)
         mSpinner.setSelection(if (mEditMode) mViewModel.insulin.timeFrame.toInt() + 1 else 0)
 
-        if (mEditMode) {
-            mEditText.setText(mViewModel.insulin.name)
-            mSwitch.isChecked = mViewModel.insulin.isBasal
+        if (!mEditMode) {
+            return
         }
+
+        mEditText.setText(mViewModel.insulin.name)
+        mSwitch.isChecked = mViewModel.insulin.isBasal
+        mDeleteButton.setOnClickListener {
+            mViewModel.delete(mViewModel.insulin)
+            finish()
+        }
+        mDeleteButton.visibility = View.VISIBLE
     }
 
     companion object {

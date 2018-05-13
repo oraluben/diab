@@ -15,17 +15,4 @@ class InsulinViewModel(owner: Application) : AndroidViewModel(owner) {
     init {
         list = mDatabase.insulin().all
     }
-
-    fun deleteItem(insulin: Insulin) {
-        DeleteTask(mDatabase).execute(insulin)
-    }
-
-    private class DeleteTask(db: AppDatabase):
-            DatabaseTask<Insulin, Void>(db) {
-
-        override fun doInBackground(vararg params: Insulin): Void? {
-            mDatabase.insulin().delete(params[0])
-            return null
-        }
-    }
-} 
+}

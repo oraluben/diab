@@ -28,6 +28,10 @@ class EditorViewModel(owner: Application) : AndroidViewModel(owner) {
 
     }
 
+    fun delete(insulin: Insulin) {
+        DeleteTask(mDatabase).execute(insulin)
+    }
+
     fun save() {
         SaveTask(mDatabase).execute(insulin)
     }
@@ -40,6 +44,15 @@ class EditorViewModel(owner: Application) : AndroidViewModel(owner) {
             } catch (e: IndexOutOfBoundsException) {
                 Insulin()
             }
+        }
+    }
+
+    private class DeleteTask(db: AppDatabase):
+            DatabaseTask<Insulin, Void>(db) {
+
+        override fun doInBackground(vararg params: Insulin): Void? {
+            mDatabase.insulin().delete(params[0])
+            return null
         }
     }
 

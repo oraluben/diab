@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:minWidth="256dp"
@@ -74,38 +75,43 @@
             android:text="@string/insulin_item_basal" />
     </LinearLayout>
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="4dp"
-        android:gravity="end">
+        android:gravity="center_vertical">
 
         <android.support.v7.widget.AppCompatButton
+            android:id="@+id/insulin_edit_btn_neutral"
             style="@style/Widget.AppCompat.Button.Borderless.Colored"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="start"
+            android:layout_marginEnd="16dp"
             android:background="?selectableItemBackground"
             android:text="@string/remove"
             android:textColor="@color/colorAccent"
-            android:visibility="gone" />
-
-        <android.support.v7.widget.AppCompatButton
-            android:id="@+id/insulin_edit_btn_negative"
-            style="@style/Widget.AppCompat.Button.Borderless.Colored"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="?selectableItemBackground"
-            android:text="@string/cancel"
-            android:textColor="@color/colorAccent" />
+            android:visibility="gone"
+            tools:visibility="visible" />
 
         <android.support.v7.widget.AppCompatButton
             android:id="@+id/insulin_edit_btn_positive"
             style="@style/Widget.AppCompat.Button.Borderless.Colored"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
             android:background="?selectableItemBackground"
             android:text="@string/save"
             android:textColor="@color/colorAccent" />
-    </LinearLayout>
+
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/insulin_edit_btn_negative"
+            style="@style/Widget.AppCompat.Button.Borderless.Colored"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toStartOf="@id/insulin_edit_btn_positive"
+            android:background="?selectableItemBackground"
+            android:text="@string/cancel"
+            android:textColor="@color/colorAccent" />
+    </RelativeLayout>
 </LinearLayout>
