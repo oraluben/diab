@@ -41,7 +41,7 @@ class InsulinSuggestionTask(private val mResources: Resources,
         }
 
         // Take a small nap to allow UI to show animations
-        Thread.sleep(2000)
+        Thread.sleep(1000)
 
         return result
     }

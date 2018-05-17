@@ -18,7 +18,8 @@ class EditorActivity : AppCompatActivity() {
 
     private lateinit var mEditText: AppCompatEditText
     private lateinit var mSpinner: AppCompatSpinner
-    private lateinit var mSwitch: SwitchCompat
+    private lateinit var mBasalSwitch: SwitchCompat
+    private lateinit var mHalfUnitsSwitch: SwitchCompat
     private lateinit var mDeleteButton: AppCompatButton
 
     private lateinit var mViewModel: EditorViewModel
@@ -35,7 +36,8 @@ class EditorActivity : AppCompatActivity() {
 
         mEditText = findViewById(R.id.insulin_edit_name)
         mSpinner = findViewById(R.id.insulin_edit_time)
-        mSwitch = findViewById(R.id.insulin_edit_basal)
+        mBasalSwitch = findViewById(R.id.insulin_edit_basal)
+        mHalfUnitsSwitch = findViewById(R.id.insulin_edit_half_units)
         mDeleteButton = findViewById(R.id.insulin_edit_btn_neutral)
         val cancelButton = findViewById<AppCompatButton>(R.id.insulin_edit_btn_negative)
         val saveButton = findViewById<AppCompatButton>(R.id.insulin_edit_btn_positive)
@@ -49,7 +51,8 @@ class EditorActivity : AppCompatActivity() {
         saveButton.setOnClickListener { _ ->
             mViewModel.insulin.name = mEditText.text.toString()
             mViewModel.insulin.setTimeFrame(mSpinner.selectedItemPosition - 1)
-            mViewModel.insulin.isBasal = mSwitch.isChecked
+            mViewModel.insulin.isBasal = mBasalSwitch.isChecked
+            mViewModel.insulin.hasHalfUnits = mHalfUnitsSwitch.isChecked
             mViewModel.save()
             finish()
         }
@@ -75,7 +78,8 @@ class EditorActivity : AppCompatActivity() {
         }
 
         mEditText.setText(mViewModel.insulin.name)
-        mSwitch.isChecked = mViewModel.insulin.isBasal
+        mBasalSwitch.isChecked = mViewModel.insulin.isBasal
+        mHalfUnitsSwitch.isChecked = mViewModel.insulin.hasHalfUnits
         mDeleteButton.setOnClickListener {
             mViewModel.delete(mViewModel.insulin)
             finish()

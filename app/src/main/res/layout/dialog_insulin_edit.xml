@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:minWidth="256dp"
+    android:minWidth="288dp"
     android:orientation="vertical"
     android:paddingEnd="8dp"
     android:paddingStart="8dp"
@@ -73,6 +73,27 @@
             android:layout_height="match_parent"
             android:layout_marginStart="16dp"
             android:text="@string/insulin_item_basal" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingEnd="8dp"
+        android:paddingStart="8dp">
+
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            app:srcCompat="@drawable/ic_half_units" />
+
+        <android.support.v7.widget.SwitchCompat
+            android:id="@+id/insulin_edit_half_units"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="16dp"
+            android:text="@string/insulin_item_half_units" />
     </LinearLayout>
 
     <RelativeLayout

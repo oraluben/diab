@@ -12,6 +12,7 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import it.diab.R
 import it.diab.db.entities.Glucose
+import it.diab.db.entities.Insulin
 import it.diab.insulin.ml.InsulinSuggestionTask
 import it.diab.util.extensions.asTimeFrame
 import it.diab.util.timeFrame.TimeFrame
@@ -24,10 +25,11 @@ class InsulinSuggestionView(context: Context, attrs: AttributeSet) : LinearLayou
 
     private lateinit var mTask: InsulinSuggestionTask
 
-    private var mOnSuggestionApply: (Float) -> Unit = {}
+    private var mOnSuggestionApply: (Float, Insulin) -> Unit = { _,_ -> }
     private var mIsEnabled = false
 
     private lateinit var mGlucose: Glucose
+    private lateinit var mInsulin: Insulin
 
     init {
         View.inflate(context, R.layout.component_insulin_suggestion, this)
@@ -36,11 +38,11 @@ class InsulinSuggestionView(context: Context, attrs: AttributeSet) : LinearLayou
         mTextView = findViewById(R.id.insulin_suggestion_text)
     }
 
-    fun bind(glucose: Glucose, onSuggestionApply: (Float) -> Unit) {
+    fun bind(glucose: Glucose, insulin: Insulin, onSuggestionApply: (Float, Insulin) -> Unit) {
         mGlucose = glucose
+        mInsulin = insulin
         mOnSuggestionApply = onSuggestionApply
         mTask = InsulinSuggestionTask(resources, this::onSuggestionLoaded)
-
 
         setup()
         runTask()
@@ -82,11 +84,14 @@ class InsulinSuggestionView(context: Context, attrs: AttributeSet) : LinearLayou
         }
 
         // Round to 0.5
-        val formattedResult = (result * 2).roundToInt() / 2f
+        val formattedResult = if (mInsulin.hasHalfUnits)
+            (result * 2).roundToInt() / 2f
+        else
+            result.roundToInt().toFloat()
         mTextView.text = resources.getString(R.string.insulin_suggestion_value, formattedResult)
 
         mCardView.setOnClickListener {
-            mOnSuggestionApply(formattedResult)
+            mOnSuggestionApply(formattedResult, mInsulin)
             Handler().postDelayed(this::onSuggestionApplied, 350)
         }
     }

@@ -8,6 +8,7 @@ import it.diab.db.entities.Glucose
 import it.diab.db.entities.Insulin
 import it.diab.util.DateUtils
 import it.diab.util.extensions.asTimeFrame
+import it.diab.util.timeFrame.TimeFrame
 import java.util.*
 import java.util.concurrent.ExecutionException
 
@@ -91,8 +92,14 @@ class EditorViewModel(owner: Application) : AndroidViewModel(owner) {
         }
     }
 
-    internal fun applyInsulinSuggestion(value: Float, onPostExecute: () -> Unit) {
-        ApplyInsulinSuggestionTask(mDatabase, onPostExecute).execute(Pair(value, glucose))
+    internal fun getInsulinByTimeFrame(timeFrame: TimeFrame): Insulin {
+        val task = GetInsulinByTimeFrameTask(mDatabase)
+        task.execute(timeFrame)
+        return task.get()
+    }
+
+    internal fun applyInsulinSuggestion(value: Float, insulin: Insulin, onPostExecute: () -> Unit) {
+        ApplyInsulinSuggestionTask(mDatabase, glucose, insulin.uid, onPostExecute).execute(value)
     }
 
     class GetGlucoseTask(db: AppDatabase) : DatabaseTask<Long, Glucose>(db) {
@@ -142,29 +149,38 @@ class EditorViewModel(owner: Application) : AndroidViewModel(owner) {
         }
     }
 
-    class ApplyInsulinSuggestionTask(db: AppDatabase, private val onPost: () -> Unit):
-            DatabaseTask<Pair<Float, Glucose>, Unit>(db) {
+    class GetInsulinByTimeFrameTask(db: AppDatabase) : DatabaseTask<TimeFrame, Insulin>(db) {
 
-        override fun doInBackground(vararg params: Pair<Float, Glucose>?) {
-            val pair = params[0] ?: return
-            val suggestion = pair.first
-            val glucose = pair.second
-            val targetTimeFrame = glucose.date.asTimeFrame()
-
+        override fun doInBackground(vararg params: TimeFrame?): Insulin {
+            val timeFrame = params[0] ?: return Insulin()
             val insulins = mDatabase.insulin().allStatic
             var targetInsulin: Insulin? = null
+
             for (insulin in insulins) {
-                if (insulin.timeFrame == targetTimeFrame) {
+                if (insulin.timeFrame == timeFrame) {
                     targetInsulin = insulin
                     break
                 }
             }
 
             if (targetInsulin == null) {
-                return
+                return Insulin()
             }
 
-            glucose.insulinId0 = targetInsulin.uid
+            return targetInsulin
+        }
+    }
+
+    class ApplyInsulinSuggestionTask(db: AppDatabase,
+                                     private val glucose: Glucose,
+                                     private val insulinUid: Long,
+                                     private val onPost: () -> Unit):
+            DatabaseTask<Float, Unit>(db) {
+
+        override fun doInBackground(vararg params: Float?) {
+            val suggestion = params[0] ?: return
+
+            glucose.insulinId0 = insulinUid
             glucose.insulinValue0 = suggestion
             mDatabase.glucose().insert(glucose)
         }

@@ -32,6 +32,7 @@
     <string name="insulin_editor_name">Name</string>
     <string name="insulin_item_add">Add insulin\u2026</string>
     <string name="insulin_item_basal">Basal</string>
+    <string name="insulin_item_half_units">Half units</string>
 
     <!-- Glucose Editor -->
     <string name="glucose_editor_time_dialog">Select the time</string>

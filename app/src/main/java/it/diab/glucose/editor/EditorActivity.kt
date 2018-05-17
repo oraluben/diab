@@ -182,7 +182,8 @@ class EditorActivity : AppCompatActivity() {
         mInfoView.text = getInfo(data)
         mDateView.text = DateUtils.dateToString(mViewModel.glucose.date)
 
-        mSuggestionView.bind(mViewModel.glucose, this::onSuggestionApply)
+        val targetInsulin = mViewModel.getInsulinByTimeFrame(mViewModel.glucose.date.asTimeFrame())
+        mSuggestionView.bind(mViewModel.glucose, targetInsulin, this::onSuggestionApply)
 
         mFab.setImageResource(R.drawable.ic_edit)
     }
@@ -449,8 +450,8 @@ class EditorActivity : AppCompatActivity() {
         return builder.toString()
     }
 
-    private fun onSuggestionApply(suggestion: Float) {
-        mViewModel.applyInsulinSuggestion(suggestion, this::refresh)
+    private fun onSuggestionApply(suggestion: Float, insulin: Insulin) {
+        mViewModel.applyInsulinSuggestion(suggestion, insulin, this::refresh)
     }
 
     private fun ImageView.setErrorStatus(toError: Boolean) {
