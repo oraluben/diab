@@ -17,15 +17,19 @@ class Insulin {
     var timeFrame: TimeFrame = TimeFrame.EXTRA
     @ColumnInfo(name = "isBasal")
     var isBasal: Boolean = false
+    @ColumnInfo(name = "hasHalfUnits")
+    var hasHalfUnits: Boolean = false
 
     @Ignore
     constructor()
 
-    constructor(uid: Long, name: String, timeFrame: TimeFrame, isBasal: Boolean) {
+    constructor(uid: Long, name: String, timeFrame: TimeFrame,
+                isBasal: Boolean, hasHalfUnits: Boolean) {
         this.uid = uid
         this.name = name
         this.timeFrame = timeFrame
         this.isBasal = isBasal
+        this.hasHalfUnits = hasHalfUnits
     }
 
     fun setTimeFrame(timeFrame: Int) {
@@ -44,5 +48,5 @@ class Insulin {
 
     override fun hashCode() = super.hashCode() + 1
 
-    override fun toString() = "$name: $uid, ${timeFrame.toInt()}"
+    override fun toString() = "$name: $uid, ${timeFrame.toInt()}, $isBasal, $hasHalfUnits"
 }

@@ -13,7 +13,7 @@ import it.diab.db.entities.Glucose
 import it.diab.db.entities.Insulin
 import it.diab.util.SingletonHolder
 
-@Database(entities = [(Glucose::class), (Insulin::class)], version = 2)
+@Database(entities = [(Glucose::class), (Insulin::class)], version = 3)
 abstract class AppDatabase protected constructor() : RoomDatabase() {
 
     abstract fun glucose(): GlucoseDao
@@ -26,7 +26,7 @@ abstract class AppDatabase protected constructor() : RoomDatabase() {
                     .build()
         else
             Room.databaseBuilder(it.applicationContext, AppDatabase::class.java, "diab_database")
-                .addMigrations(Companion.MIGRATION_1_2)
+                .addMigrations(Companion.MIGRATION_1_2, Companion.MIGRATION_2_3)
                 .build()
     }) {
         // This is used during unit tests
@@ -58,6 +58,19 @@ abstract class AppDatabase protected constructor() : RoomDatabase() {
 
                 /* Insulin */
                 database.execSQL("ALTER TABLE insulin ADD COLUMN isBasal INTEGER NOT NULL DEFAULT 0")
+            }
+        }
+
+        /**
+         * DB version 3
+         *
+         * Insulin
+         *     Add "hasHalfUnits" column [Boolean]
+         */
+        private val MIGRATION_2_3 = object : Migration(2, 3) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                /* Insulin */
+                database.execSQL("ALTER TABLE insulin ADD COLUMN hasHalfUnits INTEGER NOT NULL DEFAULT 0")
             }
         }
     }

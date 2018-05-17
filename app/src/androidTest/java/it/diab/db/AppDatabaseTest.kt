@@ -41,7 +41,7 @@ class AppDatabaseTest {
 
     @Test
     fun addInsulin() {
-        val item = Insulin(1, "TEST 0",TimeFrame.LUNCH, false)
+        val item = Insulin(1, "TEST 0",TimeFrame.LUNCH, false, true)
         insulinDao?.insert(item)
         val test = insulinDao?.getById(1)!![0]
         Assert.assertEquals(item, test)
@@ -49,8 +49,8 @@ class AppDatabaseTest {
 
     @Test
     fun addGlucoseWithLinkedInsulins() {
-        val insulin = Insulin(2, "TEST 1", TimeFrame.DINNER, false)
-        val basal = Insulin(3, "TEST 2", TimeFrame.DINNER, true)
+        val insulin = Insulin(2, "TEST 1", TimeFrame.DINNER, false, false)
+        val basal = Insulin(3, "TEST 2", TimeFrame.DINNER, true, true)
         insulinDao?.insert(insulin)
         insulinDao?.insert(basal)
 
