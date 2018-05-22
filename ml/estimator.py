@@ -7,9 +7,8 @@ import tensorflow as tf
 
 ALLOWED_TIME_FRAMES = [1, 3, 5]
 BATCH_SIZE = 100
-COLUMN_NAMES = ["value", "insulin"]
-PREDICT_NAMES = ["value"]
-TYPE_VALUES = [[0], [0]]
+COLUMN_NAMES = ["value", "eatLevel", "insulin"]
+PREDICT_NAMES = ["value", "eatLevel"]
 
 
 def load_data(y_name="insulin", time_frame=1):
@@ -64,7 +63,6 @@ def eval_input_fn(features, labels, batch_size):
 
 def get_output_data(results):
     input_list = []
-    result_list = []
 
     with open("data/prediction.csv", "r") as input_file:
         # Skip the header
@@ -72,16 +70,12 @@ def get_output_data(results):
         next(iterator)
 
         for line in iterator:
-            input_list.append(line.rstrip())
+            input_list.append(line.split(",")[0].rstrip())
         input_file.close()
 
-    data = list(p["predictions"][0] for p in results)
-    for item in data:
-        result_list.append(item)
-
-    assert len(input_list) == len(result_list), \
-        "The lists must have the same length! [{}, {}]".format(len(input_list), len(result_list))
-    return input_list, result_list
+    assert len(input_list) == len(results), \
+        "The lists must have the same length! [{}, {}]".format(len(input_list), len(results))
+    return input_list, results
 
 
 def run(time_frame):
@@ -102,11 +96,13 @@ def run(time_frame):
 
     predictions = classifier.predict(input_fn=lambda: eval_input_fn(predict_x, None, BATCH_SIZE))
 
+    estimated = []
     for item in predictions:
         print(item["predictions"][0])
+        estimated.append(item["predictions"][0])
 
     with open("export/estimator_{}.json".format(time_frame), "w+") as output:
-        input_list, result_list = get_output_data(predictions)
+        input_list, result_list = get_output_data(estimated)
 
         output.write("{")
 
