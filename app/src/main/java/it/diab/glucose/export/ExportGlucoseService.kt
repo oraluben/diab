@@ -127,7 +127,7 @@ class ExportGlucoseService : Service() {
             val writer = FileWriter(file)
             val builder = StringBuilder()
 
-            list.forEach { builder.append("${it.value},${it.insulinValue0}\n") }
+            list.forEach { builder.append("${it.value},${it.eatLevel},${it.insulinValue0}\n") }
 
             file.mkdirs()
             writer.write(FULL_HEADER)
@@ -139,6 +139,6 @@ class ExportGlucoseService : Service() {
     companion object {
         const val NOTIFICATION_ID = 1927
         private const val CHANNEL = "exportChannel"
-        private const val FULL_HEADER = "value,insulin\n"
+        private const val FULL_HEADER = "value,eatLevel,insulin\n"
     }
 }

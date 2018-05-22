@@ -21,6 +21,8 @@ class InsulinSuggestionTask(private val mResources: Resources,
         val glucose = params[0] ?: throw IllegalArgumentException("You must provide a glucose")
         val estimatorStream = getEstimatorStream(glucose.date.asTimeFrame())
 
+        val eatLevelFix = glucose.eatLevel - 1
+
         val estimatorMap = parseEstimator(estimatorStream)
         // Round down the last digit
         val targetValue = (glucose.value / 10) * 10
@@ -41,9 +43,9 @@ class InsulinSuggestionTask(private val mResources: Resources,
         }
 
         // Take a small nap to allow UI to show animations
-        Thread.sleep(1000)
+        Thread.sleep(500)
 
-        return result
+        return if (result == PARSE_ERROR) PARSE_ERROR else result + eatLevelFix
     }
 
     override fun onPostExecute(result: Float?) {

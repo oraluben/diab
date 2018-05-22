@@ -48,7 +48,7 @@
     <string name="insulin_suggestion_loading">Calcolo\u2026</string>
     <string name="insulin_suggestion_warning_low">Troppo bassa</string>
     <string name="insulin_suggestion_warning_high">Troppo alta</string>
-    <string name="insulin_suggestion_value">Dose suggerita: %1$.2f</string>
+    <string name="insulin_suggestion_value">Dose suggerita: %1$.1f</string>
     <string name="insulin_suggestion_error">Impossibile determinare dose</string>
 
     <!-- Insulin list -->
