@@ -289,13 +289,16 @@ class EditorActivity : AppCompatActivity() {
     private fun save() {
         checkForErrors()
         if (mErrorStatus != 0) {
-            Snackbar.make(mConstraintRoot, getString(R.string.glucose_editor_save_error),
-                    Snackbar.LENGTH_LONG).show()
+            Snackbar.make(mConstraintRoot, R.string.glucose_editor_save_error, Snackbar.LENGTH_LONG)
+                    .setDiabUi(this)
+                    .show()
             VibrationUtil.vibrateForError(this)
             return
         }
 
-        Snackbar.make(mConstraintRoot, getString(R.string.saved), 800).show()
+        Snackbar.make(mConstraintRoot, R.string.saved, 800)
+                .setDiabUi(this)
+                .show()
         Handler().postDelayed({
             saveData()
             saveToFit()
