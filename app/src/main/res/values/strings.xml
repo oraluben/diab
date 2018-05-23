@@ -51,6 +51,7 @@
     <string name="insulin_suggestion_warning_high">Too high</string>
     <string name="insulin_suggestion_value">Suggested insulin: %1$.1f</string>
     <string name="insulin_suggestion_error">Unable to suggest right now</string>
+    <string name="insulin_suggestion_applied">Suggestion applied</string>
 
     <!-- Insulin list -->
     <string name="insulin_name">Insulins</string>

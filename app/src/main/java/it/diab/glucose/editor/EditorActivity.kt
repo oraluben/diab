@@ -455,6 +455,10 @@ class EditorActivity : AppCompatActivity() {
 
     private fun onSuggestionApply(suggestion: Float, insulin: Insulin) {
         mViewModel.applyInsulinSuggestion(suggestion, insulin, this::refresh)
+
+        Snackbar.make(mConstraintRoot, R.string.insulin_suggestion_applied, Snackbar.LENGTH_LONG)
+                .setDiabUi(this)
+                .show()
     }
 
     private fun ImageView.setErrorStatus(toError: Boolean) {
