@@ -32,6 +32,7 @@
     <string name="insulin_editor_name">Nome</string>
     <string name="insulin_item_add">Aggiungi insulina\u2026</string>
     <string name="insulin_item_basal">Basale</string>
+    <string name="insulin_item_half_units">Mezze unit\u00E0</string>
 
     <!-- Glcuose Editor -->
     <string name="glucose_editor_time_dialog">Seleziona la data</string>

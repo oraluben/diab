@@ -70,6 +70,7 @@
             android:layout_centerVertical="true"
             android:background="@drawable/bg_circle"
             android:padding="8dp"
+            android:contentDescription="@null"
             app:srcCompat="@drawable/ic_time_dinner" />
 
         <LinearLayout
@@ -102,6 +103,7 @@
             android:id="@+id/item_glucose_status"
             android:layout_width="24dp"
             android:layout_height="24dp"
+            android:contentDescription="@null"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             tools:background="@color/item_header_divider" />

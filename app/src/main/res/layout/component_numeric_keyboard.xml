@@ -82,6 +82,7 @@
             android:layout_height="match_parent"
             android:paddingTop="8dp"
             android:paddingBottom="8dp"
+            android:contentDescription="@string/remove"
             app:srcCompat="@drawable/ic_backspace" />
     </TableRow>
 </TableLayout>

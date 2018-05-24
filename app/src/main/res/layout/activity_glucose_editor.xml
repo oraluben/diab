@@ -120,8 +120,7 @@
         app:layout_constraintBottom_toTopOf="@+id/glucose_editor_keyboard"
         app:layout_constraintEnd_toEndOf="@id/glucose_editor_keyboard"
         app:srcCompat="@drawable/ic_done"
-        tools:layout_editor_absoluteX="304dp"
-        tools:targetApi="lollipop" />
+        tools:layout_editor_absoluteX="304dp" />
 
     <ScrollView
         android:id="@+id/glucose_editor_show_view"
