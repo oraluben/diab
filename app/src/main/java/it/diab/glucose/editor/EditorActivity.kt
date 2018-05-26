@@ -157,7 +157,6 @@ class EditorActivity : AppCompatActivity() {
 
     private fun setShowUi() {
         mInsulinView.layout.visibility = View.VISIBLE
-        mBasalView.layout.visibility = View.VISIBLE
         mEatBar.isEnabled = false
 
         val ids = Pair(mViewModel.glucose.insulinId0, mViewModel.glucose.insulinId1)
@@ -170,12 +169,17 @@ class EditorActivity : AppCompatActivity() {
             mInsulinView.value.text = insulin.getDisplayedString(value)
         }
 
-        if (ids.second == -1L) {
-            mBasalView.value.text = getString(R.string.glucose_editor_basal_add)
+        if (mViewModel.hasPotentialBasal(mViewModel.glucose)) {
+            mBasalView.layout.visibility = View.VISIBLE
+            if (ids.second == -1L) {
+                mBasalView.value.text = getString(R.string.glucose_editor_basal_add)
+            } else {
+                val basal = mViewModel.getInsulin(ids.second)
+                val value = mViewModel.glucose.insulinValue1
+                mBasalView.value.text = basal.getDisplayedString(value)
+            }
         } else {
-            val basal = mViewModel.getInsulin(ids.second)
-            val value = mViewModel.glucose.insulinValue1
-            mBasalView.value.text = basal.getDisplayedString(value)
+            mBasalView.layout.visibility = View.GONE
         }
 
         val data = mViewModel.previousWeek

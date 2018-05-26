@@ -92,6 +92,13 @@ class EditorViewModel(owner: Application) : AndroidViewModel(owner) {
         }
     }
 
+    internal fun hasPotentialBasal(glucose: Glucose): Boolean {
+        val timeFrame = glucose.date.asTimeFrame()
+        val task = HasPotentialBasalTask(mDatabase)
+        task.execute(timeFrame)
+        return task.get()
+    }
+
     internal fun getInsulinByTimeFrame(timeFrame: TimeFrame): Insulin {
         val task = GetInsulinByTimeFrameTask(mDatabase)
         task.execute(timeFrame)
@@ -152,22 +159,17 @@ class EditorViewModel(owner: Application) : AndroidViewModel(owner) {
     class GetInsulinByTimeFrameTask(db: AppDatabase) : DatabaseTask<TimeFrame, Insulin>(db) {
 
         override fun doInBackground(vararg params: TimeFrame?): Insulin {
-            val timeFrame = params[0] ?: return Insulin()
-            val insulins = mDatabase.insulin().allStatic
-            var targetInsulin: Insulin? = null
+            val timeFrame = params[0]?.toInt() ?: return Insulin()
+            val insulins = mDatabase.insulin().getByTimeFrame(0, timeFrame)
 
-            for (insulin in insulins) {
-                if (insulin.timeFrame == timeFrame) {
-                    targetInsulin = insulin
-                    break
-                }
-            }
+            return if (insulins.isEmpty()) Insulin() else insulins[0]
+        }
+    }
 
-            if (targetInsulin == null) {
-                return Insulin()
-            }
-
-            return targetInsulin
+    class HasPotentialBasalTask(db: AppDatabase) : DatabaseTask<TimeFrame, Boolean>(db) {
+        override fun doInBackground(vararg params: TimeFrame?): Boolean {
+            val timeFrame = params[0]?.toInt() ?: return false
+            return mDatabase.insulin().getByTimeFrame(1, timeFrame).isNotEmpty()
         }
     }
 
