@@ -62,8 +62,11 @@
     <string name="export_ask_positive">Esporta</string>
     <string name="export_ask_permission_message">L\'accesso alla memoria interna \u00E8 necessario per esportare i dati. Per favore concedilo.</string>
     <string name="export_ask_permission_positive">Chiedi di nuovo</string>
+    <string name="export_ask_auth_title">Diab ∙ Esportazione</string>
+    <string name="export_ask_auth_message">Autenticati per poter esportare i tuoi dati</string>
+    <string name="export_failed_auth">Autenticazione fallita, esportazione dati annullata</string>
     <string name="export_notification_title">Esportazione dati glicemie</string>
     <string name="export_notification_channel">Operazioni di esportazione</string>
-    <string name="export_completed_success">I dati sono stati esportati nelle memoria interna</string>
+    <string name="export_completed_success">I dati sono stati esportati nella memoria interna</string>
     <string name="export_completed_failure">Impossibile esportare i dati nella memoria interna</string>
 </resources>
