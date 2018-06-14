@@ -16,7 +16,6 @@ import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Icon
 import android.os.Build
 import android.os.Bundle
-import android.os.Handler
 import android.support.annotation.DrawableRes
 import android.support.design.widget.CoordinatorLayout
 import android.support.design.widget.FloatingActionButton
@@ -114,14 +113,6 @@ class MainActivity : AppCompatActivity() {
         val optionsCompat = ActivityOptionsCompat
                 .makeSceneTransitionAnimation(this, view, view.transitionName)
         startActivity(intent, optionsCompat.toBundle())
-    }
-
-    private fun setupContent() {
-        val data = mViewModel.list.value
-        val pagedData = mViewModel.pagedList
-
-        mGlucoseFragment.update(pagedData.value)
-        updateAverage(data)
     }
 
     private fun updateAverage(data: List<Glucose>?) {

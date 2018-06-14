@@ -27,9 +27,7 @@ import android.widget.TextView
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
-import com.google.android.gms.common.GoogleApiAvailabilityLight
 import com.google.android.gms.common.Scopes
-import com.google.android.gms.common.api.GoogleApiActivity
 import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.common.api.Scope
 import com.google.android.gms.fitness.Fitness
