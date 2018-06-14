@@ -37,7 +37,7 @@
     <!-- Glucose Editor -->
     <string name="glucose_editor_time_dialog">Select the time</string>
     <string name="glucose_editor_insulin_add">Add insulin</string>
-    <string name="glucose_editor_basal_add">Add basal\u2026</string>
+    <string name="glucose_editor_basal_add">Add basal</string>
     <string name="glucose_editor_insulin_value">Quantity</string>
     <string name="glucose_editor_save_error">Check the values again</string>
 
