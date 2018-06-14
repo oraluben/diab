@@ -25,7 +25,11 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.common.ConnectionResult
+import com.google.android.gms.common.GoogleApiAvailability
+import com.google.android.gms.common.GoogleApiAvailabilityLight
 import com.google.android.gms.common.Scopes
+import com.google.android.gms.common.api.GoogleApiActivity
 import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.common.api.Scope
 import com.google.android.gms.fitness.Fitness
@@ -379,7 +383,7 @@ class EditorActivity : AppCompatActivity() {
     }
 
     private fun setupFit() {
-        if (BuildConfig.DEBUG) {
+        if (!hasFit()) {
             return
         }
 
@@ -400,7 +404,7 @@ class EditorActivity : AppCompatActivity() {
     }
 
     private fun saveToFit() {
-        if (BuildConfig.DEBUG) {
+        if (!hasFit()) {
             finish()
             return
         }
@@ -478,6 +482,12 @@ class EditorActivity : AppCompatActivity() {
         }
 
         animator.start()
+    }
+
+    private fun hasFit(): Boolean {
+        val availability = GoogleApiAvailability.getInstance()
+        val gmsStatus = availability.isGooglePlayServicesAvailable(this)
+        return gmsStatus == ConnectionResult.SUCCESS && BuildConfig.HAS_FIT
     }
 
     private operator fun DataPoint.set(field: Field, any: Any) {
