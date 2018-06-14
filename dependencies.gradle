@@ -1,0 +1,40 @@
+ext {
+
+    extLib = [
+            mpchart : "com.github.PhilJay:MPAndroidChart:v3.0.3"
+    ]
+
+    googleLib = [
+            auth : "com.google.android.gms:play-services-auth:15.0.1",
+            fit : "com.google.android.gms:play-services-fitness:15.0.1",
+    ]
+
+    lifecycleLib = [
+            compiler : "android.arch.lifecycle:compiler:1.1.1",
+            extensions : "android.arch.lifecycle:extensions:1.1.1",
+    ]
+
+    kotlinLib = [
+            stdlib : "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.2.41",
+    ]
+
+    roomLib = [
+            compiler : "android.arch.persistence.room:compiler:1.1.0",
+            runtime : "android.arch.persistence.room:runtime:1.1.0",
+    ]
+
+    supportLib = [
+            appcompat : "com.android.support:appcompat-v7:27.1.1",
+            cardview : "com.android.support:cardview-v7:27.1.1",
+            constraint : "com.android.support.constraint:constraint-layout:1.1.1",
+            design : "com.android.support:design:27.1.1",
+            preferencev7 : "com.android.support:preference-v7:27.1.1",
+            preferencev14 : "com.android.support:preference-v14:27.1.1",
+    ]
+
+    testLib = [
+            espresso : "com.android.support.test.espresso:espresso-core:3.0.2",
+            runner : "com.android.support.test:runner:1.0.2",
+            junit : 'junit:junit:4.12',
+    ]
+}
