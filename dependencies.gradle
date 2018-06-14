@@ -18,6 +18,10 @@ ext {
             stdlib : "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.2.41",
     ]
 
+    pagingLib = [
+            runtime : "android.arch.paging:runtime:1.0.0"
+    ]
+
     roomLib = [
             compiler : "android.arch.persistence.room:compiler:1.1.0",
             runtime : "android.arch.persistence.room:runtime:1.1.0",

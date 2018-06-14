@@ -1,6 +1,7 @@
 package it.diab.glucose
 
 import android.arch.lifecycle.ViewModelProviders
+import android.arch.paging.PagedListAdapter
 import android.content.Context
 import android.graphics.drawable.Drawable
 import android.support.annotation.ColorRes
@@ -24,13 +25,12 @@ import it.diab.util.extensions.getHeader
 import java.text.SimpleDateFormat
 import java.util.*
 
-class GlucoseAdapter(private val mContext: Context, list: List<Glucose>?,
-                     private val onItemClick: (Long) -> Unit) :
-        RecyclerView.Adapter<GlucoseAdapter.GlucoseHolder>() {
-    private var mList: List<Glucose>? = list ?: emptyList()
+class GlucoseAdapter(private val mContext: Context, private val onItemClick: (Long) -> Unit) :
+        PagedListAdapter<Glucose, GlucoseAdapter.GlucoseHolder>(CALLBACK) {
+
+    private lateinit var mActivityViewModel: GlucoseViewModel
 
     // Store the these for better performance
-    private lateinit var mActivityViewModel: GlucoseViewModel
     private val mLowIndicator = getIndicator(R.color.glucose_indicator_low)
     private val mHighIndicator = getIndicator(R.color.glucose_indicator_high)
 
@@ -39,15 +39,12 @@ class GlucoseAdapter(private val mContext: Context, list: List<Glucose>?,
                     .inflate(R.layout.item_glucose, parent, false))
 
     override fun onBindViewHolder(holder: GlucoseHolder, position: Int) {
-        holder.onBind(mList!![position], position)
-    }
-
-    override fun getItemCount() = mList?.size ?: 0
-
-    fun updateList(list: List<Glucose>?) {
-        val result = DiffUtil.calculateDiff(GlucoseDiff(list ?: emptyList()))
-        mList = list
-        result.dispatchUpdatesTo(this)
+        val item = getItem(position)
+        if (item == null) {
+            holder.clear()
+        } else {
+            holder.onBind(item, position)
+        }
     }
 
     private fun shouldInsertHeader(position: Int): Boolean {
@@ -55,13 +52,11 @@ class GlucoseAdapter(private val mContext: Context, list: List<Glucose>?,
             return false
         }
 
-        if (mList == null) {
-            return false
-        }
+        val item = getItem(position) ?: return false
+        val previous = getItem(position - 1) ?: return false
 
-        val a = mList!![position - 1].date
-        val b = mList!![position].date
-
+        val a = previous.date
+        val b = item.date
         return b.diff(Date()) != 0 && a.diff(b) > 0
     }
 
@@ -147,19 +142,21 @@ class GlucoseAdapter(private val mContext: Context, list: List<Glucose>?,
             mSummary.text = builder.toString()
             mSummary.visibility = View.VISIBLE
         }
+
+        fun clear() {
+            mHeaderLayout.visibility = View.GONE
+            mLayout.visibility = View.GONE
+        }
     }
 
-    inner class GlucoseDiff(private val mNew: List<Glucose>) : DiffUtil.Callback() {
-        private val mOld = mList
+    companion object {
+        private val CALLBACK = object : DiffUtil.ItemCallback<Glucose>() {
+            override fun areContentsTheSame(oldItem: Glucose, newItem: Glucose) =
+                    oldItem == newItem
 
-        override fun getOldListSize() = mOld?.size ?: 0
-
-        override fun getNewListSize() = mNew.size
-
-        override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int) =
-            mOld!![oldItemPosition].uid == mNew[newItemPosition].uid
-
-        override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int) =
-                mOld!![oldItemPosition] == mNew[newItemPosition]
+            override fun areItemsTheSame(oldItem: Glucose, newItem: Glucose) =
+                    oldItem.uid == newItem.uid
+        }
     }
+
 }

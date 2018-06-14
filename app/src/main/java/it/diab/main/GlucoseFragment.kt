@@ -1,5 +1,6 @@
 package it.diab.main
 
+import android.arch.paging.PagedList
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -20,8 +21,7 @@ class GlucoseFragment : MainFragment() {
         val view = inflater.inflate(R.layout.fragment_glucose, container, false)
         mRecyclerView = view.findViewById(R.id.glucose_recyclerview)
 
-        val list = arguments?.getParcelableArrayList<Glucose>(ARG_DATA)
-        mAdapter = GlucoseAdapter(context!!, list, this::onItemClick)
+        mAdapter = GlucoseAdapter(context!!, this::onItemClick)
 
         mRecyclerView.adapter = mAdapter
         return view
@@ -29,17 +29,13 @@ class GlucoseFragment : MainFragment() {
 
     override fun getTitle() = R.string.fragment_glucose
 
-    override fun update(data: List<Glucose>?) {
-        mAdapter?.updateList(data)
+    fun update(data: PagedList<Glucose>?) {
+        mAdapter?.submitList(data)
     }
 
     private fun onItemClick(id: Long) {
         if (activity is MainActivity) {
             (activity as MainActivity).onItemClick(id)
         }
-    }
-
-    companion object {
-        const val ARG_DATA = "extra_data"
     }
 }

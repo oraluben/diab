@@ -35,6 +35,7 @@ import android.support.v7.widget.Toolbar
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import it.diab.db.entities.Glucose
 import it.diab.glucose.GlucoseViewModel
 import it.diab.glucose.editor.EditorActivity
 import it.diab.glucose.export.ExportGlucoseService
@@ -61,7 +62,8 @@ class MainActivity : AppCompatActivity() {
         mGlucoseFragment = GlucoseFragment()
 
         mViewModel = ViewModelProviders.of(this).get(GlucoseViewModel::class.java)
-        mViewModel.list.observe(this, Observer(mGlucoseFragment::update))
+        mViewModel.list.observe(this, Observer(this::updateAverage))
+        mViewModel.pagedList.observe(this, Observer(mGlucoseFragment::update))
 
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
@@ -78,13 +80,6 @@ class MainActivity : AppCompatActivity() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             addShortcuts()
         }
-    }
-
-    override fun onResume() {
-        super.onResume()
-
-        // Post content
-        Handler().postDelayed(this::setupContent, 100)
     }
 
     override fun onCreateOptionsMenu(menu: Menu) =
@@ -123,7 +118,13 @@ class MainActivity : AppCompatActivity() {
 
     private fun setupContent() {
         val data = mViewModel.list.value
-        mGlucoseFragment.update(data)
+        val pagedData = mViewModel.pagedList
+
+        mGlucoseFragment.update(pagedData.value)
+        updateAverage(data)
+    }
+
+    private fun updateAverage(data: List<Glucose>?) {
         mOverviewFragment.update(data, mViewModel.getAverageLastWeek())
     }
 

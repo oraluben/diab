@@ -46,6 +46,7 @@ dependencies {
     kapt lifecycleLib.compiler
     implementation roomLib.runtime
     kapt roomLib.compiler
+    implementation pagingLib.runtime
 
     implementation googleLib.auth
     implementation googleLib.fit

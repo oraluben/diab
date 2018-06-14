@@ -1,6 +1,6 @@
 package it.diab.db.dao
 
-import android.arch.lifecycle.LiveData
+import android.arch.paging.DataSource
 import android.arch.persistence.room.*
 import it.diab.db.converters.TimeFrameConverter
 import it.diab.db.entities.Insulin
@@ -10,7 +10,7 @@ import it.diab.db.entities.Insulin
 interface InsulinDao {
 
     @get:Query("SELECT * FROM insulin")
-    val all: LiveData<List<Insulin>>
+    val all: DataSource.Factory<Int, Insulin>
 
     @get:Query("SELECT * FROM insulin")
     val allStatic: List<Insulin>

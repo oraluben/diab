@@ -3,6 +3,8 @@ package it.diab.glucose
 import android.app.Application
 import android.arch.lifecycle.AndroidViewModel
 import android.arch.lifecycle.LiveData
+import android.arch.paging.LivePagedListBuilder
+import android.arch.paging.PagedList
 import it.diab.db.AppDatabase
 import it.diab.db.DatabaseTask
 import it.diab.db.entities.Glucose
@@ -14,10 +16,12 @@ import java.util.concurrent.ExecutionException
 
 class GlucoseViewModel(owner: Application) : AndroidViewModel(owner) {
     val list: LiveData<List<Glucose>>
+    val pagedList: LiveData<PagedList<Glucose>>
     private val mDatabase = AppDatabase.getInstance(owner)
 
     init {
         list = mDatabase.glucose().all
+        pagedList = LivePagedListBuilder(mDatabase.glucose().pagedList, 20).build()
     }
 
     fun getInsulin(id: Long): Insulin {

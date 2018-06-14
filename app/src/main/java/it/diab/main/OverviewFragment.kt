@@ -2,6 +2,7 @@ package it.diab.main
 
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -27,8 +28,6 @@ class OverviewFragment : MainFragment() {
 
         return view
     }
-
-    override fun update(data: List<Glucose>?) = update(data, null)
 
     fun update(today: List<Glucose>?, average: HashMap<Int, Float>?) {
         if (activity == null || today == null || today.isEmpty()) {

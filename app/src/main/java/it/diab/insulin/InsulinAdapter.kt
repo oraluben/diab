@@ -1,5 +1,6 @@
 package it.diab.insulin
 
+import android.arch.paging.PagedListAdapter
 import android.content.Context
 import android.content.Intent
 import android.support.v7.util.DiffUtil
@@ -14,9 +15,8 @@ import it.diab.insulin.editor.EditorActivity
 import it.diab.ui.recyclerview.ViewHolderExt
 import java.util.*
 
-class InsulinAdapter(private val mContext: Context, list: List<Insulin>?):
-        RecyclerView.Adapter<InsulinAdapter.InsulinHolder>() {
-    private var mList = list ?: ArrayList()
+class InsulinAdapter(private val mContext: Context) :
+        PagedListAdapter<Insulin, InsulinAdapter.InsulinHolder>(CALLBACK) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): InsulinHolder {
         return InsulinHolder(LayoutInflater.from(parent.context)
@@ -24,20 +24,19 @@ class InsulinAdapter(private val mContext: Context, list: List<Insulin>?):
     }
 
     override fun onBindViewHolder(holder: InsulinHolder, position: Int) {
-        if (position == mList.size) {
+        if (position == itemCount - 1) {
             holder.onBind(mContext)
         } else {
-            holder.onBind(mContext, mList[position])
+            val item = getItem(position)
+            if (item == null) {
+                holder.clear()
+            } else {
+                holder.onBind(mContext, item)
+            }
         }
     }
 
-    override fun getItemCount() = mList.size + 1
-
-    fun updateList(list: List<Insulin>) {
-        val result = DiffUtil.calculateDiff(InsulinDiff(list))
-        mList = list
-        result.dispatchUpdatesTo(this)
-    }
+    override fun getItemCount() = super.getItemCount() + 1
 
     class InsulinHolder(view: View): ViewHolderExt(view) {
         private val mView: View = view.findViewById(R.id.item_insulin_view)
@@ -64,25 +63,22 @@ class InsulinAdapter(private val mContext: Context, list: List<Insulin>?):
             mAddView.setOnClickListener { _ ->
                 context.startActivity(Intent(context, EditorActivity::class.java)) }
         }
-    }
 
-    private inner class InsulinDiff(private val mNew: List<Insulin>): DiffUtil.Callback() {
-        private val mOld: List<Insulin>? = mList
-
-        override fun getOldListSize(): Int {
-            return mOld?.size ?: 0
-        }
-
-        override fun getNewListSize(): Int {
-            return mNew.size
-        }
-
-        override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-            return mOld!![oldItemPosition].uid == mNew[newItemPosition].uid
-        }
-
-        override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-            return mOld!![oldItemPosition] == mNew[newItemPosition]
+        fun clear() {
+            mView.visibility = View.GONE
+            mView.setOnClickListener {  }
+            mAddView.visibility = View.GONE
+            mAddView.setOnClickListener {  }
         }
     }
-} 
+
+    companion object {
+        private val CALLBACK = object : DiffUtil.ItemCallback<Insulin>() {
+            override fun areContentsTheSame(oldItem: Insulin, newItem: Insulin) =
+                    oldItem == newItem
+
+            override fun areItemsTheSame(oldItem: Insulin, newItem: Insulin) =
+                    oldItem.uid == newItem.uid
+        }
+    }
+}
