@@ -14,6 +14,9 @@ interface GlucoseDao {
     val all: LiveData<List<Glucose>>
 
     @get:Query("SELECT * FROM glucose ORDER BY date DESC")
+    val allStatic: List<Glucose>
+
+    @get:Query("SELECT * FROM glucose ORDER BY date DESC")
     val pagedList: DataSource.Factory<Int, Glucose>
 
     @Query("SELECT * FROM glucose WHERE uid IN (:uids)")
@@ -23,7 +26,7 @@ interface GlucoseDao {
     fun getInDateRange(minTime: Long, maxTime: Long): List<Glucose>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(vararg glucoses: Glucose)
+    fun insert(vararg glucose: Glucose)
 
     @Delete
     fun delete(glucose: Glucose)

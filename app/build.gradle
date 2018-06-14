@@ -54,6 +54,7 @@ dependencies {
     implementation extLib.mpchart
 
     testImplementation testLib.junit
+    androidTestImplementation testLib.rules
     androidTestImplementation testLib.runner
     androidTestImplementation testLib.espresso
 }
