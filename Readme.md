@@ -3,3 +3,8 @@
 
 Diab
 =====
+
+
+## Install git push hooks
+
+Run `./install-git-hook.sh`
