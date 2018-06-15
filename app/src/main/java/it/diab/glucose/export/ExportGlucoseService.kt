@@ -16,12 +16,10 @@ import it.diab.db.AppDatabase
 import it.diab.db.entities.Glucose
 import it.diab.util.DateUtils
 import it.diab.util.extensions.asTimeFrame
-import it.diab.util.extensions.format
 import it.diab.util.timeFrame.TimeFrame
 import java.io.File
 import java.io.FileWriter
 import java.io.IOException
-import java.util.*
 
 class ExportGlucoseService : Service() {
     private lateinit var mAppDatabase: AppDatabase
@@ -97,14 +95,20 @@ class ExportGlucoseService : Service() {
             try {
                 val docsDir = Environment.getExternalStoragePublicDirectory(
                         Environment.DIRECTORY_DOCUMENTS)
-                val baseName = "Diab-${Date().format("yyyy-MM-dd")}-"
+                val outDir = File(docsDir, "diab")
+
+                if (!outDir.exists()) {
+                    outDir.mkdirs()
+                }
+
+                val baseName = "train_"
 
                 build(list.filter { it.date.asTimeFrame() == TimeFrame.MORNING },
-                        "${baseName}1.csv", docsDir)
+                        "${baseName}1.csv", outDir)
                 build(list.filter { it.date.asTimeFrame() == TimeFrame.LUNCH },
-                        "${baseName}3.csv", docsDir)
+                        "${baseName}3.csv", outDir)
                 build(list.filter { it.date.asTimeFrame() == TimeFrame.DINNER },
-                        "${baseName}5.csv", docsDir)
+                        "${baseName}5.csv", outDir)
             } catch (e: IOException) {
                 return false
             }

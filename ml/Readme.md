@@ -19,7 +19,7 @@ From the main menu, click on the export button to save train data to the sdcard.
 
 #### Import using adb
 
-Enable usb debugging on your device, then eun `bash import.sh` on your pc
+Enable usb debugging on your device, then eun `bash import.sh data` on your pc
 
 #### Import manually
 

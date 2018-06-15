@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
 
-readonly REMOTE_PATH="/sdcard/Documents"
-readonly TEST_FILES=("train_1.csv", "train_3.csv", "train_5.csv")
+readonly REMOTE_PATH="/sdcard/Documents/diab"
+readonly TEST_FILES=("train_1.csv" "train_3.csv" "train_5.csv")
 
 function has_bin() {
   which $1 &> /dev/null
