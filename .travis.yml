@@ -24,6 +24,7 @@ before_install:
 
 script:
  - cd $TRAVIS_BUILD_DIR/
+ - echo "diab.fit=false" >> local.properties
  - ./gradlew clean assembleDebug
 
 before_cache:
