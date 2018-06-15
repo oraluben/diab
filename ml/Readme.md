@@ -1,4 +1,4 @@
-# ML estimator model for insulin suggestions.
+# ML estimator model for insulin suggestions
 
 ## Setup
 
@@ -11,10 +11,21 @@ Install dependencies
 
 `pip install -r requirements.txt`
 
-## Import data from the app
+## Prepare the data for training
 
-From the main menu, click on the export button to save train data to the sdcard,
-pull the files and append the content to `data/train_*.csv` files.
+### Export data from the app
+
+From the main menu, click on the export button to save train data to the sdcard.
+
+#### Import using adb
+
+Enable usb debugging on your device, then eun `bash import.sh` on your pc
+
+#### Import manually
+
+Copy the files from the sdcard to the out directory
+
+#### Setup the tests
 
 Fill the `data/test_*.csv` files with random data with right results (you can pick some from
 the train files).
