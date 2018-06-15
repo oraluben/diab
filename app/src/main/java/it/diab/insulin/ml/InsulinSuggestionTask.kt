@@ -4,7 +4,6 @@ import android.content.res.Resources
 import android.os.AsyncTask
 import it.diab.R
 import it.diab.db.entities.Glucose
-import it.diab.util.extensions.asTimeFrame
 import it.diab.util.timeFrame.TimeFrame
 import org.json.JSONObject
 import java.io.BufferedReader
@@ -19,7 +18,7 @@ class InsulinSuggestionTask(private val mResources: Resources,
     override fun doInBackground(vararg params: Glucose?): Float {
 
         val glucose = params[0] ?: throw IllegalArgumentException("You must provide a glucose")
-        val estimatorStream = getEstimatorStream(glucose.date.asTimeFrame())
+        val estimatorStream = getEstimatorStream(glucose.timeFrame)
 
         val eatLevelFix = glucose.eatLevel - 1
 

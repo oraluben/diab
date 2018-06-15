@@ -14,7 +14,6 @@ import it.diab.R
 import it.diab.db.entities.Glucose
 import it.diab.db.entities.Insulin
 import it.diab.insulin.ml.InsulinSuggestionTask
-import it.diab.util.extensions.asTimeFrame
 import it.diab.util.timeFrame.TimeFrame
 import kotlin.math.roundToInt
 
@@ -50,7 +49,7 @@ class InsulinSuggestionView(context: Context, attrs: AttributeSet) : LinearLayou
 
     private fun setup() {
         val allowedTimeFrames = arrayOf(TimeFrame.MORNING, TimeFrame.LUNCH, TimeFrame.DINNER)
-        val timeFrame = mGlucose.date.asTimeFrame()
+        val timeFrame = mGlucose.timeFrame
 
         mIsEnabled = allowedTimeFrames.indexOf(timeFrame) != -1 && mGlucose.insulinValue0 == 0f
         visibility = if (mIsEnabled) View.VISIBLE else View.GONE

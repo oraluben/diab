@@ -4,6 +4,7 @@ import android.os.Parcel
 import android.support.test.filters.SmallTest
 import android.support.test.runner.AndroidJUnit4
 import it.diab.util.extensions.get
+import it.diab.util.timeFrame.TimeFrame
 import org.junit.Test
 import org.junit.runner.RunWith
 import java.util.*
@@ -14,7 +15,7 @@ class GlucoseTest {
 
     @Test
     fun writeReadParcel() {
-        val original = Glucose(32, 103, Date()[4], 3, 12.4f, -1, 0f, 2)
+        val original = Glucose(32, 103, Date()[4], 3, 12.4f, -1, 0f, 2, TimeFrame.LATE_MORNING)
 
         // Write
         val parcel = Parcel.obtain()

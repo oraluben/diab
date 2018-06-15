@@ -188,7 +188,7 @@ class EditorActivity : AppCompatActivity() {
         mInfoView.text = getInfo(data)
         mDateView.text = DateUtils.dateToString(mViewModel.glucose.date)
 
-        val targetInsulin = mViewModel.getInsulinByTimeFrame(mViewModel.glucose.date.asTimeFrame())
+        val targetInsulin = mViewModel.getInsulinByTimeFrame(mViewModel.glucose.timeFrame)
         mSuggestionView.bind(mViewModel.glucose, targetInsulin, this::onSuggestionApply)
 
         mFab.setImageResource(R.drawable.ic_edit)
@@ -217,6 +217,7 @@ class EditorActivity : AppCompatActivity() {
             newTime[Calendar.MINUTE] = minute
 
             mViewModel.glucose.date = newTime.time
+            mViewModel.glucose.timeFrame = newTime.time.asTimeFrame()
             mDateView.text = DateUtils.dateToString(newTime.time)
         }
 
@@ -421,9 +422,9 @@ class EditorActivity : AppCompatActivity() {
         data[HealthFields.FIELD_BLOOD_GLUCOSE_SPECIMEN_SOURCE] =
                 HealthFields.BLOOD_GLUCOSE_SPECIMEN_SOURCE_CAPILLARY_BLOOD
         data[HealthFields.FIELD_TEMPORAL_RELATION_TO_MEAL] =
-                origin.date.toFitMealRelation()
+                origin.timeFrame.toFitMealRelation()
         data[HealthFields.FIELD_TEMPORAL_RELATION_TO_SLEEP] =
-                origin.date.toFitSleepRelation()
+                origin.timeFrame.toFitSleepRelation()
 
         val set = DataSet.create(source)
         set.add(data)
@@ -440,10 +441,13 @@ class EditorActivity : AppCompatActivity() {
 
     private fun getInfo(list: List<Glucose>): String {
         var average = 0f
-        for (i in list.indices) {
-            average += list[i].value.toFloat()
+
+        if (!list.isEmpty()) {
+            for (i in list.indices) {
+                average += list[i].value.toFloat()
+            }
+            average /= list.size
         }
-        average /= list.size
 
         val builder = StringBuilder()
         val status = when {

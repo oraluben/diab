@@ -48,7 +48,8 @@ class GlucoseViewModelTest {
                     (0..10).random().toFloat(),
                     (-1..0).random().toLong(),
                     (0..5).random().toFloat(),
-                    (0..2).random())
+                    (0..2).random(),
+                    TimeFrame.MORNING)
 
             db.glucose().insert(mData[i])
         }

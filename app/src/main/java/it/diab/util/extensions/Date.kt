@@ -66,15 +66,5 @@ fun Date.getHeader(res: Resources): Pair<String , String> {
     return Pair(title, description)
 }
 
-fun Date.toFitMealRelation() = when (asTimeFrame().toInt()) {
-    1,
-    5 -> HealthFields.FIELD_TEMPORAL_RELATION_TO_MEAL_AFTER_MEAL
-    else -> HealthFields.FIELD_TEMPORAL_RELATION_TO_MEAL_BEFORE_MEAL
-}
-
-fun Date.toFitSleepRelation() =
-        if (asTimeFrame() == TimeFrame.MORNING) HealthFields.TEMPORAL_RELATION_TO_SLEEP_ON_WAKING
-        else HealthFields.TEMPORAL_RELATION_TO_SLEEP_FULLY_AWAKE
-
 fun Date.format(format: String): String =
         SimpleDateFormat(format, Locale.getDefault()).format(this)

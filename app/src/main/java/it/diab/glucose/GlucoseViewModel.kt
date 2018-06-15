@@ -10,7 +10,6 @@ import it.diab.db.DatabaseTask
 import it.diab.db.entities.Glucose
 import it.diab.db.entities.Insulin
 import it.diab.util.DateUtils
-import it.diab.util.extensions.asTimeFrame
 import it.diab.util.extensions.toTimeFrame
 import java.util.concurrent.ExecutionException
 
@@ -80,9 +79,8 @@ class GlucoseViewModel(owner: Application) : AndroidViewModel(owner) {
 
         private fun getAverageForTimeFrame(initialTime: Long, timeFrameIndex: Int): Float {
             val list = mDatabase.glucose()
-                    .getInDateRange(initialTime - DateUtils.WEEK, initialTime)
-                    .toMutableList()
-            list.removeIf { it -> it.date.asTimeFrame().toInt() != timeFrameIndex }
+                    .getInDateRangeWithTimeFrame(
+                            initialTime - DateUtils.WEEK, initialTime, timeFrameIndex)
 
             return list.indices
                     .map { list[it].value.toFloat() }

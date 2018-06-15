@@ -39,7 +39,7 @@ class GlucoseEditorViewModelTest {
         val test = mViewModel!!.glucose
         assert(test.uid == 0L)
 
-        val new = Glucose(1, 50, Date(), -1L, 0f, 1L, 6f, Glucose.LOW)
+        val new = Glucose(1, 50, Date(), -1L, 0f, 1L, 6f, Glucose.LOW, TimeFrame.DINNER)
         mDatabase!!.glucose().insert(new)
 
         mViewModel!!.setGlucose(new.uid)
@@ -93,7 +93,7 @@ class GlucoseEditorViewModelTest {
         val insulin = Insulin((100..133).random().toLong(), "FooBar", targetTimeFrame, true, false)
         mDatabase!!.insulin().insert(insulin)
 
-        val glucose = Glucose(-1, 106, a.time, -1L, 0f, -1L, 0f, Glucose.MEDIUM)
+        val glucose = Glucose(-1, 106, a.time, -1L, 0f, -1L, 0f, Glucose.MEDIUM, TimeFrame.LUNCH)
         assert(mViewModel!!.hasPotentialBasal(glucose))
 
         glucose.date = b.time

@@ -5,6 +5,9 @@ import android.os.Parcel
 import android.os.Parcelable
 import android.support.annotation.IntDef
 import it.diab.db.converters.DateConverter
+import it.diab.db.converters.TimeFrameConverter
+import it.diab.util.extensions.toTimeFrame
+import it.diab.util.timeFrame.TimeFrame
 import java.util.*
 
 @Entity(tableName = "glucose",
@@ -30,6 +33,9 @@ class Glucose : Parcelable {
     @EatLevel
     @ColumnInfo(name = "eatLevel")
     var eatLevel: Int = MEDIUM
+    @ColumnInfo(name = "timeFrame")
+    @TypeConverters(TimeFrameConverter::class)
+    var timeFrame: TimeFrame = TimeFrame.EXTRA
 
     @Ignore
     constructor()
@@ -44,11 +50,12 @@ class Glucose : Parcelable {
         insulinId1 = input.readLong()
         insulinValue1 = input.readFloat()
         eatLevel = input.readInt()
+        timeFrame = input.readInt().toTimeFrame()
     }
 
     constructor(uid: Long, value: Int, date: Date, insulinId0: Long,
                 insulinValue0: Float, insulinId1: Long, insulinValue1: Float,
-                @EatLevel eatLevel: Int) {
+                @EatLevel eatLevel: Int, timeFrame: TimeFrame) {
         this.uid = uid
         this.value = value
         this.date = date
@@ -57,6 +64,7 @@ class Glucose : Parcelable {
         this.insulinId1 = insulinId1
         this.insulinValue1 = insulinValue1
         this.eatLevel = eatLevel
+        this.timeFrame = timeFrame
     }
 
     override fun equals(other: Any?): Boolean {
@@ -70,7 +78,8 @@ class Glucose : Parcelable {
                 other.insulinValue0 == insulinValue0 &&
                 other.insulinId1 == insulinId1 &&
                 other.insulinValue1 == insulinValue1 &&
-                other.eatLevel == eatLevel
+                other.eatLevel == eatLevel &&
+                other.timeFrame == timeFrame
     }
 
     override fun hashCode() = super.hashCode() + 1
@@ -84,6 +93,7 @@ class Glucose : Parcelable {
         parcel.writeLong(insulinId1)
         parcel.writeFloat(insulinValue1)
         parcel.writeInt(eatLevel)
+        parcel.writeInt(timeFrame.toInt())
     }
 
     override fun describeContents() = 0

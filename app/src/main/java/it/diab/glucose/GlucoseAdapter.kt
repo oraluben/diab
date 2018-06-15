@@ -18,7 +18,6 @@ import it.diab.R
 import it.diab.db.entities.Glucose
 import it.diab.ui.recyclerview.ViewHolderExt
 import it.diab.util.UIUtils
-import it.diab.util.extensions.asTimeFrame
 import it.diab.util.extensions.diff
 import it.diab.util.extensions.getHeader
 import java.text.SimpleDateFormat
@@ -96,7 +95,7 @@ class GlucoseAdapter(private val mContext: Context, private val onItemClick: (Lo
             val dateFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
             mTitle.text = String.format(Locale.getDefault(), "%1\$d (%2\$s)",
                     glucose.value, dateFormat.format(glucose.date))
-            mIcon.setImageResource(glucose.date.asTimeFrame().icon)
+            mIcon.setImageResource(glucose.timeFrame.icon)
 
             mLayout.setOnClickListener { _ -> onItemClick(id) }
 

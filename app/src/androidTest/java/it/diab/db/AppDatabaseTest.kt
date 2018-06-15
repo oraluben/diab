@@ -7,7 +7,6 @@ import it.diab.db.dao.InsulinDao
 import it.diab.db.entities.Glucose
 import it.diab.db.entities.Insulin
 import it.diab.util.timeFrame.TimeFrame
-import org.junit.After
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
@@ -19,7 +18,6 @@ class AppDatabaseTest {
     private var glucoseDao: GlucoseDao? = null
     private var insulinDao: InsulinDao? = null
 
-
     @Before
     fun setup() {
         AppDatabase.TEST_MODE = true
@@ -28,12 +26,9 @@ class AppDatabaseTest {
         insulinDao = instance.insulin()
     }
 
-    @After
-    fun tearDown() = Unit
-
     @Test
     fun addGlucose() {
-        val item = Glucose(1, 100, Date(), -1, 0f, -1, 0f, 1)
+        val item = Glucose(1, 100, Date(), -1, 0f, -1, 0f, 1, TimeFrame.MORNING)
         glucoseDao?.insert(item)
         val test = glucoseDao?.getById(1)!![0]
         Assert.assertEquals(item, test)
@@ -54,7 +49,7 @@ class AppDatabaseTest {
         insulinDao?.insert(insulin)
         insulinDao?.insert(basal)
 
-        val glucose = Glucose(2, 100, Date(), insulin.uid, 3f, basal.uid, 4f, 2)
+        val glucose = Glucose(2, 100, Date(), insulin.uid, 3f, basal.uid, 4f, 2, TimeFrame.EXTRA)
         glucoseDao?.insert(glucose)
 
         val test = glucoseDao?.getById(2)!![0]

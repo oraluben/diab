@@ -93,7 +93,7 @@ class EditorViewModel(owner: Application) : AndroidViewModel(owner) {
     }
 
     internal fun hasPotentialBasal(glucose: Glucose): Boolean {
-        val timeFrame = glucose.date.asTimeFrame()
+        val timeFrame = glucose.timeFrame
         val task = HasPotentialBasalTask(mDatabase)
         task.execute(timeFrame)
         return task.get()
@@ -125,13 +125,10 @@ class EditorViewModel(owner: Application) : AndroidViewModel(owner) {
 
         override fun doInBackground(vararg params: Long?): List<Glucose> {
             val initialDate = params[0] ?: System.currentTimeMillis()
-            val list = mDatabase.glucose()
-                    .getInDateRange(initialDate - DateUtils.WEEK, initialDate)
-                    .toMutableList()
+            val currentFrame = Date(initialDate).asTimeFrame()
 
-            val currentFrame = Date(initialDate).asTimeFrame().toInt()
-            list.removeIf { it -> it.date.asTimeFrame().toInt() != currentFrame }
-            return list
+            return mDatabase.glucose().getInDateRangeWithTimeFrame(
+                    initialDate - DateUtils.WEEK, initialDate, currentFrame.toInt())
         }
     }
 

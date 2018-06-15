@@ -15,7 +15,6 @@ import it.diab.R
 import it.diab.db.AppDatabase
 import it.diab.db.entities.Glucose
 import it.diab.util.DateUtils
-import it.diab.util.extensions.asTimeFrame
 import it.diab.util.timeFrame.TimeFrame
 import java.io.File
 import java.io.FileWriter
@@ -103,11 +102,11 @@ class ExportGlucoseService : Service() {
 
                 val baseName = "train_"
 
-                build(list.filter { it.date.asTimeFrame() == TimeFrame.MORNING },
+                build(list.filter { it.timeFrame == TimeFrame.MORNING },
                         "${baseName}1.csv", outDir)
-                build(list.filter { it.date.asTimeFrame() == TimeFrame.LUNCH },
+                build(list.filter { it.timeFrame == TimeFrame.LUNCH },
                         "${baseName}3.csv", outDir)
-                build(list.filter { it.date.asTimeFrame() == TimeFrame.DINNER },
+                build(list.filter { it.timeFrame == TimeFrame.DINNER },
                         "${baseName}5.csv", outDir)
             } catch (e: IOException) {
                 return false
