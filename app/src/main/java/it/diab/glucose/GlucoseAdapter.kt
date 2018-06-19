@@ -31,6 +31,10 @@ class GlucoseAdapter(private val mContext: Context, private val onItemClick: (Lo
     // Store the these for better performance
     private val mLowIndicator = getIndicator(R.color.glucose_indicator_low)
     private val mHighIndicator = getIndicator(R.color.glucose_indicator_high)
+    private val mHourFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
+    private val mDateFormat = SimpleDateFormat(mContext.getString(
+            R.string.time_day_month_short_format), Locale.getDefault())
+    private val mToday = Date()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
             GlucoseHolder(LayoutInflater.from(parent.context)
@@ -86,15 +90,14 @@ class GlucoseAdapter(private val mContext: Context, private val onItemClick: (Lo
             mHeaderLayout.visibility = if (shouldShowHeader) View.VISIBLE else View.GONE
 
             if (shouldShowHeader) {
-                val headerContent = glucose.date.getHeader(resources!!)
+                val headerContent = glucose.date.getHeader(resources!!, mToday, mDateFormat)
                 mHeaderTitle.text = headerContent.first
                 mHeaderDesc.text = headerContent.second
             }
 
             // Content
-            val dateFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
             mTitle.text = String.format(Locale.getDefault(), "%1\$d (%2\$s)",
-                    glucose.value, dateFormat.format(glucose.date))
+                    glucose.value, mHourFormat.format(glucose.date))
             mIcon.setImageResource(glucose.timeFrame.icon)
 
             mLayout.setOnClickListener { _ -> onItemClick(id) }

@@ -52,15 +52,16 @@ fun Date.diff(other: Date): Int {
             a[Calendar.DAY_OF_YEAR] - b[Calendar.DAY_OF_YEAR]
 }
 
-fun Date.getHeader(res: Resources): Pair<String , String> {
-    val diff = diff(Date())
+fun Date.getHeader(res: Resources, comparedTo: Date, format: SimpleDateFormat):
+        Pair<String , String> {
+    val diff = diff(comparedTo)
     val title = when {
         diff == 0 -> res.getString(R.string.time_today)
         diff == -1 -> res.getString(R.string.time_yesterday)
         diff > -7 -> res.getString(R.string.time_last_x, getWeekDay())
         else -> res.getString(R.string.time_x_y_ago, diff / -7, getWeekDay())
     }
-    val description = format(res.getString(R.string.time_day_month_short_format))
+    val description = format.format(this)
 
     return Pair(title, description)
 }
