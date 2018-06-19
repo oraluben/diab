@@ -5,8 +5,8 @@
 # - Allow push to master only if the test are passing
 #
 
-BRANCH=`git rev-parse --abbrev-ref HEAD`
-PUSH_COMMAND=`ps -ocommand= -p $PPID`
+BRANCH=$(git rev-parse --abbrev-ref HEAD)
+PUSH_COMMAND=$(ps -ocommand= -p $PPID)
 PROTECTED_BRANCHES="^(master|release-*)"
 FORCE_PUSH="force|delete|-f"
 
