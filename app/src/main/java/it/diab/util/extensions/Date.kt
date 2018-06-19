@@ -1,7 +1,6 @@
 package it.diab.util.extensions
 
 import android.content.res.Resources
-import com.google.android.gms.fitness.data.HealthFields
 import it.diab.R
 import it.diab.util.timeFrame.TimeFrame
 import java.text.SimpleDateFormat

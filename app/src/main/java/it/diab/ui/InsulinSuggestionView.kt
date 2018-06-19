@@ -14,6 +14,7 @@ import it.diab.R
 import it.diab.db.entities.Glucose
 import it.diab.db.entities.Insulin
 import it.diab.insulin.ml.InsulinSuggestionTask
+import it.diab.util.VibrationUtil
 import it.diab.util.timeFrame.TimeFrame
 import kotlin.math.roundToInt
 
@@ -90,6 +91,7 @@ class InsulinSuggestionView(context: Context, attrs: AttributeSet) : LinearLayou
         mTextView.text = resources.getString(R.string.insulin_suggestion_value, formattedResult)
 
         mCardView.setOnClickListener {
+            VibrationUtil.vibrateForImportantClick(it)
             mOnSuggestionApply(formattedResult, mInsulin)
             Handler().postDelayed(this::onSuggestionApplied, 350)
         }
