@@ -37,39 +37,28 @@
             android:orientation="vertical"
             tools:ignore="UseCompoundDrawables">
 
+            <TextView
+                android:id="@+id/glucose_editor_edit_value"
+                style="@style/AppTheme.GlucoseEditor_Editable"
+                android:drawableStart="@drawable/ic_editor_blood"
+                tools:text="128" />
+
+            <TextView
+                android:id="@+id/glucose_editor_edit_date"
+                style="@style/AppTheme.GlucoseEditor_Editable"
+                android:drawableStart="@drawable/ic_editor_time"
+                tools:text="04-08-2017 18:54" />
+
             <LinearLayout
-                style="@style/AppTheme.GlucoseEditor_Layout"
-                android:paddingTop="0dp">
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingTop="8dp">
 
                 <ImageView
-                    android:id="@+id/glucose_editor_value_icon"
-                    style="@style/AppTheme.GlucoseEditor_Icon"
-                    android:src="@drawable/ic_blood" />
-
-                <TextView
-                    android:id="@+id/glucose_editor_edit_value"
-                    style="@style/AppTheme.GlucoseEditor_Editable"
-                    tools:text="128" />
-            </LinearLayout>
-
-            <LinearLayout style="@style/AppTheme.GlucoseEditor_Layout">
-
-                <ImageView
-                    android:id="@+id/glucose_editor_date_icon"
-                    style="@style/AppTheme.GlucoseEditor_Icon"
-                    android:src="@drawable/ic_time" />
-
-                <TextView
-                    android:id="@+id/glucose_editor_edit_date"
-                    style="@style/AppTheme.GlucoseEditor_Editable"
-                    tools:text="04-08-2017 18:54" />
-            </LinearLayout>
-
-            <LinearLayout style="@style/AppTheme.GlucoseEditor_Layout">
-
-                <ImageView
-                    style="@style/AppTheme.GlucoseEditor_Icon"
-                    android:src="@drawable/ic_eat" />
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:src="@drawable/ic_editor_eat" />
 
                 <it.diab.ui.EatBar
                     android:id="@+id/glucose_editor_eat_bar"
@@ -77,38 +66,17 @@
                     android:layout_height="32dp" />
             </LinearLayout>
 
-            <LinearLayout
-                android:id="@+id/glucose_editor_insulin_layout"
-                style="@style/AppTheme.GlucoseEditor_Layout">
+            <TextView
+                android:id="@+id/glucose_editor_insulin_value"
+                style="@style/AppTheme.GlucoseEditor_Editable"
+                android:drawableStart="@drawable/ic_editor_insulin"
+                tools:text="Novorapid 4.5" />
 
-                <ImageView
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:src="@drawable/ic_editor_insulin" />
-
-                <TextView
-                    android:id="@+id/glucose_editor_insulin_value"
-                    style="@style/AppTheme.GlucoseEditor_Editable"
-                    tools:text="Novorapid 4.5" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/glucose_editor_insulin_basal_layout"
-                style="@style/AppTheme.GlucoseEditor_Layout"
-                android:visibility="gone"
-                tools:visibility="visible">
-
-                <ImageView
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:src="@drawable/ic_editor_basal" />
-
-                <TextView
-                    android:id="@+id/glucose_editor_insulin_basal_value"
-                    style="@style/AppTheme.GlucoseEditor_Editable"
-                    tools:text="Lantus 20" />
-            </LinearLayout>
-
+            <TextView
+                android:id="@+id/glucose_editor_insulin_basal_value"
+                style="@style/AppTheme.GlucoseEditor_Editable"
+                android:drawableStart="@drawable/ic_editor_basal"
+                tools:text="Lantus 20" />
         </LinearLayout>
     </android.support.v7.widget.CardView>
 
@@ -136,6 +104,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
             android:orientation="vertical"
             android:paddingBottom="32dp"
             android:paddingTop="32dp">
@@ -143,8 +112,7 @@
             <it.diab.ui.InsulinSuggestionView
                 android:id="@+id/glucose_editor_insulin_suggestion"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"/>
+                android:layout_height="wrap_content" />
 
             <android.support.v7.widget.AppCompatTextView
                 android:id="@+id/glucose_editor_info"

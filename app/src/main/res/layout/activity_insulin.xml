@@ -13,15 +13,10 @@
         android:theme="@style/AppTheme.ToolbarTheme"
         tools:targetApi="lollipop" />
 
-    <FrameLayout
+    <it.diab.ui.recyclerview.RecyclerViewExt
+        android:id="@+id/insulin_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingTop="?actionBarSize">
-
-        <it.diab.ui.recyclerview.RecyclerViewExt
-            android:id="@+id/insulin_list"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scrollbars="vertical" />
-    </FrameLayout>
+        android:paddingTop="?actionBarSize"
+        android:scrollbars="vertical" />
 </android.support.design.widget.CoordinatorLayout>

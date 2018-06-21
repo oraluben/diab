@@ -44,25 +44,11 @@
         <item name="android:background">?selectableItemBackground</item>
     </style>
 
-    <!-- Glucose Editor 2 -->
-    <style name="AppTheme.GlucoseEditor_Layout">
+    <style name="AppTheme.GlucoseEditor_Editable" parent="@style/TextAppearance.AppCompat.Headline">
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">match_parent</item>
-        <item name="android:orientation">horizontal</item>
+        <item name="android:drawablePadding">8dp</item>
         <item name="android:paddingTop">8dp</item>
-    </style>
-
-    <style name="AppTheme.GlucoseEditor_Icon">
-        <item name="android:layout_height">32dp</item>
-        <item name="android:layout_width">32dp</item>
-        <item name="android:tint">@color/colorAccent</item>
-        <item name="android:contentDescription">@null</item>
-    </style>
-
-    <style name="AppTheme.GlucoseEditor_Editable" parent="@style/TextAppearance.AppCompat.Headline">
-        <item name="android:layout_height">32dp</item>
-        <item name="android:layout_marginStart">16dp</item>
-        <item name="android:layout_width">match_parent</item>
         <item name="android:maxLines">1</item>
     </style>
 </resources>

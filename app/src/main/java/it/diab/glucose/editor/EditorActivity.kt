@@ -10,7 +10,6 @@ import android.content.Intent
 import android.graphics.PorterDuff
 import android.os.Bundle
 import android.os.Handler
-import android.support.annotation.IdRes
 import android.support.constraint.ConstraintLayout
 import android.support.constraint.ConstraintSet
 import android.support.design.widget.FloatingActionButton
@@ -21,8 +20,6 @@ import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.View
-import android.widget.ImageView
-import android.widget.LinearLayout
 import android.widget.TextView
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.common.ConnectionResult
@@ -55,12 +52,10 @@ class EditorActivity : AppCompatActivity() {
 
     private lateinit var mConstraintRoot: ConstraintLayout
     private lateinit var mValueView: TextView
-    private lateinit var mValueIcon: ImageView
     private lateinit var mDateView: TextView
-    private lateinit var mDateIcon: ImageView
     private lateinit var mEatBar: EatBar
-    private lateinit var mInsulinView: InsulinView
-    private lateinit var mBasalView: InsulinView
+    private lateinit var mInsulinView: TextView
+    private lateinit var mBasalView: TextView
     private lateinit var mSuggestionView: InsulinSuggestionView
     private lateinit var mInfoView: TextView
     private lateinit var mKeyboardView: NumericKeyboardView
@@ -75,9 +70,7 @@ class EditorActivity : AppCompatActivity() {
 
         // Common views
         mConstraintRoot = findViewById(R.id.glucose_editor_root)
-        mValueIcon = findViewById(R.id.glucose_editor_value_icon)
         mValueView = findViewById(R.id.glucose_editor_edit_value)
-        mDateIcon = findViewById(R.id.glucose_editor_date_icon)
         mDateView = findViewById(R.id.glucose_editor_edit_date)
         mEatBar = findViewById(R.id.glucose_editor_eat_bar)
         mFab = findViewById(R.id.fab)
@@ -86,12 +79,8 @@ class EditorActivity : AppCompatActivity() {
         mKeyboardView = findViewById(R.id.glucose_editor_keyboard)
 
         // Show views
-        mInsulinView = InsulinView(
-                R.id.glucose_editor_insulin_layout,
-                R.id.glucose_editor_insulin_value)
-        mBasalView = InsulinView(
-                R.id.glucose_editor_insulin_basal_layout,
-                R.id.glucose_editor_insulin_basal_value)
+        mInsulinView = findViewById(R.id.glucose_editor_insulin_value)
+        mBasalView = findViewById(R.id.glucose_editor_insulin_basal_value)
         mSuggestionView = findViewById(R.id.glucose_editor_insulin_suggestion)
         mInfoView = findViewById(R.id.glucose_editor_info)
 
@@ -127,8 +116,8 @@ class EditorActivity : AppCompatActivity() {
         mDateView.setOnClickListener { onDateClicked() }
         mEatBar.progress = mViewModel.glucose.eatLevel
 
-        mInsulinView.value.setOnClickListener { onInsulinClicked() }
-        mBasalView.value.setOnClickListener { onBasalClicked() }
+        mInsulinView.setOnClickListener { onInsulinClicked() }
+        mBasalView.setOnClickListener { onBasalClicked() }
 
         mFab.setOnClickListener { onFabClicked() }
     }
@@ -148,40 +137,40 @@ class EditorActivity : AppCompatActivity() {
             editMode.applyTo(mConstraintRoot)
         }
 
-        mInsulinView.layout.visibility = View.GONE
-        mBasalView.layout.visibility = View.GONE
-        mInsulinView.layout.alpha = 1f
-        mBasalView.layout.alpha = 1f
+        mInsulinView.visibility = View.GONE
+        mBasalView.visibility = View.GONE
+        mInsulinView.alpha = 1f
+        mBasalView.alpha = 1f
         mEatBar.isEnabled = true
 
         mFab.setImageResource(R.drawable.ic_done)
     }
 
     private fun setShowUi() {
-        mInsulinView.layout.visibility = View.VISIBLE
+        mInsulinView.visibility = View.VISIBLE
         mEatBar.isEnabled = false
 
         val ids = Pair(mViewModel.glucose.insulinId0, mViewModel.glucose.insulinId1)
 
         if (ids.first == -1L) {
-            mInsulinView.value.text = getString(R.string.glucose_editor_insulin_add)
+            mInsulinView.text = getString(R.string.glucose_editor_insulin_add)
         } else {
             val insulin = mViewModel.getInsulin(ids.first)
             val value = mViewModel.glucose.insulinValue0
-            mInsulinView.value.text = insulin.getDisplayedString(value)
+            mInsulinView.text = insulin.getDisplayedString(value)
         }
 
         if (mViewModel.hasPotentialBasal(mViewModel.glucose)) {
-            mBasalView.layout.visibility = View.VISIBLE
+            mBasalView.visibility = View.VISIBLE
             if (ids.second == -1L) {
-                mBasalView.value.text = getString(R.string.glucose_editor_basal_add)
+                mBasalView.text = getString(R.string.glucose_editor_basal_add)
             } else {
                 val basal = mViewModel.getInsulin(ids.second)
                 val value = mViewModel.glucose.insulinValue1
-                mBasalView.value.text = basal.getDisplayedString(value)
+                mBasalView.text = basal.getDisplayedString(value)
             }
         } else {
-            mBasalView.layout.visibility = View.GONE
+            mBasalView.visibility = View.GONE
         }
 
         val data = mViewModel.previousWeek
@@ -201,7 +190,7 @@ class EditorActivity : AppCompatActivity() {
 
         if (mErrorStatus and (1 shl 1) != 0) {
             mErrorStatus = mErrorStatus or (1 shl 1)
-            mDateIcon.setErrorStatus(false)
+            mDateView.setErrorStatus(false)
         }
 
         val glucoseCal = mViewModel.glucose.date.getCalendar()
@@ -290,7 +279,7 @@ class EditorActivity : AppCompatActivity() {
         }
 
         mErrorStatus = mErrorStatus and 1
-        mValueIcon.setErrorStatus(value == "0")
+        mValueView.setErrorStatus(value == "0")
     }
 
     private fun save() {
@@ -320,21 +309,21 @@ class EditorActivity : AppCompatActivity() {
 
     private fun checkForErrors() {
         if ("0" == mValueView.text) {
-            mValueIcon.setErrorStatus(true)
+            mValueView.setErrorStatus(true)
             mErrorStatus = mErrorStatus or 1
         }
 
         if (Date().time < mViewModel.glucose.date.time) {
-            mDateIcon.setErrorStatus(true)
+            mDateView.setErrorStatus(true)
             mErrorStatus = mErrorStatus or (1 shl 1)
         }
     }
 
     private fun edit() {
-        mInsulinView.layout.animate()
+        mInsulinView.animate()
                 .alpha(0f)
                 .start()
-        mBasalView.layout.animate()
+        mBasalView.animate()
                 .alpha(0f)
                 .start()
 
@@ -355,11 +344,11 @@ class EditorActivity : AppCompatActivity() {
         if (isBasal) {
             mViewModel.glucose.insulinId1 = insulin.uid
             mViewModel.glucose.insulinValue1 = value
-            mBasalView.value.text = insulin.getDisplayedString(value)
+            mBasalView.text = insulin.getDisplayedString(value)
         } else {
             mViewModel.glucose.insulinId0 = insulin.uid
             mViewModel.glucose.insulinValue0 = value
-            mInsulinView.value.text = insulin.getDisplayedString(value)
+            mInsulinView.text = insulin.getDisplayedString(value)
         }
 
         if (shouldSaveData) {
@@ -371,11 +360,11 @@ class EditorActivity : AppCompatActivity() {
         if (isBasal) {
             mViewModel.glucose.insulinId1 = -1
             mViewModel.glucose.insulinValue1 = 0f
-            mBasalView.value.text = getString(R.string.glucose_editor_insulin_add)
+            mBasalView.text = getString(R.string.glucose_editor_insulin_add)
         } else {
             mViewModel.glucose.insulinId0 = -1
             mViewModel.glucose.insulinValue0 = 0f
-            mInsulinView.value.text = getString(R.string.glucose_editor_basal_add)
+            mInsulinView.text = getString(R.string.glucose_editor_basal_add)
         }
 
         saveData()
@@ -471,7 +460,7 @@ class EditorActivity : AppCompatActivity() {
                 .show()
     }
 
-    private fun ImageView.setErrorStatus(toError: Boolean) {
+    private fun TextView.setErrorStatus(toError: Boolean) {
         val originalColor = ContextCompat.getColor(this@EditorActivity, R.color.colorAccent)
         val errorColor = ContextCompat.getColor(this@EditorActivity, R.color.action_dangerous)
 
@@ -479,8 +468,10 @@ class EditorActivity : AppCompatActivity() {
                 if (toError) originalColor else errorColor,
                 if (toError) errorColor else originalColor)
 
+        val drawable = compoundDrawables[0]
+
         animator.addUpdateListener { animation ->
-            setColorFilter(animation.animatedValue as Int, PorterDuff.Mode.SRC_ATOP)
+            drawable.setColorFilter(animation.animatedValue as Int, PorterDuff.Mode.SRC_ATOP)
         }
 
         animator.start()
@@ -501,12 +492,6 @@ class EditorActivity : AppCompatActivity() {
             else -> throw IllegalArgumentException(
                     "Cannot set a ${any::class.java.canonicalName} value to Field")
         }
-    }
-
-    private inner class InsulinView(@IdRes layoutId: Int,
-                                    @IdRes valueId: Int) {
-        val layout: LinearLayout = findViewById(layoutId)
-        val value: TextView = findViewById(valueId)
     }
 
     companion object {
