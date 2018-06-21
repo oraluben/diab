@@ -189,7 +189,7 @@ class EditorActivity : AppCompatActivity() {
         }
 
         if (mErrorStatus and (1 shl 1) != 0) {
-            mErrorStatus = mErrorStatus or (1 shl 1)
+            mErrorStatus = mErrorStatus and (1 shl 1).inv()
             mDateView.setErrorStatus(false)
         }
 
@@ -278,7 +278,7 @@ class EditorActivity : AppCompatActivity() {
             return
         }
 
-        mErrorStatus = mErrorStatus and 1
+        mErrorStatus = mErrorStatus and 1.inv()
         mValueView.setErrorStatus(value == "0")
     }
 
