@@ -1,5 +1,7 @@
-package it.diab.main
+package it.diab.glucose.overview
 
+import android.arch.lifecycle.Observer
+import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
 import android.view.LayoutInflater
@@ -20,6 +22,14 @@ import it.diab.util.extensions.isToday
 class OverviewFragment : MainFragment() {
     private lateinit var mChart: OverviewGraphView
 
+    private lateinit var mViewModel: OverviewViewModel
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        mViewModel = ViewModelProviders.of(this)[OverviewViewModel::class.java]
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View {
         val view = inflater.inflate(R.layout.fragment_overview, container, false)
@@ -28,13 +38,21 @@ class OverviewFragment : MainFragment() {
         return view
     }
 
-    fun update(today: List<Glucose>?, average: HashMap<Int, Float>?) {
-        if (activity == null || today == null || today.isEmpty()) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        mViewModel.list.observe(this, Observer(this::update))
+    }
+
+    private fun update(today: List<Glucose>?) {
+        if (today == null || today.isEmpty()) {
             return
         }
 
         val dataSets = ArrayList<ILineDataSet>()
-        if (average != null && average.isNotEmpty()) {
+
+        val average = mViewModel.getAverageLastWeek()
+        if (average.isNotEmpty()) {
             val averageSet = getAverageDataSet(average)
             if (averageSet != null) {
                 dataSets.add(averageSet)

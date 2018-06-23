@@ -1,5 +1,7 @@
-package it.diab.main
+package it.diab.glucose.list
 
+import android.arch.lifecycle.Observer
+import android.arch.lifecycle.ViewModelProviders
 import android.arch.paging.PagedList
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,29 +10,42 @@ import android.view.ViewGroup
 import it.diab.MainActivity
 import it.diab.R
 import it.diab.db.entities.Glucose
-import it.diab.glucose.GlucoseAdapter
 import it.diab.ui.MainFragment
 import it.diab.ui.recyclerview.RecyclerViewExt
 
-class GlucoseFragment : MainFragment() {
+class GlucoseListFragment : MainFragment() {
     private lateinit var mRecyclerView: RecyclerViewExt
-    private var mAdapter: GlucoseAdapter? = null
+
+    private lateinit var mViewModel: GlucoseListViewModel
+    private lateinit var mAdapter: GlucoseListAdapter
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        mViewModel = ViewModelProviders.of(this)[GlucoseListViewModel::class.java]
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                                        savedInstanceState: Bundle?): View {
         val view = inflater.inflate(R.layout.fragment_glucose, container, false)
         mRecyclerView = view.findViewById(R.id.glucose_recyclerview)
 
-        mAdapter = GlucoseAdapter(context!!, this::onItemClick)
+        mAdapter = GlucoseListAdapter(context!!, this::onItemClick)
 
         mRecyclerView.adapter = mAdapter
         return view
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        mViewModel.pagedList.observe(this, Observer(this::update))
+    }
+
     override fun getTitle() = R.string.fragment_glucose
 
-    fun update(data: PagedList<Glucose>?) {
-        mAdapter?.submitList(data)
+    private fun update(data: PagedList<Glucose>?) {
+        mAdapter.submitList(data)
     }
 
     private fun onItemClick(id: Long) {

@@ -1,4 +1,4 @@
-package it.diab.glucose
+package it.diab.glucose.list
 
 import android.arch.lifecycle.ViewModelProviders
 import android.support.test.rule.ActivityTestRule
@@ -16,8 +16,8 @@ import org.junit.runner.RunWith
 import java.util.*
 
 @RunWith(AndroidJUnit4::class)
-class GlucoseViewModelTest {
-    private var mViewModel: GlucoseViewModel? = null
+class GlucoseListViewModelTest {
+    private var mViewModel: GlucoseListViewModel? = null
 
     private val mGlucoseValues = arrayOf(89, 149, 201, 100)
     private val mData = Array(mGlucoseValues.size, { Glucose() })
@@ -30,7 +30,7 @@ class GlucoseViewModelTest {
 
     @Before
     fun setup() {
-        mViewModel = ViewModelProviders.of(testRule.activity)[GlucoseViewModel::class.java]
+        mViewModel = ViewModelProviders.of(testRule.activity)[GlucoseListViewModel::class.java]
 
         AppDatabase.TEST_MODE = true
         val db = AppDatabase.getInstance(testRule.activity)
@@ -63,15 +63,6 @@ class GlucoseViewModelTest {
         val test = mViewModel!!.getInsulin(mInsulin!!.uid)
         assert(test.uid == mInsulin!!.uid)
         assert(test == mInsulin)
-    }
-
-    @Test
-    fun getAverageLastWeek() {
-        val test = mViewModel!!.getAverageLastWeek()
-
-        val supposedAverage = mGlucoseValues.average().toFloat()
-        val result = test[mTestTimeFrame!!.toInt()]
-        assert(result == supposedAverage)
     }
 
     private fun ClosedRange<Int>.random() = Random().nextInt(endInclusive - start) + start

@@ -4,8 +4,6 @@ import android.Manifest
 import android.annotation.TargetApi
 import android.app.Activity
 import android.app.KeyguardManager
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.pm.ShortcutInfo
@@ -34,13 +32,12 @@ import android.support.v7.widget.Toolbar
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import it.diab.db.entities.Glucose
-import it.diab.glucose.GlucoseViewModel
 import it.diab.glucose.editor.EditorActivity
 import it.diab.glucose.export.ExportGlucoseService
+import it.diab.glucose.list.GlucoseListFragment
+import it.diab.glucose.list.GlucoseListViewModel
+import it.diab.glucose.overview.OverviewFragment
 import it.diab.insulin.InsulinActivity
-import it.diab.main.GlucoseFragment
-import it.diab.main.OverviewFragment
 import it.diab.util.extensions.setDiabUi
 
 class MainActivity : AppCompatActivity() {
@@ -49,8 +46,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var mViewPager: ViewPager
     private lateinit var mFab: FloatingActionButton
 
-    private lateinit var mViewModel: GlucoseViewModel
-    private lateinit var mGlucoseFragment: GlucoseFragment
+    private lateinit var mGlucoseFragment: GlucoseListFragment
     private lateinit var mOverviewFragment: OverviewFragment
 
     public override fun onCreate(savedInstance: Bundle?) {
@@ -58,11 +54,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         mOverviewFragment = OverviewFragment()
-        mGlucoseFragment = GlucoseFragment()
-
-        mViewModel = ViewModelProviders.of(this).get(GlucoseViewModel::class.java)
-        mViewModel.list.observe(this, Observer(this::updateAverage))
-        mViewModel.pagedList.observe(this, Observer(mGlucoseFragment::update))
+        mGlucoseFragment = GlucoseListFragment()
 
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
@@ -113,10 +105,6 @@ class MainActivity : AppCompatActivity() {
         val optionsCompat = ActivityOptionsCompat
                 .makeSceneTransitionAnimation(this, view, view.transitionName)
         startActivity(intent, optionsCompat.toBundle())
-    }
-
-    private fun updateAverage(data: List<Glucose>?) {
-        mOverviewFragment.update(data, mViewModel.getAverageLastWeek())
     }
 
     @TargetApi(26)

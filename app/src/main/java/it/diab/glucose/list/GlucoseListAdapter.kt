@@ -1,4 +1,4 @@
-package it.diab.glucose
+package it.diab.glucose.list
 
 import android.arch.lifecycle.ViewModelProviders
 import android.arch.paging.PagedListAdapter
@@ -23,10 +23,10 @@ import it.diab.util.extensions.getHeader
 import java.text.SimpleDateFormat
 import java.util.*
 
-class GlucoseAdapter(private val mContext: Context, private val onItemClick: (Long) -> Unit) :
-        PagedListAdapter<Glucose, GlucoseAdapter.GlucoseHolder>(CALLBACK) {
+class GlucoseListAdapter(private val mContext: Context, private val onItemClick: (Long) -> Unit) :
+        PagedListAdapter<Glucose, GlucoseListAdapter.GlucoseHolder>(CALLBACK) {
 
-    private lateinit var mActivityViewModel: GlucoseViewModel
+    private lateinit var mActivityViewModel: GlucoseListViewModel
 
     // Store the these for better performance
     private val mLowIndicator = getIndicator(R.color.glucose_indicator_low)
@@ -123,7 +123,7 @@ class GlucoseAdapter(private val mContext: Context, private val onItemClick: (Lo
             }
 
             if (!::mActivityViewModel.isInitialized) {
-                mActivityViewModel = ViewModelProviders.of(mContext)[GlucoseViewModel::class.java]
+                mActivityViewModel = ViewModelProviders.of(mContext)[GlucoseListViewModel::class.java]
             }
 
             val builder = StringBuilder()
@@ -159,5 +159,4 @@ class GlucoseAdapter(private val mContext: Context, private val onItemClick: (Lo
                     oldItem.uid == newItem.uid
         }
     }
-
 }
