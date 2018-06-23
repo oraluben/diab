@@ -10,13 +10,12 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:elevation="0dp"
-        android:theme="@style/AppTheme.ToolbarTheme"
-        tools:targetApi="lollipop" />
+        android:theme="@style/AppTheme.ToolbarTheme" />
 
     <it.diab.ui.recyclerview.RecyclerViewExt
         android:id="@+id/insulin_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingTop="?actionBarSize"
-        android:scrollbars="vertical" />
+        android:layout_marginTop="?actionBarSize"
+        tools:listitem="@layout/item_insulin" />
 </android.support.design.widget.CoordinatorLayout>

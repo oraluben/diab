@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/glucose_editor_root"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:ignore="ContentDescription">
+    android:layout_height="match_parent">
 
     <it.diab.ui.NumericKeyboardView
         android:id="@+id/glucose_editor_keyboard"
@@ -27,9 +26,7 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:layout_constraintLeft_creator="1"
-        tools:layout_constraintRight_creator="1">
+        app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -58,6 +55,7 @@
                 <ImageView
                     android:layout_width="32dp"
                     android:layout_height="32dp"
+                    android:contentDescription="@null"
                     android:src="@drawable/ic_editor_eat" />
 
                 <it.diab.ui.EatBar
@@ -88,8 +86,7 @@
         android:transitionName="@string/transition_glucose_fab"
         app:layout_constraintBottom_toTopOf="@+id/glucose_editor_keyboard"
         app:layout_constraintEnd_toEndOf="@id/glucose_editor_keyboard"
-        app:srcCompat="@drawable/ic_done"
-        tools:layout_editor_absoluteX="304dp" />
+        app:srcCompat="@drawable/ic_done" />
 
     <ScrollView
         android:id="@+id/glucose_editor_show_view"
@@ -97,9 +94,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/glucose_editor_base_card"
-        tools:layout_constraintLeft_creator="1"
-        tools:layout_constraintRight_creator="1">
+        app:layout_constraintTop_toBottomOf="@+id/glucose_editor_base_card">
 
         <LinearLayout
             android:layout_width="match_parent"

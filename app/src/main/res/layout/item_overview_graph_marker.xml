@@ -4,8 +4,9 @@
     android:id="@+id/item_overview_graph_marker_text"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:padding="4dp"
     android:background="@drawable/bg_overview_graph_marker"
-    android:textSize="14sp"
+    android:maxLength="5"
+    android:padding="4dp"
     android:textColor="@color/white"
-    tools:text="11:50"/>
+    android:textSize="14sp"
+    tools:text="11:50" />

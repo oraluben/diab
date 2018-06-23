@@ -438,18 +438,13 @@ class EditorActivity : AppCompatActivity() {
             average /= list.size
         }
 
-        val builder = StringBuilder()
         val status = when {
             average > HIGH_THRESHOLD -> R.string.glucose_type_high
             average > LOW_THRESHOLD -> R.string.glucose_type_medium
             else -> R.string.glucose_type_low
         }
 
-        builder.append(getString(R.string.glucose_report_base,
-                getString(status), average.roundToInt()))
-                .append('\n')
-
-        return builder.toString()
+        return getString(R.string.glucose_report_base, getString(status), average.roundToInt())
     }
 
     private fun onSuggestionApply(suggestion: Float, insulin: Insulin) {

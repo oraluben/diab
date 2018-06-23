@@ -1,16 +1,10 @@
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
+    <it.diab.ui.graph.OverviewGraphView
+        android:id="@+id/overview_chart"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:paddingTop="8dp">
-
-        <it.diab.ui.graph.OverviewGraphView
-            android:id="@+id/overview_chart"
-            android:layout_width="match_parent"
-            android:layout_height="256dp" />
-    </LinearLayout>
-</ScrollView>
+        android:layout_height="256dp"
+        android:paddingTop="8dp" />
+</FrameLayout>

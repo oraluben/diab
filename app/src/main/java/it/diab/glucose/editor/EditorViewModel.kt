@@ -10,103 +10,67 @@ import it.diab.util.DateUtils
 import it.diab.util.extensions.asTimeFrame
 import it.diab.util.timeFrame.TimeFrame
 import java.util.*
-import java.util.concurrent.ExecutionException
 
 class EditorViewModel(owner: Application) : AndroidViewModel(owner) {
-    internal var glucose = Glucose()
-    private val mDatabase: AppDatabase = AppDatabase.getInstance(owner)
+    var glucose = Glucose()
 
-    internal val insulins: List<Insulin>
+    private val db: AppDatabase = AppDatabase.getInstance(owner)
+
+    val insulins: List<Insulin>
         get() {
-            var list = emptyList<Insulin>()
-            val task = GetInsulinListTask(mDatabase)
+            val task = GetInsulinListTask(db)
             task.execute()
-            try {
-                list = task.get()
-            } catch (ignored: InterruptedException) {
-            } catch (ignored: ExecutionException) {
-            }
-
-            return list
+            return task.get()
         }
 
-    internal val basalInsulins: List<Insulin>
+    val basalInsulins: List<Insulin>
         get() {
-            var list = emptyList<Insulin>()
-            val task = GetBasalInsulinListTask(mDatabase)
+            val task = GetBasalInsulinListTask(db)
             task.execute()
-            try {
-                list = task.get()
-            } catch (ignored: InterruptedException) {
-            } catch (ignored: ExecutionException) {
-            }
-
-            return list
+            return task.get()
         }
 
-    internal val previousWeek: List<Glucose>
+    val previousWeek: List<Glucose>
         get() {
-            val time = glucose.date.time
-
-            val task = GetGlucoseWeekListTask(mDatabase)
-            task.execute(time)
-            return try {
-                task.get()
-            } catch (e: InterruptedException) {
-                emptyList()
-            } catch (e: ExecutionException) {
-                emptyList()
-            }
+            val task = GetGlucoseWeekListTask(db)
+            task.execute(glucose.date.time)
+            return task.get()
         }
 
-    internal fun setGlucose(uid: Long) {
-        if (uid < 0) {
-            glucose = Glucose()
-            return
-        }
-
-        val task = GetGlucoseTask(mDatabase)
-        task.execute(uid)
-        glucose = try {
+    fun setGlucose(uid: Long) {
+        glucose = if (uid < 0)
+            Glucose()
+        else {
+            val task = GetGlucoseTask(db)
+            task.execute(uid)
             task.get()
-        } catch (e: InterruptedException) {
-            Glucose()
-        } catch (e: ExecutionException) {
-            Glucose()
         }
     }
 
-    internal fun save() {
-        SaveTask(mDatabase).execute(glucose)
+    fun save() {
+        SaveTask(db).execute(glucose)
     }
 
-    internal fun getInsulin(id: Long): Insulin {
-        val task = GetInsulinTask(mDatabase)
+    fun getInsulin(id: Long): Insulin {
+        val task = GetInsulinTask(db)
         task.execute(id)
-        return try {
-            task.get()
-        } catch (e: InterruptedException) {
-            Insulin()
-        } catch (e: ExecutionException) {
-            Insulin()
-        }
+        return task.get()
     }
 
-    internal fun hasPotentialBasal(glucose: Glucose): Boolean {
-        val timeFrame = glucose.timeFrame
-        val task = HasPotentialBasalTask(mDatabase)
+    fun hasPotentialBasal(glucose: Glucose): Boolean {
+        val task = HasPotentialBasalTask(db)
+        task.execute(glucose.timeFrame)
+        return task.get()
+    }
+
+    fun getInsulinByTimeFrame(timeFrame: TimeFrame): Insulin {
+        val task = GetInsulinByTimeFrameTask(db)
         task.execute(timeFrame)
         return task.get()
     }
 
-    internal fun getInsulinByTimeFrame(timeFrame: TimeFrame): Insulin {
-        val task = GetInsulinByTimeFrameTask(mDatabase)
-        task.execute(timeFrame)
-        return task.get()
-    }
-
-    internal fun applyInsulinSuggestion(value: Float, insulin: Insulin, onPostExecute: () -> Unit) {
-        ApplyInsulinSuggestionTask(mDatabase, glucose, insulin.uid, onPostExecute).execute(value)
+    fun applyInsulinSuggestion(value: Float, insulin: Insulin, onPostExecute: () -> Unit) {
+        ApplyInsulinSuggestionTask(db, glucose, insulin.uid, onPostExecute).execute(value)
     }
 
     class GetGlucoseTask(db: AppDatabase) : DatabaseTask<Long, Glucose>(db) {
@@ -149,7 +113,7 @@ class EditorViewModel(owner: Application) : AndroidViewModel(owner) {
 
         override fun doInBackground(vararg params: Long?): Insulin {
             val list = mDatabase.insulin().getById(params[0] ?: -1)
-            return if (list.isNotEmpty()) list[0] else Insulin()
+            return if (list.isEmpty()) Insulin() else list[0]
         }
     }
 
@@ -164,6 +128,7 @@ class EditorViewModel(owner: Application) : AndroidViewModel(owner) {
     }
 
     class HasPotentialBasalTask(db: AppDatabase) : DatabaseTask<TimeFrame, Boolean>(db) {
+
         override fun doInBackground(vararg params: TimeFrame?): Boolean {
             val timeFrame = params[0]?.toInt() ?: return false
             return mDatabase.insulin().getByTimeFrame(1, timeFrame).isNotEmpty()
@@ -191,8 +156,8 @@ class EditorViewModel(owner: Application) : AndroidViewModel(owner) {
 
     class SaveTask(db: AppDatabase) : DatabaseTask<Glucose, Unit>(db) {
 
-        public override fun doInBackground(vararg params: Glucose) {
-            val glucose = params[0]
+        public override fun doInBackground(vararg params: Glucose?) {
+            val glucose = params[0] ?: return
             mDatabase.glucose().insert(glucose)
         }
     }

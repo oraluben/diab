@@ -48,19 +48,19 @@ class EditorViewModel(owner: Application) : AndroidViewModel(owner) {
     }
 
     private class DeleteTask(db: AppDatabase):
-            DatabaseTask<Insulin, Void>(db) {
+            DatabaseTask<Insulin, Unit>(db) {
 
-        override fun doInBackground(vararg params: Insulin): Void? {
-            mDatabase.insulin().delete(params[0])
-            return null
+        override fun doInBackground(vararg params: Insulin?) {
+            val arg = params[0] ?: return
+            mDatabase.insulin().delete(arg)
         }
     }
 
     private class SaveTask(db: AppDatabase) : DatabaseTask<Insulin, Unit>(db) {
 
-        public override fun doInBackground(vararg params: Insulin) {
-            val insulin = params[0]
-            mDatabase.insulin().insert(insulin)
+        public override fun doInBackground(vararg params: Insulin?) {
+            val arg = params[0] ?: return
+            mDatabase.insulin().insert(arg)
         }
     }
 } 

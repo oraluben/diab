@@ -35,7 +35,6 @@ import android.view.View
 import it.diab.glucose.editor.EditorActivity
 import it.diab.glucose.export.ExportGlucoseService
 import it.diab.glucose.list.GlucoseListFragment
-import it.diab.glucose.list.GlucoseListViewModel
 import it.diab.glucose.overview.OverviewFragment
 import it.diab.insulin.InsulinActivity
 import it.diab.util.extensions.setDiabUi
