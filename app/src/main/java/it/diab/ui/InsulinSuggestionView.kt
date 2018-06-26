@@ -39,6 +39,10 @@ class InsulinSuggestionView(context: Context, attrs: AttributeSet) : LinearLayou
     }
 
     fun bind(glucose: Glucose, insulin: Insulin, onSuggestionApply: (Float, Insulin) -> Unit) {
+        if (::mGlucose.isInitialized) {
+            return
+        }
+
         mGlucose = glucose
         mInsulin = insulin
         mOnSuggestionApply = onSuggestionApply
