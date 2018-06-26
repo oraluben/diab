@@ -7,6 +7,7 @@ import android.support.v7.util.DiffUtil
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import it.diab.R
 import it.diab.db.entities.Insulin
@@ -23,7 +24,7 @@ class InsulinAdapter(private val mContext: Context) :
 
     override fun onBindViewHolder(holder: InsulinHolder, position: Int) {
         if (position == itemCount - 1) {
-            holder.onBind(mContext)
+            holder.onBind(mContext, null)
         } else {
             val item = getItem(position)
             if (item == null) {
@@ -38,35 +39,40 @@ class InsulinAdapter(private val mContext: Context) :
 
     class InsulinHolder(view: View): ViewHolderExt(view) {
         private val mView: View = view.findViewById(R.id.item_insulin_view)
-        private val mAddView: View = view.findViewById(R.id.item_insulin_add)
         private val mTitle: TextView = view.findViewById(R.id.item_insulin_name)
-        private val mSummary: TextView = view.findViewById(R.id.item_insulin_time_zone)
+        private val mIcon: ImageView = view.findViewById(R.id.item_insulin_icon)
 
-        fun onBind(context: Context, insulin: Insulin) {
+        fun onBind(context: Context, insulin: Insulin?) {
+            if (insulin == null) {
+                bindAddView(context)
+            } else {
+                bindItemView(context, insulin)
+            }
+        }
+
+        fun clear() {
+            mView.visibility = View.GONE
+            mView.setOnClickListener {  }
+        }
+
+        private fun bindAddView(context: Context) {
+            mTitle.text = context.getString(R.string.insulin_item_add)
+            mIcon.setImageResource(R.drawable.ic_add)
+            mView.setOnClickListener { _ ->
+                context.startActivity(Intent(context, EditorActivity::class.java)) }
+        }
+
+        private fun bindItemView(context: Context, insulin: Insulin) {
             id = insulin.uid
 
             mTitle.text = insulin.name
-            mSummary.text = context.getString(insulin.timeFrame.string)
+            mIcon.setImageResource(insulin.timeFrame.icon)
 
             mView.setOnClickListener { _ ->
                 val intent = Intent(context, EditorActivity::class.java)
                 intent.putExtra(EditorActivity.EXTRA_UID, insulin.uid)
                 context.startActivity(intent)
             }
-        }
-
-        fun onBind(context: Context) {
-            mView.visibility = View.GONE
-            mAddView.visibility = View.VISIBLE
-            mAddView.setOnClickListener { _ ->
-                context.startActivity(Intent(context, EditorActivity::class.java)) }
-        }
-
-        fun clear() {
-            mView.visibility = View.GONE
-            mView.setOnClickListener {  }
-            mAddView.visibility = View.GONE
-            mAddView.setOnClickListener {  }
         }
     }
 

@@ -29,8 +29,10 @@
     <string name="time_night">Notte</string>
 
     <!-- Insulin Editor -->
+    <string name="insulin_editor_add">Aggungi insulina</string>
+    <string name="insulin_editor_edit">Modifica insulina</string>
     <string name="insulin_editor_name">Nome</string>
-    <string name="insulin_item_add">Aggiungi insulina\u2026</string>
+    <string name="insulin_item_add">Aggiungi</string>
     <string name="insulin_item_basal">Basale</string>
     <string name="insulin_item_half_units">Mezze unit\u00E0</string>
 

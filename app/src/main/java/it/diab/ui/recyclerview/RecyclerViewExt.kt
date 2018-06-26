@@ -2,23 +2,25 @@ package it.diab.ui.recyclerview
 
 import android.content.Context
 import android.support.v7.widget.DefaultItemAnimator
+import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.util.AttributeSet
+import it.diab.R
 
 class RecyclerViewExt : RecyclerView {
     private var mItemTouchListener: RecyclerView.OnItemTouchListener? = null
 
     constructor(context: Context) : super(context) {
-        setup(context)
+        setup(context, null)
     }
 
     constructor(context: Context, attrs: AttributeSet) : super(context, attrs) {
-        setup(context)
+        setup(context, attrs)
     }
 
     constructor(context: Context, attrs: AttributeSet, style: Int) : super(context, attrs, style) {
-        setup(context)
+        setup(context, attrs)
     }
 
     override fun addOnItemTouchListener(listener: RecyclerView.OnItemTouchListener) {
@@ -30,8 +32,24 @@ class RecyclerViewExt : RecyclerView {
         super.addOnItemTouchListener(listener)
     }
 
-    private fun setup(context: Context) {
+    private fun setup(context: Context, attrs: AttributeSet?) {
+        val gridLayout: Boolean
+        val gridColumns: Int
+
+        if (attrs == null) {
+            gridLayout = false
+            gridColumns = 1
+        } else {
+            val array = context.obtainStyledAttributes(attrs, R.styleable.RecyclerViewExt, 0, 0)
+            gridLayout = array.getBoolean(R.styleable.RecyclerViewExt_gridLayout, false)
+            gridColumns = array.getInt(R.styleable.RecyclerViewExt_gridColumns, 1)
+            array.recycle()
+        }
+
         itemAnimator = DefaultItemAnimator()
-        layoutManager = LinearLayoutManager(context)
+        layoutManager = if (gridLayout)
+            GridLayoutManager(context, gridColumns)
+        else
+            LinearLayoutManager(context)
     }
 }

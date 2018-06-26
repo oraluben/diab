@@ -62,11 +62,7 @@ class EditorActivity : AppCompatActivity() {
 
     private fun setupUI() {
         val uid = intent.getLongExtra(EXTRA_UID, -1)
-
-        if (uid >= 0) {
-            mViewModel.setInsulin(uid)
-            mEditMode = true
-        }
+        mEditMode = uid >= 0
 
         mSpinner.adapter = ArrayAdapter(this,
                 android.support.v7.appcompat.R.layout.support_simple_spinner_dropdown_item,
@@ -74,9 +70,13 @@ class EditorActivity : AppCompatActivity() {
         mSpinner.setSelection(if (mEditMode) mViewModel.insulin.timeFrame.toInt() + 1 else 0)
 
         if (!mEditMode) {
+            title = getString(R.string.insulin_editor_add)
             return
         }
 
+        mViewModel.setInsulin(uid)
+
+        title = getString(R.string.insulin_editor_edit)
         mEditText.setText(mViewModel.insulin.name)
         mBasalSwitch.isChecked = mViewModel.insulin.isBasal
         mHalfUnitsSwitch.isChecked = mViewModel.insulin.hasHalfUnits

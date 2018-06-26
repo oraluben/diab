@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -17,5 +18,9 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="?actionBarSize"
+        android:paddingStart="4dp"
+        android:paddingEnd="4dp"
+        app:gridColumns="2"
+        app:gridLayout="true"
         tools:listitem="@layout/item_insulin" />
 </android.support.design.widget.CoordinatorLayout>
