@@ -135,6 +135,8 @@ class EditorActivity : AppCompatActivity() {
             val editMode = ConstraintSet()
             editMode.clone(this, R.layout.constraint_glucose_edit)
             editMode.applyTo(mConstraintRoot)
+
+            mViewModel.glucose.timeFrame = Date().asTimeFrame()
         }
 
         mInsulinView.visibility = View.GONE
