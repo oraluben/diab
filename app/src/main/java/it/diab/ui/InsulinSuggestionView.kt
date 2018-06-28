@@ -76,6 +76,12 @@ class InsulinSuggestionView(context: Context, attrs: AttributeSet) : LinearLayou
         mProgressView.visibility = View.GONE
 
         if (result < 0) {
+            if (result == InsulinSuggestionTask.NO_MODEL) {
+                visibility = View.GONE
+                return
+            }
+
+
             mTextView.text = resources.getString(when (result) {
                 InsulinSuggestionTask.TOO_HIGH -> R.string.insulin_suggestion_warning_high
                 InsulinSuggestionTask.TOO_LOW -> R.string.insulin_suggestion_warning_low

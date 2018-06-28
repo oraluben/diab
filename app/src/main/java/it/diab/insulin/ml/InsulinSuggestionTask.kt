@@ -23,6 +23,11 @@ class InsulinSuggestionTask(private val mResources: Resources,
         val eatLevelFix = glucose.eatLevel - 1
 
         val estimatorMap = parseEstimator(estimatorStream)
+
+        if (estimatorMap.isEmpty()) {
+            return NO_MODEL
+        }
+
         // Round down the last digit
         val targetValue = (glucose.value / 10) * 10
 
@@ -83,5 +88,6 @@ class InsulinSuggestionTask(private val mResources: Resources,
         const val TOO_LOW = -1f
         const val TOO_HIGH = -2f
         const val PARSE_ERROR = -3f
+        const val NO_MODEL = -4f
     }
 }
