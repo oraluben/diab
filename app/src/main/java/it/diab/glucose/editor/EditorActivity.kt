@@ -425,7 +425,7 @@ class EditorActivity : AppCompatActivity() {
                 .setTimeInterval(timeStamp, timeStamp, TimeUnit.MILLISECONDS)
                 .build()
         Fitness.getHistoryClient(this, GoogleSignIn.getLastSignedInAccount(this)!!)
-                .updateData(request)
+                .run { if (mEditMode) updateData(request) else insertData(set)  }
                 .addOnFailureListener { e -> Log.e(TAG, e.message) }
                 .addOnCompleteListener { finish() }
     }
