@@ -30,6 +30,7 @@ import com.google.android.gms.common.api.Scope
 import com.google.android.gms.fitness.Fitness
 import com.google.android.gms.fitness.FitnessOptions
 import com.google.android.gms.fitness.data.*
+import com.google.android.gms.fitness.request.DataDeleteRequest
 import com.google.android.gms.fitness.request.DataUpdateRequest
 import it.diab.BuildConfig
 import it.diab.R
@@ -424,6 +425,7 @@ class EditorActivity : AppCompatActivity() {
                 .setDataSet(set)
                 .setTimeInterval(timeStamp, timeStamp, TimeUnit.MILLISECONDS)
                 .build()
+
         Fitness.getHistoryClient(this, GoogleSignIn.getLastSignedInAccount(this)!!)
                 .run { if (mEditMode) updateData(request) else insertData(set)  }
                 .addOnFailureListener { e -> Log.e(TAG, e.message) }

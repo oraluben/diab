@@ -35,8 +35,12 @@
 
         <activity
             android:name=".insulin.editor.EditorActivity"
-            android:label="@string/insulin_editor_name"
             android:theme="@style/AppTheme.DialogActivity" />
+
+        <activity
+            android:name=".fit.FitActivity"
+            android:label="@string/fit_name"
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <service
             android:name=".glucose.export.ExportGlucoseService"

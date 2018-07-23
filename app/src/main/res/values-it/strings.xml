@@ -71,4 +71,23 @@
     <string name="export_notification_channel">Operazioni di esportazione</string>
     <string name="export_completed_success">I dati sono stati esportati nella memoria interna</string>
     <string name="export_completed_failure">Impossibile esportare i dati nella memoria interna</string>
+
+    <!-- Google Fit -->
+    <string name="fit_name">Integrazione con Fit</string>
+    <string name="fit_status_prompt"><b>Google Fit</b> ti consente di tenere traccia delle tue attivita e dati relativi alla salute con pi\u00F9 app e dispositivi.\nConnettendo Google Fit e Diab, potrai salvare le tue <b>glicemie</b>.</string>
+    <string name="fit_status_connected">Diab \u00E8 connesso a <b>Google Fit</b>. Le tue <b>glicemie</b> verranno sincronizzate.</string>
+    <string name="fit_button_connect">Connetti a Google Fit</string>
+    <string name="fit_login_error">Operazione fallita. Controlla la connessione e riprova</string>
+    <string name="fit_privacy">Privacy e gestione dati</string>
+    <string name="fit_privacy_delete">Elimina tutti i dati</string>
+    <string name="fit_privacy_disconnect">Disconnetti Fit</string>
+    <string name="fit_delete_confirm_title">Elimina dati da Fit</string>
+    <string name="fit_delete_confirm_message">Stai per rimuovere tutte i dati delle glicemie da Google Fit. Questa operazione non puo essere annullata.\nVuoi procedere?</string>
+    <string name="fit_delete_confim_positive">Rimuovi</string>
+    <string name="fit_delete_success">I dati sono stati rimossi da Fit</string>
+    <string name="fit_delete_failure">Impossibile rimuovere i dati da Fit. Riprova pi\u00F9 tardi</string>
+    <string name="fit_disconnect_confim_title">Disconnetti Fit</string>
+    <string name="fit_disconnect_confim_message">Stai per disconnettere Google Fit. L\'app non sincronizzera pi\u00F9 i dati (quelli gi\u00E0 caricati resteranno su Google Fit).\nVuoi procedere?</string>
+    <string name="fit_disconnect_confim_positive">Disconnetti</string>
+    <string name="fit_disconnect_success">Disconnesso da Fit</string>
 </resources>

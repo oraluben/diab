@@ -1,0 +1,11 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:drawable="@drawable/bg_circle" />
+
+    <item
+        android:bottom="8dp"
+        android:drawable="@drawable/ic_google_fit"
+        android:end="8dp"
+        android:start="8dp"
+        android:top="8dp" />
+</layer-list>

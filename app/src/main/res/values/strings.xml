@@ -71,4 +71,23 @@
     <string name="export_notification_channel">Export operations</string>
     <string name="export_completed_success">The data has been exported to the internal memory</string>
     <string name="export_completed_failure">Unable to export the data to the internal memory</string>
+
+    <!-- Google Fit -->
+    <string name="fit_name">Fit integration</string>
+    <string name="fit_status_prompt"><b>Google Fit</b> lets you backup your fitness and heath data from multiple apps and devices.\nBy connecting Google Fit and Diab, you\'ll be able to backup your <b>glucose data</b>.</string>
+    <string name="fit_status_connected">Diab is connected to <b>Google Fit</b>. Your <b>glucose</b> will be synced.</string>
+    <string name="fit_button_connect">Connect to Google Fit</string>
+    <string name="fit_login_error">Operation failed. Check the internet connection and retry</string>
+    <string name="fit_privacy">Privacy and data management</string>
+    <string name="fit_privacy_delete">Delete all data</string>
+    <string name="fit_privacy_disconnect">Disconnect from Fit</string>
+    <string name="fit_delete_confirm_title">Delete Fit data</string>
+    <string name="fit_delete_confirm_message">You\'re about to remove your glucose history from Google Fit. This operation cannot be undone.\nDo you want to proceed?</string>
+    <string name="fit_delete_confim_positive">Remove</string>
+    <string name="fit_delete_success">The data has been removed from Fit</string>
+    <string name="fit_delete_failure">Unable to remove data from Fit. Try later</string>
+    <string name="fit_disconnect_confim_title">Disconnect from Fit</string>
+    <string name="fit_disconnect_confim_message">You\'re about to disconnect from Google Fit. The app will no longer sync new glucose data (the existing values will be retained on Google Fit).\nDo you want to proceed?</string>
+    <string name="fit_disconnect_confim_positive">Disconnect</string>
+    <string name="fit_disconnect_success">Disconnected from Fit</string>
 </resources>
