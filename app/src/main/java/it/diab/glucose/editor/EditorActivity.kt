@@ -1,12 +1,10 @@
 package it.diab.glucose.editor
 
 import android.animation.ValueAnimator
-import android.app.Activity
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.arch.lifecycle.ViewModelProviders
 import android.content.DialogInterface
-import android.content.Intent
 import android.graphics.PorterDuff
 import android.os.Bundle
 import android.os.Handler
@@ -24,13 +22,9 @@ import android.widget.TextView
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
-import com.google.android.gms.common.Scopes
-import com.google.android.gms.common.api.GoogleApiClient
-import com.google.android.gms.common.api.Scope
 import com.google.android.gms.fitness.Fitness
 import com.google.android.gms.fitness.FitnessOptions
 import com.google.android.gms.fitness.data.*
-import com.google.android.gms.fitness.request.DataDeleteRequest
 import com.google.android.gms.fitness.request.DataUpdateRequest
 import it.diab.BuildConfig
 import it.diab.R
@@ -49,7 +43,6 @@ import kotlin.math.roundToInt
 class EditorActivity : AppCompatActivity() {
 
     private lateinit var mViewModel: EditorViewModel
-    private lateinit var mGoogleApiClient: GoogleApiClient
 
     private lateinit var mConstraintRoot: ConstraintLayout
     private lateinit var mValueView: TextView
@@ -92,21 +85,12 @@ class EditorActivity : AppCompatActivity() {
         mEditMode = intent.getBooleanExtra(EXTRA_INSERT_MODE, false)
 
         setup()
-        setupFit()
     }
 
     override fun onResume() {
         super.onResume()
 
         refresh()
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (resultCode == GOOGLE_FIT_REQUEST_CODE && resultCode != Activity.RESULT_OK) {
-            Log.e(TAG, "Unable to sign in to Fit. Error code $resultCode")
-        }
-
-        super.onActivityResult(requestCode, resultCode, data)
     }
 
     private fun setup() {
@@ -373,27 +357,6 @@ class EditorActivity : AppCompatActivity() {
         saveData()
     }
 
-    private fun setupFit() {
-        if (!hasFit()) {
-            return
-        }
-
-        mGoogleApiClient = GoogleApiClient.Builder(this)
-                .addApi(Fitness.HISTORY_API)
-                .addScope(Scope(Scopes.FITNESS_ACTIVITY_READ_WRITE))
-                .enableAutoManage(this, 0, { e -> Log.e(TAG, e.errorMessage)} )
-                .build()
-
-        val options = FitnessOptions.builder()
-                .addDataType(HealthDataTypes.TYPE_BLOOD_GLUCOSE, FitnessOptions.ACCESS_WRITE)
-                .build()
-
-        if (!GoogleSignIn.hasPermissions(GoogleSignIn.getLastSignedInAccount(this), options)) {
-            GoogleSignIn.requestPermissions(this, GOOGLE_FIT_REQUEST_CODE,
-                    GoogleSignIn.getLastSignedInAccount(this), options)
-        }
-    }
-
     private fun saveToFit() {
         if (!hasFit()) {
             finish()
@@ -477,9 +440,21 @@ class EditorActivity : AppCompatActivity() {
     }
 
     private fun hasFit(): Boolean {
+        if (!BuildConfig.HAS_FIT) {
+            return false
+        }
+
         val availability = GoogleApiAvailability.getInstance()
         val gmsStatus = availability.isGooglePlayServicesAvailable(this)
-        return gmsStatus == ConnectionResult.SUCCESS && BuildConfig.HAS_FIT
+
+        if (gmsStatus != ConnectionResult.SUCCESS) {
+            return false
+        }
+
+        val options = FitnessOptions.builder()
+                .addDataType(HealthDataTypes.TYPE_BLOOD_GLUCOSE, FitnessOptions.ACCESS_WRITE)
+                .build()
+        return GoogleSignIn.hasPermissions(GoogleSignIn.getLastSignedInAccount(this), options)
     }
 
     private operator fun DataPoint.set(field: Field, any: Any) {
@@ -498,7 +473,6 @@ class EditorActivity : AppCompatActivity() {
         const val EXTRA_GLUCOSE_ID = "glucose_id"
 
         private const val TAG = "EditorActivity"
-        private const val GOOGLE_FIT_REQUEST_CODE = 281
 
         // TODO: expose these to userland
         private const val LOW_THRESHOLD = 70
