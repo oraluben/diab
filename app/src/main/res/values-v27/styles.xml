@@ -5,7 +5,6 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="preferenceTheme">@style/PreferenceThemeOverlay.v14.Material</item>
         <item name="isLightTheme">true</item>
         <item name="android:windowBackground">@color/background_activity</item>
         <item name="android:windowLightStatusBar">true</item>

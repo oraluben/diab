@@ -41,8 +41,6 @@ dependencies {
     implementation supportLib.design
     implementation supportLib.cardview
     implementation supportLib.constraint
-    implementation supportLib.preferencev7
-    implementation supportLib.preferencev14
 
     implementation kotlinLib.stdlib
 
