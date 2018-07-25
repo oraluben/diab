@@ -18,7 +18,7 @@ class OverviewMarker(context: Context) : MarkerView(context, R.layout.item_overv
         if (e != null) {
             val h = Math.floor(e.x / 60.toDouble())
             val m = e.x % 60
-            val text = "%1\$.0f:%2\$.0f".format(h, m)
+            val text = BASE.format(h, m)
             mTextView.text = text
         }
 
@@ -31,5 +31,9 @@ class OverviewMarker(context: Context) : MarkerView(context, R.layout.item_overv
         }
 
         return mOffset
+    }
+
+    companion object {
+        private const val BASE = "%1\$02.0f:%2\$02.0f"
     }
 }
