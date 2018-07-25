@@ -2,7 +2,7 @@
 <resources>
     <color name="colorPrimary">#FAFBFC</color>
     <color name="colorPrimaryDark">#EBECF0</color>
-    <color name="colorAccentLight">#BAE2ff</color>
+    <color name="colorAccentLight">#330065ff</color>
     <color name="colorAccent">#0065ff</color>
     <color name="colorAccentDark">#003ccb</color>
 
@@ -22,8 +22,8 @@
     <color name="graph_overview_today">@color/colorAccent</color>
     <color name="graph_overview_average">@color/colorAccentLight</color>
 
-    <color name="glucose_indicator_high">#ffa826</color>
-    <color name="glucose_indicator_low">#ff3a7e</color>
+    <color name="glucose_indicator_high">#ffcd80</color>
+    <color name="glucose_indicator_low">#ff90b5</color>
 
     <color name="item_circle_bg">#EBECF0</color>
     <color name="item_header_divider">#0c000000</color>
