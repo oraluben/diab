@@ -7,6 +7,8 @@ import it.diab.MainActivity
 import it.diab.db.AppDatabase
 import it.diab.db.entities.Glucose
 import it.diab.db.entities.Insulin
+import it.diab.db.entities.glucose
+import it.diab.db.entities.insulin
 import it.diab.util.extensions.asTimeFrame
 import it.diab.util.timeFrame.TimeFrame
 import org.junit.Before
@@ -40,21 +42,26 @@ class GlucoseListViewModelTest {
 
         for (i in 0..(mGlucoseValues.size - 1)) {
             calendar[Calendar.DAY_OF_YEAR] -= i
-            mData[i] = Glucose(
-                    i.toLong(),
-                    mGlucoseValues[i],
-                    calendar.time,
-                    (-1..0).random().toLong(),
-                    (0..10).random().toFloat(),
-                    (-1..0).random().toLong(),
-                    (0..5).random().toFloat(),
-                    (0..2).random(),
-                    TimeFrame.MORNING)
+            mData[i] = glucose {
+                uid = i.toLong()
+                value = mGlucoseValues[i]
+                date = calendar.time
+                insulinId0 = (-1..0).random().toLong()
+                insulinValue0 = (0..10).random().toFloat()
+                insulinId1 = (-1..0).random().toLong()
+                insulinValue1 = (0..5).random().toFloat()
+                eatLevel = (0..2).random()
+                timeFrame = TimeFrame.MORNING
+            }
 
             db.glucose().insert(mData[i])
         }
 
-        mInsulin = Insulin(0, "FooBar", mTestTimeFrame!!, false, false)
+        mInsulin = insulin {
+            uid = 0
+            name = "FooBar"
+            timeFrame = mTestTimeFrame!!
+        }
         db.insulin().insert(mInsulin!!)
     }
 

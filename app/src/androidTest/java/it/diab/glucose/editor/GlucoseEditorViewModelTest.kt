@@ -5,7 +5,8 @@ import android.support.test.rule.ActivityTestRule
 import android.support.test.runner.AndroidJUnit4
 import it.diab.db.AppDatabase
 import it.diab.db.entities.Glucose
-import it.diab.db.entities.Insulin
+import it.diab.db.entities.glucose
+import it.diab.db.entities.insulin
 import it.diab.util.extensions.asTimeFrame
 import it.diab.util.extensions.get
 import it.diab.util.timeFrame.TimeFrame
@@ -39,7 +40,13 @@ class GlucoseEditorViewModelTest {
         val test = mViewModel!!.glucose
         assert(test.uid == 0L)
 
-        val new = Glucose(1, 50, Date(), -1L, 0f, 1L, 6f, Glucose.LOW, TimeFrame.DINNER)
+        val new = glucose {
+            uid = 1
+            value = 50
+            insulinValue1 = 6f
+            eatLevel = Glucose.LOW
+            timeFrame = TimeFrame.DINNER
+        }
         mDatabase!!.glucose().insert(new)
 
         mViewModel!!.setGlucose(new.uid)
@@ -60,8 +67,6 @@ class GlucoseEditorViewModelTest {
         mViewModel!!.glucose.date = Date()[-6]
         mViewModel!!.glucose.insulinId0 = 0L
         mViewModel!!.glucose.insulinValue0 = 10.5f
-        mViewModel!!.glucose.insulinId1 = -1L
-        mViewModel!!.glucose.insulinValue1 = 1f
         mViewModel!!.glucose.eatLevel = Glucose.MAX
 
         mViewModel!!.save()
@@ -72,7 +77,12 @@ class GlucoseEditorViewModelTest {
 
     @Test
     fun getInsulin() {
-        val new = Insulin((50..60).random().toLong(), "FooBar", TimeFrame.DINNER, false, true)
+        val new = insulin {
+            uid = (50..60).random().toLong()
+            name = "FooBar"
+            timeFrame = TimeFrame.DINNER
+            hasHalfUnits = true
+        }
         mDatabase!!.insulin().insert(new)
 
         val test = mViewModel!!.getInsulin(new.uid)
@@ -90,10 +100,18 @@ class GlucoseEditorViewModelTest {
         b[Calendar.HOUR_OF_DAY] = 20
 
         val targetTimeFrame = a.time.asTimeFrame()
-        val insulin = Insulin((100..133).random().toLong(), "FooBar", targetTimeFrame, true, false)
+        val insulin = insulin {
+            uid = (100..133).random().toLong()
+            timeFrame = targetTimeFrame
+            isBasal = true
+        }
         mDatabase!!.insulin().insert(insulin)
 
-        val glucose = Glucose(-1, 106, a.time, -1L, 0f, -1L, 0f, Glucose.MEDIUM, TimeFrame.LUNCH)
+        val glucose = glucose {
+            date = a.time
+            timeFrame = TimeFrame.LUNCH
+        }
+
         assert(mViewModel!!.hasPotentialBasal(glucose))
 
         glucose.date = b.time
@@ -104,7 +122,13 @@ class GlucoseEditorViewModelTest {
     fun getInsulinByTimeFrame() {
         val targetTimeFrame = TimeFrame.NIGHT
 
-        val test = Insulin((60..90).random().toLong(), "FooBar", targetTimeFrame, true, false)
+        val test = insulin {
+            uid = (60..90).random().toLong()
+            name = "FooBar"
+            timeFrame = targetTimeFrame
+            isBasal = true
+        }
+
         mDatabase!!.insulin().insert(test)
 
         val result = mViewModel!!.getInsulinByTimeFrame(targetTimeFrame)
@@ -114,7 +138,11 @@ class GlucoseEditorViewModelTest {
 
     @Test
     fun applyInsulinSuggestion() {
-        val insulin = Insulin((0..20).random().toLong(), "FooBar", TimeFrame.MORNING, false, false)
+        val insulin = insulin {
+            uid = (0..20).random().toLong()
+            name = "FooBar"
+            timeFrame = TimeFrame.MORNING
+        }
         val test = (0..10).random().toFloat()
 
         mViewModel!!.setGlucose(-1)
@@ -123,6 +151,6 @@ class GlucoseEditorViewModelTest {
         assert(mViewModel!!.glucose.insulinValue0 == test)
         assert(mViewModel!!.glucose.insulinId0 == insulin.uid)
     }
-
-    private fun ClosedRange<Int>.random() = Random().nextInt(endInclusive - start) + start
 }
+
+private fun ClosedRange<Int>.random() = Random().nextInt(endInclusive - start) + start

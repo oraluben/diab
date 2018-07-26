@@ -5,13 +5,13 @@ import android.support.test.runner.AndroidJUnit4
 import it.diab.db.dao.GlucoseDao
 import it.diab.db.dao.InsulinDao
 import it.diab.db.entities.Glucose
-import it.diab.db.entities.Insulin
+import it.diab.db.entities.glucose
+import it.diab.db.entities.insulin
 import it.diab.util.timeFrame.TimeFrame
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
-import java.util.*
 
 @RunWith(AndroidJUnit4::class)
 class AppDatabaseTest {
@@ -28,7 +28,13 @@ class AppDatabaseTest {
 
     @Test
     fun addGlucose() {
-        val item = Glucose(1, 100, Date(), -1, 0f, -1, 0f, 1, TimeFrame.MORNING)
+        val item = glucose {
+            uid = 1
+            value = 100
+            eatLevel = Glucose.MEDIUM
+            timeFrame = TimeFrame.MORNING
+        }
+
         glucoseDao?.insert(item)
         val test = glucoseDao?.getById(1)!![0]
         Assert.assertEquals(item, test)
@@ -36,7 +42,13 @@ class AppDatabaseTest {
 
     @Test
     fun addInsulin() {
-        val item = Insulin(1, "TEST 0",TimeFrame.LUNCH, false, true)
+        val item = insulin {
+            uid = 1
+            name = "TEST 0"
+            timeFrame = TimeFrame.LUNCH
+            hasHalfUnits = true
+        }
+
         insulinDao?.insert(item)
         val test = insulinDao?.getById(1)!![0]
         Assert.assertEquals(item, test)
@@ -44,12 +56,34 @@ class AppDatabaseTest {
 
     @Test
     fun addGlucoseWithLinkedInsulins() {
-        val insulin = Insulin(2, "TEST 1", TimeFrame.DINNER, false, false)
-        val basal = Insulin(3, "TEST 2", TimeFrame.DINNER, true, true)
+        val insulin = insulin {
+            uid = 2
+            name = "TEST 1"
+            timeFrame = TimeFrame.DINNER
+        }
+
+        val basal = insulin {
+            uid = 3
+            name = "TEST 2"
+            timeFrame = TimeFrame.DINNER
+            isBasal = true
+            hasHalfUnits = true
+        }
+
         insulinDao?.insert(insulin)
         insulinDao?.insert(basal)
 
-        val glucose = Glucose(2, 100, Date(), insulin.uid, 3f, basal.uid, 4f, 2, TimeFrame.EXTRA)
+        val glucose = glucose {
+            uid = 2
+            value = 100
+            insulinId0 = insulin.uid
+            insulinValue0 = 3f
+            insulinId1 = basal.uid
+            insulinValue1 = 4f
+            eatLevel = Glucose.HIGH
+            timeFrame = TimeFrame.EXTRA
+        }
+
         glucoseDao?.insert(glucose)
 
         val test = glucoseDao?.getById(2)!![0]

@@ -4,7 +4,7 @@ import android.arch.lifecycle.ViewModelProviders
 import android.support.test.rule.ActivityTestRule
 import android.support.test.runner.AndroidJUnit4
 import it.diab.db.AppDatabase
-import it.diab.db.entities.Insulin
+import it.diab.db.entities.insulin
 import it.diab.util.timeFrame.TimeFrame
 import org.junit.Before
 import org.junit.Rule
@@ -35,7 +35,12 @@ class InsulinEditorViewModelTest {
         val test = mViewModel!!.insulin
         assert(test.uid == 0L)
 
-        val new = Insulin(1, "FooBar", TimeFrame.LUNCH, false, true)
+        val new = insulin {
+            uid = 1
+            name = "FooBar"
+            timeFrame = TimeFrame.LUNCH
+            hasHalfUnits = true
+        }
         mDatabase!!.insulin().insert(new)
 
         mViewModel!!.setInsulin(new.uid)

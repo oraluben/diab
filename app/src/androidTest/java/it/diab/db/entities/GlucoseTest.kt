@@ -15,7 +15,15 @@ class GlucoseTest {
 
     @Test
     fun writeReadParcel() {
-        val original = Glucose(32, 103, Date()[4], 3, 12.4f, -1, 0f, 2, TimeFrame.LATE_MORNING)
+        val original = glucose {
+            uid = 32
+            value = 103
+            date = Date()[4]
+            insulinId0 = 3
+            insulinValue0 = 12.4f
+            eatLevel = 2
+            timeFrame = TimeFrame.LATE_MORNING
+        }
 
         // Write
         val parcel = Parcel.obtain()
