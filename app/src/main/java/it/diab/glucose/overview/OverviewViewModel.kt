@@ -1,8 +1,8 @@
 package it.diab.glucose.overview
 
 import android.app.Application
-import android.arch.lifecycle.AndroidViewModel
-import android.arch.lifecycle.LiveData
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
 import it.diab.db.AppDatabase
 import it.diab.db.DatabaseTask
 import it.diab.db.entities.Glucose

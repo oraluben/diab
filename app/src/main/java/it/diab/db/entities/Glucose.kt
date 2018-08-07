@@ -1,9 +1,9 @@
 package it.diab.db.entities
 
-import android.arch.persistence.room.*
+import androidx.room.*
 import android.os.Parcel
 import android.os.Parcelable
-import android.support.annotation.IntDef
+import androidx.annotation.IntDef
 import it.diab.db.converters.DateConverter
 import it.diab.db.converters.TimeFrameConverter
 import it.diab.util.extensions.toTimeFrame

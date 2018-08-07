@@ -7,17 +7,17 @@ android {
     Properties properties = new Properties()
     properties.load(project.rootProject.file("local.properties").newDataInputStream())
 
-    compileSdkVersion 27
+    compileSdkVersion 28
 
     defaultConfig {
         applicationId "it.diab"
         minSdkVersion 24
-        targetSdkVersion 27
+        targetSdkVersion 28
 
         versionCode appVersionCode
         versionName appVersionName
 
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
         buildConfigField "Boolean", "HAS_FIT", properties.getProperty("diab.fit", "false")
 
@@ -38,7 +38,6 @@ android {
 
 dependencies {
     implementation supportLib.appcompat
-    implementation supportLib.design
     implementation supportLib.cardview
     implementation supportLib.constraint
 
@@ -52,6 +51,7 @@ dependencies {
 
     implementation googleLib.auth
     implementation googleLib.fit
+    implementation googleLib.material
 
     implementation extLib.mpchart
 

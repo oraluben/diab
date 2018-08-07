@@ -5,9 +5,9 @@ import android.content.Context
 import android.graphics.PorterDuff
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.LayerDrawable
-import android.support.annotation.ColorRes
-import android.support.v4.content.ContextCompat
-import android.support.v7.widget.AppCompatSeekBar
+import androidx.annotation.ColorRes
+import androidx.core.content.ContextCompat
+import androidx.appcompat.widget.AppCompatSeekBar
 import android.util.AttributeSet
 import android.widget.SeekBar
 import it.diab.R

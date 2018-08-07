@@ -1,14 +1,13 @@
 package it.diab.db
 
-import android.support.test.InstrumentationRegistry
-import android.support.test.runner.AndroidJUnit4
+import androidx.test.InstrumentationRegistry
+import androidx.test.runner.AndroidJUnit4
 import it.diab.db.dao.GlucoseDao
 import it.diab.db.dao.InsulinDao
 import it.diab.db.entities.Glucose
 import it.diab.db.entities.glucose
 import it.diab.db.entities.insulin
 import it.diab.util.timeFrame.TimeFrame
-import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -37,7 +36,7 @@ class AppDatabaseTest {
 
         glucoseDao?.insert(item)
         val test = glucoseDao?.getById(1)!![0]
-        Assert.assertEquals(item, test)
+        assert(item == test)
     }
 
     @Test
@@ -51,7 +50,7 @@ class AppDatabaseTest {
 
         insulinDao?.insert(item)
         val test = insulinDao?.getById(1)!![0]
-        Assert.assertEquals(item, test)
+        assert(item == test)
     }
 
     @Test
@@ -90,7 +89,7 @@ class AppDatabaseTest {
         val test1 = insulinDao?.getById(test.insulinId0)!![0]
         val test2 = insulinDao?.getById(test.insulinId1)!![0]
 
-        Assert.assertEquals(insulin.uid, test1.uid)
-        Assert.assertEquals(basal.uid, test2.uid)
+        assert(insulin.uid == test1.uid)
+        assert(basal.uid == test2.uid)
     }
 }

@@ -3,8 +3,8 @@ package it.diab.util
 import android.content.res.Resources
 import android.graphics.*
 import android.graphics.drawable.Drawable
-import android.support.annotation.ColorInt
-import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory
+import androidx.annotation.ColorInt
+import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory
 
 object UIUtils {
 

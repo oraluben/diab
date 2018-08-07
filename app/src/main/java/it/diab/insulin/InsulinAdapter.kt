@@ -1,9 +1,9 @@
 package it.diab.insulin
 
-import android.arch.paging.PagedListAdapter
+import androidx.paging.PagedListAdapter
 import android.content.Context
 import android.content.Intent
-import android.support.v7.util.DiffUtil
+import androidx.recyclerview.widget.DiffUtil
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup

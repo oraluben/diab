@@ -1,10 +1,10 @@
 package it.diab.glucose.list
 
 import android.app.Application
-import android.arch.lifecycle.AndroidViewModel
-import android.arch.lifecycle.LiveData
-import android.arch.paging.LivePagedListBuilder
-import android.arch.paging.PagedList
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
+import androidx.paging.LivePagedListBuilder
+import androidx.paging.PagedList
 import it.diab.db.AppDatabase
 import it.diab.db.DatabaseTask
 import it.diab.db.entities.Glucose

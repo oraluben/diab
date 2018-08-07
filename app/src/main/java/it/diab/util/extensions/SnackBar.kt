@@ -1,7 +1,7 @@
 package it.diab.util.extensions
 
 import android.content.Context
-import android.support.design.widget.Snackbar
+import com.google.android.material.snackbar.Snackbar
 import android.view.ViewGroup
 import it.diab.R
 

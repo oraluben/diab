@@ -7,11 +7,12 @@ ext {
     googleLib = [
             auth : "com.google.android.gms:play-services-auth:15.0.1",
             fit : "com.google.android.gms:play-services-fitness:15.0.1",
+            material : "com.google.android.material:material:1.0.0-rc01",
     ]
 
     lifecycleLib = [
-            compiler : "android.arch.lifecycle:compiler:1.1.1",
-            extensions : "android.arch.lifecycle:extensions:1.1.1",
+            compiler : "androidx.lifecycle:lifecycle-compiler:2.0.0-rc01",
+            extensions : "androidx.lifecycle:lifecycle-extensions:2.0.0-rc01",
     ]
 
     kotlinLib = [
@@ -19,27 +20,24 @@ ext {
     ]
 
     pagingLib = [
-            runtime : "android.arch.paging:runtime:1.0.0"
+            runtime : "androidx.paging:paging-runtime:2.0.0-rc01"
     ]
 
     roomLib = [
-            compiler : "android.arch.persistence.room:compiler:1.1.0",
-            runtime : "android.arch.persistence.room:runtime:1.1.0",
+            compiler : "androidx.room:room-compiler:2.0.0-rc01",
+            runtime : "androidx.room:room-runtime:2.0.0-rc01",
     ]
 
     supportLib = [
-            appcompat : "com.android.support:appcompat-v7:27.1.1",
-            cardview : "com.android.support:cardview-v7:27.1.1",
-            constraint : "com.android.support.constraint:constraint-layout:1.1.1",
-            design : "com.android.support:design:27.1.1",
-            preferencev7 : "com.android.support:preference-v7:27.1.1",
-            preferencev14 : "com.android.support:preference-v14:27.1.1",
+            appcompat : "androidx.appcompat:appcompat:1.0.0-rc01",
+            cardview : "androidx.cardview:cardview:1.0.0-rc01",
+            constraint : "androidx.constraintlayout:constraintlayout:2.0.0-alpha1",
     ]
 
     testLib = [
-            espresso : "com.android.support.test.espresso:espresso-core:3.0.2",
-            rules : "com.android.support.test:rules:1.0.2",
-            runner : "com.android.support.test:runner:1.0.2",
+            espresso : "androidx.test.espresso:espresso-core:3.1.0-alpha4",
+            rules : "androidx.test:rules:1.1.0-alpha4",
+            runner : "androidx.test:runner:1.1.0-alpha4",
             junit : 'junit:junit:4.12',
     ]
 }

@@ -1,8 +1,8 @@
 package it.diab.glucose.overview
 
-import android.arch.lifecycle.ViewModelProviders
-import android.support.test.rule.ActivityTestRule
-import android.support.test.runner.AndroidJUnit4
+import androidx.lifecycle.ViewModelProviders
+import androidx.test.rule.ActivityTestRule
+import androidx.test.runner.AndroidJUnit4
 import it.diab.MainActivity
 import it.diab.db.AppDatabase
 import it.diab.util.extensions.asTimeFrame

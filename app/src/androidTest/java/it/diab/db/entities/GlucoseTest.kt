@@ -1,8 +1,8 @@
 package it.diab.db.entities
 
 import android.os.Parcel
-import android.support.test.filters.SmallTest
-import android.support.test.runner.AndroidJUnit4
+import androidx.test.filters.SmallTest
+import androidx.test.runner.AndroidJUnit4
 import it.diab.util.extensions.get
 import it.diab.util.timeFrame.TimeFrame
 import org.junit.Test

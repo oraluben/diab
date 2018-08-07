@@ -1,12 +1,12 @@
 package it.diab.insulin.editor
 
-import android.arch.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.AppCompatButton
-import android.support.v7.widget.AppCompatEditText
-import android.support.v7.widget.AppCompatSpinner
-import android.support.v7.widget.SwitchCompat
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.AppCompatButton
+import androidx.appcompat.widget.AppCompatEditText
+import androidx.appcompat.widget.AppCompatSpinner
+import androidx.appcompat.widget.SwitchCompat
 import android.view.View
 import android.view.Window
 import android.widget.ArrayAdapter
@@ -65,7 +65,7 @@ class EditorActivity : AppCompatActivity() {
         mEditMode = uid >= 0
 
         mSpinner.adapter = ArrayAdapter(this,
-                android.support.v7.appcompat.R.layout.support_simple_spinner_dropdown_item,
+                androidx.appcompat.R.layout.support_simple_spinner_dropdown_item,
                 mTimeFrames)
         mSpinner.setSelection(if (mEditMode) mViewModel.insulin.timeFrame.toInt() + 1 else 0)
 

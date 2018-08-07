@@ -1,8 +1,8 @@
 package it.diab.db.dao
 
-import android.arch.lifecycle.LiveData
-import android.arch.paging.DataSource
-import android.arch.persistence.room.*
+import androidx.lifecycle.LiveData
+import androidx.paging.DataSource
+import androidx.room.*
 import it.diab.db.converters.DateConverter
 import it.diab.db.entities.Glucose
 

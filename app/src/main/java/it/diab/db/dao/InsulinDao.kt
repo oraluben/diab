@@ -1,7 +1,7 @@
 package it.diab.db.dao
 
-import android.arch.paging.DataSource
-import android.arch.persistence.room.*
+import androidx.paging.DataSource
+import androidx.room.*
 import it.diab.db.converters.TimeFrameConverter
 import it.diab.db.entities.Insulin
 

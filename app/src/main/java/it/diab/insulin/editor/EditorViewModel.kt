@@ -1,7 +1,7 @@
 package it.diab.insulin.editor
 
 import android.app.Application
-import android.arch.lifecycle.AndroidViewModel
+import androidx.lifecycle.AndroidViewModel
 import it.diab.db.AppDatabase
 import it.diab.db.DatabaseTask
 import it.diab.db.entities.Insulin

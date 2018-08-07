@@ -3,7 +3,7 @@ package it.diab.glucose.editor
 import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Context
-import android.support.v7.widget.AppCompatSpinner
+import androidx.appcompat.widget.AppCompatSpinner
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.ArrayAdapter
@@ -54,7 +54,7 @@ class AddInsulinDialog(private val mContext: Context,
         }
 
         mNameSpinner.adapter = ArrayAdapter<String>(mContext,
-                android.support.v7.appcompat.R.layout.support_simple_spinner_dropdown_item, names)
+                androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, names)
 
         mNameSpinner.setSelection(if (spinnerPosition == -1) 0 else spinnerPosition)
     }

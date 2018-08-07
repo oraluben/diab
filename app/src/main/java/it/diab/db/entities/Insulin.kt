@@ -1,6 +1,6 @@
 package it.diab.db.entities
 
-import android.arch.persistence.room.*
+import androidx.room.*
 import it.diab.db.converters.TimeFrameConverter
 import it.diab.util.timeFrame.TimeFrame
 

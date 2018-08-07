@@ -1,11 +1,12 @@
 package it.diab.insulin.editor
 
-import android.arch.lifecycle.ViewModelProviders
-import android.support.test.rule.ActivityTestRule
-import android.support.test.runner.AndroidJUnit4
+import androidx.lifecycle.ViewModelProviders
+import androidx.test.rule.ActivityTestRule
+import androidx.test.runner.AndroidJUnit4
 import it.diab.db.AppDatabase
 import it.diab.db.entities.insulin
 import it.diab.util.timeFrame.TimeFrame
+import org.junit.Assert
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test

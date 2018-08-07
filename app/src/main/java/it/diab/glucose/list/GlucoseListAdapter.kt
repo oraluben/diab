@@ -1,12 +1,12 @@
 package it.diab.glucose.list
 
-import android.arch.lifecycle.ViewModelProviders
-import android.arch.paging.PagedListAdapter
+import androidx.lifecycle.ViewModelProviders
+import androidx.paging.PagedListAdapter
 import android.content.Context
 import android.graphics.drawable.Drawable
-import android.support.annotation.ColorRes
-import android.support.v4.content.ContextCompat
-import android.support.v7.util.DiffUtil
+import androidx.annotation.ColorRes
+import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.DiffUtil
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup

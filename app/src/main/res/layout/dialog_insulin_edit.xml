@@ -25,7 +25,7 @@
             android:tint="@color/black"
             app:srcCompat="@drawable/ic_menu_insulin" />
 
-        <android.support.v7.widget.AppCompatEditText
+        <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/insulin_edit_name"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -48,7 +48,7 @@
             android:contentDescription="@null"
             app:srcCompat="@drawable/ic_time" />
 
-        <android.support.v7.widget.AppCompatSpinner
+        <androidx.appcompat.widget.AppCompatSpinner
             android:id="@+id/insulin_edit_time"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -69,7 +69,7 @@
             android:contentDescription="@null"
             app:srcCompat="@drawable/ic_basal" />
 
-        <android.support.v7.widget.SwitchCompat
+        <androidx.appcompat.widget.SwitchCompat
             android:id="@+id/insulin_edit_basal"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -91,7 +91,7 @@
             android:contentDescription="@null"
             app:srcCompat="@drawable/ic_half_units" />
 
-        <android.support.v7.widget.SwitchCompat
+        <androidx.appcompat.widget.SwitchCompat
             android:id="@+id/insulin_edit_half_units"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -99,12 +99,12 @@
             android:text="@string/insulin_item_half_units" />
     </LinearLayout>
 
-    <android.support.constraint.ConstraintLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="4dp">
 
-        <android.support.v7.widget.AppCompatButton
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/insulin_edit_btn_neutral"
             style="@style/Widget.AppCompat.Button.Borderless.Colored"
             android:layout_width="wrap_content"
@@ -120,7 +120,7 @@
             app:layout_constraintStart_toStartOf="parent"
             tools:visibility="visible" />
 
-        <android.support.v7.widget.AppCompatButton
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/insulin_edit_btn_positive"
             style="@style/Widget.AppCompat.Button.Borderless.Colored"
             android:layout_width="wrap_content"
@@ -132,7 +132,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 
-        <android.support.v7.widget.AppCompatButton
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/insulin_edit_btn_negative"
             style="@style/Widget.AppCompat.Button.Borderless.Colored"
             android:layout_width="wrap_content"
@@ -142,5 +142,5 @@
             android:textColor="@color/colorAccent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/insulin_edit_btn_positive" />
-    </android.support.constraint.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </LinearLayout>
