@@ -35,8 +35,8 @@ class FitActivity : AppCompatActivity() {
 
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
-        toolbar.setNavigationIcon(R.drawable.ic_close)
-        toolbar.setNavigationOnClickListener { _ -> finish() }
+        toolbar.setNavigationIcon(R.drawable.ic_toolbar_back)
+        toolbar.setNavigationOnClickListener { finish() }
 
         mCoordinator = findViewById(R.id.coordinator)
         mHeaderText = findViewById(R.id.fit_header_text)

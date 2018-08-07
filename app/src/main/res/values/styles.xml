@@ -1,9 +1,10 @@
 <resources>
 
-    <style name="AppTheme" parent="Theme.AppCompat.Light">
+    <style name="AppTheme" parent="Theme.MaterialComponents.Light">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="dialogCornerRadius">@dimen/app_radius</item>
         <item name="isLightTheme">true</item>
         <item name="android:windowBackground">@color/background_activity</item>
         <item name="android:windowLightStatusBar">true</item>
@@ -20,16 +21,10 @@
 
     <!-- Toolbar -->
 
-    <style name="AppTheme.ToolbarTheme" parent="ThemeOverlay.AppCompat.ActionBar">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">?actionBarSize</item>
-        <item name="android:background">@color/colorPrimary</item>
-    </style>
-
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.ActionBar" />
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.MaterialComponents.ActionBar" />
 
     <!-- Insulin editor -->
-    <style name="AppTheme.DialogActivity" parent="Theme.AppCompat.Light.Dialog">
+    <style name="AppTheme.DialogActivity" parent="Theme.MaterialComponents.Light.Dialog">
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 

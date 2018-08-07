@@ -4,5 +4,5 @@
     android:shape="rectangle"
     tools:keep="@drawable/bg_overview_graph_marker">
     <solid android:color="@color/colorAccentDark" />
-    <corners android:radius="4dp" />
+    <corners android:radius="@dimen/app_radius" />
 </shape>

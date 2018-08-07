@@ -18,17 +18,18 @@
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
+            android:layout_height="?actionBarSize"
             app:layout_scrollFlags="scroll|enterAlways"
-            app:popupTheme="@style/AppTheme.AppBarOverlay"
-            app:theme="@style/AppTheme.ToolbarTheme" />
+            app:popupTheme="@style/AppTheme.AppBarOverlay" />
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tabs"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            app:tabBackground="@color/colorPrimary"
             app:tabGravity="fill"
             app:tabMode="fixed"
+            app:tabRippleColor="@color/colorAccentLight"
             app:tabSelectedTextColor="@color/colorAccent" />
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -45,6 +46,5 @@
         android:layout_gravity="bottom|center_horizontal"
         android:layout_margin="@dimen/fab_margin"
         android:transitionName="@string/transition_glucose_fab"
-        app:srcCompat="@drawable/ic_add_glucose"
-        tools:targetApi="lollipop" />
+        app:srcCompat="@drawable/ic_add_glucose" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

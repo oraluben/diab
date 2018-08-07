@@ -9,9 +9,8 @@
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:elevation="0dp"
-        android:theme="@style/AppTheme.ToolbarTheme" />
+        android:layout_height="?actionBarSize"
+        android:elevation="0dp" />
 
     <it.diab.ui.recyclerview.RecyclerViewExt
         android:id="@+id/insulin_list"

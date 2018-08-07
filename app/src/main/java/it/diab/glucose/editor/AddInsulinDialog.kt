@@ -1,13 +1,13 @@
 package it.diab.glucose.editor
 
 import android.annotation.SuppressLint
-import android.app.AlertDialog
 import android.content.Context
 import androidx.appcompat.widget.AppCompatSpinner
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.EditText
+import androidx.appcompat.app.AlertDialog
 import it.diab.R
 import it.diab.db.entities.Glucose
 import it.diab.db.entities.Insulin

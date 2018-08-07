@@ -11,7 +11,7 @@
     android:stateListAnimator="@animator/lift_on_touch"
     android:animateLayoutChanges="true"
     app:cardBackgroundColor="@color/colorAccent"
-    app:cardCornerRadius="4dp"
+    app:cardCornerRadius="@dimen/app_radius"
     app:cardElevation="2dp"
     app:contentPaddingBottom="8dp"
     app:contentPaddingLeft="16dp"

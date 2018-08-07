@@ -10,10 +10,8 @@
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:elevation="0dp"
-        android:theme="@style/AppTheme.ToolbarTheme" />
-
+        android:layout_height="?actionBarSize"
+        android:elevation="0dp" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -24,22 +22,23 @@
             android:id="@+id/fit_header_text"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:drawablePadding="16dp"
             android:drawableStart="@drawable/ic_fit_header"
+            android:drawablePadding="16dp"
             android:gravity="center_vertical"
-            android:paddingEnd="16dp"
             android:paddingStart="16dp"
+            android:paddingEnd="16dp"
             tools:text="@string/fit_status_connected" />
 
-        <androidx.appcompat.widget.AppCompatButton
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/fit_connect_button"
-            style="@style/Widget.AppCompat.Button.Colored"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:text="@string/fit_button_connect"
             android:textAllCaps="false"
             android:visibility="gone"
+            app:cornerRadius="@dimen/app_radius"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/fit_header_text"
@@ -57,8 +56,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
-            android:paddingBottom="16dp"
             android:paddingStart="16dp"
+            android:paddingBottom="16dp"
             android:text="@string/fit_privacy"
             android:textColor="?android:attr/textColorSecondary"
             android:textStyle="bold"
@@ -66,26 +65,28 @@
             tools:ignore="RtlSymmetry" />
 
 
-        <androidx.appcompat.widget.AppCompatButton
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/fit_disconnect_button"
-            style="@style/Widget.AppCompat.Button.Borderless.Colored"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/fit_privacy_disconnect"
             android:textAllCaps="false"
+            app:cornerRadius="@dimen/app_radius"
             app:layout_constraintEnd_toStartOf="@+id/fit_delete_all_button"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/fit_privacy_category"
             tools:enabled="false" />
 
-        <androidx.appcompat.widget.AppCompatButton
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/fit_delete_all_button"
-            style="@style/Widget.AppCompat.Button.Borderless.Colored"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/fit_privacy_delete"
             android:textAllCaps="false"
+            app:cornerRadius="@dimen/app_radius"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/fit_disconnect_button"
