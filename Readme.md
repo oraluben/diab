@@ -5,15 +5,39 @@
 Diab
 =====
 
+## Features
 
-## Install git push hooks
+* Save records of glucose and insulins
+* Google Fit integration (optional)
+* Insulin suggestions
 
-Run `./install-git-hook.sh`
+## License
 
-## Install ktlint
+Released under the [GNU GPLv3](https://www.gnu.org/licenses/gpl-3.0.txt).
+
+## Working with the repository
+
+### Install git push hooks
+
+Install git pre-push hooks to make sure code commited to
+the master branch passess all the unit tests.
+
+```
+./install-git-hook.sh
+```
+
+### Install ktlint
+
+Ktlint enforces code style guidelines.
+Enable it to keep your contributions consistent to
+the rest of the code 
 
 ```
 curl -sSLO https://github.com/shyiko/ktlint/releases/download/0.27.0/ktlint && chmod +x ktlint
 ./ktlint --apply-to-idea-project --android
 ```
 
+### Creating insulin suggestion models
+
+To create your customized insulin suggestions models, see
+the [readme found in the `ml` module](ml/Readme.md)
