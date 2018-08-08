@@ -1,7 +1,11 @@
 package it.diab.util
 
 import android.content.res.Resources
-import android.graphics.*
+import android.graphics.Bitmap
+import android.graphics.Canvas
+import android.graphics.Paint
+import android.graphics.Rect
+import android.graphics.RectF
 import android.graphics.drawable.Drawable
 import androidx.annotation.ColorInt
 import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory

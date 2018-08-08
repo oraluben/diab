@@ -1,14 +1,19 @@
 package it.diab.db.entities
 
-import androidx.room.*
 import android.os.Parcel
 import android.os.Parcelable
 import androidx.annotation.IntDef
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.Ignore
+import androidx.room.Index
+import androidx.room.PrimaryKey
+import androidx.room.TypeConverters
 import it.diab.db.converters.DateConverter
 import it.diab.db.converters.TimeFrameConverter
 import it.diab.util.extensions.toTimeFrame
 import it.diab.util.timeFrame.TimeFrame
-import java.util.*
+import java.util.Date
 
 @Entity(tableName = "glucose",
         indices = [Index(value = ["date", "uid"], unique = true)])

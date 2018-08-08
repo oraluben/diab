@@ -1,7 +1,8 @@
 package it.diab.util
 
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Date
+import java.util.Locale
 
 object DateUtils {
     private var SECOND: Long = 1000 // Millisecond * 1000

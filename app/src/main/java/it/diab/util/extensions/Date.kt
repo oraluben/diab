@@ -4,7 +4,9 @@ import android.content.res.Resources
 import it.diab.R
 import it.diab.util.timeFrame.TimeFrame
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Calendar
+import java.util.Date
+import java.util.Locale
 
 operator fun Date.get(diff: Int): Date {
     val calendar = getCalendar()

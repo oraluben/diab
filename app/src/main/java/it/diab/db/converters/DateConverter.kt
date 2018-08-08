@@ -1,7 +1,7 @@
 package it.diab.db.converters
 
 import androidx.room.TypeConverter
-import java.util.*
+import java.util.Date
 
 class DateConverter {
 

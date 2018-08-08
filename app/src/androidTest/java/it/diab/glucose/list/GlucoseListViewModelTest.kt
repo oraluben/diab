@@ -11,7 +11,6 @@ import it.diab.db.entities.glucose
 import it.diab.db.entities.insulin
 import it.diab.util.extensions.asTimeFrame
 import it.diab.util.timeFrame.TimeFrame
-import org.junit.Assert
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test

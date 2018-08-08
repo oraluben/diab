@@ -9,7 +9,7 @@ import it.diab.db.entities.Insulin
 import it.diab.util.DateUtils
 import it.diab.util.extensions.asTimeFrame
 import it.diab.util.timeFrame.TimeFrame
-import java.util.*
+import java.util.Date
 
 class EditorViewModel(owner: Application) : AndroidViewModel(owner) {
     var glucose = Glucose()

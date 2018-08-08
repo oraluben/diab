@@ -3,22 +3,24 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="16dp"
     android:orientation="horizontal"
+    android:padding="16dp"
     tools:targetApi="lollipop">
 
     <androidx.appcompat.widget.AppCompatSpinner
         android:id="@+id/glucose_editor_insulin_spinner"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="0.7"/>
+        android:layout_weight="0.7" />
 
     <EditText
         android:id="@+id/glucose_editor_insulin_value"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="0.3"
+        android:hint="@string/glucose_editor_insulin_value"
+        android:importantForAutofill="no"
         android:inputType="numberDecimal"
         android:maxLines="1"
-        android:hint="@string/glucose_editor_insulin_value"/>
+        tools:targetApi="O" />
 </LinearLayout>

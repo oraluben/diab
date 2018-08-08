@@ -6,7 +6,6 @@ import androidx.test.runner.AndroidJUnit4
 import it.diab.db.AppDatabase
 import it.diab.db.entities.insulin
 import it.diab.util.timeFrame.TimeFrame
-import org.junit.Assert
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test

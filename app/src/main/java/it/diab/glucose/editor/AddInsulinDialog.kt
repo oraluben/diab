@@ -2,17 +2,17 @@ package it.diab.glucose.editor
 
 import android.annotation.SuppressLint
 import android.content.Context
-import androidx.appcompat.widget.AppCompatSpinner
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.widget.AppCompatSpinner
 import it.diab.R
 import it.diab.db.entities.Glucose
 import it.diab.db.entities.Insulin
 import it.diab.util.extensions.asTimeFrame
-import java.util.*
+import java.util.Date
 
 @SuppressLint("InflateParams")
 class AddInsulinDialog(private val mContext: Context,

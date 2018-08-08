@@ -2,8 +2,8 @@ package it.diab.fit
 
 import android.app.Activity
 import android.app.Application
-import androidx.lifecycle.AndroidViewModel
 import android.content.Context
+import androidx.lifecycle.AndroidViewModel
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.fitness.Fitness

@@ -1,11 +1,11 @@
 package it.diab.ui.recyclerview
 
 import android.content.Context
+import android.util.AttributeSet
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import android.util.AttributeSet
 import it.diab.R
 
 class RecyclerViewExt : RecyclerView {

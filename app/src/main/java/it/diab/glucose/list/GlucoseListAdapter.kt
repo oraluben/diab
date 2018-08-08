@@ -1,18 +1,18 @@
 package it.diab.glucose.list
 
-import androidx.lifecycle.ViewModelProviders
-import androidx.paging.PagedListAdapter
 import android.content.Context
 import android.graphics.drawable.Drawable
-import androidx.annotation.ColorRes
-import androidx.core.content.ContextCompat
-import androidx.recyclerview.widget.DiffUtil
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.TextView
+import androidx.annotation.ColorRes
+import androidx.core.content.ContextCompat
+import androidx.lifecycle.ViewModelProviders
+import androidx.paging.PagedListAdapter
+import androidx.recyclerview.widget.DiffUtil
 import it.diab.MainActivity
 import it.diab.R
 import it.diab.db.entities.Glucose
@@ -21,7 +21,8 @@ import it.diab.util.UIUtils
 import it.diab.util.extensions.diff
 import it.diab.util.extensions.getHeader
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Date
+import java.util.Locale
 
 class GlucoseListAdapter(private val mContext: Context, private val onItemClick: (Long) -> Unit) :
         PagedListAdapter<Glucose, GlucoseListAdapter.GlucoseHolder>(CALLBACK) {

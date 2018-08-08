@@ -7,10 +7,10 @@ import android.content.Intent
 import android.os.AsyncTask
 import android.os.Build
 import android.os.Environment
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
-import android.widget.Toast
 import it.diab.R
 import it.diab.db.AppDatabase
 import it.diab.db.entities.Glucose

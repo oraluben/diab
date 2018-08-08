@@ -1,8 +1,8 @@
 package it.diab.util.extensions
 
 import android.content.Context
-import com.google.android.material.snackbar.Snackbar
 import android.view.ViewGroup
+import com.google.android.material.snackbar.Snackbar
 import it.diab.R
 
 fun Snackbar.setDiabUi(context: Context): Snackbar {

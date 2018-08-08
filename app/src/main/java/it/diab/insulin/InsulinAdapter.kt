@@ -1,14 +1,14 @@
 package it.diab.insulin
 
-import androidx.paging.PagedListAdapter
 import android.content.Context
 import android.content.Intent
-import androidx.recyclerview.widget.DiffUtil
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.paging.PagedListAdapter
+import androidx.recyclerview.widget.DiffUtil
 import it.diab.R
 import it.diab.db.entities.Insulin
 import it.diab.insulin.editor.EditorActivity

@@ -3,13 +3,13 @@ package it.diab.ui
 import android.content.Context
 import android.os.AsyncTask
 import android.os.Handler
-import androidx.core.content.ContextCompat
-import androidx.cardview.widget.CardView
 import android.util.AttributeSet
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.ProgressBar
 import android.widget.TextView
+import androidx.cardview.widget.CardView
+import androidx.core.content.ContextCompat
 import it.diab.R
 import it.diab.db.entities.Glucose
 import it.diab.db.entities.Insulin

@@ -1,6 +1,10 @@
 package it.diab.db.entities
 
-import androidx.room.*
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.Ignore
+import androidx.room.PrimaryKey
+import androidx.room.TypeConverters
 import it.diab.db.converters.TimeFrameConverter
 import it.diab.util.timeFrame.TimeFrame
 

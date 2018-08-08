@@ -1,20 +1,20 @@
 package it.diab.db
 
-import androidx.sqlite.db.SupportSQLiteDatabase
+import android.content.ContentValues
+import android.content.Context
+import android.database.sqlite.SQLiteDatabase
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.migration.Migration
-import android.content.ContentValues
-import android.content.Context
-import android.database.sqlite.SQLiteDatabase
+import androidx.sqlite.db.SupportSQLiteDatabase
 import it.diab.db.dao.GlucoseDao
 import it.diab.db.dao.InsulinDao
 import it.diab.db.entities.Glucose
 import it.diab.db.entities.Insulin
 import it.diab.util.SingletonHolder
 import it.diab.util.extensions.asTimeFrame
-import java.util.*
+import java.util.Date
 
 @Database(entities = [(Glucose::class), (Insulin::class)], version = 4)
 abstract class AppDatabase protected constructor() : RoomDatabase() {
