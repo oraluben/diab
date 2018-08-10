@@ -1,11 +1,10 @@
 package it.diab.insulin.editor
 
 import android.os.Bundle
-import android.view.View
-import android.view.Window
+import android.view.LayoutInflater
 import android.widget.ArrayAdapter
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.AppCompatButton
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.appcompat.widget.AppCompatSpinner
 import androidx.appcompat.widget.SwitchCompat
@@ -19,7 +18,6 @@ class EditorActivity : AppCompatActivity() {
     private lateinit var mSpinner: AppCompatSpinner
     private lateinit var mBasalSwitch: SwitchCompat
     private lateinit var mHalfUnitsSwitch: SwitchCompat
-    private lateinit var mDeleteButton: AppCompatButton
 
     private lateinit var mViewModel: EditorViewModel
     private lateinit var mTimeFrames: Array<String>
@@ -28,35 +26,37 @@ class EditorActivity : AppCompatActivity() {
     public override fun onCreate(savedInstance: Bundle?) {
         super.onCreate(savedInstance)
 
-        requestWindowFeature(Window.FEATURE_NO_TITLE)
-        setContentView(R.layout.dialog_insulin_edit)
+        setFinishOnTouchOutside(true)
 
         mViewModel = ViewModelProviders.of(this).get(EditorViewModel::class.java)
 
-        mEditText = findViewById(R.id.insulin_edit_name)
-        mSpinner = findViewById(R.id.insulin_edit_time)
-        mBasalSwitch = findViewById(R.id.insulin_edit_basal)
-        mHalfUnitsSwitch = findViewById(R.id.insulin_edit_half_units)
-        mDeleteButton = findViewById(R.id.insulin_edit_btn_neutral)
-        val cancelButton = findViewById<AppCompatButton>(R.id.insulin_edit_btn_negative)
-        val saveButton = findViewById<AppCompatButton>(R.id.insulin_edit_btn_positive)
+        val layoutInflater = getSystemService(LayoutInflater::class.java)
+        val view = layoutInflater.inflate(R.layout.dialog_insulin_edit, null)
+
+        mEditText = view.findViewById(R.id.insulin_edit_name)
+        mSpinner = view.findViewById(R.id.insulin_edit_time)
+        mBasalSwitch = view.findViewById(R.id.insulin_edit_basal)
+        mHalfUnitsSwitch = view.findViewById(R.id.insulin_edit_half_units)
 
         mTimeFrames = arrayOf(getString(TimeFrame.EXTRA.string),
                 getString(TimeFrame.MORNING.string), getString(TimeFrame.LATE_MORNING.string),
                 getString(TimeFrame.LUNCH.string), getString(TimeFrame.AFTERNOON.string),
                 getString(TimeFrame.DINNER.string), getString(TimeFrame.NIGHT.string))
 
-        cancelButton.setOnClickListener { _ -> finish() }
-        saveButton.setOnClickListener { _ ->
-            mViewModel.insulin.name = mEditText.text.toString()
-            mViewModel.insulin.setTimeFrame(mSpinner.selectedItemPosition - 1)
-            mViewModel.insulin.isBasal = mBasalSwitch.isChecked
-            mViewModel.insulin.hasHalfUnits = mHalfUnitsSwitch.isChecked
-            mViewModel.save()
-            finish()
+        setupUI()
+
+        val builder = AlertDialog.Builder(this)
+            .setTitle(R.string.insulin_editor_edit)
+            .setView(view)
+            .setOnDismissListener { finish() }
+            .setPositiveButton(R.string.save, { _, _ -> onSaveInsulin() })
+            .setNegativeButton(R.string.cancel, { _, _ -> finish() })
+
+        if (mEditMode) {
+            builder.setNeutralButton(R.string.remove, { _, _ -> onDeleteInsulin() })
         }
 
-        setupUI()
+        builder.show()
     }
 
     private fun setupUI() {
@@ -75,15 +75,23 @@ class EditorActivity : AppCompatActivity() {
 
         mViewModel.setInsulin(uid)
 
-        title = getString(R.string.insulin_editor_edit)
         mEditText.setText(mViewModel.insulin.name)
         mBasalSwitch.isChecked = mViewModel.insulin.isBasal
         mHalfUnitsSwitch.isChecked = mViewModel.insulin.hasHalfUnits
-        mDeleteButton.setOnClickListener {
-            mViewModel.delete(mViewModel.insulin)
-            finish()
-        }
-        mDeleteButton.visibility = View.VISIBLE
+    }
+
+    private fun onSaveInsulin() {
+        mViewModel.insulin.name = mEditText.text.toString()
+        mViewModel.insulin.setTimeFrame(mSpinner.selectedItemPosition - 1)
+        mViewModel.insulin.isBasal = mBasalSwitch.isChecked
+        mViewModel.insulin.hasHalfUnits = mHalfUnitsSwitch.isChecked
+        mViewModel.save()
+        finish()
+    }
+
+    private fun onDeleteInsulin() {
+        mViewModel.delete(mViewModel.insulin)
+        finish()
     }
 
     companion object {

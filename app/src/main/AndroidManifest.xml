@@ -37,6 +37,7 @@
 
         <activity
             android:name=".insulin.editor.EditorActivity"
+            android:excludeFromRecents="true"
             android:theme="@style/AppTheme.DialogActivity" />
 
         <activity
