@@ -32,6 +32,7 @@ import androidx.viewpager.widget.ViewPager
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayout
+import it.diab.fit.FitActivity
 import it.diab.glucose.editor.EditorActivity
 import it.diab.glucose.export.ExportGlucoseService
 import it.diab.glucose.list.GlucoseListFragment
@@ -72,12 +73,20 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    override fun onCreateOptionsMenu(menu: Menu) =
-            true.also { menuInflater.inflate(R.menu.activity_main, menu) }
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.activity_main, menu)
+
+        // Hide fit if disabled
+        val fit = menu.findItem(R.id.menu_fit)
+        fit.isVisible = BuildConfig.HAS_FIT
+
+        return true
+    }
 
     override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
         R.id.menu_insulin -> onMenuInsulin()
         R.id.menu_export -> onMenuExport()
+        R.id.menu_fit -> onMenuFit()
         else -> false
     }
 
@@ -166,6 +175,16 @@ class MainActivity : AppCompatActivity() {
                 .setNegativeButton(android.R.string.cancel, null)
                 .show()
 
+        return true
+    }
+
+    private fun onMenuFit(): Boolean {
+        if (!BuildConfig.HAS_FIT) {
+            return false
+        }
+
+        val intent = Intent(this, FitActivity::class.java)
+        startActivity(intent)
         return true
     }
 
