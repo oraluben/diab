@@ -42,7 +42,6 @@
         <activity
             android:name=".fit.FitActivity"
             android:label="@string/fit_name"
-            android:exported="true"
             android:theme="@style/AppTheme.NoActionBar" />
 
         <service

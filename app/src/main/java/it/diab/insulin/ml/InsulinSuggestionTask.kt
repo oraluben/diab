@@ -1,8 +1,6 @@
 package it.diab.insulin.ml
 
-import android.content.res.Resources
 import android.os.AsyncTask
-import it.diab.R
 import it.diab.db.entities.Glucose
 import it.diab.util.timeFrame.TimeFrame
 import org.json.JSONObject
@@ -11,7 +9,7 @@ import java.io.InputStream
 import java.io.InputStreamReader
 import java.util.stream.Collectors
 
-class InsulinSuggestionTask(private val mResources: Resources,
+class InsulinSuggestionTask(private val mBridge: PluginBridge,
                             private val mOnExecuted: (Float) -> Unit) :
         AsyncTask<Glucose, Unit, Float>() {
 
@@ -57,13 +55,8 @@ class InsulinSuggestionTask(private val mResources: Resources,
     }
 
     private fun getEstimatorStream(timeFrame: TimeFrame) =
-            mResources.openRawResource(when (timeFrame) {
-                TimeFrame.MORNING -> R.raw.estimator_1
-                TimeFrame.LUNCH -> R.raw.estimator_3
-                TimeFrame.DINNER -> R.raw.estimator_5
-                else -> throw IllegalArgumentException(
-                        "$timeFrame must be one of MORNING, LUNCH, DINNER")
-            })
+        mBridge.getStreamFor(timeFrame) ?: throw IllegalArgumentException(
+            "$timeFrame must be one of MORNING, LUNCH, DINNER")
 
     private fun parseEstimator(input: InputStream): HashMap<Int, Float> {
         val map = HashMap<Int, Float>()

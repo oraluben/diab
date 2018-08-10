@@ -17,24 +17,20 @@ Released under the [GNU GPLv3](https://www.gnu.org/licenses/gpl-3.0.txt).
 
 ## Working with the repository
 
-### Install git push hooks
-
-Install git pre-push hooks to make sure code commited to
-the master branch passess all the unit tests.
+Clone the repository with git
 
 ```
-./install-git-hook.sh
+git clone https://github.com/bvlj/diab
 ```
 
-### Install ktlint
+Setup the work environment
 
-Ktlint enforces code style guidelines.
-Enable it to keep your contributions consistent to
-the rest of the code 
+* Install git pre-push hooks (all the unit test must pass before pushing to master)
+* Install ktlint (enforces code style guidelines)
+* Prevent git from tracking changes to your trained models
 
 ```
-curl -sSLO https://github.com/shyiko/ktlint/releases/download/0.27.0/ktlint && chmod +x ktlint
-./ktlint --apply-to-idea-project --android
+./setup.sh
 ```
 
 ### Creating insulin suggestion models

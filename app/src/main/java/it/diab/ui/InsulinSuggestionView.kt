@@ -14,6 +14,7 @@ import it.diab.R
 import it.diab.db.entities.Glucose
 import it.diab.db.entities.Insulin
 import it.diab.insulin.ml.InsulinSuggestionTask
+import it.diab.insulin.ml.PluginBridge
 import it.diab.util.VibrationUtil
 import it.diab.util.timeFrame.TimeFrame
 import kotlin.math.roundToInt
@@ -25,6 +26,7 @@ class InsulinSuggestionView(context: Context, attrs: AttributeSet) : LinearLayou
 
     private lateinit var mTask: InsulinSuggestionTask
 
+    private var mPluginBridge: PluginBridge
     private var mOnSuggestionApply: (Float, Insulin) -> Unit = { _,_ -> }
     private var mIsEnabled = false
 
@@ -36,6 +38,8 @@ class InsulinSuggestionView(context: Context, attrs: AttributeSet) : LinearLayou
         mCardView = findViewById(R.id.insulin_suggestion_card)
         mProgressView = findViewById(R.id.insulin_suggestion_progress)
         mTextView = findViewById(R.id.insulin_suggestion_text)
+
+        mPluginBridge = PluginBridge(context)
     }
 
     fun bind(glucose: Glucose, insulin: Insulin, onSuggestionApply: (Float, Insulin) -> Unit) {
@@ -46,7 +50,7 @@ class InsulinSuggestionView(context: Context, attrs: AttributeSet) : LinearLayou
         mGlucose = glucose
         mInsulin = insulin
         mOnSuggestionApply = onSuggestionApply
-        mTask = InsulinSuggestionTask(resources, this::onSuggestionLoaded)
+        mTask = InsulinSuggestionTask(mPluginBridge, this::onSuggestionLoaded)
 
         setup()
         runTask()
