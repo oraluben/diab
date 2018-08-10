@@ -9,24 +9,22 @@ import java.io.IOException
 import java.io.InputStream
 
 class PluginBridge(context: Context) {
-    private val mAssetManager: AssetManager
-    private var mIsAvailable = false
+    private val mAssetManager: AssetManager?
 
     private val emptyStream: InputStream
         get() = ByteArrayInputStream("{\n}".toByteArray(Charsets.UTF_8))
 
     init {
         mAssetManager = if (hasPlugin(context)) {
-            mIsAvailable = true
             val plugin = context.createPackageContext(PLUGIN_PACKAGE_NAME, 0)
             plugin.assets
         } else {
-            context.assets
+            null
         }
     }
 
-    fun getStreamFor(timeFrame: TimeFrame): InputStream? {
-        if (!mIsAvailable) {
+    fun getStreamFor(timeFrame: TimeFrame): InputStream {
+        if (mAssetManager == null) {
             return emptyStream
         }
 
@@ -34,6 +32,8 @@ class PluginBridge(context: Context) {
         return try {
             mAssetManager.open(assetName)
         } catch (e: IOException) {
+            emptyStream
+        } catch (e: NullPointerException) {
             emptyStream
         }
     }

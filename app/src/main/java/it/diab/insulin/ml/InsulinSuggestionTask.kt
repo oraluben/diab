@@ -2,7 +2,6 @@ package it.diab.insulin.ml
 
 import android.os.AsyncTask
 import it.diab.db.entities.Glucose
-import it.diab.util.timeFrame.TimeFrame
 import org.json.JSONObject
 import java.io.BufferedReader
 import java.io.InputStream
@@ -16,7 +15,7 @@ class InsulinSuggestionTask(private val mBridge: PluginBridge,
     override fun doInBackground(vararg params: Glucose?): Float {
 
         val glucose = params[0] ?: throw IllegalArgumentException("You must provide a glucose")
-        val estimatorStream = getEstimatorStream(glucose.timeFrame)
+        val estimatorStream = mBridge.getStreamFor(glucose.timeFrame)
 
         val eatLevelFix = glucose.eatLevel - 1
 
@@ -53,10 +52,6 @@ class InsulinSuggestionTask(private val mBridge: PluginBridge,
     override fun onPostExecute(result: Float?) {
         mOnExecuted(result ?: PARSE_ERROR)
     }
-
-    private fun getEstimatorStream(timeFrame: TimeFrame) =
-        mBridge.getStreamFor(timeFrame) ?: throw IllegalArgumentException(
-            "$timeFrame must be one of MORNING, LUNCH, DINNER")
 
     private fun parseEstimator(input: InputStream): HashMap<Int, Float> {
         val map = HashMap<Int, Float>()
