@@ -2,5 +2,9 @@
 <full-backup-content>
     <!-- Exclude specific shared preferences that contain GCM registration Id -->
     <exclude domain="sharedpref" path="com.google.android.gms.signin.xml"/>
-    <exclude domain="sharedpref" path="com.google.android.gms.signin"/>
+
+    <!-- Include all the database-related files -->
+    <include domain="database" path="." />
+    <!-- Include the app's shared prefs -->
+    <include domain="sharedpref" path="it.diab_preferences.xml" />
 </full-backup-content>
