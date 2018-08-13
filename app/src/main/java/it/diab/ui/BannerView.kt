@@ -49,7 +49,7 @@ class BannerView(context: Context, attrs: AttributeSet) : FrameLayout(context, a
         mText.text = resources.getString(bannerText)
     }
 
-    fun dismiss() {
+    private fun dismiss() {
         animate()
             .alpha(0f)
             .withEndAction {

@@ -38,7 +38,6 @@ class InsulinAdapter(private val mContext: Context) :
     override fun getItemCount() = super.getItemCount() + 1
 
     class InsulinHolder(view: View): ViewHolderExt(view) {
-        private val mView: View = view.findViewById(R.id.item_insulin_view)
         private val mTitle: TextView = view.findViewById(R.id.item_insulin_name)
         private val mIcon: ImageView = view.findViewById(R.id.item_insulin_icon)
 
@@ -51,14 +50,13 @@ class InsulinAdapter(private val mContext: Context) :
         }
 
         fun clear() {
-            mView.visibility = View.GONE
-            mView.setOnClickListener {  }
+            itemView.visibility = View.GONE
         }
 
         private fun bindAddView(context: Context) {
             mTitle.text = context.getString(R.string.insulin_item_add)
             mIcon.setImageResource(R.drawable.ic_add)
-            mView.setOnClickListener { _ ->
+            itemView.setOnClickListener { _ ->
                 context.startActivity(Intent(context, EditorActivity::class.java)) }
         }
 
@@ -68,7 +66,7 @@ class InsulinAdapter(private val mContext: Context) :
             mTitle.text = insulin.name
             mIcon.setImageResource(insulin.timeFrame.icon)
 
-            mView.setOnClickListener { _ ->
+            itemView.setOnClickListener { _ ->
                 val intent = Intent(context, EditorActivity::class.java)
                 intent.putExtra(EditorActivity.EXTRA_UID, insulin.uid)
                 context.startActivity(intent)

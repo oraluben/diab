@@ -1,5 +1,6 @@
 package it.diab.insulin.editor
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.widget.ArrayAdapter
@@ -23,6 +24,7 @@ class EditorActivity : AppCompatActivity() {
     private lateinit var mTimeFrames: Array<String>
     private var mEditMode = false
 
+    @SuppressLint("InflateParams")
     public override fun onCreate(savedInstance: Bundle?) {
         super.onCreate(savedInstance)
 

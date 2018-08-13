@@ -12,7 +12,6 @@ import it.diab.db.DatabaseTask
 import it.diab.db.entities.Glucose
 import it.diab.fit.FitActivity
 import it.diab.insulin.InsulinActivity
-import it.diab.util.BannerModel
 import it.diab.util.DateUtils
 import it.diab.util.bannerModel
 import it.diab.util.extensions.get
@@ -89,11 +88,6 @@ class OverviewViewModel(owner: Application) : AndroidViewModel(owner) {
                     .map { list[it].value.toFloat() }
                     .sum() / list.size
         }
-    }
-
-    private class HasInsulinTask(db: AppDatabase) : DatabaseTask<Unit, Boolean>(db) {
-
-        override fun doInBackground(vararg p0: Unit) = mDatabase.insulin().allStatic.isNotEmpty()
     }
 
     companion object {
