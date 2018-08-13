@@ -6,9 +6,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.annotation.ColorRes
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProviders
 import androidx.paging.PagedListAdapter
@@ -71,13 +71,13 @@ class GlucoseListAdapter(private val mContext: Context, private val onItemClick:
     }
 
     inner class GlucoseHolder(view: View) : ViewHolderExt(view) {
-        private val mLayout = view.findViewById<RelativeLayout>(R.id.item_glucose_layout)
+        private val mLayout = view.findViewById<ConstraintLayout>(R.id.item_glucose_layout)
         private val mIcon = view.findViewById<ImageView>(R.id.item_glucose_timezone)
         private val mTitle = view.findViewById<TextView>(R.id.item_glucose_value)
         private val mSummary = view.findViewById<TextView>(R.id.item_glucose_insulin)
         private val mIndicator = view.findViewById<ImageView>(R.id.item_glucose_status)
 
-        private val mHeaderLayout = view.findViewById<RelativeLayout>(R.id.item_glucose_header)
+        private val mHeaderLayout = view.findViewById<ConstraintLayout>(R.id.item_glucose_header)
         private val mHeaderTitle = view.findViewById<TextView>(R.id.item_glucose_header_title)
         private val mHeaderDesc = view.findViewById<TextView>(R.id.item_glucose_header_description)
 
@@ -146,8 +146,7 @@ class GlucoseListAdapter(private val mContext: Context, private val onItemClick:
         }
 
         fun clear() {
-            mHeaderLayout.visibility = View.GONE
-            mLayout.visibility = View.GONE
+            itemView.visibility = View.GONE
         }
     }
 
