@@ -90,4 +90,11 @@
     <string name="fit_disconnect_confim_message">Stai per disconnettere Google Fit. L\'app non sincronizzera pi\u00F9 i dati (quelli gi\u00E0 caricati resteranno su Google Fit).\nVuoi procedere?</string>
     <string name="fit_disconnect_confim_positive">Disconnetti</string>
     <string name="fit_disconnect_success">Disconnesso da Fit</string>
+
+    <!-- OnBoarding banners -->
+    <string name="banner_negative">Nascondi</string>
+    <string name="banner_insulin_add">Registra le tue insuline per aggiungere i dosaggi allo storico dei dati assieme alle glicemie</string>
+    <string name="banner_insulin_positive">Registra le insuline</string>
+    <string name="banner_fit_integration">Collega Diab al tuo Google Fit per effetuare il backup delle tue glicemie automaticamente</string>
+    <string name="banner_fit_positive">Scopri di pi\u00F9</string>
 </resources>

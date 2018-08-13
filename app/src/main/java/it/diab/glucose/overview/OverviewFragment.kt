@@ -14,12 +14,14 @@ import com.github.mikephil.charting.formatter.IValueFormatter
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
 import it.diab.R
 import it.diab.db.entities.Glucose
+import it.diab.ui.BannerView
 import it.diab.ui.MainFragment
 import it.diab.ui.graph.OverviewGraphView
 import it.diab.util.extensions.getAsMinutes
 import it.diab.util.extensions.isToday
 
 class OverviewFragment : MainFragment() {
+    private lateinit var mBanner: BannerView
     private lateinit var mChart: OverviewGraphView
 
     private lateinit var mViewModel: OverviewViewModel
@@ -33,6 +35,7 @@ class OverviewFragment : MainFragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View {
         val view = inflater.inflate(R.layout.fragment_overview, container, false)
+        mBanner = view.findViewById(R.id.overview_banner)
         mChart = view.findViewById(R.id.overview_chart)
 
         return view
@@ -42,7 +45,15 @@ class OverviewFragment : MainFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         mViewModel.list.observe(this, Observer(this::update))
+
+        val model = mViewModel.getBannerInfo()
+        model?.let {
+            mBanner.setModel(it)
+            mBanner.visibility = View.VISIBLE
+        }
     }
+
+    override fun getTitle() = R.string.fragment_overview
 
     private fun update(today: List<Glucose>?) {
         if (today == null || today.isEmpty()) {
@@ -116,6 +127,4 @@ class OverviewFragment : MainFragment() {
         dataSet.setDrawCircles(false)
         return dataSet
     }
-
-    override fun getTitle() = R.string.fragment_overview
 }
