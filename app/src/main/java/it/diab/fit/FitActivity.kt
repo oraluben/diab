@@ -14,7 +14,6 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.snackbar.Snackbar
 import it.diab.R
-import it.diab.util.extensions.setDiabUi
 
 class FitActivity : AppCompatActivity() {
 
@@ -81,7 +80,6 @@ class FitActivity : AppCompatActivity() {
 
     private fun showSnack(@StringRes message: Int) {
         Snackbar.make(mCoordinator, getString(message), Snackbar.LENGTH_LONG)
-                .setDiabUi(this)
                 .show()
     }
 

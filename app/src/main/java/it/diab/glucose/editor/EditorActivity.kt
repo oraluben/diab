@@ -44,7 +44,6 @@ import it.diab.util.VibrationUtil
 import it.diab.util.extensions.asTimeFrame
 import it.diab.util.extensions.get
 import it.diab.util.extensions.getCalendar
-import it.diab.util.extensions.setDiabUi
 import it.diab.util.extensions.toFitMealRelation
 import it.diab.util.extensions.toFitSleepRelation
 import java.util.Calendar
@@ -285,14 +284,12 @@ class EditorActivity : AppCompatActivity() {
         checkForErrors()
         if (mErrorStatus != 0) {
             Snackbar.make(mConstraintRoot, R.string.glucose_editor_save_error, Snackbar.LENGTH_LONG)
-                    .setDiabUi(this)
                     .show()
             VibrationUtil.vibrateForError(this)
             return
         }
 
         Snackbar.make(mConstraintRoot, R.string.saved, 800)
-                .setDiabUi(this)
                 .show()
         Handler().postDelayed({
             saveData()
@@ -430,7 +427,6 @@ class EditorActivity : AppCompatActivity() {
         mViewModel.applyInsulinSuggestion(suggestion, insulin, this::refresh)
 
         Snackbar.make(mConstraintRoot, R.string.insulin_suggestion_applied, Snackbar.LENGTH_LONG)
-                .setDiabUi(this)
                 .show()
     }
 

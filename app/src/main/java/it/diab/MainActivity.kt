@@ -38,7 +38,6 @@ import it.diab.glucose.export.ExportGlucoseService
 import it.diab.glucose.list.GlucoseListFragment
 import it.diab.glucose.overview.OverviewFragment
 import it.diab.insulin.InsulinActivity
-import it.diab.util.extensions.setDiabUi
 
 class MainActivity : AppCompatActivity() {
     private lateinit var mCoordinator: CoordinatorLayout
@@ -210,7 +209,6 @@ class MainActivity : AppCompatActivity() {
         }
 
         Snackbar.make(mCoordinator, R.string.export_failed_auth, Snackbar.LENGTH_LONG)
-                .setDiabUi(this)
                 .show()
     }
 
