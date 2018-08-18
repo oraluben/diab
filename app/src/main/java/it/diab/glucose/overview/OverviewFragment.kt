@@ -19,6 +19,7 @@ import it.diab.ui.MainFragment
 import it.diab.ui.graph.OverviewGraphView
 import it.diab.util.extensions.getAsMinutes
 import it.diab.util.extensions.isToday
+import it.diab.util.extensions.isZeroOrNan
 
 class OverviewFragment : MainFragment() {
     private lateinit var mBanner: BannerView
@@ -109,7 +110,7 @@ class OverviewFragment : MainFragment() {
 
     private fun getAverageDataSet(data: HashMap<Int, Float>): LineDataSet? {
         val entries = data
-                .filterNot { it.value == 0f || Float.NaN.equals(it.value) }
+                .filterNot { it.value.isZeroOrNan() }
                 .map { Entry(it.key * 60f, it.value) }
                 .sortedBy { it.x }
 
