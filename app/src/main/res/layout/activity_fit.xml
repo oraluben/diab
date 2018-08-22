@@ -22,7 +22,7 @@
             android:id="@+id/fit_header_text"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:drawableStart="@drawable/ic_fit_header"
+            android:drawableStart="@drawable/ic_google_fit"
             android:drawablePadding="16dp"
             android:gravity="center_vertical"
             android:paddingStart="16dp"

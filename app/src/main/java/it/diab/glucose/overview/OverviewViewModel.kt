@@ -58,7 +58,7 @@ class OverviewViewModel(owner: Application) : AndroidViewModel(owner) {
 
     private fun getFitBanner() = bannerModel {
         title = R.string.banner_fit_integration
-        icon = R.drawable.ic_fit_header
+        icon = R.drawable.ic_google_fit
         positiveText = R.string.banner_fit_positive
         negativeText = R.string.banner_negative
         onPositive = { it.context.startActivity(Intent(it.context, FitActivity::class.java)) }

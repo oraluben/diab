@@ -24,7 +24,7 @@
             android:paddingEnd="16dp"
             android:visibility="gone"
             tools:ignore="RtlSymmetry"
-            tools:src="@drawable/ic_fit_header"
+            tools:src="@drawable/ic_google_fit"
             tools:visibility="visible" />
 
         <androidx.appcompat.widget.AppCompatTextView
