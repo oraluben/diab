@@ -4,8 +4,6 @@
     <dimen name="overview_graph_text">6sp</dimen>
     <dimen name="overview_graph_offset">8dp</dimen>
     <dimen name="item_glucose_indicator">24dp</dimen>
-    <dimen name="snack_bar_margin">12dp</dimen>
-    <dimen name="snack_bar_elevation">6dp</dimen>
 
     <dimen name="app_radius">4dp</dimen>
 </resources>

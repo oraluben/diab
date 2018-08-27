@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<full-backup-content>
+<full-backup-content xmlns:tools="http://schemas.android.com/tools">
     <!-- Exclude specific shared preferences that contain GCM registration Id -->
-    <exclude domain="sharedpref" path="com.google.android.gms.signin.xml"/>
+    <exclude domain="sharedpref" path="com.google.android.gms.signin.xml"
+        tools:ignore="FullBackupContent" />
 
     <!-- Include all the database-related files. Require encryption for backup on api28+ -->
     <include domain="database" path="." requireFlags="clientSideEncryption" />
