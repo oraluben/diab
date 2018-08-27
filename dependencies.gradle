@@ -1,13 +1,19 @@
 ext {
 
     extLib = [
-            mpchart : "com.github.PhilJay:MPAndroidChart:v3.0.3"
+            mpchart : "com.github.PhilJay:MPAndroidChart:v3.0.3",
     ]
 
     googleLib = [
             auth : "com.google.android.gms:play-services-auth:15.0.1",
             fit : "com.google.android.gms:play-services-fitness:15.0.1",
             material : "com.google.android.material:material:1.0.0-rc01",
+    ]
+
+    leakcanaryLib = [
+            debug : "com.squareup.leakcanary:leakcanary-android:1.6.1",
+            fragment : "com.squareup.leakcanary:leakcanary-support-fragment:1.6.1",
+            release : "com.squareup.leakcanary:leakcanary-android-no-op:1.6.1",
     ]
 
     lifecycleLib = [

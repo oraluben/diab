@@ -55,6 +55,10 @@ dependencies {
 
     implementation extLib.mpchart
 
+    debugImplementation leakcanaryLib.debug
+    debugImplementation leakcanaryLib.fragment
+    releaseImplementation leakcanaryLib.release
+
     testImplementation testLib.junit
     androidTestImplementation testLib.rules
     androidTestImplementation testLib.runner
