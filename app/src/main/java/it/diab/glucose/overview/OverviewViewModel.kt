@@ -8,8 +8,8 @@ import androidx.lifecycle.LiveData
 import it.diab.BuildConfig
 import it.diab.R
 import it.diab.db.AppDatabase
-import it.diab.db.DatabaseTask
 import it.diab.db.entities.Glucose
+import it.diab.db.runOnDbThread
 import it.diab.fit.FitActivity
 import it.diab.insulin.InsulinActivity
 import it.diab.util.DateUtils
@@ -17,6 +17,7 @@ import it.diab.util.bannerModel
 import it.diab.util.extensions.get
 import it.diab.util.extensions.set
 import it.diab.util.extensions.toTimeFrame
+import it.diab.util.timeFrame.TimeFrame
 
 class OverviewViewModel(owner: Application) : AndroidViewModel(owner) {
     val list: LiveData<List<Glucose>>
@@ -28,18 +29,24 @@ class OverviewViewModel(owner: Application) : AndroidViewModel(owner) {
         list = db.glucose().all
     }
 
-    fun getAverageLastWeek(): HashMap<Int, Float> {
+    fun getAverageLastWeek() = runOnDbThread<HashMap<Int, Float>> {
         val map = HashMap<Int, Float>()
-        val task = LoadAverageTask(db)
-        task.execute()
+        val end = System.currentTimeMillis()
+        val start = end - DateUtils.WEEK
 
-        val result = task.get()
-        for ((i, item) in result.withIndex()) {
+        // Exclude TimeFrame.EXTRA
+        val size = TimeFrame.values().size - 1
+        for (i in 0..(size - 1)) {
             val timeFrame = i.toTimeFrame()
-            map[timeFrame.reprHour] = item
+
+            val lastWeek = db.glucose().getInDateRangeWithTimeFrame(start, end, i)
+            val average = lastWeek.indices
+                    .map { lastWeek[it].value }
+                    .sum() / lastWeek.size.toFloat()
+            map[timeFrame.reprHour] = average
         }
 
-        return map
+        map
     }
 
     fun getBannerInfo() = when {
@@ -64,30 +71,6 @@ class OverviewViewModel(owner: Application) : AndroidViewModel(owner) {
         onPositive = { it.context.startActivity(Intent(it.context, FitActivity::class.java)) }
         onAction = { prefs[PREF_BANNER_FIT] = false }
 
-    }
-
-    private class LoadAverageTask(db: AppDatabase) : DatabaseTask<Unit, List<Float>>(db) {
-
-        override fun doInBackground(vararg p0: Unit): List<Float> {
-            val now = System.currentTimeMillis()
-            val result = Array(6, { 0f })
-
-            for (i in 0..5) {
-                result[i] = getAverageForTimeFrame(now, i)
-            }
-
-            return result.asList()
-        }
-
-        private fun getAverageForTimeFrame(initialTime: Long, timeFrameIndex: Int): Float {
-            val list = mDatabase.glucose()
-                    .getInDateRangeWithTimeFrame(
-                            initialTime - DateUtils.WEEK, initialTime, timeFrameIndex)
-
-            return list.indices
-                    .map { list[it].value.toFloat() }
-                    .sum() / list.size
-        }
     }
 
     companion object {

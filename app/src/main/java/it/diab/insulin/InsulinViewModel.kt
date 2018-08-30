@@ -10,9 +10,9 @@ import it.diab.db.entities.Insulin
 
 class InsulinViewModel(owner: Application) : AndroidViewModel(owner) {
     val list: LiveData<PagedList<Insulin>>
-    private val mDatabase: AppDatabase = AppDatabase.getInstance(owner)
+    private val db: AppDatabase = AppDatabase.getInstance(owner)
 
     init {
-        list = LivePagedListBuilder(mDatabase.insulin().all, 5).build()
+        list = LivePagedListBuilder(db.insulin().all, 5).build()
     }
 }
