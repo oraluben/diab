@@ -8,6 +8,7 @@ import it.diab.db.entities.Insulin
 import it.diab.db.runOnDbThread
 import it.diab.util.DateUtils
 import it.diab.util.extensions.asTimeFrame
+import it.diab.util.extensions.firstIf
 import it.diab.util.timeFrame.TimeFrame
 import java.util.Date
 
@@ -32,17 +33,16 @@ class EditorViewModel(owner: Application) : AndroidViewModel(owner) {
         }
 
     fun setGlucose(uid: Long) {
-        glucose = if (uid < 0)
-            Glucose()
-        else
-            runOnDbThread<Glucose> { db.glucose().getById(uid)[0] }
+        glucose = runOnDbThread<Glucose> { db.glucose().getById(uid).firstIf({ uid >= 0 }, Glucose()) }
     }
 
     fun save() {
         runOnDbThread { db.glucose().insert(glucose) }
     }
 
-    fun getInsulin(id: Long) = runOnDbThread<Insulin> { db.insulin().getById(id)[0] }
+    fun getInsulin(uid: Long) = runOnDbThread<Insulin> {
+        db.insulin().getById(uid).firstIf({ uid >= 0 }, Insulin())
+    }
 
     fun hasPotentialBasal(glucose: Glucose) = runOnDbThread<Boolean> {
         db.insulin().getByTimeFrame(1, glucose.timeFrame.toInt()).isNotEmpty()
@@ -51,7 +51,7 @@ class EditorViewModel(owner: Application) : AndroidViewModel(owner) {
     fun getInsulinByTimeFrame(timeFrame: TimeFrame) = runOnDbThread<Insulin> {
         val insulins = db.insulin().getByTimeFrame(0, timeFrame.toInt())
 
-        if (insulins.isEmpty()) Insulin() else insulins[0]
+        insulins.firstIf({ it.isNotEmpty() }, Insulin())
     }
 
     fun applyInsulinSuggestion(value: Float, insulin: Insulin, onPostExecute: () -> Unit) {

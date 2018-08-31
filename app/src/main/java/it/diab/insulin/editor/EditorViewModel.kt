@@ -5,18 +5,16 @@ import androidx.lifecycle.AndroidViewModel
 import it.diab.db.AppDatabase
 import it.diab.db.entities.Insulin
 import it.diab.db.runOnDbThread
+import it.diab.util.extensions.firstIf
 
 class EditorViewModel(owner: Application) : AndroidViewModel(owner) {
     var insulin: Insulin = Insulin()
     private val db = AppDatabase.getInstance(owner)
 
     fun setInsulin(uid: Long) {
-        if (uid < 0) {
-            insulin = Insulin()
-            return
+        insulin = runOnDbThread<Insulin> {
+            db.insulin().getById(uid).firstIf({ uid >= 0 }, Insulin())
         }
-
-        insulin = runOnDbThread<Insulin> { db.insulin().getById(uid)[0] }
     }
 
     fun delete(insulin: Insulin) {

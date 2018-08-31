@@ -9,6 +9,7 @@ import it.diab.db.AppDatabase
 import it.diab.db.entities.Glucose
 import it.diab.db.entities.Insulin
 import it.diab.db.runOnDbThread
+import it.diab.util.extensions.firstIf
 
 class GlucoseListViewModel(owner: Application) : AndroidViewModel(owner) {
     val pagedList: LiveData<PagedList<Glucose>>
@@ -21,9 +22,6 @@ class GlucoseListViewModel(owner: Application) : AndroidViewModel(owner) {
 
     fun getInsulin(id: Long) = runOnDbThread<Insulin> {
         val results = db.insulin().getById(id)
-        if (results.isEmpty())
-            Insulin()
-        else
-            results[0]
+        results.firstIf({ it.isNotEmpty() },  Insulin())
     }
 }
