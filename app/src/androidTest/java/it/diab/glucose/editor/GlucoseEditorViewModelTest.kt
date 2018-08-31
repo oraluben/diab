@@ -146,7 +146,7 @@ class GlucoseEditorViewModelTest {
         val test = (0..10).random().toFloat()
 
         mViewModel!!.setGlucose(-1)
-        mViewModel!!.applyInsulinSuggestion(test, insulin, {})
+        mViewModel!!.applyInsulinSuggestion(test, insulin) {}
 
         assert(mViewModel!!.glucose.insulinValue0 == test)
         assert(mViewModel!!.glucose.insulinId0 == insulin.uid)

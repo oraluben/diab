@@ -22,7 +22,7 @@ class GlucoseListViewModelTest {
     private var mViewModel: GlucoseListViewModel? = null
 
     private val mGlucoseValues = arrayOf(89, 149, 201, 100)
-    private val mData = Array(mGlucoseValues.size, { Glucose() })
+    private val mData = Array(mGlucoseValues.size) { Glucose() }
     private var mTestTimeFrame: TimeFrame? = null
     private var mInsulin: Insulin? = null
 

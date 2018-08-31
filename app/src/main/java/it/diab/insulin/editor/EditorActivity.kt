@@ -40,10 +40,7 @@ class EditorActivity : AppCompatActivity() {
         mBasalSwitch = view.findViewById(R.id.insulin_edit_basal)
         mHalfUnitsSwitch = view.findViewById(R.id.insulin_edit_half_units)
 
-        mTimeFrames = arrayOf(getString(TimeFrame.EXTRA.string),
-                getString(TimeFrame.MORNING.string), getString(TimeFrame.LATE_MORNING.string),
-                getString(TimeFrame.LUNCH.string), getString(TimeFrame.AFTERNOON.string),
-                getString(TimeFrame.DINNER.string), getString(TimeFrame.NIGHT.string))
+        mTimeFrames = Array(TimeFrame.values().size) { getString(TimeFrame.values()[it].string) }
 
         setupUI()
 
@@ -51,11 +48,11 @@ class EditorActivity : AppCompatActivity() {
             .setTitle(R.string.insulin_editor_edit)
             .setView(view)
             .setOnDismissListener { finish() }
-            .setPositiveButton(R.string.save, { _, _ -> onSaveInsulin() })
-            .setNegativeButton(R.string.cancel, { _, _ -> finish() })
+            .setPositiveButton(R.string.save) { _, _ -> onSaveInsulin() }
+            .setNegativeButton(R.string.cancel) { _, _ -> finish() }
 
         if (mEditMode) {
-            builder.setNeutralButton(R.string.remove, { _, _ -> onDeleteInsulin() })
+            builder.setNeutralButton(R.string.remove) { _, _ -> onDeleteInsulin() }
         }
 
         builder.show()

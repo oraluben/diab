@@ -35,6 +35,7 @@ fun <T> runOnDbThread(operations: () -> T, onCompleted: () -> Unit) {
  * to another block running on the caller's thread,
  * which eventually returns a value
  */
+@Suppress("unused")
 fun <T, R> runOnDbThread(operations: () -> T, onCompleted: (T) -> R): R {
     val task = DB_EXECUTOR.submit(Callable <T> { operations() })
     return onCompleted(task.get())

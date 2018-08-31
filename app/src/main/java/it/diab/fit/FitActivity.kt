@@ -87,9 +87,9 @@ class FitActivity : AppCompatActivity() {
         AlertDialog.Builder(this)
                 .setTitle(R.string.fit_disconnect_confim_title)
                 .setMessage(R.string.fit_disconnect_confim_message)
-                .setPositiveButton(R.string.fit_disconnect_confim_positive,
-                        { _, _ -> onDisconnect() })
-                .setNegativeButton(R.string.cancel, null)
+                .setPositiveButton(R.string.fit_disconnect_confim_positive
+                ) { _, _ -> onDisconnect() }
+            .setNegativeButton(R.string.cancel, null)
                 .show()
     }
 
@@ -97,9 +97,9 @@ class FitActivity : AppCompatActivity() {
         AlertDialog.Builder(this)
                 .setTitle(R.string.fit_delete_confirm_title)
                 .setMessage(R.string.fit_delete_confirm_message)
-                .setPositiveButton(R.string.fit_delete_confim_positive,
-                        { _, _ -> onDeleteAll() })
-                .setNegativeButton(R.string.cancel, null)
+                .setPositiveButton(R.string.fit_delete_confim_positive
+                ) { _, _ -> onDeleteAll() }
+            .setNegativeButton(R.string.cancel, null)
                 .show()
 
     }

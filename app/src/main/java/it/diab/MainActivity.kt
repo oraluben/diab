@@ -168,11 +168,11 @@ class MainActivity : AppCompatActivity() {
 
     private fun onMenuExport(): Boolean {
         AlertDialog.Builder(this)
-                .setTitle(R.string.export_ask_title)
-                .setMessage(R.string.export_ask_message)
-                .setPositiveButton(R.string.export_ask_positive, { _, _ -> requestExport() })
-                .setNegativeButton(android.R.string.cancel, null)
-                .show()
+            .setTitle(R.string.export_ask_title)
+            .setMessage(R.string.export_ask_message)
+            .setPositiveButton(R.string.export_ask_positive) { _, _ -> requestExport() }
+            .setNegativeButton(android.R.string.cancel, null)
+            .show()
 
         return true
     }
@@ -194,12 +194,11 @@ class MainActivity : AppCompatActivity() {
         }
 
         AlertDialog.Builder(this)
-                .setTitle(R.string.export_ask_title)
-                .setMessage(R.string.export_ask_permission_message)
-                .setPositiveButton(R.string.export_ask_permission_positive,
-                        { _, _ -> startExport() })
-                .setNegativeButton(android.R.string.cancel, null)
-                .show()
+            .setTitle(R.string.export_ask_title)
+            .setMessage(R.string.export_ask_permission_message)
+            .setPositiveButton(R.string.export_ask_permission_positive) { _, _ -> startExport() }
+            .setNegativeButton(android.R.string.cancel, null)
+            .show()
     }
 
     private fun handleUserAuthResult(resultCode: Int) {

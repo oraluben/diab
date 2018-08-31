@@ -32,7 +32,7 @@ class AddInsulinDialog(private val mContext: Context,
 
     fun setInsulins(list: List<Insulin>) {
         insulins = list.toTypedArray()
-        val names = Array(list.size, { "" })
+        val names = Array(list.size) { "" }
 
         val now = (if (glucose.date.time == 0L) Date() else glucose.date).asTimeFrame()
 
@@ -61,17 +61,17 @@ class AddInsulinDialog(private val mContext: Context,
 
     fun show(onPositive: (Insulin, Float) -> Unit, onNeutral: () -> Unit, onDismiss: () -> Unit) {
         AlertDialog.Builder(mContext)
-                .setTitle(R.string.glucose_editor_insulin_add)
-                .setView(mView)
-                .setPositiveButton(R.string.add, { _, _ ->
-                    val selected = insulins[mNameSpinner.selectedItemPosition]
-                    val value = mValueEditText.text.toString().toFloatOrNull() ?: 0F
+            .setTitle(R.string.glucose_editor_insulin_add)
+            .setView(mView)
+            .setPositiveButton(R.string.add) { _, _ ->
+                val selected = insulins[mNameSpinner.selectedItemPosition]
+                val value = mValueEditText.text.toString().toFloatOrNull() ?: 0F
 
-                    onPositive(selected, value)
-                })
-                .setNegativeButton(R.string.cancel, null)
-                .setNeutralButton(R.string.remove, { _, _ -> onNeutral() })
-                .setOnDismissListener { onDismiss() }
-                .show()
+                onPositive(selected, value)
+            }
+            .setNegativeButton(R.string.cancel, null)
+            .setNeutralButton(R.string.remove) { _, _ -> onNeutral() }
+            .setOnDismissListener { onDismiss() }
+            .show()
     }
 }
