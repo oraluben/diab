@@ -5,8 +5,8 @@ import androidx.test.rule.ActivityTestRule
 import androidx.test.runner.AndroidJUnit4
 import it.diab.db.AppDatabase
 import it.diab.db.entities.Glucose
-import it.diab.db.entities.glucose
-import it.diab.db.entities.insulin
+import it.diab.util.extensions.glucose
+import it.diab.util.extensions.insulin
 import it.diab.util.extensions.asTimeFrame
 import it.diab.util.extensions.get
 import it.diab.util.timeFrame.TimeFrame

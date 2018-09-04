@@ -7,8 +7,8 @@ import it.diab.MainActivity
 import it.diab.db.AppDatabase
 import it.diab.db.entities.Glucose
 import it.diab.db.entities.Insulin
-import it.diab.db.entities.glucose
-import it.diab.db.entities.insulin
+import it.diab.util.extensions.glucose
+import it.diab.util.extensions.insulin
 import it.diab.util.extensions.asTimeFrame
 import it.diab.util.timeFrame.TimeFrame
 import org.junit.Before

@@ -117,7 +117,3 @@ class Glucose : Parcelable {
         override fun newArray(size: Int): Array<Glucose?> = arrayOfNulls(size)
     }
 }
-
-// DSL
-
-fun glucose(block: Glucose.() -> Unit) = Glucose().apply(block)

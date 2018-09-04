@@ -13,7 +13,7 @@ import it.diab.db.runOnDbThread
 import it.diab.fit.FitActivity
 import it.diab.insulin.InsulinActivity
 import it.diab.util.DateUtils
-import it.diab.util.bannerModel
+import it.diab.util.extensions.bannerModel
 import it.diab.util.extensions.get
 import it.diab.util.extensions.set
 import it.diab.util.extensions.toTimeFrame

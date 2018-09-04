@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.test.rule.ActivityTestRule
 import androidx.test.runner.AndroidJUnit4
 import it.diab.db.AppDatabase
-import it.diab.db.entities.insulin
+import it.diab.util.extensions.insulin
 import it.diab.util.timeFrame.TimeFrame
 import org.junit.Before
 import org.junit.Rule

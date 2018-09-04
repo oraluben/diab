@@ -54,7 +54,3 @@ class Insulin {
 
     override fun toString() = "$name: $uid, ${timeFrame.toInt()}, $isBasal, $hasHalfUnits"
 }
-
-// DSL
-
-fun insulin(block: Insulin.() -> Unit) = Insulin().apply(block)

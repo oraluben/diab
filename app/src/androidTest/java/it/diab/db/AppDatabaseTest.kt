@@ -5,8 +5,8 @@ import androidx.test.runner.AndroidJUnit4
 import it.diab.db.dao.GlucoseDao
 import it.diab.db.dao.InsulinDao
 import it.diab.db.entities.Glucose
-import it.diab.db.entities.glucose
-import it.diab.db.entities.insulin
+import it.diab.util.extensions.glucose
+import it.diab.util.extensions.insulin
 import it.diab.util.timeFrame.TimeFrame
 import org.junit.Before
 import org.junit.Test

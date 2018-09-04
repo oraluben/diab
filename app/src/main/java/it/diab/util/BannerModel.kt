@@ -13,5 +13,3 @@ data class BannerModel(
     var onNegative: (BannerView) -> Unit = {},
     var onAction: (BannerView) -> Unit = {}
 )
-
-fun bannerModel(block: BannerModel.() -> Unit) = BannerModel().apply(block)
