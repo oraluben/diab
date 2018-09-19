@@ -37,7 +37,7 @@ ext {
     supportLib = [
             appcompat : "androidx.appcompat:appcompat:1.0.0-rc01",
             cardview : "androidx.cardview:cardview:1.0.0-rc01",
-            constraint : "androidx.constraintlayout:constraintlayout:2.0.0-alpha1",
+            constraint : "androidx.constraintlayout:constraintlayout:2.0.0-alpha2",
     ]
 
     testLib = [
