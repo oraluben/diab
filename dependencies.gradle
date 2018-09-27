@@ -7,7 +7,7 @@ ext {
     googleLib = [
             auth : "com.google.android.gms:play-services-auth:15.0.1",
             fit : "com.google.android.gms:play-services-fitness:15.0.1",
-            material : "com.google.android.material:material:1.0.0-rc01",
+            material : "com.google.android.material:material:1.0.0",
     ]
 
     leakcanaryLib = [
@@ -17,8 +17,8 @@ ext {
     ]
 
     lifecycleLib = [
-            compiler : "androidx.lifecycle:lifecycle-compiler:2.0.0-rc01",
-            extensions : "androidx.lifecycle:lifecycle-extensions:2.0.0-rc01",
+            compiler : "androidx.lifecycle:lifecycle-compiler:2.0.0",
+            extensions : "androidx.lifecycle:lifecycle-extensions:2.0.0",
     ]
 
     kotlinLib = [
@@ -35,8 +35,8 @@ ext {
     ]
 
     supportLib = [
-            appcompat : "androidx.appcompat:appcompat:1.0.0-rc01",
-            cardview : "androidx.cardview:cardview:1.0.0-rc01",
+            appcompat : "androidx.appcompat:appcompat:1.0.0",
+            cardview : "androidx.cardview:cardview:1.0.0",
             constraint : "androidx.constraintlayout:constraintlayout:2.0.0-alpha2",
     ]
 
