@@ -24,7 +24,7 @@ class InsulinActivity : AppCompatActivity() {
         toolbar.setNavigationOnClickListener { finish() }
 
         val recyclerView = findViewById<RecyclerViewExt>(R.id.insulin_list)
-        mAdapter = InsulinAdapter(baseContext)
+        mAdapter = InsulinAdapter(this)
 
         val viewModel = ViewModelProviders.of(this).get(InsulinViewModel::class.java)
         viewModel.list.observe(this,
