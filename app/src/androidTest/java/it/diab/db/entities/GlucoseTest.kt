@@ -8,7 +8,7 @@ import it.diab.util.extensions.glucose
 import it.diab.util.timeFrame.TimeFrame
 import org.junit.Test
 import org.junit.runner.RunWith
-import java.util.*
+import java.util.Date
 
 @RunWith(AndroidJUnit4::class)
 @SmallTest

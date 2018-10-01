@@ -7,15 +7,16 @@ import it.diab.MainActivity
 import it.diab.db.AppDatabase
 import it.diab.db.entities.Glucose
 import it.diab.db.entities.Insulin
+import it.diab.test.random
+import it.diab.util.extensions.asTimeFrame
 import it.diab.util.extensions.glucose
 import it.diab.util.extensions.insulin
-import it.diab.util.extensions.asTimeFrame
 import it.diab.util.timeFrame.TimeFrame
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import java.util.*
+import java.util.Calendar
 
 @RunWith(AndroidJUnit4::class)
 class GlucoseListViewModelTest {
@@ -71,6 +72,4 @@ class GlucoseListViewModelTest {
         assert(test.uid == mInsulin!!.uid)
         assert(test == mInsulin)
     }
-
-    private fun ClosedRange<Int>.random() = Random().nextInt(endInclusive - start) + start
 }

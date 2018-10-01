@@ -5,16 +5,18 @@ import androidx.test.rule.ActivityTestRule
 import androidx.test.runner.AndroidJUnit4
 import it.diab.db.AppDatabase
 import it.diab.db.entities.Glucose
-import it.diab.util.extensions.glucose
-import it.diab.util.extensions.insulin
+import it.diab.test.random
 import it.diab.util.extensions.asTimeFrame
 import it.diab.util.extensions.get
+import it.diab.util.extensions.glucose
+import it.diab.util.extensions.insulin
 import it.diab.util.timeFrame.TimeFrame
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import java.util.*
+import java.util.Calendar
+import java.util.Date
 
 @RunWith(AndroidJUnit4::class)
 class GlucoseEditorViewModelTest {
@@ -42,8 +44,8 @@ class GlucoseEditorViewModelTest {
 
         val new = glucose {
             uid = 1
-            value = 50
-            insulinValue1 = 6f
+            value = (10..200).random()
+            insulinValue1 = (1..10).random().toFloat()
             eatLevel = Glucose.LOW
             timeFrame = TimeFrame.DINNER
         }
@@ -152,5 +154,3 @@ class GlucoseEditorViewModelTest {
         assert(mViewModel!!.glucose.insulinId0 == insulin.uid)
     }
 }
-
-private fun ClosedRange<Int>.random() = Random().nextInt(endInclusive - start) + start
