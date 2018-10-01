@@ -10,7 +10,7 @@ import java.util.Locale
 
 operator fun Date.get(diff: Int): Date {
     val calendar = getCalendar()
-    calendar.add(Calendar.DAY_OF_YEAR , -1)
+    calendar.add(Calendar.DAY_OF_YEAR , diff)
     return calendar.time
 }
 
