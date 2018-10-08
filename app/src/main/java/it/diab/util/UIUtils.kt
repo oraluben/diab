@@ -14,14 +14,13 @@ object UIUtils {
 
     fun createRoundDrawable(resources: Resources, size: Int, @ColorInt color: Int): Drawable {
         val bitmap = Bitmap.createBitmap(size, size, Bitmap.Config.ARGB_8888)
-
-        val canvas = Canvas(bitmap)
-        val paint = Paint()
         val rect = RectF(Rect(0, 0, size, size))
+        val paint = Paint().apply {
+            isAntiAlias = true
+            this.color = color
+        }
 
-        paint.isAntiAlias = true
-        paint.color = color
-        canvas.drawRoundRect(rect, size / 2f, size / 2f, paint)
+        Canvas(bitmap).drawRoundRect(rect, size / 2f, size / 2f, paint)
 
         return RoundedBitmapDrawableFactory.create(resources, bitmap)
     }

@@ -66,28 +66,35 @@ class BannerView(context: Context, attrs: AttributeSet) : FrameLayout(context, a
     }
 
     private fun setIcon(@DrawableRes bannerImage: Int) {
-        mIcon.setImageResource(bannerImage)
-        mIcon.visibility = View.VISIBLE
+        mIcon.apply {
+            setImageResource(bannerImage)
+            visibility = View.VISIBLE
+        }
     }
 
     private fun setPositiveButton(@StringRes positiveText: Int, onClicked: (BannerView) -> Unit) {
-        mPositiveButton.text = resources.getString(positiveText)
-        mPositiveButton.setOnClickListener {
-            onClicked(this)
-            mOnActionExecuted(this)
-            dismiss()
+        mPositiveButton.apply {
+            text = resources.getString(positiveText)
+            visibility = View.VISIBLE
+
+            setOnClickListener {
+                onClicked(this@BannerView)
+                mOnActionExecuted(this@BannerView)
+                dismiss()
+            }
         }
-        mPositiveButton.visibility = View.VISIBLE
     }
 
     private fun setNegativeButton(@StringRes negativeText: Int, onClicked: (BannerView) -> Unit) {
-        mNegativeButton.text = resources.getString(negativeText)
-        mNegativeButton.setOnClickListener {
-            onClicked(this)
-            mOnActionExecuted(this)
-            dismiss()
-        }
-        mNegativeButton.visibility = View.VISIBLE
-    }
+        mNegativeButton.apply {
+            text = resources.getString(negativeText)
+            visibility = View.VISIBLE
 
+            setOnClickListener {
+                onClicked(this@BannerView)
+                mOnActionExecuted(this@BannerView)
+                dismiss()
+            }
+        }
+    }
 }

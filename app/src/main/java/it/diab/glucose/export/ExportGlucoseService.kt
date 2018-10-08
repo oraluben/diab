@@ -73,11 +73,12 @@ class ExportGlucoseService : Service() {
         }
 
         val name = getString(R.string.export_notification_channel)
-        val newChannel = NotificationChannel(CHANNEL, name, NotificationManager.IMPORTANCE_LOW)
-        newChannel.enableLights(false)
-        newChannel.enableVibration(false)
-        newChannel.setShowBadge(false)
-        newChannel.lockscreenVisibility = NotificationCompat.VISIBILITY_SECRET
+        val newChannel = NotificationChannel(CHANNEL, name, NotificationManager.IMPORTANCE_LOW).apply {
+            enableLights(false)
+            enableVibration(false)
+            setShowBadge(false)
+            lockscreenVisibility = NotificationCompat.VISIBILITY_SECRET
+        }
 
         mNotificationManager.createNotificationChannel(newChannel)
     }
@@ -133,9 +134,11 @@ class ExportGlucoseService : Service() {
             list.forEach { builder.append("${it.value},${it.eatLevel},${it.insulinValue0}\n") }
 
             file.mkdirs()
-            writer.write(FULL_HEADER)
-            writer.write(builder.toString())
-            writer.close()
+            writer.run {
+                write(FULL_HEADER)
+                write(builder.toString())
+                close()
+            }
         }
     }
 

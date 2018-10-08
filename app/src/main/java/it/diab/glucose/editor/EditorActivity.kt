@@ -39,11 +39,11 @@ import it.diab.db.entities.Insulin
 import it.diab.ui.EatBar
 import it.diab.ui.InsulinSuggestionView
 import it.diab.ui.NumericKeyboardView
-import it.diab.util.DateUtils
 import it.diab.util.VibrationUtil
 import it.diab.util.extensions.asTimeFrame
 import it.diab.util.extensions.get
 import it.diab.util.extensions.getCalendar
+import it.diab.util.extensions.getDetailedString
 import it.diab.util.extensions.toFitMealRelation
 import it.diab.util.extensions.toFitSleepRelation
 import java.util.Calendar
@@ -108,7 +108,7 @@ class EditorActivity : AppCompatActivity() {
         mValueView.text = mViewModel.glucose.value.toString()
         mKeyboardView.bindTextView(mValueView, this::onValueTextChanged)
 
-        mDateView.text = DateUtils.dateToString(mViewModel.glucose.date)
+        mDateView.text = mViewModel.glucose.date.getDetailedString()
         mDateView.setOnClickListener { onDateClicked() }
         mEatBar.progress = mViewModel.glucose.eatLevel
 
@@ -173,7 +173,7 @@ class EditorActivity : AppCompatActivity() {
 
         val data = mViewModel.previousWeek
         mInfoView.text = getInfo(data)
-        mDateView.text = DateUtils.dateToString(mViewModel.glucose.date)
+        mDateView.text = mViewModel.glucose.date.getDetailedString()
 
         val targetInsulin = mViewModel.getInsulinByTimeFrame(mViewModel.glucose.timeFrame)
         mSuggestionView.bind(mViewModel.glucose, targetInsulin, this::onSuggestionApply)
@@ -205,7 +205,7 @@ class EditorActivity : AppCompatActivity() {
 
             mViewModel.glucose.date = newTime.time
             mViewModel.glucose.timeFrame = newTime.time.asTimeFrame()
-            mDateView.text = DateUtils.dateToString(newTime.time)
+            mDateView.text = newTime.time.getDetailedString()
         }
 
         val onCustomDateSet = { _: View, year: Int, month: Int, day: Int ->

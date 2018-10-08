@@ -30,14 +30,21 @@ class OverviewGraphView : LineChart {
         setScaleEnabled(false)
 
         // Axis
-        xAxis.setDrawAxisLine(false)
-        xAxis.setDrawGridLines(false)
-        xAxis.isEnabled = false
+        xAxis.apply {
+            setDrawAxisLine(false)
+            setDrawGridLines(false)
+            isEnabled = false
+        }
 
-        axisLeft.setDrawLabels(false)
-        axisLeft.setDrawAxisLine(false)
-        axisRight.setDrawLabels(false)
-        axisRight.setDrawAxisLine(false)
+        axisRight.apply {
+            setDrawAxisLine(false)
+            setDrawLabels(false)
+        }
+
+        axisLeft.apply {
+            setDrawAxisLine(false)
+            setDrawLabels(false)
+        }
 
         // Marker
         marker = OverviewMarker(context)

@@ -27,7 +27,7 @@ class InsulinSuggestionView(context: Context, attrs: AttributeSet) : LinearLayou
     private lateinit var mTask: InsulinSuggestionTask
 
     private var mPluginBridge: PluginBridge
-    private var mOnSuggestionApply: (Float, Insulin) -> Unit = { _,_ -> }
+    private var mOnSuggestionApply: (Float, Insulin) -> Unit = { _, _ -> }
     private var mIsEnabled = false
 
     private lateinit var mGlucose: Glucose

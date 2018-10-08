@@ -41,9 +41,6 @@ fun <T, R> runOnDbThread(operations: () -> T, onCompleted: (T) -> R): R {
     return onCompleted(task.get())
 }
 
-
-
-
 object DbThread {
 
     fun shutDown() {

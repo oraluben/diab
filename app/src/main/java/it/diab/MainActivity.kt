@@ -97,14 +97,16 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun onItemClick(uid: Long) {
-        val intent = Intent(this, EditorActivity::class.java)
-        intent.putExtra(EditorActivity.EXTRA_GLUCOSE_ID, uid)
+        val intent = Intent(this, EditorActivity::class.java).apply {
+            putExtra(EditorActivity.EXTRA_GLUCOSE_ID, uid)
+        }
         openEditor(intent, mFab)
     }
 
     private fun onFabClick(view: View) {
-        val intent = Intent(this, EditorActivity::class.java)
-        intent.putExtra(EditorActivity.EXTRA_INSERT_MODE, true)
+        val intent = Intent(this, EditorActivity::class.java).apply {
+            putExtra(EditorActivity.EXTRA_INSERT_MODE, true)
+        }
         openEditor(intent, view)
     }
 

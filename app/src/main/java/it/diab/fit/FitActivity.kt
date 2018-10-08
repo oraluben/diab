@@ -43,9 +43,7 @@ class FitActivity : AppCompatActivity() {
         mDisconnectButton = findViewById(R.id.fit_disconnect_button)
         mDeleteAllButton = findViewById(R.id.fit_delete_all_button)
 
-        mConnectButton.setOnClickListener {
-            mViewModel.connect(this, GOOGLE_FIT_REQUEST_CODE)
-        }
+        mConnectButton.setOnClickListener { mViewModel.connect(this, GOOGLE_FIT_REQUEST_CODE) }
         mDisconnectButton.setOnClickListener { confirmDisconnect() }
         mDeleteAllButton.setOnClickListener { confirmDelete() }
 
@@ -87,8 +85,7 @@ class FitActivity : AppCompatActivity() {
         AlertDialog.Builder(this)
                 .setTitle(R.string.fit_disconnect_confim_title)
                 .setMessage(R.string.fit_disconnect_confim_message)
-                .setPositiveButton(R.string.fit_disconnect_confim_positive
-                ) { _, _ -> onDisconnect() }
+                .setPositiveButton(R.string.fit_disconnect_confim_positive) { _, _ -> onDisconnect() }
             .setNegativeButton(R.string.cancel, null)
                 .show()
     }
@@ -97,8 +94,7 @@ class FitActivity : AppCompatActivity() {
         AlertDialog.Builder(this)
                 .setTitle(R.string.fit_delete_confirm_title)
                 .setMessage(R.string.fit_delete_confirm_message)
-                .setPositiveButton(R.string.fit_delete_confim_positive
-                ) { _, _ -> onDeleteAll() }
+                .setPositiveButton(R.string.fit_delete_confim_positive) { _, _ -> onDeleteAll() }
             .setNegativeButton(R.string.cancel, null)
                 .show()
 

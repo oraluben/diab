@@ -70,7 +70,6 @@ class OverviewViewModel(owner: Application) : AndroidViewModel(owner) {
         negativeText = R.string.banner_negative
         onPositive = { it.context.startActivity(Intent(it.context, FitActivity::class.java)) }
         onAction = { prefs[PREF_BANNER_FIT] = false }
-
     }
 
     companion object {

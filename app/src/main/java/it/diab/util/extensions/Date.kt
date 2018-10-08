@@ -14,7 +14,6 @@ operator fun Date.get(diff: Int): Date {
     return calendar.time
 }
 
-
 fun Date.getCalendar(): Calendar {
     val calendar = Calendar.getInstance()
     calendar.time = this
@@ -67,6 +66,10 @@ fun Date.getHeader(res: Resources, comparedTo: Date, format: SimpleDateFormat):
 
     return Pair(title, description)
 }
+
+fun Date.getDetailedString() =
+    SimpleDateFormat("EEE dd-MM HH:mm", Locale.getDefault()).format(this)
+        .upperCaseFirstChrar()
 
 fun Date.format(format: String): String =
         SimpleDateFormat(format, Locale.getDefault()).format(this)

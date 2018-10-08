@@ -80,10 +80,13 @@ class EditorActivity : AppCompatActivity() {
     }
 
     private fun onSaveInsulin() {
-        mViewModel.insulin.name = mEditText.text.toString()
-        mViewModel.insulin.setTimeFrame(mSpinner.selectedItemPosition - 1)
-        mViewModel.insulin.isBasal = mBasalSwitch.isChecked
-        mViewModel.insulin.hasHalfUnits = mHalfUnitsSwitch.isChecked
+        mViewModel.insulin.run {
+            name = mEditText.text.toString()
+            isBasal = mBasalSwitch.isChecked
+            hasHalfUnits = mHalfUnitsSwitch.isChecked
+            setTimeFrame(mSpinner.selectedItemPosition - 1)
+        }
+
         mViewModel.save()
         finish()
     }

@@ -48,8 +48,8 @@ class OverviewFragment : MainFragment() {
         mViewModel.list.observe(this, Observer(this::update))
 
         val model = mViewModel.getBannerInfo()
-        model?.let {
-            mBanner.setModel(it)
+        model?.apply {
+            mBanner.setModel(this)
             mBanner.visibility = View.VISIBLE
         }
     }
