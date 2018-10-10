@@ -30,8 +30,8 @@ ext {
     ]
 
     roomLib = [
-            compiler : "androidx.room:room-compiler:2.0.0-rc01",
-            runtime : "androidx.room:room-runtime:2.0.0-rc01",
+            compiler : "androidx.room:room-compiler:2.0.0",
+            runtime : "androidx.room:room-runtime:2.0.0",
     ]
 
     supportLib = [
