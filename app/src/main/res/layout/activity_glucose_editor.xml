@@ -119,7 +119,7 @@
                 android:drawableStart="@drawable/ic_info"
                 android:paddingEnd="16dp"
                 android:paddingStart="16dp"
-                android:textColor="@color/text_secondary"
+                android:textColor="?android:attr/textColorSecondary"
                 tools:text="During the last week the glucose at this time of the day has been fine  (average 123)." />
         </LinearLayout>
     </ScrollView>
