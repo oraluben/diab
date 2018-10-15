@@ -217,7 +217,7 @@ class EditorActivity : AppCompatActivity() {
         val onPredefinedDateSet = { _: DialogInterface, i: Int ->
             when (i) {
                 0 -> {}
-                1 -> newTime.time = Date()[1]
+                1 -> newTime.time = Date()[-1]
                 else -> DatePickerDialog(this, onCustomDateSet,
                         glucoseCal[Calendar.YEAR], glucoseCal[Calendar.MONTH],
                         glucoseCal[Calendar.DAY_OF_MONTH]).show()
