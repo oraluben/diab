@@ -22,7 +22,7 @@ ext {
     ]
 
     kotlinLib = [
-            stdlib : "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.2.61",
+            stdlib : "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.2.71",
     ]
 
     pagingLib = [
