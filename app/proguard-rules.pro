@@ -24,5 +24,10 @@
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
 
+# AndroidViewModel
 -keep class * extends androidx.lifecycle.AndroidViewModel { <init>(...); }
+
+# Coroutines
 -keepclassmembernames class kotlinx.** { volatile <fields>; }
+-keepnames class kotlinx.coroutines.internal.MainDispatcherFactory {}
+-keepnames class kotlinx.coroutines.CoroutineExceptionHandler {}

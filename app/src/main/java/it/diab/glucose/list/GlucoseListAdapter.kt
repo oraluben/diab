@@ -19,7 +19,7 @@ import it.diab.db.entities.Glucose
 import it.diab.ui.recyclerview.ViewHolderExt
 import it.diab.util.UIUtils
 import it.diab.util.extensions.diff
-import it.diab.util.extensions.getHeader
+import it.diab.util.extensions.setPrecomputedText
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -27,7 +27,7 @@ import java.util.Locale
 class GlucoseListAdapter(private val mContext: Context, private val onItemClick: (Long) -> Unit) :
         PagedListAdapter<Glucose, GlucoseListAdapter.GlucoseHolder>(CALLBACK) {
 
-    private lateinit var mActivityViewModel: GlucoseListViewModel
+    private lateinit var viewModel: GlucoseListViewModel
 
     // Store the these for better performance
     private val mLowIndicator = getIndicator(R.color.glucose_indicator_low)
@@ -35,7 +35,6 @@ class GlucoseListAdapter(private val mContext: Context, private val onItemClick:
     private val mHourFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
     private val mDateFormat = SimpleDateFormat(mContext.getString(
             R.string.time_day_month_short_format), Locale.getDefault())
-    private val mToday = Date()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
             GlucoseHolder(LayoutInflater.from(parent.context)
@@ -82,6 +81,14 @@ class GlucoseListAdapter(private val mContext: Context, private val onItemClick:
         private val mHeaderDesc = view.findViewById<TextView>(R.id.item_glucose_header_description)
 
         fun onBind(glucose: Glucose, position: Int) {
+
+            // The viewModel must be ready in order to bind the viewHolder
+            if (!::viewModel.isInitialized) {
+                viewModel = ViewModelProviders.of(mContext as MainActivity)[GlucoseListViewModel::class.java]
+                viewModel.prepare { onBind(glucose, position) }
+                return
+            }
+
             id = glucose.uid
 
             val resources = mContext.resources
@@ -91,17 +98,19 @@ class GlucoseListAdapter(private val mContext: Context, private val onItemClick:
             mHeaderLayout.visibility = if (shouldShowHeader) View.VISIBLE else View.GONE
 
             if (shouldShowHeader) {
-                val headerContent = glucose.date.getHeader(resources!!, mToday, mDateFormat)
-                mHeaderTitle.text = headerContent.first
-                mHeaderDesc.text = headerContent.second
+                viewModel.setHeader(resources!!, glucose.date, mDateFormat) { title, desc ->
+                    mHeaderTitle.setPrecomputedText(title, viewModel.viewModelScope)
+                    mHeaderDesc.setPrecomputedText(desc, viewModel.viewModelScope)
+                }
             }
 
             // Content
-            mTitle.text = String.format(Locale.getDefault(), "%1\$d (%2\$s)",
-                    glucose.value, mHourFormat.format(glucose.date))
+            mTitle.setPrecomputedText("%1\$d (%2\$s)".format(glucose.value, mHourFormat.format(glucose.date)),
+                viewModel.viewModelScope)
+
             mIcon.setImageResource(glucose.timeFrame.icon)
 
-            mLayout.setOnClickListener { _ -> onItemClick(id) }
+            mLayout.setOnClickListener { onItemClick(id) }
 
             val indicatorDrawable = when {
                 glucose.value > 180 -> mHighIndicator
@@ -123,13 +132,7 @@ class GlucoseListAdapter(private val mContext: Context, private val onItemClick:
                 return
             }
 
-            if (::mActivityViewModel.isInitialized) {
-                bindInsulins(glucose, uids)
-                return
-            }
-
-            mActivityViewModel = ViewModelProviders.of(mContext)[GlucoseListViewModel::class.java]
-            mActivityViewModel.prepare { bindInsulins(glucose, uids) }
+            bindInsulins(glucose, uids)
         }
 
         fun clear() {
@@ -141,17 +144,17 @@ class GlucoseListAdapter(private val mContext: Context, private val onItemClick:
 
             builder.append(glucose.insulinValue0)
                 .append(" ")
-                .append(mActivityViewModel.getInsulin(uids[0]).name)
+                .append(viewModel.getInsulin(uids[0]).name)
 
             // Optional - Insulin 1
             if (uids[1] >= 0) {
                 builder.append(", ")
                     .append(glucose.insulinValue1)
                     .append(" ")
-                    .append(mActivityViewModel.getInsulin(uids[1]).name)
+                    .append(viewModel.getInsulin(uids[1]).name)
             }
 
-            mSummary.text = builder.toString()
+            mSummary.setPrecomputedText(builder.toString(), viewModel.viewModelScope)
             mSummary.visibility = View.VISIBLE
         }
     }
