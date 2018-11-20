@@ -6,6 +6,7 @@ import androidx.test.runner.AndroidJUnit4
 import it.diab.MainActivity
 import it.diab.db.AppDatabase
 import it.diab.util.extensions.asTimeFrame
+import it.diab.util.extensions.glucose
 import it.diab.util.timeFrame.TimeFrame
 import org.junit.Before
 import org.junit.Rule
@@ -17,7 +18,9 @@ import java.util.Calendar
 class OverviewViewModelTest {
     private var mViewModel: OverviewViewModel? = null
 
-    private val mGlucoseValues = arrayOf(69, 99, 301, 132)
+    private val glucoseValues = arrayOf(69, 99, 301, 132)
+    private val mGlucoseList = Array(4) { i -> glucose { value = glucoseValues[i] }}
+
     private var mTestTimeFrame: TimeFrame? = null
 
     @Suppress("MemberVisibilityCanBePrivate")
@@ -36,10 +39,11 @@ class OverviewViewModelTest {
 
     @Test
     fun getAverageLastWeek() {
-        val test = mViewModel!!.getAverageLastWeek()
+        mViewModel!!.getDataSets(mGlucoseList.asList()) { _, average ->
 
-        val supposedAverage = mGlucoseValues.average().toFloat()
-        val result = test[mTestTimeFrame!!.toInt()]
-        assert(result == supposedAverage)
+            val supposedAverage = glucoseValues.average().toFloat()
+            val result = average[mTestTimeFrame!!.toInt()].y
+            assert(result == supposedAverage)
+        }
     }
 }

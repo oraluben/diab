@@ -4,11 +4,11 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.Service
 import android.content.Intent
-import android.os.AsyncTask
 import android.os.Build
 import android.os.Environment
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.annotation.WorkerThread
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 import it.diab.R
@@ -16,6 +16,12 @@ import it.diab.db.AppDatabase
 import it.diab.db.entities.Glucose
 import it.diab.util.DateUtils
 import it.diab.util.timeFrame.TimeFrame
+import kotlinx.coroutines.async
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 import java.io.File
 import java.io.FileWriter
 import java.io.IOException
@@ -23,6 +29,9 @@ import java.io.IOException
 class ExportGlucoseService : Service() {
     private lateinit var mAppDatabase: AppDatabase
     private lateinit var mNotificationManager: NotificationManager
+
+    private val job = Job()
+    private val serviceScope = CoroutineScope(Dispatchers.IO + job)
 
     override fun onCreate() {
         super.onCreate()
@@ -38,11 +47,14 @@ class ExportGlucoseService : Service() {
             createChannelIfNeeded()
         }
 
-        val task = WriteTrainTask(mAppDatabase, this::onTaskCompleted)
-
         startForeground(NOTIFICATION_ID, notification)
 
-        task.execute()
+        serviceScope.launch {
+            val defResult = async { exportFiles(this, mAppDatabase) }
+
+            GlobalScope.launch(Dispatchers.Main) { onTaskCompleted(defResult.await()) }
+        }
+
         return START_NOT_STICKY
     }
 
@@ -83,62 +95,58 @@ class ExportGlucoseService : Service() {
         mNotificationManager.createNotificationChannel(newChannel)
     }
 
-    private class WriteTrainTask(private val db: AppDatabase,
-                                 private val onCompleted: (Boolean) -> Unit) :
-            AsyncTask<Unit, Unit, Boolean>() {
+    private suspend fun exportFiles(scope: CoroutineScope, db: AppDatabase): Boolean {
+        val baseName = "train_%1\$d.csv"
+        val end = System.currentTimeMillis()
+        val start = end - DateUtils.DAY * 60
+        val list = db.glucose().getInDateRange(start, end)
 
-        override fun doInBackground(vararg params: Unit?): Boolean {
-            val end = System.currentTimeMillis()
-            val start = end - DateUtils.DAY * 40
-            val list = db.glucose().getInDateRange(start, end)
-
-            try {
-                val docsDir = Environment.getExternalStoragePublicDirectory(
-                        Environment.DIRECTORY_DOCUMENTS)
-                val outDir = File(docsDir, "diab")
-
-                if (!outDir.exists()) {
-                    outDir.mkdirs()
-                }
-
-                val baseName = "train_"
-
-                build(list.filter { it.timeFrame == TimeFrame.MORNING },
-                        "${baseName}1.csv", outDir)
-                build(list.filter { it.timeFrame == TimeFrame.LUNCH },
-                        "${baseName}3.csv", outDir)
-                build(list.filter { it.timeFrame == TimeFrame.DINNER },
-                        "${baseName}5.csv", outDir)
-            } catch (e: IOException) {
-                return false
+        val documentsDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS)
+        val outDir = File(documentsDir, "diab").apply {
+            if (!exists()) {
+                mkdirs()
             }
-
-            // Take a nap so the user can see the progress notification
-            Thread.sleep(2000)
-            return true
         }
 
-        override fun onPostExecute(result: Boolean?) {
-            if (result != null) {
-                onCompleted(result)
-            }
+        // Build the files asynchronously to speed things up
 
-            super.onPostExecute(result)
+        val morningDeferred = scope.async {
+            writeFile(list.filter { it.timeFrame == TimeFrame.MORNING }, baseName.format(1), outDir)
         }
 
-        private fun build(list: List<Glucose>, fileName: String, parentDir: File) {
-            val file = File(parentDir, fileName)
-            val writer = FileWriter(file)
-            val builder = StringBuilder()
+        val lunchDeferred = scope.async {
+            writeFile(list.filter { it.timeFrame == TimeFrame.LUNCH }, baseName.format(3), outDir)
+        }
 
-            list.forEach { builder.append("${it.value},${it.eatLevel},${it.insulinValue0}\n") }
+        val dinnerDeferred = scope.async {
+            writeFile(list.filter { it.timeFrame == TimeFrame.DINNER }, baseName.format(5), outDir)
+        }
 
-            file.mkdirs()
-            writer.run {
-                write(FULL_HEADER)
-                write(builder.toString())
-                close()
-            }
+        try {
+            morningDeferred.await()
+            lunchDeferred.await()
+            dinnerDeferred.await()
+        } catch (e: IOException) {
+            return false
+        }
+
+        return true
+    }
+
+    @WorkerThread
+    private fun writeFile(list: List<Glucose>, name: String, parent: File) {
+        val file = File(parent, name)
+        val writer = FileWriter(file)
+        val builder = StringBuilder()
+
+        list.forEach {
+            builder.append("${it.value},${it.eatLevel},${it.insulinValue0}\n")
+        }
+
+        writer.run {
+            write(FULL_HEADER)
+            write(builder.toString())
+            close()
         }
     }
 

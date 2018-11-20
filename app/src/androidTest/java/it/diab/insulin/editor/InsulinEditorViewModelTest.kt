@@ -58,7 +58,7 @@ class InsulinEditorViewModelTest {
 
         val test = insulins[0]
 
-        mViewModel!!.delete(test)
+        mViewModel!!.delete()
 
         val result = mDatabase!!.insulin().getById(test.uid)
         assert(result.isEmpty())

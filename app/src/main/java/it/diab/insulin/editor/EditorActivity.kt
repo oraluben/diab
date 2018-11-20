@@ -92,7 +92,7 @@ class EditorActivity : AppCompatActivity() {
     }
 
     private fun onDeleteInsulin() {
-        mViewModel.delete(mViewModel.insulin)
+        mViewModel.delete()
         finish()
     }
 

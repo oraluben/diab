@@ -3,23 +3,29 @@ package it.diab.glucose.overview
 import android.app.Application
 import android.content.Intent
 import android.preference.PreferenceManager
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
+import com.github.mikephil.charting.data.Entry
 import it.diab.BuildConfig
 import it.diab.R
 import it.diab.db.AppDatabase
 import it.diab.db.entities.Glucose
-import it.diab.db.runOnDbThread
 import it.diab.fit.FitActivity
 import it.diab.insulin.InsulinActivity
 import it.diab.util.DateUtils
+import it.diab.util.ScopedViewModel
 import it.diab.util.extensions.bannerModel
 import it.diab.util.extensions.get
+import it.diab.util.extensions.getAsMinutes
+import it.diab.util.extensions.isToday
+import it.diab.util.extensions.isZeroOrNan
 import it.diab.util.extensions.set
 import it.diab.util.extensions.toTimeFrame
 import it.diab.util.timeFrame.TimeFrame
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 
-class OverviewViewModel(owner: Application) : AndroidViewModel(owner) {
+class OverviewViewModel(owner: Application) : ScopedViewModel(owner) {
     val list: LiveData<List<Glucose>>
 
     private val db = AppDatabase.getInstance(owner)
@@ -29,24 +35,8 @@ class OverviewViewModel(owner: Application) : AndroidViewModel(owner) {
         list = db.glucose().all
     }
 
-    fun getAverageLastWeek() = runOnDbThread<HashMap<Int, Float>> {
-        val map = HashMap<Int, Float>()
-        val end = System.currentTimeMillis()
-        val start = end - DateUtils.WEEK
-
-        // Exclude TimeFrame.EXTRA
-        val size = TimeFrame.values().size - 1
-        for (i in 0..(size - 1)) {
-            val timeFrame = i.toTimeFrame()
-
-            val lastWeek = db.glucose().getInDateRangeWithTimeFrame(start, end, i)
-            val average = lastWeek.indices
-                    .map { lastWeek[it].value }
-                    .sum() / lastWeek.size.toFloat()
-            map[timeFrame.reprHour] = average
-        }
-
-        map
+    fun getDataSets(data: List<Glucose>, onCompleted: (List<Entry>, List<Entry>) -> Unit) {
+        viewModelScope.launch { fetchDataSets(data, onCompleted) }
     }
 
     fun getBannerInfo() = when {
@@ -54,7 +44,6 @@ class OverviewViewModel(owner: Application) : AndroidViewModel(owner) {
         BuildConfig.HAS_FIT && prefs[PREF_BANNER_FIT, true] -> getFitBanner()
         else -> null
     }
-
 
     private fun getInsulinBanner() = bannerModel {
         title = R.string.banner_insulin_add
@@ -71,6 +60,42 @@ class OverviewViewModel(owner: Application) : AndroidViewModel(owner) {
         onPositive = { it.context.startActivity(Intent(it.context, FitActivity::class.java)) }
         onAction = { prefs[PREF_BANNER_FIT] = false }
     }
+
+    private suspend fun fetchDataSets(data: List<Glucose>, onCompleted: (List<Entry>, List<Entry>) -> Unit) =
+        viewModelScope.launch {
+            // Get average entries
+            val averageDeferred = async {
+                val average = HashMap<Int, Float>()
+                val end = System.currentTimeMillis()
+                val start = end - DateUtils.WEEK
+
+                val size = TimeFrame.values().size - 1
+                for (i in 0..(size - 1)) {
+                    val timeFrame = i.toTimeFrame()
+
+                    val lastWeek = db.glucose().getInDateRangeWithTimeFrame(start, end, i)
+                    val avgVal = lastWeek.indices.map { lastWeek[it].value }.sum() / lastWeek.size.toFloat()
+                    average[timeFrame.reprHour] = avgVal
+                }
+
+                average.filterNot { it.value.isZeroOrNan() }
+                    .map { Entry(it.key * 60f, it.value) }
+                    .sortedBy { it.x }
+            }
+
+            // Get today entries
+            val todayDeferred = async {
+                data.sortedBy { it.date.time }
+                    .filter { it.date.isToday() }
+                    .map { Entry(it.date.getAsMinutes(), it.value.toFloat()) }
+                    .distinctBy { it.x }
+            }
+
+            val averageEntries = averageDeferred.await()
+            val todayEntries = todayDeferred.await()
+
+            GlobalScope.launch(coroutineContext) { onCompleted(todayEntries, averageEntries) }
+        }
 
     companion object {
         private const val PREF_BANNER_INSULIN = "pref_banner_insulin"

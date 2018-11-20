@@ -43,6 +43,8 @@ dependencies {
     implementation supportLib.constraint
 
     implementation kotlinLib.stdlib
+    implementation kotlinLib.coroutinescore
+    implementation kotlinLib.coroutinesandroid
 
     implementation lifecycleLib.extensions
     kapt lifecycleLib.compiler

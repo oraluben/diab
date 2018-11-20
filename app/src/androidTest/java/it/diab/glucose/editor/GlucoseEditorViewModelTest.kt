@@ -114,10 +114,10 @@ class GlucoseEditorViewModelTest {
             timeFrame = TimeFrame.LUNCH
         }
 
-        assert(mViewModel!!.hasPotentialBasal(glucose))
+        assert(mViewModel!!.hasPotentialBasal())
 
         glucose.date = b.time
-        assert(!mViewModel!!.hasPotentialBasal(glucose))
+        assert(!mViewModel!!.hasPotentialBasal())
     }
 
     @Test
@@ -133,7 +133,7 @@ class GlucoseEditorViewModelTest {
 
         mDatabase!!.insulin().insert(test)
 
-        val result = mViewModel!!.getInsulinByTimeFrame(targetTimeFrame)
+        val result = mViewModel!!.getInsulinByTimeFrame()
         assert(result.uid == test.uid)
         assert(result == test)
     }

@@ -25,3 +25,4 @@
 #-renamesourcefileattribute SourceFile
 
 -keep class * extends androidx.lifecycle.AndroidViewModel { <init>(...); }
+-keepclassmembernames class kotlinx.** { volatile <fields>; }

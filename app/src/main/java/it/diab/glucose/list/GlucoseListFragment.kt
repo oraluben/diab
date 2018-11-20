@@ -32,7 +32,7 @@ class GlucoseListFragment : MainFragment() {
 
         mAdapter = GlucoseListAdapter(context!!, this::onItemClick)
 
-        mRecyclerView.adapter = mAdapter
+        mViewModel.prepare { mRecyclerView.adapter = mAdapter }
         return view
     }
 

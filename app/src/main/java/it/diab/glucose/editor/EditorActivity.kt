@@ -95,13 +95,10 @@ class EditorActivity : AppCompatActivity() {
 
         mEditMode = intent.getBooleanExtra(EXTRA_INSERT_MODE, false)
 
-        setup()
-    }
-
-    override fun onResume() {
-        super.onResume()
-
-        refresh()
+        mViewModel.prepare {
+            setup()
+            refresh()
+        }
     }
 
     private fun setup() {
@@ -158,7 +155,7 @@ class EditorActivity : AppCompatActivity() {
             mInsulinView.text = insulin.getDisplayedString(value)
         }
 
-        if (mViewModel.hasPotentialBasal(mViewModel.glucose)) {
+        if (mViewModel.hasPotentialBasal()) {
             mBasalView.visibility = View.VISIBLE
             if (ids.second == -1L) {
                 mBasalView.text = getString(R.string.glucose_editor_basal_add)
@@ -175,7 +172,7 @@ class EditorActivity : AppCompatActivity() {
         mInfoView.text = getInfo(data)
         mDateView.text = mViewModel.glucose.date.getDetailedString()
 
-        val targetInsulin = mViewModel.getInsulinByTimeFrame(mViewModel.glucose.timeFrame)
+        val targetInsulin = mViewModel.getInsulinByTimeFrame()
         mSuggestionView.bind(mViewModel.glucose, targetInsulin, this::onSuggestionApply)
 
         mFab.setImageResource(R.drawable.ic_edit)

@@ -123,30 +123,36 @@ class GlucoseListAdapter(private val mContext: Context, private val onItemClick:
                 return
             }
 
-            if (!::mActivityViewModel.isInitialized) {
-                mActivityViewModel = ViewModelProviders.of(mContext)[GlucoseListViewModel::class.java]
+            if (::mActivityViewModel.isInitialized) {
+                bindInsulins(glucose, uids)
+                return
             }
 
-            val builder = StringBuilder()
-
-            builder.append(glucose.insulinValue0)
-                    .append(" ")
-                    .append(mActivityViewModel.getInsulin(uids[0]).name)
-
-            // Optional - Insulin 1
-            if (uids[1] >= 0) {
-                builder.append(", ")
-                        .append(glucose.insulinValue1)
-                        .append(" ")
-                        .append(mActivityViewModel.getInsulin(uids[1]).name)
-            }
-
-            mSummary.text = builder.toString()
-            mSummary.visibility = View.VISIBLE
+            mActivityViewModel = ViewModelProviders.of(mContext)[GlucoseListViewModel::class.java]
+            mActivityViewModel.prepare { bindInsulins(glucose, uids) }
         }
 
         fun clear() {
             itemView.visibility = View.GONE
+        }
+
+        private fun bindInsulins(glucose: Glucose, uids: LongArray) {
+            val builder = StringBuilder()
+
+            builder.append(glucose.insulinValue0)
+                .append(" ")
+                .append(mActivityViewModel.getInsulin(uids[0]).name)
+
+            // Optional - Insulin 1
+            if (uids[1] >= 0) {
+                builder.append(", ")
+                    .append(glucose.insulinValue1)
+                    .append(" ")
+                    .append(mActivityViewModel.getInsulin(uids[1]).name)
+            }
+
+            mSummary.text = builder.toString()
+            mSummary.visibility = View.VISIBLE
         }
     }
 

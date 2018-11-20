@@ -17,9 +17,6 @@ import it.diab.db.entities.Glucose
 import it.diab.ui.BannerView
 import it.diab.ui.MainFragment
 import it.diab.ui.graph.OverviewGraphView
-import it.diab.util.extensions.getAsMinutes
-import it.diab.util.extensions.isToday
-import it.diab.util.extensions.isZeroOrNan
 
 class OverviewFragment : MainFragment() {
     private lateinit var mBanner: BannerView
@@ -56,25 +53,22 @@ class OverviewFragment : MainFragment() {
 
     override fun getTitle() = R.string.fragment_overview
 
-    private fun update(today: List<Glucose>?) {
-        if (today == null || today.isEmpty()) {
+    private fun update(data: List<Glucose>?) {
+        if (data == null || data.isEmpty()) {
             return
         }
 
+        mViewModel.getDataSets(data, this::setDataSets)
+    }
+
+    private fun setDataSets(today: List<Entry>, average: List<Entry>) {
         val dataSets = ArrayList<ILineDataSet>()
 
-        val average = mViewModel.getAverageLastWeek()
         if (average.isNotEmpty()) {
-            val averageSet = getAverageDataSet(average)
-            if (averageSet != null) {
-                dataSets.add(averageSet)
-            }
+            getAverageDataSet(average)?.let { dataSets.add(it) }
         }
 
-        val todaySet = getTodayDataSet(today)
-        if (todaySet != null) {
-            dataSets.add(todaySet)
-        }
+        getTodayDataSet(today)?.let { dataSets.add(it) }
 
         if (dataSets.isEmpty()) {
             return
@@ -84,48 +78,36 @@ class OverviewFragment : MainFragment() {
         mChart.invalidate()
     }
 
-    private fun getTodayDataSet(data: List<Glucose>): LineDataSet? {
-        val entries = data
-                .sortedBy { it.date.time }
-                .filter { it.date.isToday() }
-                .map { Entry(it.date.getAsMinutes(), it.value.toFloat()) }
-                .distinctBy { it.x }
-
+    private fun getTodayDataSet(entries: List<Entry>): LineDataSet? {
         if (entries.isEmpty() || context == null) {
             return null
         }
 
         val color = ContextCompat.getColor(context!!, R.color.graph_overview_today)
-        val dataSet = LineDataSet(entries, "")
 
-        dataSet.setCircleColor(color)
-        dataSet.setCircleColorHole(color)
-        dataSet.color = color
-        dataSet.highLightColor = color
-        dataSet.valueTextSize = resources.getDimension(R.dimen.overview_graph_text)
-        dataSet.valueFormatter = IValueFormatter { value, _, _, _ -> "%.0f".format(value) }
-        dataSet.mode = LineDataSet.Mode.CUBIC_BEZIER
-        return dataSet
+        return LineDataSet(entries, "").apply {
+            setCircleColor(color)
+            this.color = color
+            highLightColor = color
+            valueTextSize = resources.getDimension(R.dimen.overview_graph_text)
+            valueFormatter = IValueFormatter { value, _, _, _ -> "%.0f".format(value) }
+            mode = LineDataSet.Mode.CUBIC_BEZIER
+        }
     }
 
-    private fun getAverageDataSet(data: HashMap<Int, Float>): LineDataSet? {
-        val entries = data
-                .filterNot { it.value.isZeroOrNan() }
-                .map { Entry(it.key * 60f, it.value) }
-                .sortedBy { it.x }
-
+    private fun getAverageDataSet(entries: List<Entry>): LineDataSet? {
         if (entries.isEmpty() || context == null) {
             return null
         }
 
         val color = ContextCompat.getColor(context!!, R.color.graph_overview_average)
-        val dataSet = LineDataSet(entries, "")
 
-        dataSet.color = color
-        dataSet.valueTextSize = 0f
-        dataSet.isHighlightEnabled = false
-        dataSet.mode = LineDataSet.Mode.CUBIC_BEZIER
-        dataSet.setDrawCircles(false)
-        return dataSet
+        return LineDataSet(entries, "").apply {
+            this.color = color
+            valueTextSize = 0f
+            isHighlightEnabled = false
+            mode = LineDataSet.Mode.CUBIC_BEZIER
+            setDrawCircles(false)
+        }
     }
 }

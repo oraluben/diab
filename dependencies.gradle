@@ -22,6 +22,8 @@ ext {
     ]
 
     kotlinLib = [
+            coroutinescore: "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.0.1",
+            coroutinesandroid: "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.0.1",
             stdlib : "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.3.10",
     ]
 
