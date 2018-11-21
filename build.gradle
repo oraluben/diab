@@ -36,8 +36,5 @@ task clean(type: Delete) {
     delete rootProject.buildDir
 }
 
-// Load dependencies
-apply from: 'dependencies.gradle'
-
 // Load versioning
 apply from: 'versioning.gradle'
