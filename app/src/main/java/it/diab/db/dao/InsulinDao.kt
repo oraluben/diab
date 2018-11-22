@@ -30,7 +30,7 @@ interface InsulinDao {
     fun getByTimeFrame(isBasal: Int, timeFrame: Int): List<Insulin>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(vararg insulins: Insulin)
+    fun insert(vararg insulins: Insulin): Array<Long>
 
     @Delete
     fun delete(insulin: Insulin)

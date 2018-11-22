@@ -1,26 +1,24 @@
 package it.diab.db.converters
 
 import androidx.test.filters.SmallTest
-import androidx.test.runner.AndroidJUnit4
+import com.google.common.truth.Truth.assertThat
 import it.diab.util.timeFrame.TimeFrame
 import org.junit.Test
-import org.junit.runner.RunWith
 
-@RunWith(AndroidJUnit4::class)
 @SmallTest
 class TimeFrameConverterTest {
+    private val converter = TimeFrameConverter()
 
     @Test
     fun convertToInt() {
-        val orig = TimeFrame.LATE_MORNING
-        val test = TimeFrameConverter().toInt(orig)!!
-        assert(orig.toInt() == test)
+        val tf = TimeFrame.LATE_MORNING
+
+        assertThat(converter.toInt(tf)).isEqualTo(1)
     }
 
     @Test
     fun convertToTimeFrame() {
-        val orig = 1
-        val test = TimeFrameConverter().toTimeFrame(orig)!!
-        assert(orig == test.toInt())
+        val tf = 1
+        assertThat(converter.toTimeFrame(tf)).isEqualTo(TimeFrame.LATE_MORNING)
     }
 }

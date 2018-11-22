@@ -1,8 +1,8 @@
 package it.diab.glucose.overview
 
 import androidx.lifecycle.ViewModelProviders
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.rule.ActivityTestRule
-import androidx.test.runner.AndroidJUnit4
 import it.diab.MainActivity
 import it.diab.db.AppDatabase
 import it.diab.util.extensions.asTimeFrame
@@ -16,33 +16,32 @@ import java.util.Calendar
 
 @RunWith(AndroidJUnit4::class)
 class OverviewViewModelTest {
-    private var mViewModel: OverviewViewModel? = null
+    private lateinit var viewModel: OverviewViewModel
 
     private val glucoseValues = arrayOf(69, 99, 301, 132)
-    private val mGlucoseList = Array(4) { i -> glucose { value = glucoseValues[i] }}
+    private val glucoseList = Array(4) { i -> glucose { value = glucoseValues[i] }}
 
-    private var mTestTimeFrame: TimeFrame? = null
+    private var testTimeFrame: TimeFrame? = null
 
-    @Suppress("MemberVisibilityCanBePrivate")
+    @Suppress("MemberVisibility")
     @get:Rule
-    val testRule = ActivityTestRule<MainActivity>(MainActivity::class.java)
+    val rule = ActivityTestRule(MainActivity::class.java)
 
     @Before
     fun setup() {
-        mViewModel = ViewModelProviders.of(testRule.activity)[OverviewViewModel::class.java]
+        viewModel = ViewModelProviders.of(rule.activity)[OverviewViewModel::class.java]
 
         AppDatabase.TEST_MODE = true
 
         val calendar = Calendar.getInstance()
-        mTestTimeFrame = calendar.time.asTimeFrame()
+        testTimeFrame = calendar.time.asTimeFrame()
     }
 
     @Test
     fun getAverageLastWeek() {
-        mViewModel!!.getDataSets(mGlucoseList.asList()) { _, average ->
-
+        viewModel.getDataSets(glucoseList.asList()) { _, average ->
             val supposedAverage = glucoseValues.average().toFloat()
-            val result = average[mTestTimeFrame!!.toInt()].y
+            val result = average[testTimeFrame!!.toInt()].x
             assert(result == supposedAverage)
         }
     }

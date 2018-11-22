@@ -1,7 +1,9 @@
 package it.diab.db
 
-import androidx.test.InstrumentationRegistry
-import androidx.test.runner.AndroidJUnit4
+import android.content.Context
+import androidx.test.core.app.ApplicationProvider
+import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.google.common.truth.Truth.assertThat
 import it.diab.db.dao.GlucoseDao
 import it.diab.db.dao.InsulinDao
 import it.diab.db.entities.Glucose
@@ -20,7 +22,8 @@ class AppDatabaseTest {
     @Before
     fun setup() {
         AppDatabase.TEST_MODE = true
-        val instance = AppDatabase.getInstance(InstrumentationRegistry.getContext())
+        val context = ApplicationProvider.getApplicationContext<Context>()
+        val instance = AppDatabase.getInstance(context)
         glucoseDao = instance.glucose()
         insulinDao = instance.insulin()
     }
@@ -36,7 +39,7 @@ class AppDatabaseTest {
 
         glucoseDao?.insert(item)
         val test = glucoseDao?.getById(1)!![0]
-        assert(item == test)
+        assertThat(item).isEqualTo(test)
     }
 
     @Test
@@ -46,11 +49,10 @@ class AppDatabaseTest {
             name = "TEST 0"
             timeFrame = TimeFrame.LUNCH
             hasHalfUnits = true
-        }
+        }.also { insulinDao?.insert(it) }
 
-        insulinDao?.insert(item)
         val test = insulinDao?.getById(1)!![0]
-        assert(item == test)
+        assertThat(item).isEqualTo(test)
     }
 
     @Test
@@ -59,7 +61,7 @@ class AppDatabaseTest {
             uid = 2
             name = "TEST 1"
             timeFrame = TimeFrame.DINNER
-        }
+        }.also { insulinDao?.insert(it) }
 
         val basal = insulin {
             uid = 3
@@ -67,12 +69,9 @@ class AppDatabaseTest {
             timeFrame = TimeFrame.DINNER
             isBasal = true
             hasHalfUnits = true
-        }
+        }.also { insulinDao?.insert(it) }
 
-        insulinDao?.insert(insulin)
-        insulinDao?.insert(basal)
-
-        val glucose = glucose {
+        glucoseDao?.insert(glucose {
             uid = 2
             value = 100
             insulinId0 = insulin.uid
@@ -81,15 +80,14 @@ class AppDatabaseTest {
             insulinValue1 = 4f
             eatLevel = Glucose.HIGH
             timeFrame = TimeFrame.EXTRA
+        })
+
+        glucoseDao?.getById(2)!![0].run {
+            val test1 = insulinDao?.getById(insulinId0)!![0]
+            val test2 = insulinDao?.getById(insulinId1)!![0]
+
+            assertThat(insulin.uid).isEqualTo(test1.uid)
+            assertThat(basal.uid).isEqualTo(test2.uid)
         }
-
-        glucoseDao?.insert(glucose)
-
-        val test = glucoseDao?.getById(2)!![0]
-        val test1 = insulinDao?.getById(test.insulinId0)!![0]
-        val test2 = insulinDao?.getById(test.insulinId1)!![0]
-
-        assert(insulin.uid == test1.uid)
-        assert(basal.uid == test2.uid)
     }
 }

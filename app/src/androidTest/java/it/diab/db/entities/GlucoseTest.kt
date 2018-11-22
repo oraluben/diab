@@ -1,9 +1,9 @@
 package it.diab.db.entities
 
 import android.os.Parcel
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.SmallTest
-import androidx.test.runner.AndroidJUnit4
-import it.diab.util.extensions.get
+import com.google.common.truth.Truth.assertThat
 import it.diab.util.extensions.glucose
 import it.diab.util.timeFrame.TimeFrame
 import org.junit.Test
@@ -19,7 +19,7 @@ class GlucoseTest {
         val original = glucose {
             uid = 32
             value = 103
-            date = Date()[4]
+            date = Date().apply { time -= (4 * 24 * 60 * 60 * 1000) }
             insulinId0 = 3
             insulinValue0 = 12.4f
             eatLevel = 2
@@ -35,7 +35,7 @@ class GlucoseTest {
 
         // Read
         val restored = Glucose.createFromParcel(parcel)
-        assert(restored.uid == original.uid)
-        assert(restored == original)
+        assertThat(restored.uid).isEqualTo(original.uid)
+        assertThat(restored).isEqualTo(original)
     }
 }

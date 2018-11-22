@@ -1,84 +1,68 @@
 package it.diab.insulin.editor
 
 import androidx.lifecycle.ViewModelProviders
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.rule.ActivityTestRule
-import androidx.test.runner.AndroidJUnit4
-import it.diab.db.AppDatabase
+import com.google.common.truth.Truth.assertThat
+import it.diab.test.DbTest
 import it.diab.util.extensions.insulin
 import it.diab.util.timeFrame.TimeFrame
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.runBlocking
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
-class InsulinEditorViewModelTest {
-    private var mViewModel: EditorViewModel? = null
-    private var mDatabase: AppDatabase? = null
+class InsulinEditorViewModelTest : DbTest() {
+    private lateinit var viewModel: EditorViewModel
 
-    @Suppress("MemberVisibilityCanBePrivate")
+    @Suppress("MemberVisibility")
     @get:Rule
-    val testRule = ActivityTestRule<EditorActivity>(EditorActivity::class.java)
+    val rule = ActivityTestRule(EditorActivity::class.java)
 
     @Before
-    fun setup() {
-        mViewModel = ViewModelProviders.of(testRule.activity)[EditorViewModel::class.java]
+    override fun setup() {
+        super.setup()
 
-        AppDatabase.TEST_MODE = true
-        mDatabase = AppDatabase.getInstance(testRule.activity)
+        viewModel = ViewModelProviders.of(rule.activity)[EditorViewModel::class.java]
     }
 
     @Test
-    fun setInsulin() {
-        mViewModel!!.setInsulin(-1)
-
-        val test = mViewModel!!.insulin
-        assert(test.uid == 0L)
-
-        val new = insulin {
-            uid = 1
+    fun delete() = runBlocking {
+        val insulin = insulin {
+            uid = 81
             name = "FooBar"
-            timeFrame = TimeFrame.LUNCH
-            hasHalfUnits = true
+        }.also { db.insulin().insert(it) }
+
+        viewModel.insulin = insulin
+
+        viewModel.delete()
+
+        delay(400)
+
+        assertThat(db.insulin().getById(insulin.uid)).isEmpty()
+    }
+
+
+    @Test
+    fun save() = runBlocking {
+        val initialSize = db.insulin().allStatic.size
+
+        viewModel.setInsulin(-1)
+
+        viewModel.insulin.run {
+            name = "barFoo"
+            timeFrame = TimeFrame.LATE_MORNING
+            isBasal = true
         }
-        mDatabase!!.insulin().insert(new)
 
-        mViewModel!!.setInsulin(new.uid)
+        viewModel.save()
 
-        assert(mViewModel!!.insulin.uid == new.uid)
-        assert(mViewModel!!.insulin == new)
+        delay(400)
 
-        mDatabase!!.insulin().delete(new)
-    }
-
-    @Test
-    fun delete() {
-        val insulins = mDatabase!!.insulin().allStatic
-        assert(insulins.isNotEmpty())
-
-        val test = insulins[0]
-
-        mViewModel!!.delete()
-
-        val result = mDatabase!!.insulin().getById(test.uid)
-        assert(result.isEmpty())
-    }
-
-
-    @Test
-    fun save() {
-        val initialSize = mDatabase!!.insulin().allStatic.size
-
-        mViewModel!!.setInsulin(-1)
-
-        mViewModel!!.insulin.name = "barFoo"
-        mViewModel!!.insulin.timeFrame = TimeFrame.LATE_MORNING
-        mViewModel!!.insulin.isBasal = true
-        mViewModel!!.insulin.hasHalfUnits = false
-
-        mViewModel!!.save()
-
-        val finalSize = mDatabase!!.insulin().allStatic.size
-        assert(finalSize == initialSize + 1)
+        val finalSize = db.insulin().allStatic.size
+        assertThat(finalSize).isEqualTo(initialSize + 1)
     }
 }

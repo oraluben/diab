@@ -1,156 +1,123 @@
 package it.diab.glucose.editor
 
 import androidx.lifecycle.ViewModelProviders
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.rule.ActivityTestRule
-import androidx.test.runner.AndroidJUnit4
-import it.diab.db.AppDatabase
+import com.google.common.truth.Truth.assertThat
 import it.diab.db.entities.Glucose
-import it.diab.test.random
-import it.diab.util.extensions.asTimeFrame
-import it.diab.util.extensions.get
+import it.diab.test.DbTest
 import it.diab.util.extensions.glucose
 import it.diab.util.extensions.insulin
 import it.diab.util.timeFrame.TimeFrame
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.runBlocking
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import java.util.Calendar
-import java.util.Date
 
 @RunWith(AndroidJUnit4::class)
-class GlucoseEditorViewModelTest {
-    private var mViewModel: EditorViewModel? = null
-    private var mDatabase: AppDatabase? = null
+class GlucoseEditorViewModelTest : DbTest() {
+    private lateinit var viewModel: EditorViewModel
 
-    @Suppress("MemberVisibilityCanBePrivate")
+    @Suppress("MemberVisibility")
     @get:Rule
-    val testRule = ActivityTestRule<EditorActivity>(EditorActivity::class.java)
+    val rule = ActivityTestRule(EditorActivity::class.java)
+
+    private val testGlucose = glucose {
+        uid = 15
+        value = 99
+        insulinValue1 = 3.5f
+        eatLevel = Glucose.LOW
+        timeFrame = TimeFrame.DINNER
+    }
+    private val testInsulin = insulin {
+        uid = 1
+        name = "FooBar"
+        timeFrame = TimeFrame.DINNER
+        hasHalfUnits = true
+    }
+    private val testBasal = insulin {
+        uid = 2
+        name = "BarFoo"
+        isBasal = true
+    }
 
     @Before
-    fun setup() {
-        mViewModel = ViewModelProviders.of(testRule.activity)[EditorViewModel::class.java]
+    override fun setup() {
+        super.setup()
 
-        AppDatabase.TEST_MODE = true
-        mDatabase = AppDatabase.getInstance(testRule.activity)
-    }
-
-    @Test
-    fun setGlucose() {
-        mViewModel!!.setGlucose(-1)
-
-        val test = mViewModel!!.glucose
-        assert(test.uid == 0L)
-
-        val new = glucose {
-            uid = 1
-            value = (10..200).random()
-            insulinValue1 = (1..10).random().toFloat()
-            eatLevel = Glucose.LOW
-            timeFrame = TimeFrame.DINNER
+        db.glucose().insert(testGlucose)
+        db.insulin().run {
+            insert(testInsulin)
+            insert(testBasal)
         }
-        mDatabase!!.glucose().insert(new)
 
-        mViewModel!!.setGlucose(new.uid)
-
-        assert(mViewModel!!.glucose.uid == new.uid)
-        assert(mViewModel!!.glucose == new)
-
-        mDatabase!!.glucose().delete(new)
+        viewModel = ViewModelProviders.of(rule.activity)[EditorViewModel::class.java]
     }
 
     @Test
-    fun save() {
-        val initialSize = mDatabase!!.glucose().allStatic.size
+    fun setGlucose() = runBlocking {
+        viewModel.setGlucose(-1)
 
-        mViewModel!!.setGlucose(-1)
+        assertThat(viewModel.glucose.uid).isEqualTo(0)
 
-        mViewModel!!.glucose.value = 173
-        mViewModel!!.glucose.date = Date()[-6]
-        mViewModel!!.glucose.insulinId0 = 0L
-        mViewModel!!.glucose.insulinValue0 = 10.5f
-        mViewModel!!.glucose.eatLevel = Glucose.MAX
+        viewModel.setGlucose(testGlucose.uid)
 
-        mViewModel!!.save()
+        delay(300)
 
-        val finalSize = mDatabase!!.glucose().allStatic.size
-        assert(finalSize == initialSize + 1)
+        viewModel.glucose.run {
+            assertThat(uid).isEqualTo(testGlucose.uid)
+            assertThat(this).isEqualTo(testGlucose)
+        }
+    }
+
+    @Test
+    fun save() = runBlocking {
+        val initialSize = db.glucose().allStatic.size
+
+        viewModel.setGlucose(-1)
+
+        viewModel.glucose.apply {
+            value = 173
+            insulinId0 = 0
+            insulinValue0 = 10.5f
+            eatLevel = Glucose.MAX
+        }
+
+        viewModel.save()
+
+        delay(500)
+
+        val finalSize = db.glucose().allStatic.size
+        assertThat(finalSize).isEqualTo(initialSize + 1)
     }
 
     @Test
     fun getInsulin() {
-        val new = insulin {
-            uid = (50..60).random().toLong()
-            name = "FooBar"
-            timeFrame = TimeFrame.DINNER
-            hasHalfUnits = true
+        viewModel.getInsulin(testInsulin.uid).run {
+            assertThat(uid).isEqualTo(testInsulin.uid)
+            assertThat(this).isEqualTo(testInsulin)
         }
-        mDatabase!!.insulin().insert(new)
-
-        val test = mViewModel!!.getInsulin(new.uid)
-
-        assert(test.uid == new.uid)
-        assert(test == new)
     }
 
     @Test
     fun hasPotentialBasal() {
-        val a = Calendar.getInstance()
-        val b = Calendar.getInstance()
-
-        a[Calendar.HOUR_OF_DAY] = 12
-        b[Calendar.HOUR_OF_DAY] = 20
-
-        val targetTimeFrame = a.time.asTimeFrame()
-        val insulin = insulin {
-            uid = (100..133).random().toLong()
-            timeFrame = targetTimeFrame
-            isBasal = true
-        }
-        mDatabase!!.insulin().insert(insulin)
-
-        val glucose = glucose {
-            date = a.time
-            timeFrame = TimeFrame.LUNCH
-        }
-
-        assert(mViewModel!!.hasPotentialBasal())
-
-        glucose.date = b.time
-        assert(!mViewModel!!.hasPotentialBasal())
+        viewModel.glucose.timeFrame = testBasal.timeFrame
+        assertThat(viewModel.hasPotentialBasal()).isTrue()
     }
 
     @Test
     fun getInsulinByTimeFrame() {
-        val targetTimeFrame = TimeFrame.NIGHT
-
-        val test = insulin {
-            uid = (60..90).random().toLong()
-            name = "FooBar"
-            timeFrame = targetTimeFrame
-            isBasal = true
-        }
-
-        mDatabase!!.insulin().insert(test)
-
-        val result = mViewModel!!.getInsulinByTimeFrame()
-        assert(result.uid == test.uid)
-        assert(result == test)
+        assertThat(viewModel.getInsulinByTimeFrame().timeFrame).isEqualTo(viewModel.glucose.timeFrame)
     }
 
     @Test
     fun applyInsulinSuggestion() {
-        val insulin = insulin {
-            uid = (0..20).random().toLong()
-            name = "FooBar"
-            timeFrame = TimeFrame.MORNING
+        val test = 6.5f
+
+        viewModel.applyInsulinSuggestion(test, testInsulin) {
+            assertThat(viewModel.glucose.insulinValue0).isEqualTo(test)
         }
-        val test = (0..10).random().toFloat()
-
-        mViewModel!!.setGlucose(-1)
-        mViewModel!!.applyInsulinSuggestion(test, insulin) {}
-
-        assert(mViewModel!!.glucose.insulinValue0 == test)
-        assert(mViewModel!!.glucose.insulinId0 == insulin.uid)
     }
 }
