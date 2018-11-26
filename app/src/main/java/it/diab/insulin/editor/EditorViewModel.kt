@@ -11,14 +11,14 @@ class EditorViewModel(owner: Application) : ScopedViewModel(owner) {
     private val db = AppDatabase.getInstance(owner)
 
     fun setInsulin(uid: Long) {
-        launch { insulin = db.insulin().getById(uid).firstOrNull() ?: Insulin() }
+        viewModelScope.launch { insulin = db.insulin().getById(uid).firstOrNull() ?: Insulin() }
     }
 
     fun delete() {
-        launch { db.insulin().delete(insulin) }
+        viewModelScope.launch { db.insulin().delete(insulin) }
     }
 
     fun save() {
-        launch { db.insulin().insert(insulin) }
+        viewModelScope.launch { db.insulin().insert(insulin) }
     }
 }

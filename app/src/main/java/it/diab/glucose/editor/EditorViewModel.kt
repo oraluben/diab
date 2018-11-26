@@ -8,7 +8,6 @@ import it.diab.util.DateUtils
 import it.diab.util.ScopedViewModel
 import it.diab.util.extensions.asTimeFrame
 import it.diab.util.extensions.firstIf
-import it.diab.util.timeFrame.TimeFrame
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch

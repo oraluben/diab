@@ -56,19 +56,19 @@ class NumericKeyboardView(context: Context, attrs: AttributeSet) : LinearLayout(
     }
 
     private fun setupKeys() {
-        mButton0.setOnClickListener { _ -> input(0) }
-        mButton1.setOnClickListener { _ -> input(1) }
-        mButton2.setOnClickListener { _ -> input(2) }
-        mButton3.setOnClickListener { _ -> input(3) }
-        mButton4.setOnClickListener { _ -> input(4) }
-        mButton5.setOnClickListener { _ -> input(5) }
-        mButton6.setOnClickListener { _ -> input(6) }
-        mButton7.setOnClickListener { _ -> input(7) }
-        mButton8.setOnClickListener { _ -> input(8) }
-        mButton9.setOnClickListener { _ -> input(9) }
+        mButton0.setOnClickListener { input(0) }
+        mButton1.setOnClickListener { input(1) }
+        mButton2.setOnClickListener { input(2) }
+        mButton3.setOnClickListener { input(3) }
+        mButton4.setOnClickListener { input(4) }
+        mButton5.setOnClickListener { input(5) }
+        mButton6.setOnClickListener { input(6) }
+        mButton7.setOnClickListener { input(7) }
+        mButton8.setOnClickListener { input(8) }
+        mButton9.setOnClickListener { input(9) }
 
-        mButtonDel.setOnClickListener { _ -> del() }
-        mButtonDel.setOnLongClickListener { _ ->
+        mButtonDel.setOnClickListener { del() }
+        mButtonDel.setOnLongClickListener {
             mInputTextView.text = "0"
             true
         }

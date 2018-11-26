@@ -56,7 +56,7 @@ class InsulinAdapter(private val mContext: Context) :
         private fun bindAddView(context: Context) {
             mTitle.text = context.getString(R.string.insulin_item_add)
             mIcon.setImageResource(R.drawable.ic_add)
-            itemView.setOnClickListener { _ ->
+            itemView.setOnClickListener {
                 context.startActivity(Intent(context, EditorActivity::class.java)) }
         }
 
