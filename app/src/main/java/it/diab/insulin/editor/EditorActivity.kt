@@ -65,18 +65,18 @@ class EditorActivity : AppCompatActivity() {
         mSpinner.adapter = ArrayAdapter(this,
                 androidx.appcompat.R.layout.support_simple_spinner_dropdown_item,
                 mTimeFrames)
-        mSpinner.setSelection(if (mEditMode) mViewModel.insulin.timeFrame.toInt() + 1 else 0)
 
         if (!mEditMode) {
             title = getString(R.string.insulin_editor_add)
             return
         }
 
-        mViewModel.setInsulin(uid)
-
-        mEditText.setText(mViewModel.insulin.name)
-        mBasalSwitch.isChecked = mViewModel.insulin.isBasal
-        mHalfUnitsSwitch.isChecked = mViewModel.insulin.hasHalfUnits
+        mViewModel.setInsulin(uid) {
+            mEditText.setText(it.name)
+            mSpinner.setSelection(if (mEditMode) it.timeFrame.toInt() + 1 else 0)
+            mBasalSwitch.isChecked = it.isBasal
+            mHalfUnitsSwitch.isChecked = it.hasHalfUnits
+        }
     }
 
     private fun onSaveInsulin() {

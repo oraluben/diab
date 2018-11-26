@@ -30,6 +30,21 @@ class InsulinEditorViewModelTest : DbTest() {
     }
 
     @Test
+    fun setInsulin() {
+        val insulin = insulin {
+            uid = 81
+            name = "FooBar"
+        }.also { db.insulin().insert(it) }
+
+        viewModel.setInsulin(insulin.uid) {
+            viewModel.insulin.run {
+                assertThat(uid).isEqualTo(insulin.uid)
+                assertThat(this).isEqualTo(insulin)
+            }
+        }
+    }
+
+    @Test
     fun delete() = runBlocking {
         val insulin = insulin {
             uid = 81
@@ -50,7 +65,7 @@ class InsulinEditorViewModelTest : DbTest() {
     fun save() = runBlocking {
         val initialSize = db.insulin().allStatic.size
 
-        viewModel.setInsulin(-1)
+        viewModel.setInsulin(-1) {}
 
         viewModel.insulin.run {
             name = "barFoo"
