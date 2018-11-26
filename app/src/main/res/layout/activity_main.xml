@@ -24,11 +24,11 @@
             android:id="@+id/tabs"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/colorPrimary"
+            android:background="?attr/diab_actionBarBackground"
             app:tabGravity="fill"
             app:tabMode="fixed"
-            app:tabRippleColor="@color/colorAccentLight"
-            app:tabSelectedTextColor="@color/colorAccent"
+            app:tabRippleColor="?attr/diab_rippleColor"
+            app:tabSelectedTextColor="?attr/diab_titleContrastColor"
             app:tabUnboundedRipple="true" />
     </com.google.android.material.appbar.AppBarLayout>
 

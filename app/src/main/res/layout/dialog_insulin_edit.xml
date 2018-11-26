@@ -21,8 +21,7 @@
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:contentDescription="@null"
-            android:tint="@color/black"
-            app:srcCompat="@drawable/ic_menu_insulin" />
+            app:srcCompat="@drawable/ic_editor_insulin" />
 
         <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/insulin_edit_name"

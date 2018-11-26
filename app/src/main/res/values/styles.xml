@@ -1,6 +1,17 @@
 <resources>
 
-    <style name="AppTheme" parent="Theme.MaterialComponents.Light">
+    <style name="DiabTheme" parent="Theme.MaterialComponents.Light">
+        <item name="diab_actionBarBackground">@color/colorPrimary</item>
+        <item name="diab_dividerColor">@color/item_header_divider</item>
+        <item name="diab_editorBackground">@color/colorPrimaryDark</item>
+        <item name="diab_editorFormIcon">@color/colorAccent</item>
+        <item name="diab_importantBackground">@color/colorAccentDark</item>
+        <item name="diab_importantForeground">@color/white</item>
+        <item name="diab_rippleColor">@color/colorAccentLight</item>
+        <item name="diab_titleContrastColor">@color/colorAccent</item>
+    </style>
+
+    <style name="AppTheme" parent="DiabTheme">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
@@ -26,7 +37,7 @@
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.MaterialComponents.ActionBar" />
 
     <!-- Insulin editor -->
-    <style name="AppTheme.DialogActivity" parent="Theme.MaterialComponents.Light.NoActionBar">
+    <style name="AppTheme.DialogActivity" parent="AppTheme.NoActionBar">
         <item name="colorAccent">@color/colorAccent</item>
         <item name="dialogCornerRadius">@dimen/app_radius</item>
         <item name="android:backgroundDimEnabled">false</item>

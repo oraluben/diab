@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="AppTheme" parent="Theme.MaterialComponents.Light">
+    <style name="AppTheme" parent="DiabTheme">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="isLightTheme">true</item>
         <item name="dialogCornerRadius">@dimen/app_radius</item>
+        <item name="isLightTheme">true</item>
         <item name="android:navigationBarColor">@color/navigationBar_color</item>
         <item name="android:navigationBarDividerColor">@color/navigationBar_divider</item>
         <item name="android:textColorPrimary">@color/textPrimary</item>

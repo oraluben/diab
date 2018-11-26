@@ -4,9 +4,9 @@
     android:viewportWidth="24"
     android:viewportHeight="24">
   <path
-      android:fillColor="@color/colorAccent"
+      android:fillColor="?attr/diab_editorFormIcon"
       android:pathData="M16,6v8h3v8h2V2C18.24,2 16,4.24 16,6z"/>
   <path
-      android:fillColor="@color/colorAccent"
+      android:fillColor="?attr/diab_editorFormIcon"
       android:pathData="M11,9H9V2H7v7H5V2H3v7c0,2.21 1.79,4 4,4v9h2v-9c2.21,0 4,-1.79 4,-4V2h-2V9z"/>
 </vector>

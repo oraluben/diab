@@ -1,6 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <!-- Theme attrs -->
+    <attr name="diab_actionBarBackground" format="color" />
+    <attr name="diab_dividerColor" format="color" />
+    <attr name="diab_editorBackground" format="color" />
+    <attr name="diab_editorFormIcon" format="color" />
+    <attr name="diab_importantBackground" format="color" />
+    <attr name="diab_importantForeground" format="color" />
+    <attr name="diab_rippleColor" format="color" />
+    <attr name="diab_titleContrastColor" format="color" />
+
     <declare-styleable name="RecyclerViewExt">
         <attr name="gridLayout" format="boolean" />
         <attr name="gridColumns" format="integer" />

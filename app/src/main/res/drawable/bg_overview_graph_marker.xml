@@ -3,6 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:shape="rectangle"
     tools:keep="@drawable/bg_overview_graph_marker">
-    <solid android:color="@color/colorAccentDark" />
+    <solid android:color="?attr/diab_importantBackground" />
     <corners android:radius="@dimen/app_radius" />
 </shape>

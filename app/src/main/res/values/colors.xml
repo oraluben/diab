@@ -13,7 +13,6 @@
     <color name="textSecondary">#99000000</color>
 
     <color name="background_activity">@color/colorPrimary</color>
-    <color name="background_card">@color/colorPrimaryDark</color>
 
     <color name="navigationBar_color">@android:color/white</color>
     <color name="navigationBar_divider">#1f000000</color>
