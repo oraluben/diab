@@ -74,7 +74,7 @@ class InsulinAdapter(private val mContext: Context) :
             mTitle.text = insulin.name
             mIcon.setImageResource(insulin.timeFrame.icon)
 
-            itemView.setOnClickListener { _ ->
+            itemView.setOnClickListener {
                 val intent = Intent(context, EditorActivity::class.java)
                 intent.putExtra(EditorActivity.EXTRA_UID, insulin.uid)
                 context.startActivity(intent)

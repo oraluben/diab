@@ -1,0 +1,31 @@
+<!--
+  Copyright (c) 2018 Bevilacqua Joey
+
+  Licensed under the GNU GPLv3 license
+
+  The text of the license can be found in the LICENSE file
+  or at https://www.gnu.org/licenses/gpl.txt
+  -->
+<androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.preference.PreferenceCategory app:title="@string/settings_glucose_thresholds_category">
+
+        <androidx.preference.SeekBarPreference
+            android:max="220"
+            app:defaultValue="180"
+            app:key="pref_glucose_threshold_high"
+            app:min="160"
+            app:showSeekBarValue="true"
+            app:title="@string/settings_glucose_thresholds_high" />
+
+        <androidx.preference.SeekBarPreference
+            android:max="80"
+            app:defaultValue="60"
+            app:key="pref_glucose_threshold_low"
+            app:min="50"
+            app:showSeekBarValue="true"
+            app:title="@string/settings_glucose_thresholds_low" />
+
+    </androidx.preference.PreferenceCategory>
+</androidx.preference.PreferenceScreen>

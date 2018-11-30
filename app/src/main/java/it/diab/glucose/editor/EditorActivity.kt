@@ -47,6 +47,7 @@ import it.diab.db.entities.Insulin
 import it.diab.ui.EatBar
 import it.diab.ui.InsulinSuggestionView
 import it.diab.ui.NumericKeyboardView
+import it.diab.util.PreferencesUtil
 import it.diab.util.VibrationUtil
 import it.diab.util.extensions.asTimeFrame
 import it.diab.util.extensions.get
@@ -419,9 +420,12 @@ class EditorActivity : AppCompatActivity() {
             average /= list.size
         }
 
+        val highThreshold = PreferencesUtil.getGlucoseHighThreshold(this)
+        val lowThreshold = PreferencesUtil.getGlucoseLowThreshold(this)
+
         val status = when {
-            average > HIGH_THRESHOLD -> R.string.glucose_type_high
-            average > LOW_THRESHOLD -> R.string.glucose_type_medium
+            average > highThreshold -> R.string.glucose_type_high
+            average > lowThreshold -> R.string.glucose_type_medium
             else -> R.string.glucose_type_low
         }
 
@@ -486,9 +490,5 @@ class EditorActivity : AppCompatActivity() {
         const val EXTRA_GLUCOSE_ID = "glucose_id"
 
         private const val TAG = "EditorActivity"
-
-        // TODO: expose these to userland
-        private const val LOW_THRESHOLD = 70
-        private const val HIGH_THRESHOLD = 180
     }
 }

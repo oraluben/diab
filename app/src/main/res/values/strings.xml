@@ -105,4 +105,10 @@
     <string name="banner_insulin_positive">Register insulins</string>
     <string name="banner_fit_integration">Connect Diab to your Google Fit to backup your glucose values automatically</string>
     <string name="banner_fit_positive">Learn more</string>
+
+    <!-- Settings -->
+    <string name="settings_name">Settings</string>
+    <string name="settings_glucose_thresholds_category">Glucose thresholds</string>
+    <string name="settings_glucose_thresholds_high">High threshold</string>
+    <string name="settings_glucose_thresholds_low">Low threshold</string>
 </resources>

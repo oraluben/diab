@@ -105,4 +105,10 @@
     <string name="banner_insulin_positive">Registra le insuline</string>
     <string name="banner_fit_integration">Collega Diab al tuo Google Fit per effetuare il backup delle tue glicemie automaticamente</string>
     <string name="banner_fit_positive">Scopri di pi\u00F9</string>
+
+    <!-- Settings -->
+    <string name="settings_name">Impostazioni</string>
+    <string name="settings_glucose_thresholds_category">Soglie glicemiche</string>
+    <string name="settings_glucose_thresholds_high">Soglia iper</string>
+    <string name="settings_glucose_thresholds_low">Soglia ipo</string>
 </resources>

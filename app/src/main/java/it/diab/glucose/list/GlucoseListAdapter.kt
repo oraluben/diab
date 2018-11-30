@@ -25,6 +25,7 @@ import it.diab.MainActivity
 import it.diab.R
 import it.diab.db.entities.Glucose
 import it.diab.ui.recyclerview.ViewHolderExt
+import it.diab.util.PreferencesUtil
 import it.diab.util.UIUtils
 import it.diab.util.extensions.diff
 import it.diab.util.extensions.setPrecomputedText
@@ -43,6 +44,9 @@ class GlucoseListAdapter(private val mContext: Context, private val onItemClick:
     private val mHourFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
     private val mDateFormat = SimpleDateFormat(mContext.getString(
             R.string.time_day_month_short_format), Locale.getDefault())
+    private val highThreshold = PreferencesUtil.getGlucoseHighThreshold(mContext)
+    private val lowThreshold = PreferencesUtil.getGlucoseLowThreshold(mContext)
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
             GlucoseHolder(LayoutInflater.from(parent.context)
@@ -121,8 +125,8 @@ class GlucoseListAdapter(private val mContext: Context, private val onItemClick:
             mLayout.setOnClickListener { onItemClick(id) }
 
             val indicatorDrawable = when {
-                glucose.value > 180 -> mHighIndicator
-                glucose.value < 70 -> mLowIndicator
+                glucose.value > highThreshold -> mHighIndicator
+                glucose.value < lowThreshold -> mLowIndicator
                 else -> null
             }
 

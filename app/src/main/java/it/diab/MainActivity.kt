@@ -46,6 +46,7 @@ import it.diab.glucose.export.ExportGlucoseService
 import it.diab.glucose.list.GlucoseListFragment
 import it.diab.glucose.overview.OverviewFragment
 import it.diab.insulin.InsulinActivity
+import it.diab.settings.SettingsActivity
 
 class MainActivity : AppCompatActivity() {
     private lateinit var mCoordinator: CoordinatorLayout
@@ -94,6 +95,7 @@ class MainActivity : AppCompatActivity() {
         R.id.menu_insulin -> onMenuInsulin()
         R.id.menu_export -> onMenuExport()
         R.id.menu_fit -> onMenuFit()
+        R.id.menu_settings -> onMenuSettings()
         else -> false
     }
 
@@ -193,6 +195,12 @@ class MainActivity : AppCompatActivity() {
         }
 
         val intent = Intent(this, FitActivity::class.java)
+        startActivity(intent)
+        return true
+    }
+
+    private fun onMenuSettings(): Boolean {
+        val intent = Intent(this, SettingsActivity::class.java)
         startActivity(intent)
         return true
     }
