@@ -6,6 +6,9 @@
 Diab
 =====
 
+
+[![Icon](app/src/main/ic_launcher-web.png)](#)
+
 ## Features
 
 * Save records of glucose and insulins
