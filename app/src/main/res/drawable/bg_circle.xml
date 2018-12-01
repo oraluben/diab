@@ -9,5 +9,5 @@
   -->
 <shape xmlns:android="http://schemas.android.com/apk/res/android"
     android:shape="oval">
-    <solid android:color="@color/item_circle_bg" />
+    <solid android:color="?attr/diab_itemBackground" />
 </shape>

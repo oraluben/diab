@@ -11,11 +11,15 @@
 
     <!-- Theme attrs -->
     <attr name="diab_actionBarBackground" format="color" />
+    <attr name="diab_actionIconDefault" format="color" />
+    <attr name="diab_actionIconInverted" format="color" />
     <attr name="diab_dividerColor" format="color" />
     <attr name="diab_editorBackground" format="color" />
     <attr name="diab_editorFormIcon" format="color" />
     <attr name="diab_importantBackground" format="color" />
     <attr name="diab_importantForeground" format="color" />
+    <attr name="diab_itemBackground" format="color" />
+    <attr name="diab_itemForeground" format="color" />
     <attr name="diab_rippleColor" format="color" />
     <attr name="diab_titleContrastColor" format="color" />
 

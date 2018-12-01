@@ -16,9 +16,6 @@
 
     <color name="ic_launcher_background">#243FE0</color>
 
-    <color name="white">#fafafa</color>
-    <color name="black">#000000</color>
-
     <color name="textPrimary">#de000000</color>
     <color name="textSecondary">#99000000</color>
 

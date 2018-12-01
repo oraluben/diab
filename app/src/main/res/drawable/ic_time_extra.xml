@@ -12,9 +12,9 @@
     android:viewportWidth="24"
     android:viewportHeight="24">
   <path
-      android:fillColor="?android:attr/textColorSecondary"
+      android:fillColor="?attr/diab_itemForeground"
       android:pathData="M11.99,18.54l-7.37,-5.73l-1.62,1.26l9,7l9,-7l-1.63,-1.27z"/>
   <path
-      android:fillColor="?android:attr/textColorSecondary"
+      android:fillColor="?attr/diab_itemForeground"
       android:pathData="M12,16l7.36,-5.73L21,9l-9,-7L3,9l1.63,1.27L12,16zM12,4.53L17.74,9L12,13.47L6.26,9L12,4.53z"/>
 </vector>
