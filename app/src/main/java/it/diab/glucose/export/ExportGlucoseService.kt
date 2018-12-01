@@ -29,6 +29,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.io.File
 import java.io.FileWriter
@@ -60,7 +61,10 @@ class ExportGlucoseService : Service() {
         serviceScope.launch {
             val defResult = async { exportFiles(this, mAppDatabase) }
 
-            GlobalScope.launch(Dispatchers.Main) { onTaskCompleted(defResult.await()) }
+            val result = defResult.await()
+
+            delay(1500)
+            GlobalScope.launch(Dispatchers.Main) { onTaskCompleted(result) }
         }
 
         return START_NOT_STICKY

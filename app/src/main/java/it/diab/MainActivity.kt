@@ -8,12 +8,8 @@
  */
 package it.diab
 
-import android.Manifest
 import android.annotation.TargetApi
-import android.app.Activity
-import android.app.KeyguardManager
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.content.pm.ShortcutInfo
 import android.content.pm.ShortcutManager
 import android.graphics.Bitmap
@@ -27,22 +23,18 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import androidx.annotation.DrawableRes
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.coordinatorlayout.widget.CoordinatorLayout
-import androidx.core.app.ActivityCompat
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayout
 import it.diab.fit.FitActivity
 import it.diab.glucose.editor.EditorActivity
-import it.diab.glucose.export.ExportGlucoseService
 import it.diab.glucose.list.GlucoseListFragment
 import it.diab.glucose.overview.OverviewFragment
 import it.diab.insulin.InsulinActivity
@@ -93,17 +85,9 @@ class MainActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
         R.id.menu_insulin -> onMenuInsulin()
-        R.id.menu_export -> onMenuExport()
         R.id.menu_fit -> onMenuFit()
         R.id.menu_settings -> onMenuSettings()
         else -> false
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        when (requestCode) {
-            REQUEST_STORAGE_ACCESS -> handleStorageResult()
-            REQUEST_USER_AUTH -> handleUserAuthResult(resultCode)
-        }
     }
 
     fun onItemClick(uid: Long) {
@@ -178,17 +162,6 @@ class MainActivity : AppCompatActivity() {
         return true
     }
 
-    private fun onMenuExport(): Boolean {
-        AlertDialog.Builder(this)
-            .setTitle(R.string.export_ask_title)
-            .setMessage(R.string.export_ask_message)
-            .setPositiveButton(R.string.export_ask_positive) { _, _ -> requestExport() }
-            .setNegativeButton(android.R.string.cancel, null)
-            .show()
-
-        return true
-    }
-
     private fun onMenuFit(): Boolean {
         if (!BuildConfig.HAS_FIT) {
             return false
@@ -205,63 +178,6 @@ class MainActivity : AppCompatActivity() {
         return true
     }
 
-    private fun handleStorageResult() {
-        if (hasStorageAccess()) {
-            requestExport()
-            return
-        }
-
-        AlertDialog.Builder(this)
-            .setTitle(R.string.export_ask_title)
-            .setMessage(R.string.export_ask_permission_message)
-            .setPositiveButton(R.string.export_ask_permission_positive) { _, _ -> startExport() }
-            .setNegativeButton(android.R.string.cancel, null)
-            .show()
-    }
-
-    private fun handleUserAuthResult(resultCode: Int) {
-        if (resultCode == Activity.RESULT_OK) {
-            startExport()
-            return
-        }
-
-        Snackbar.make(mCoordinator, R.string.export_failed_auth, Snackbar.LENGTH_LONG)
-                .show()
-    }
-
-    private fun startExport() {
-        val intent = Intent(this, ExportGlucoseService::class.java)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            startForegroundService(intent)
-        } else {
-            startService(intent)
-        }
-    }
-
-    private fun hasStorageAccess() = ContextCompat.checkSelfPermission(this,
-            Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
-
-    private fun requestExport() {
-        if (!hasStorageAccess()) {
-            ActivityCompat.requestPermissions(this,
-                    arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), REQUEST_STORAGE_ACCESS)
-            return
-        }
-
-        val keyguardManager = getSystemService(KeyguardManager::class.java)
-        val title = getString(R.string.export_ask_auth_title)
-        val message = getString(R.string.export_ask_auth_message)
-        val requestIntent = keyguardManager.createConfirmDeviceCredentialIntent(title, message)
-
-        if (requestIntent != null) {
-            startActivityForResult(requestIntent, REQUEST_USER_AUTH)
-            return
-        }
-
-        // No secure lock screen is set
-        startExport()
-    }
-
     inner class ViewPagerAdapter(manager: FragmentManager) : FragmentPagerAdapter(manager) {
         private val mFragments = arrayOf(mOverviewFragment, mGlucoseFragment)
 
@@ -274,7 +190,5 @@ class MainActivity : AppCompatActivity() {
     companion object {
         private const val SHORTCUTS_VERSION = 0
         private const val KEY_SHORTCUTS = "pref_home_shortcuts"
-        private const val REQUEST_STORAGE_ACCESS = 391
-        private const val REQUEST_USER_AUTH = 392
     }
 }

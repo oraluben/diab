@@ -20,12 +20,19 @@
             app:title="@string/settings_glucose_thresholds_high" />
 
         <androidx.preference.SeekBarPreference
-            android:max="80"
+            android:max="70"
             app:defaultValue="60"
             app:key="pref_glucose_threshold_low"
             app:min="50"
             app:showSeekBarValue="true"
             app:title="@string/settings_glucose_thresholds_low" />
 
+    </androidx.preference.PreferenceCategory>
+
+    <androidx.preference.PreferenceCategory>
+
+        <androidx.preference.Preference
+            app:key="pref_export_data"
+            app:title="@string/export_ask_title" />
     </androidx.preference.PreferenceCategory>
 </androidx.preference.PreferenceScreen>

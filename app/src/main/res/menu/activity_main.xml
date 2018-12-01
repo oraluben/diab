@@ -16,11 +16,6 @@
         app:showAsAction="ifRoom" />
 
     <item
-        android:id="@+id/menu_export"
-        android:title="@string/export_ask_title"
-        app:showAsAction="never" />
-
-    <item
         android:id="@+id/menu_fit"
         android:title="@string/fit_name"
         android:visible="false"
