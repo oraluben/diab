@@ -218,17 +218,18 @@ class EditorActivity : AppCompatActivity() {
 
         val onCustomDateSet = { _: View, year: Int, month: Int, day: Int ->
             newTime.set(year, month, day)
-            TimePickerDialog(this, onTimeSet, glucoseCal[Calendar.HOUR_OF_DAY],
-                    glucoseCal[Calendar.MINUTE], true).show()
+            TimePickerDialog(this, R.style.AppTheme_DatePickerDialog, onTimeSet,
+                glucoseCal[Calendar.HOUR_OF_DAY],
+                glucoseCal[Calendar.MINUTE], true).show()
         }
 
         val onPredefinedDateSet = { _: DialogInterface, i: Int ->
             when (i) {
                 0 -> {}
                 1 -> newTime.time = Date()[-1]
-                else -> DatePickerDialog(this, onCustomDateSet,
-                        glucoseCal[Calendar.YEAR], glucoseCal[Calendar.MONTH],
-                        glucoseCal[Calendar.DAY_OF_MONTH]).show()
+                else -> DatePickerDialog(this, R.style.AppTheme_DatePickerDialog, onCustomDateSet,
+                    glucoseCal[Calendar.YEAR], glucoseCal[Calendar.MONTH],
+                    glucoseCal[Calendar.DAY_OF_MONTH]).show()
             }
 
             if (i == 0 || i == 1) {

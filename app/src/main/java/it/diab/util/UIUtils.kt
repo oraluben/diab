@@ -15,7 +15,9 @@ import android.graphics.Paint
 import android.graphics.Rect
 import android.graphics.RectF
 import android.graphics.drawable.Drawable
+import android.os.Build
 import androidx.annotation.ColorInt
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory
 
 object UIUtils {
@@ -31,5 +33,21 @@ object UIUtils {
         Canvas(bitmap).drawRoundRect(rect, size / 2f, size / 2f, paint)
 
         return RoundedBitmapDrawableFactory.create(resources, bitmap)
+    }
+
+    fun setStyleMode(value: String) {
+        AppCompatDelegate.setDefaultNightMode(when (value) {
+            "0" -> AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
+            "2" -> AppCompatDelegate.MODE_NIGHT_YES
+            else -> AppCompatDelegate.MODE_NIGHT_NO
+        })
+    }
+
+
+    fun supportsAutoStyleMode() = when {
+        Build.VERSION.SDK_INT >= Build.VERSION_CODES.P -> true
+        Build.VERSION.SDK_INT == Build.VERSION_CODES.O_MR1 ->
+            SystemUtil.getProp("ro.lineage.build.version.plat.sdk", "") == "9"
+        else -> false
     }
 }

@@ -20,12 +20,14 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
+import androidx.preference.ListPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceCategory
 import androidx.preference.PreferenceFragmentCompat
 import it.diab.R
 import it.diab.glucose.export.ExportGlucoseService
 import it.diab.insulin.ml.PluginManager
+import it.diab.util.UIUtils
 import it.diab.util.extensions.format
 import it.diab.util.extensions.get
 import java.util.Date
@@ -55,6 +57,9 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
 
         prefs.registerOnSharedPreferenceChangeListener(this)
         updatePluginPrefs()
+
+        val style = findPreference(PREF_UI_STYLE) as ListPreference
+        setupStylePref(style)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -74,6 +79,7 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
         when (key) {
             PluginManager.LAST_UPDATE -> updatePluginPrefs()
+            PREF_UI_STYLE -> UIUtils.setStyleMode(prefs[PREF_UI_STYLE, "1"])
         }
     }
 
@@ -206,6 +212,21 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
         manager.uninstall()
     }
 
+    private fun setupStylePref(preference: ListPreference) {
+        val supportsAuto = UIUtils.supportsAutoStyleMode()
+        val entries = if (supportsAuto) arrayOf(
+            getString(R.string.settings_ui_theme_system),
+            getString(R.string.settings_ui_theme_light),
+            getString(R.string.settings_ui_theme_dark))
+        else arrayOf(
+            getString(R.string.settings_ui_theme_light),
+            getString(R.string.settings_ui_theme_dark))
+
+        val values = if (supportsAuto) arrayOf("0", "1", "2") else arrayOf("1", "2")
+
+        preference.entries = entries
+        preference.entryValues = values
+    }
 
     private fun requestStorageAccess(requestCode: Int) {
         requestPermissions(arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), requestCode)
@@ -220,5 +241,6 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
         private const val REQUEST_USER_AUTH = 392
         private const val REQUEST_SELECT_PLUGIN = 393
 
+        const val PREF_UI_STYLE = "pref_ui_style"
     }
 }

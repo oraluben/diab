@@ -119,5 +119,9 @@
     <string name="settings_plugin_remove">Rimuovi plugin</string>
     <string name="settings_plugin_remove_confirmation">I suggerimenti per l\'insulina saranno disattivati fino all\'installazione di un nuovo plugin.\nQuest\'azione non pu\u00F2 essere annullata, procedere?</string>
     <string name="settings_plugin_remove_confirmation_positive">Rimuovi</string>
+    <string name="settings_ui_theme_title">Stile</string>
+    <string name="settings_ui_theme_system">Automatico (sistema)</string>
+    <string name="settings_ui_theme_light">Chiaro</string>
+    <string name="settings_ui_theme_dark">Scuro</string>
 
 </resources>

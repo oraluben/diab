@@ -9,6 +9,13 @@
 <androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <androidx.preference.ListPreference
+        app:key="pref_ui_style"
+        app:defaultValue="1"
+        app:title="@string/settings_ui_theme_title"
+        app:summary="%s" />
+
+
     <androidx.preference.PreferenceCategory app:title="@string/settings_glucose_thresholds_category">
 
         <androidx.preference.SeekBarPreference

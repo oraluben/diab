@@ -9,8 +9,12 @@
 package it.diab
 
 import android.app.Application
+import androidx.preference.PreferenceManager
 import com.squareup.leakcanary.LeakCanary
 import com.squareup.leakcanary.RefWatcher
+import it.diab.settings.SettingsFragment
+import it.diab.util.UIUtils
+import it.diab.util.extensions.get
 
 @Suppress("unused")
 class DiabApplication : Application() {
@@ -22,5 +26,12 @@ class DiabApplication : Application() {
             LeakCanary.installedRefWatcher() == RefWatcher.DISABLED) {
             LeakCanary.install(this)
         }
+
+        setStyle()
+    }
+
+    private fun setStyle() {
+        val prefs = PreferenceManager.getDefaultSharedPreferences(this)
+        UIUtils.setStyleMode(prefs[SettingsFragment.PREF_UI_STYLE, "1"])
     }
 }

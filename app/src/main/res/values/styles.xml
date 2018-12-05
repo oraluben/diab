@@ -27,11 +27,11 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="dialogCornerRadius">@dimen/app_radius</item>
-        <item name="isLightTheme">true</item>
+        <item name="isLightTheme">@bool/is_light</item>
         <item name="android:textColorPrimary">@color/textPrimary</item>
         <item name="android:textColorSecondary">@color/textSecondary</item>
         <item name="android:windowBackground">@color/background_activity</item>
-        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:windowLightStatusBar">@bool/is_light</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
@@ -75,5 +75,9 @@
         <item name="android:drawablePadding">8dp</item>
         <item name="android:paddingTop">8dp</item>
         <item name="android:maxLines">1</item>
+    </style>
+
+    <style name="AppTheme.DatePickerDialog" parent="ThemeOverlay.MaterialComponents.Dialog">
+        <item name="android:windowBackground">@color/colorPrimary</item>
     </style>
 </resources>

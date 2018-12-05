@@ -37,6 +37,7 @@
             app:tabMode="fixed"
             app:tabRippleColor="?attr/diab_rippleColor"
             app:tabSelectedTextColor="?attr/diab_titleContrastColor"
+            app:tabIndicatorColor="?colorAccent"
             app:tabUnboundedRipple="true" />
     </com.google.android.material.appbar.AppBarLayout>
 

@@ -119,4 +119,9 @@
     <string name="settings_plugin_remove">Uninstall plugin</string>
     <string name="settings_plugin_remove_confirmation">The insulin suggestions are going to be disabled until a new plugin is installed.\nThis action cannot be undone, do you want to proceed?</string>
     <string name="settings_plugin_remove_confirmation_positive">Remove</string>
+    <string name="settings_ui_theme_title">Style</string>
+    <string name="settings_ui_theme_system">Auto (system)</string>
+    <string name="settings_ui_theme_light">Light</string>
+    <string name="settings_ui_theme_dark">Dark</string>
+
 </resources>
