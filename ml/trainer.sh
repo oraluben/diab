@@ -11,7 +11,7 @@ function has_bin() {
 
 
 function cleanup_out() {
-  rm -rf OUT_DIRECTORY/1 && rm -rf OUT_DIRECTORY/3 && rm -rf OUT_DIRECTORY/5
+  rm -rf ${OUT_DIRECTORY}/1 && rm -rf ${OUT_DIRECTORY}/3 && rm -rf ${OUT_DIRECTORY}/5
   return $?
 }
 
@@ -20,7 +20,7 @@ function cleanup_out() {
 # Main
 #
 
-bash import.sh
+bash import.sh "data"
 
 if [[ $(has_bin python3) -ne 0 ]]; then
   echo "python3 not found!"
@@ -29,4 +29,9 @@ fi
 
 
 cleanup_out &> /dev/null
+
+if [[ -z "export" ]]; then
+  mkdir "export"
+fi
+
 python3 estimator.py

@@ -4,22 +4,24 @@
 
 Required software:
 
-* python3
-* pip
+* python 3.6
+* pip3
 
 Install dependencies
 
-`pip install -r requirements.txt`
+`pip3 install -r requirements.txt`
 
 ## Prepare the data for training
 
 ### Export data from the app
 
-From the main menu, click on the export button to save train data to the sdcard.
+From the app settings, click on _"Export data"_ and authenticate to allow
+the app to save your glucose data for ml training
 
 #### Import using adb
 
-Enable usb debugging on your device, then eun `bash import.sh data` on your pc
+Enable usb debugging on your device, plug it in and then run
+`bash import.sh data` on your pc
 
 #### Import manually
 
@@ -27,8 +29,8 @@ Copy the files from the sdcard to the out directory
 
 #### Setup the tests
 
-Fill the `data/test_*.csv` files with random data with right results (you can pick some from
-the train files).
+Fill the `data/test_*.csv` files with random data with optimal results
+(you can pick some from the train files).
 
 ## Train the model and get the json result
 
@@ -39,13 +41,23 @@ All you need to do is execute the python script:
 
 `python3 estimator.py`
 
-## Save the data into the app
+## Install the plugin
 
-Copy the content of the export/estimator_*.json into the respective files in the res/raw folder
+Once the training has been completed, the plugin
+will be available at the following path from the repository
+root: `ml/export/plugin.zip`.
+
+Send this file to the device, open the app settings, click on
+_"Suggestions plugin"_, select the zip file and wait until it's
+installed. 
 
 ## Disable tracking git changes of sensitive files
 
+Sensitive file changes should be disabled by running the
+`setup.sh` file found in the root of this repository, or
+by updating the git index manually:
+
 ```
  git update-index --skip-worktree ml/data/*
- git update-index --skip-worktree app/src/main/res/raw/*
+ git update-index --skip-worktree ml/export/*
 ```

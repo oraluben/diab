@@ -4,6 +4,7 @@ from __future__ import print_function
 
 import pandas as pd
 import tensorflow as tf
+import zipfile
 
 ALLOWED_TIME_FRAMES = [1, 3, 5]
 BATCH_SIZE = 100
@@ -118,9 +119,21 @@ def run(time_frame):
         output.close()
 
 
+def export():
+    zip_file = zipfile.ZipFile("export/plugin.zip", mode='w')
+    try:
+        for time_frame in ALLOWED_TIME_FRAMES:
+            zip_file.write(filename="export/estimator_{}.json".format(time_frame),
+                           arcname="estimator_{}.json".format(time_frame))
+    finally:
+        zip_file.close()
+    print("Done! Plugin available at \"export/plugin.zip\"")
+
+
 def main(args):
     for time_frame in ALLOWED_TIME_FRAMES:
         run(time_frame)
+    export()
 
 
 if __name__ == "__main__":

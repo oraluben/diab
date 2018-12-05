@@ -19,7 +19,7 @@ function setup_adb() {
 
 function get_device() {
   adb devices | while read line; do
-    if [ ! "$line" == "" ] && [ $(echo ${line} | awk '{print $2}') = "device" ]; then
+    if [[ ! "$line" == "" ]] && [[ $(echo ${line} | awk '{print $2}') = "device" ]]; then
       echo ${line} | awk '{print $1}'
       break
     fi
@@ -46,7 +46,7 @@ fi
 setup_adb
 device=$(get_device) &> /dev/null
 
-if [ "${device}" == "" ]; then
+if [[ "${device}" == "" ]]; then
   echo "No device found!"
 fi
 
