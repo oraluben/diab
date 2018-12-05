@@ -111,4 +111,12 @@
     <string name="settings_glucose_thresholds_category">Glucose thresholds</string>
     <string name="settings_glucose_thresholds_high">High threshold</string>
     <string name="settings_glucose_thresholds_low">Low threshold</string>
+    <string name="settings_plugin_category_title">Insulin suggestions</string>
+    <string name="settings_plugin_manage_title">Suggestions plugin</string>
+    <string name="settings_plugin_manage_summary_new">Install a plugin\u2026</string>
+    <string name="settings_plugin_manage_summary_installed">Plugin installed.\nLast updated: %1$s</string>
+    <string name="settings_plugin_installing">Installing\u2026</string>
+    <string name="settings_plugin_remove">Uninstall plugin</string>
+    <string name="settings_plugin_remove_confirmation">The insulin suggestions are going to be disabled until a new plugin is installed.\nThis action cannot be undone, do you want to proceed?</string>
+    <string name="settings_plugin_remove_confirmation_positive">Remove</string>
 </resources>

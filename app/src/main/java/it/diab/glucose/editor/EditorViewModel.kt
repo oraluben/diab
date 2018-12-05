@@ -12,10 +12,12 @@ import android.app.Application
 import it.diab.db.AppDatabase
 import it.diab.db.entities.Glucose
 import it.diab.db.entities.Insulin
+import it.diab.insulin.ml.PluginManager
 import it.diab.util.DateUtils
 import it.diab.util.ScopedViewModel
 import it.diab.util.extensions.asTimeFrame
 import it.diab.util.extensions.firstIf
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
@@ -25,6 +27,7 @@ class EditorViewModel(owner: Application) : ScopedViewModel(owner) {
     var glucose = Glucose()
 
     private val db: AppDatabase = AppDatabase.getInstance(owner)
+    private val pluginManager = PluginManager(owner)
 
     lateinit var insulins: List<Insulin>
     lateinit var basalInsulins: List <Insulin>
@@ -48,12 +51,16 @@ class EditorViewModel(owner: Application) : ScopedViewModel(owner) {
             basalInsulins = defBasal.await()
             previousWeek = defPrevious.await()
 
-            GlobalScope.launch(coroutineContext) { block() }
+            GlobalScope.launch(Dispatchers.Main) { block() }
         }
     }
 
-    fun setGlucose(uid: Long) {
-        viewModelScope.launch { glucose = db.glucose().getById(uid).firstIf({ uid >= 0 }, Glucose()) }
+    fun setGlucose(uid: Long, block: () -> Unit) {
+        viewModelScope.launch {
+            glucose = db.glucose().getById(uid).firstIf({ uid >= 0 }, Glucose())
+
+            GlobalScope.launch(Dispatchers.Main) { block() }
+        }
     }
 
     fun save() {
@@ -68,6 +75,17 @@ class EditorViewModel(owner: Application) : ScopedViewModel(owner) {
 
     fun getInsulinByTimeFrame() =
         insulins.firstOrNull { it.timeFrame == glucose.timeFrame } ?: Insulin()
+
+    fun getInsulinSuggestion(onPostExecute: (Float) -> Unit) {
+        viewModelScope.launch {
+            if (!pluginManager.isInstalled()) {
+                GlobalScope.launch(Dispatchers.Main) { onPostExecute(PluginManager.NO_MODEL) }
+                return@launch
+            }
+
+            pluginManager.fetchSuggestion(glucose, onPostExecute)
+        }
+    }
 
     fun applyInsulinSuggestion(value: Float, insulin: Insulin, onPostExecute: () -> Unit) {
         viewModelScope.launch {

@@ -9,7 +9,6 @@
 package it.diab.ui
 
 import android.content.Context
-import android.os.AsyncTask
 import android.os.Handler
 import android.util.AttributeSet
 import android.view.View
@@ -22,7 +21,7 @@ import it.diab.R
 import it.diab.db.entities.Glucose
 import it.diab.db.entities.Insulin
 import it.diab.insulin.ml.InsulinSuggestionTask
-import it.diab.insulin.ml.PluginBridge
+import it.diab.insulin.ml.PluginManager
 import it.diab.util.VibrationUtil
 import it.diab.util.timeFrame.TimeFrame
 import kotlin.math.roundToInt
@@ -32,9 +31,6 @@ class InsulinSuggestionView(context: Context, attrs: AttributeSet) : LinearLayou
     private val mProgressView: ProgressBar
     private val mTextView: TextView
 
-    private lateinit var mTask: InsulinSuggestionTask
-
-    private var mPluginBridge: PluginBridge
     private var mOnSuggestionApply: (Float, Insulin) -> Unit = { _, _ -> }
     private var mIsEnabled = false
 
@@ -46,8 +42,6 @@ class InsulinSuggestionView(context: Context, attrs: AttributeSet) : LinearLayou
         mCardView = findViewById(R.id.insulin_suggestion_card)
         mProgressView = findViewById(R.id.insulin_suggestion_progress)
         mTextView = findViewById(R.id.insulin_suggestion_text)
-
-        mPluginBridge = PluginBridge(context)
     }
 
     fun bind(glucose: Glucose, insulin: Insulin, onSuggestionApply: (Float, Insulin) -> Unit) {
@@ -58,45 +52,23 @@ class InsulinSuggestionView(context: Context, attrs: AttributeSet) : LinearLayou
         mGlucose = glucose
         mInsulin = insulin
         mOnSuggestionApply = onSuggestionApply
-        mTask = InsulinSuggestionTask(mPluginBridge, this::onSuggestionLoaded)
 
         setup()
-        runTask()
+        showLoad()
     }
 
-    private fun setup() {
-        val allowedTimeFrames = arrayOf(TimeFrame.MORNING, TimeFrame.LUNCH, TimeFrame.DINNER)
-        val timeFrame = mGlucose.timeFrame
-
-        mIsEnabled = allowedTimeFrames.indexOf(timeFrame) != -1 && mGlucose.insulinValue0 == 0f
-        visibility = if (mIsEnabled) View.VISIBLE else View.GONE
-    }
-
-    private fun runTask(): Boolean {
-        if (!mIsEnabled || mTask.status == AsyncTask.Status.RUNNING) {
-            return false
-        }
-
-        mProgressView.visibility = View.VISIBLE
-        mTextView.text = resources.getString(R.string.insulin_suggestion_loading)
-
-        mTask.execute(mGlucose)
-        return true
-    }
-
-    private fun onSuggestionLoaded(result: Float) {
+    fun onSuggestionLoaded(result: Float) {
         mProgressView.visibility = View.GONE
 
         if (result < 0) {
-            if (result == InsulinSuggestionTask.NO_MODEL) {
+            if (result == PluginManager.NO_MODEL) {
                 visibility = View.GONE
                 return
             }
 
-
             mTextView.text = resources.getString(when (result) {
-                InsulinSuggestionTask.TOO_HIGH -> R.string.insulin_suggestion_warning_high
-                InsulinSuggestionTask.TOO_LOW -> R.string.insulin_suggestion_warning_low
+                PluginManager.TOO_HIGH -> R.string.insulin_suggestion_warning_high
+                PluginManager.TOO_LOW -> R.string.insulin_suggestion_warning_low
                 else -> R.string.insulin_suggestion_error
             })
 
@@ -117,6 +89,23 @@ class InsulinSuggestionView(context: Context, attrs: AttributeSet) : LinearLayou
             mOnSuggestionApply(formattedResult, mInsulin)
             Handler().postDelayed(this::onSuggestionApplied, 350)
         }
+    }
+
+    private fun setup() {
+        val allowedTimeFrames = arrayOf(TimeFrame.MORNING, TimeFrame.LUNCH, TimeFrame.DINNER)
+        val timeFrame = mGlucose.timeFrame
+
+        mIsEnabled = allowedTimeFrames.indexOf(timeFrame) != -1 && mGlucose.insulinValue0 == 0f
+        visibility = if (mIsEnabled) View.VISIBLE else View.GONE
+    }
+
+    private fun showLoad() {
+        if (!mIsEnabled) {
+            return
+        }
+
+        mProgressView.visibility = View.VISIBLE
+        mTextView.text = resources.getString(R.string.insulin_suggestion_loading)
     }
 
     private fun onSuggestionApplied() {

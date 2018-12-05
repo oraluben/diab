@@ -13,6 +13,7 @@ import android.app.Activity
 import android.app.KeyguardManager
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
@@ -20,25 +21,59 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.preference.Preference
+import androidx.preference.PreferenceCategory
 import androidx.preference.PreferenceFragmentCompat
 import it.diab.R
 import it.diab.glucose.export.ExportGlucoseService
+import it.diab.insulin.ml.PluginManager
+import it.diab.util.extensions.format
+import it.diab.util.extensions.get
+import java.util.Date
 
-class SettingsFragment : PreferenceFragmentCompat() {
+class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedPreferenceChangeListener {
+    private lateinit var prefs: SharedPreferences
+
+    private lateinit var pluginManager: Preference
+    private lateinit var pluginRemover: Preference
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.settings, rootKey)
 
+        prefs = preferenceManager.sharedPreferences
+
         val exportData = findPreference("pref_export_data")
-        exportData.onPreferenceClickListener = Preference.OnPreferenceClickListener {
+        exportData?.onPreferenceClickListener = Preference.OnPreferenceClickListener {
             showExportDialog()
         }
+
+        val pluginCategory = findPreference("plugin_category") as PreferenceCategory
+        pluginManager = pluginCategory.findPreference("pref_plugin_manager")
+        pluginRemover = pluginCategory.findPreference("pref_plugin_remover")
+
+        pluginManager.setOnPreferenceClickListener { fetchPluginFile() }
+        pluginRemover.setOnPreferenceClickListener { askPluginRemoval() }
+
+        prefs.registerOnSharedPreferenceChangeListener(this)
+        updatePluginPrefs()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         when (requestCode) {
             REQUEST_STORAGE_EXPORT -> handleExportResult()
             REQUEST_USER_AUTH -> handleUserAuthResult(resultCode)
+            REQUEST_SELECT_PLUGIN -> onPluginSelected(resultCode, data)
+        }
+    }
+
+    override fun onDestroy() {
+        prefs.unregisterOnSharedPreferenceChangeListener(this)
+
+        super.onDestroy()
+    }
+
+    override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
+        when (key) {
+            PluginManager.LAST_UPDATE -> updatePluginPrefs()
         }
     }
 
@@ -114,6 +149,64 @@ class SettingsFragment : PreferenceFragmentCompat() {
         Toast.makeText(context, R.string.export_failed_auth, Toast.LENGTH_LONG).show()
     }
 
+    private fun updatePluginPrefs() {
+        val lastUpdated = prefs[PluginManager.LAST_UPDATE, 0L]
+
+        if (lastUpdated == 0L) {
+            pluginRemover.isVisible = false
+            pluginManager.setSummary(R.string.settings_plugin_manage_summary_new)
+        } else {
+            pluginRemover.isVisible = true
+            pluginManager.summary = getString(R.string.settings_plugin_manage_summary_installed,
+                Date(lastUpdated).format("yyyy-MM-dd HH:mm"))
+        }
+    }
+
+    private fun fetchPluginFile(): Boolean {
+        val intent = Intent(Intent.ACTION_GET_CONTENT).apply {
+            type = "application/zip"
+        }
+
+        startActivityForResult(intent, REQUEST_SELECT_PLUGIN)
+        return true
+    }
+
+    private fun onPluginSelected(resultCode: Int, data: Intent?) {
+        if (resultCode != Activity.RESULT_OK || data == null) {
+            return
+        }
+
+        val context = context ?: return
+        val uri = data.data ?: return
+        val iStream = context.contentResolver.openInputStream(uri) ?: return
+
+        val manager = PluginManager(context)
+        manager.install(iStream)
+
+        Toast.makeText(context, R.string.settings_plugin_installing, Toast.LENGTH_SHORT)
+            .show()
+    }
+
+    private fun askPluginRemoval(): Boolean {
+        val activity = activity ?: return false
+
+        AlertDialog.Builder(activity)
+            .setTitle(R.string.settings_plugin_remove)
+            .setMessage(R.string.settings_plugin_remove_confirmation)
+            .setPositiveButton(R.string.settings_plugin_remove_confirmation_positive) { _, _ -> removePlugin() }
+            .setNegativeButton(android.R.string.no, null)
+            .show()
+
+        return true
+    }
+
+    private fun removePlugin() {
+        val context = context ?: return
+        val manager = PluginManager(context)
+        manager.uninstall()
+    }
+
+
     private fun requestStorageAccess(requestCode: Int) {
         requestPermissions(arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), requestCode)
     }
@@ -125,5 +218,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
     companion object {
         private const val REQUEST_STORAGE_EXPORT = 391
         private const val REQUEST_USER_AUTH = 392
+        private const val REQUEST_SELECT_PLUGIN = 393
+
     }
 }

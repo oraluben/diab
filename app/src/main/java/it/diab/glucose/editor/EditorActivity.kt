@@ -98,15 +98,15 @@ class EditorActivity : AppCompatActivity() {
         mSuggestionView = findViewById(R.id.glucose_editor_insulin_suggestion)
         mInfoView = findViewById(R.id.glucose_editor_info)
 
-        val id = intent.getLongExtra(EXTRA_GLUCOSE_ID, -1)
-        mViewModel = ViewModelProviders.of(this).get(EditorViewModel::class.java)
-        mViewModel.setGlucose(id)
-
         mEditMode = intent.getBooleanExtra(EXTRA_INSERT_MODE, false)
 
-        mViewModel.prepare {
-            setup()
-            refresh()
+        val id = intent.getLongExtra(EXTRA_GLUCOSE_ID, -1)
+        mViewModel = ViewModelProviders.of(this).get(EditorViewModel::class.java)
+        mViewModel.setGlucose(id) {
+            mViewModel.prepare {
+                setup()
+                refresh()
+            }
         }
     }
 
@@ -181,9 +181,11 @@ class EditorActivity : AppCompatActivity() {
         mInfoView.text = getInfo(data)
         mDateView.text = mViewModel.glucose.date.getDetailedString()
 
+
         val targetInsulin = mViewModel.getInsulinByTimeFrame()
         mSuggestionView.bind(mViewModel.glucose, targetInsulin, this::onSuggestionApply)
-
+        mViewModel.getInsulinSuggestion(mSuggestionView::onSuggestionLoaded)
+        
         mFab.setImageResource(R.drawable.ic_edit)
     }
 

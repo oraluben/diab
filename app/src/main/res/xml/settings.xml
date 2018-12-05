@@ -29,10 +29,23 @@
 
     </androidx.preference.PreferenceCategory>
 
-    <androidx.preference.PreferenceCategory>
+    <androidx.preference.PreferenceCategory
+        app:key="plugin_category"
+        app:title="@string/settings_plugin_category_title">
+
+        <androidx.preference.Preference
+            app:key="pref_plugin_manager"
+            app:persistent="false"
+            app:title="@string/settings_plugin_manage_title" />
+
+        <androidx.preference.Preference
+            app:key="pref_plugin_remover"
+            app:persistent="false"
+            app:title="@string/settings_plugin_remove" />
 
         <androidx.preference.Preference
             app:key="pref_export_data"
+            app:persistent="false"
             app:title="@string/export_ask_title" />
     </androidx.preference.PreferenceCategory>
 </androidx.preference.PreferenceScreen>
