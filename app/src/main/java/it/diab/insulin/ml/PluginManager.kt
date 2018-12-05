@@ -34,7 +34,7 @@ import java.util.stream.Collectors
 import java.util.zip.ZipEntry
 import java.util.zip.ZipInputStream
 
-class PluginManager(context: Context)  {
+class PluginManager(context: Context) {
     private val job = Job()
     private val scope = CoroutineScope(IO + job)
 

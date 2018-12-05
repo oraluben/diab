@@ -20,7 +20,6 @@ import androidx.core.content.ContextCompat
 import it.diab.R
 import it.diab.db.entities.Glucose
 import it.diab.db.entities.Insulin
-import it.diab.insulin.ml.InsulinSuggestionTask
 import it.diab.insulin.ml.PluginManager
 import it.diab.util.VibrationUtil
 import it.diab.util.timeFrame.TimeFrame
