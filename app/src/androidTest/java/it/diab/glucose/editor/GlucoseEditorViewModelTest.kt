@@ -66,17 +66,15 @@ class GlucoseEditorViewModelTest : DbTest() {
 
     @Test
     fun setGlucose() = runBlocking {
-        viewModel.setGlucose(-1)
+        viewModel.setGlucose(-1) {
+            assertThat(viewModel.glucose.uid).isEqualTo(0)
 
-        assertThat(viewModel.glucose.uid).isEqualTo(0)
-
-        viewModel.setGlucose(testGlucose.uid)
-
-        delay(300)
-
-        viewModel.glucose.run {
-            assertThat(uid).isEqualTo(testGlucose.uid)
-            assertThat(this).isEqualTo(testGlucose)
+            viewModel.setGlucose(testGlucose.uid) {
+                viewModel.glucose.run {
+                    assertThat(uid).isEqualTo(testGlucose.uid)
+                    assertThat(this).isEqualTo(testGlucose)
+                }
+            }
         }
     }
 
@@ -84,7 +82,7 @@ class GlucoseEditorViewModelTest : DbTest() {
     fun save() = runBlocking {
         val initialSize = db.glucose().allStatic.size
 
-        viewModel.setGlucose(-1)
+        viewModel.setGlucose(-1) {}
 
         viewModel.glucose.apply {
             value = 173
