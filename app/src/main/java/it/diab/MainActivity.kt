@@ -19,7 +19,6 @@ import android.graphics.drawable.Icon
 import android.os.Build
 import android.os.Bundle
 import android.preference.PreferenceManager
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -82,9 +81,6 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.activity_main, menu)
-
-        Log.e("OHAI", fitHandler.javaClass.canonicalName)
-        Log.e("OHAI", "${fitHandler.isEnabled}")
 
         // Hide fit if disabled
         val fit = menu.findItem(R.id.menu_fit)
