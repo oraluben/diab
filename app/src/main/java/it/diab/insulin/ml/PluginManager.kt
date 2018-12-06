@@ -9,8 +9,9 @@
 package it.diab.insulin.ml
 
 import android.content.Context
-import android.content.ContextWrapper
+import android.os.Build
 import androidx.annotation.WorkerThread
+import androidx.core.content.ContextCompat
 import androidx.preference.PreferenceManager
 import it.diab.db.entities.Glucose
 import it.diab.util.extensions.set
@@ -40,7 +41,7 @@ class PluginManager(context: Context) {
 
     private val preferences = PreferenceManager.getDefaultSharedPreferences(context)
 
-    private val pluginDir = File(ContextWrapper(context).dataDir, "plugin")
+    private val pluginDir = File(ContextCompat.getDataDir(context), "plugin")
     private val emptyStream: InputStream
         get() = ByteArrayInputStream("{\n}".toByteArray(Charsets.UTF_8))
 
@@ -128,9 +129,7 @@ class PluginManager(context: Context) {
 
     @WorkerThread
     private fun parseInputStream(iStream: InputStream): HashMap<Int, Float> {
-        val content = BufferedReader(InputStreamReader(iStream)).lines()
-            .parallel()
-            .collect(Collectors.joining("\n"))
+        val content = BufferedReader(InputStreamReader(iStream)).readLines()
 
         val json = JSONObject(content)
         val iterator = json.keys()
@@ -155,6 +154,20 @@ class PluginManager(context: Context) {
         }
 
         return FileInputStream(file)
+    }
+
+    private fun BufferedReader.readLines(): String {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            return lines().parallel().collect(Collectors.joining("\n"))
+        }
+
+        val builder = StringBuilder()
+        var line: String? = readLine()
+        while (line != null) {
+            builder.append(line).append("\n")
+            line = readLine()
+        }
+        return builder.toString()
     }
 
     companion object {

@@ -17,7 +17,7 @@ android {
 
     defaultConfig {
         applicationId "it.diab"
-        minSdkVersion 24
+        minSdkVersion 23
         targetSdkVersion 28
 
         version appVersionCode
@@ -29,6 +29,11 @@ android {
         kapt.arguments {
             arg("room.schemaLocation", "$projectDir/schemas".toString())
         }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 
     buildTypes {
@@ -56,7 +61,7 @@ android {
 
 dependencies {
     // Kotlin
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.3.10"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.3.10"
 
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.0.1"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.0.1"
