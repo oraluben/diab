@@ -13,14 +13,14 @@ import android.content.Intent
 import android.preference.PreferenceManager
 import androidx.lifecycle.LiveData
 import com.github.mikephil.charting.data.Entry
-import it.diab.BuildConfig
 import it.diab.R
 import it.diab.db.AppDatabase
 import it.diab.db.entities.Glucose
-import it.diab.fit.FitActivity
+import it.diab.fit.BaseFitHandler
 import it.diab.insulin.InsulinActivity
 import it.diab.util.DateUtils
 import it.diab.util.ScopedViewModel
+import it.diab.util.SystemUtil
 import it.diab.util.extensions.bannerModel
 import it.diab.util.extensions.get
 import it.diab.util.extensions.getAsMinutes
@@ -39,6 +39,9 @@ class OverviewViewModel(owner: Application) : ScopedViewModel(owner) {
     private val db = AppDatabase.getInstance(owner)
     private val prefs = PreferenceManager.getDefaultSharedPreferences(owner.applicationContext)
 
+    private val fitHandler = SystemUtil.getOverrideObject(BaseFitHandler::class.java,
+        owner, R.string.config_class_fit_handler)
+
     init {
         list = db.glucose().all
     }
@@ -49,7 +52,7 @@ class OverviewViewModel(owner: Application) : ScopedViewModel(owner) {
 
     fun getBannerInfo() = when {
         prefs[PREF_BANNER_INSULIN, true] -> getInsulinBanner()
-        BuildConfig.HAS_FIT && prefs[PREF_BANNER_FIT, true] -> getFitBanner()
+        fitHandler.isEnabled && prefs[PREF_BANNER_FIT, true] -> getFitBanner()
         else -> null
     }
 
@@ -62,10 +65,10 @@ class OverviewViewModel(owner: Application) : ScopedViewModel(owner) {
 
     private fun getFitBanner() = bannerModel {
         title = R.string.banner_fit_integration
-        icon = R.drawable.ic_google_fit
+        icon = R.drawable.ic_fitness_logo
         positiveText = R.string.banner_fit_positive
         negativeText = R.string.banner_negative
-        onPositive = { it.context.startActivity(Intent(it.context, FitActivity::class.java)) }
+        onPositive = { fitHandler.openFitActivity(it.context) }
         onAction = { prefs[PREF_BANNER_FIT] = false }
     }
 

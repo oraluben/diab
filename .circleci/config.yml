@@ -15,9 +15,6 @@ jobs:
             TERM: dumb
         steps:
             - checkout
-            - run:
-                name: Local props
-                command: if [ -z $(cat local.properties | grep "diab.fit=") ]; then echo "diab.fit=false" >> local.properties; fi
             - restore_cache:
                 <<: *cache_key
             - run:
@@ -30,7 +27,7 @@ jobs:
                     - ~/.gradle/wrapper
             - run:
                 name: Assemble debug
-                command: ./gradlew assembleDebug -PisCiBuild
+                command: ./gradlew assembleOssDebug -PisCiBuild
             - store_artifacts:
                 path: app/build/reports
                 destination: reports

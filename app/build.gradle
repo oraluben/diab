@@ -13,9 +13,6 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 
 android {
-    Properties properties = new Properties()
-    rootProject.file("local.properties").withInputStream { properties.load(it) }
-
     compileSdkVersion 28
 
     defaultConfig {
@@ -29,8 +26,6 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
-        buildConfigField "Boolean", "HAS_FIT", properties.getProperty("diab.fit", "false")
-
         kapt.arguments {
             arg("room.schemaLocation", "$projectDir/schemas".toString())
         }
@@ -42,6 +37,19 @@ android {
             minifyEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    flavorDimensions "fit"
+
+    productFlavors {
+
+        oss {
+            // Fitness-integration-less app, no closed source library included
+        }
+
+        googleFit {
+            // Google Fit integration, includes closed source libraries
         }
     }
 }
@@ -75,8 +83,8 @@ dependencies {
     implementation "com.github.PhilJay:MPAndroidChart:v3.0.3"
 
     // Google Fit
-    implementation "com.google.android.gms:play-services-auth:16.0.1"
-    implementation "com.google.android.gms:play-services-fitness:16.0.1"
+    googleFitImplementation "com.google.android.gms:play-services-auth:16.0.1"
+    googleFitImplementation "com.google.android.gms:play-services-fitness:16.0.1"
 
     // LeakCanary
     debugImplementation "com.squareup.leakcanary:leakcanary-android:1.6.2"

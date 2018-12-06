@@ -28,7 +28,7 @@
             android:paddingEnd="16dp"
             android:contentDescription="@null"
             tools:ignore="RtlSymmetry"
-            tools:src="@drawable/ic_google_fit"
+            tools:src="@drawable/ic_fitness_logo"
             tools:visibility="visible" />
 
         <androidx.appcompat.widget.AppCompatTextView

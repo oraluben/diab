@@ -50,7 +50,7 @@
             android:theme="@style/AppTheme.DialogActivity" />
 
         <activity
-            android:name=".fit.FitActivity"
+            android:name=".fit.google.FitActivity"
             android:label="@string/fit_name"
             android:theme="@style/AppTheme.NoActionBar" />
 

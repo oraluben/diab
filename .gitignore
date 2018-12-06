@@ -17,4 +17,6 @@
 /ml/lib
 /ml/out
 app/release
+app/oss/release
+app/googleFit/release
 ktlint

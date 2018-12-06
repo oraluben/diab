@@ -25,39 +25,24 @@ import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProviders
 import androidx.transition.TransitionManager
-import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.common.ConnectionResult
-import com.google.android.gms.common.GoogleApiAvailability
-import com.google.android.gms.fitness.Fitness
-import com.google.android.gms.fitness.FitnessOptions
-import com.google.android.gms.fitness.data.DataPoint
-import com.google.android.gms.fitness.data.DataSet
-import com.google.android.gms.fitness.data.DataSource
-import com.google.android.gms.fitness.data.Device
-import com.google.android.gms.fitness.data.Field
-import com.google.android.gms.fitness.data.HealthDataTypes
-import com.google.android.gms.fitness.data.HealthFields
-import com.google.android.gms.fitness.request.DataUpdateRequest
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
-import it.diab.BuildConfig
 import it.diab.R
 import it.diab.db.entities.Glucose
 import it.diab.db.entities.Insulin
+import it.diab.fit.BaseFitHandler
 import it.diab.ui.EatBar
 import it.diab.ui.InsulinSuggestionView
 import it.diab.ui.NumericKeyboardView
 import it.diab.util.PreferencesUtil
+import it.diab.util.SystemUtil
 import it.diab.util.VibrationUtil
 import it.diab.util.extensions.asTimeFrame
 import it.diab.util.extensions.get
 import it.diab.util.extensions.getCalendar
 import it.diab.util.extensions.getDetailedString
-import it.diab.util.extensions.toFitMealRelation
-import it.diab.util.extensions.toFitSleepRelation
 import java.util.Calendar
 import java.util.Date
-import java.util.concurrent.TimeUnit
 import kotlin.math.roundToInt
 
 class EditorActivity : AppCompatActivity() {
@@ -376,41 +361,15 @@ class EditorActivity : AppCompatActivity() {
     }
 
     private fun saveToFit() {
-        if (!hasFit()) {
+        val handler = SystemUtil.getOverrideObject(BaseFitHandler::class.java,
+            this, R.string.config_class_fit_handler)
+
+        if (!handler.hasFit(this)) {
             finish()
             return
         }
 
-        val origin = mViewModel.glucose
-        val timeStamp = origin.date.time
-        val source = DataSource.Builder()
-                .setType(DataSource.TYPE_RAW)
-                .setDataType(HealthDataTypes.TYPE_BLOOD_GLUCOSE)
-                .setDevice(Device.getLocalDevice(this))
-                .build()
-
-        val data = DataPoint.create(source)
-        data.setTimestamp(timeStamp, TimeUnit.MILLISECONDS)
-        data[HealthFields.FIELD_BLOOD_GLUCOSE_LEVEL] = origin.value / 18f
-        data[HealthFields.FIELD_BLOOD_GLUCOSE_SPECIMEN_SOURCE] =
-                HealthFields.BLOOD_GLUCOSE_SPECIMEN_SOURCE_CAPILLARY_BLOOD
-        data[HealthFields.FIELD_TEMPORAL_RELATION_TO_MEAL] =
-                origin.timeFrame.toFitMealRelation()
-        data[HealthFields.FIELD_TEMPORAL_RELATION_TO_SLEEP] =
-                origin.timeFrame.toFitSleepRelation()
-
-        val set = DataSet.create(source)
-        set.add(data)
-
-        val request = DataUpdateRequest.Builder()
-                .setDataSet(set)
-                .setTimeInterval(timeStamp, timeStamp, TimeUnit.MILLISECONDS)
-                .build()
-
-        Fitness.getHistoryClient(this, GoogleSignIn.getLastSignedInAccount(this)!!)
-                .run { if (mEditMode) updateData(request) else insertData(set)  }
-                .addOnFailureListener { e -> Log.e(TAG, e.message) }
-                .addOnCompleteListener { finish() }
+        handler.upload(this, mViewModel.glucose, !mEditMode, { finish() }, { e -> Log.e(TAG, e.message) })
     }
 
     private fun getInfo(list: List<Glucose>): String {
@@ -457,35 +416,6 @@ class EditorActivity : AppCompatActivity() {
         }
 
         animator.start()
-    }
-
-    private fun hasFit(): Boolean {
-        if (!BuildConfig.HAS_FIT) {
-            return false
-        }
-
-        val availability = GoogleApiAvailability.getInstance()
-        val gmsStatus = availability.isGooglePlayServicesAvailable(this)
-
-        if (gmsStatus != ConnectionResult.SUCCESS) {
-            return false
-        }
-
-        val options = FitnessOptions.builder()
-                .addDataType(HealthDataTypes.TYPE_BLOOD_GLUCOSE, FitnessOptions.ACCESS_WRITE)
-                .build()
-        return GoogleSignIn.hasPermissions(GoogleSignIn.getLastSignedInAccount(this), options)
-    }
-
-    private operator fun DataPoint.set(field: Field, any: Any) {
-        val value = getValue(field)
-        when (any) {
-            is Float -> value.setFloat(any)
-            is Int -> value.setInt(any)
-            is String -> value.setString(any)
-            else -> throw IllegalArgumentException(
-                    "Cannot set a ${any::class.java.canonicalName} value to Field")
-        }
     }
 
     companion object {

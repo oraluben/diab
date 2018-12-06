@@ -31,3 +31,6 @@
 -keepclassmembernames class kotlinx.** { volatile <fields>; }
 -keepnames class kotlinx.coroutines.internal.MainDispatcherFactory {}
 -keepnames class kotlinx.coroutines.CoroutineExceptionHandler {}
+
+# Keep fitness classes
+-keep class it.diab.fit.** {}

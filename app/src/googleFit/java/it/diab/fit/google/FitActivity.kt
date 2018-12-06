@@ -6,7 +6,7 @@
  * The text of the license can be found in the LICENSE file
  * or at https://www.gnu.org/licenses/gpl.txt
  */
-package it.diab.fit
+package it.diab.fit.google
 
 import android.app.Activity
 import android.content.Intent
@@ -51,7 +51,9 @@ class FitActivity : AppCompatActivity() {
         mDisconnectButton = findViewById(R.id.fit_disconnect_button)
         mDeleteAllButton = findViewById(R.id.fit_delete_all_button)
 
-        mConnectButton.setOnClickListener { mViewModel.connect(this, GOOGLE_FIT_REQUEST_CODE) }
+        mConnectButton.setOnClickListener { mViewModel.connect(this,
+            FitActivity.GOOGLE_FIT_REQUEST_CODE
+        ) }
         mDisconnectButton.setOnClickListener { confirmDisconnect() }
         mDeleteAllButton.setOnClickListener { confirmDelete() }
 

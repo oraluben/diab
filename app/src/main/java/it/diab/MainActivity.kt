@@ -19,6 +19,7 @@ import android.graphics.drawable.Icon
 import android.os.Build
 import android.os.Bundle
 import android.preference.PreferenceManager
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -33,12 +34,13 @@ import androidx.fragment.app.FragmentPagerAdapter
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.tabs.TabLayout
-import it.diab.fit.FitActivity
+import it.diab.fit.BaseFitHandler
 import it.diab.glucose.editor.EditorActivity
 import it.diab.glucose.list.GlucoseListFragment
 import it.diab.glucose.overview.OverviewFragment
 import it.diab.insulin.InsulinActivity
 import it.diab.settings.SettingsActivity
+import it.diab.util.SystemUtil
 
 class MainActivity : AppCompatActivity() {
     private lateinit var mCoordinator: CoordinatorLayout
@@ -48,6 +50,8 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var mGlucoseFragment: GlucoseListFragment
     private lateinit var mOverviewFragment: OverviewFragment
+
+    private lateinit var fitHandler: BaseFitHandler
 
     public override fun onCreate(savedInstance: Bundle?) {
         super.onCreate(savedInstance)
@@ -71,14 +75,20 @@ class MainActivity : AppCompatActivity() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             addShortcuts()
         }
+
+        fitHandler = SystemUtil.getOverrideObject(BaseFitHandler::class.java, this,
+            R.string.config_class_fit_handler)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.activity_main, menu)
 
+        Log.e("OHAI", fitHandler.javaClass.canonicalName)
+        Log.e("OHAI", "${fitHandler.isEnabled}")
+
         // Hide fit if disabled
         val fit = menu.findItem(R.id.menu_fit)
-        fit.isVisible = BuildConfig.HAS_FIT
+        fit.isVisible = fitHandler.isEnabled
 
         return true
     }
@@ -163,12 +173,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun onMenuFit(): Boolean {
-        if (!BuildConfig.HAS_FIT) {
+        if (!fitHandler.isEnabled) {
             return false
         }
 
-        val intent = Intent(this, FitActivity::class.java)
-        startActivity(intent)
+        fitHandler.openFitActivity(this)
         return true
     }
 

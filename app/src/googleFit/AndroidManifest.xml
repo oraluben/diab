@@ -1,0 +1,20 @@
+<!--
+  Copyright (c) 2018 Bevilacqua Joey
+
+  Licensed under the GNU GPLv3 license
+
+  The text of the license can be found in the LICENSE file
+  or at https://www.gnu.org/licenses/gpl.txt
+  -->
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <application tools:ignore="GoogleAppIndexingWarning">
+        <activity
+            android:name="it.diab.fit.google.FitActivity"
+            android:label="@string/fit_name"
+            android:theme="@style/AppTheme.NoActionBar"
+            tools:node="merge" />
+    </application>
+
+</manifest>
