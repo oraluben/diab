@@ -218,8 +218,8 @@ class EditorActivity : AppCompatActivity() {
             }
 
             if (i == 0 || i == 1) {
-                TimePickerDialog(this, onTimeSet, glucoseCal[Calendar.HOUR_OF_DAY],
-                        glucoseCal[Calendar.MINUTE], true).show()
+                TimePickerDialog(this, R.style.AppTheme_DatePickerDialog, onTimeSet,
+                    glucoseCal[Calendar.HOUR_OF_DAY], glucoseCal[Calendar.MINUTE], true).show()
             }
         }
 

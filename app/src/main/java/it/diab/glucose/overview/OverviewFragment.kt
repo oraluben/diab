@@ -92,12 +92,15 @@ class OverviewFragment : MainFragment() {
         }
 
         val color = ContextCompat.getColor(context!!, R.color.graph_overview_today)
+        val textColor = ContextCompat.getColor(context!!, R.color.textPrimary)
 
         return LineDataSet(entries, "").apply {
             setCircleColor(color)
             this.color = color
             highLightColor = color
+            lineWidth = resources.getDimension(R.dimen.overview_graph_line_thickness)
             valueTextSize = resources.getDimension(R.dimen.overview_graph_text)
+            valueTextColor = textColor
             valueFormatter = IValueFormatter { value, _, _, _ -> "%.0f".format(value) }
             mode = LineDataSet.Mode.CUBIC_BEZIER
         }

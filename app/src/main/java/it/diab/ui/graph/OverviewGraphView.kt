@@ -10,6 +10,7 @@ package it.diab.ui.graph
 
 import android.content.Context
 import android.util.AttributeSet
+import androidx.core.content.ContextCompat
 import com.github.mikephil.charting.charts.LineChart
 import it.diab.R
 
@@ -63,5 +64,8 @@ class OverviewGraphView : LineChart {
         // Offset
         val horizontalOffset = context.resources.getDimension(R.dimen.overview_graph_offset)
         setExtraOffsets(horizontalOffset, 0f, horizontalOffset, 0f)
+
+        // No Data text
+        setNoDataTextColor(ContextCompat.getColor(context, R.color.textPrimary))
     }
 }
