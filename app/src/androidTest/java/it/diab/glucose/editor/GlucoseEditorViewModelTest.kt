@@ -101,9 +101,11 @@ class GlucoseEditorViewModelTest : DbTest() {
 
     @Test
     fun getInsulin() {
-        viewModel.getInsulin(testInsulin.uid).run {
-            assertThat(uid).isEqualTo(testInsulin.uid)
-            assertThat(this).isEqualTo(testInsulin)
+        viewModel.prepare {
+            viewModel.getInsulin(testInsulin.uid).run {
+                assertThat(uid).isEqualTo(testInsulin.uid)
+                assertThat(this).isEqualTo(testInsulin)
+            }
         }
     }
 
