@@ -12,9 +12,7 @@ import it.diab.db.AppDatabaseTest
 import it.diab.db.converters.DateConverterTest
 import it.diab.db.converters.TimeFrameConverterTest
 import it.diab.db.entities.GlucoseTest
-import it.diab.glucose.editor.GlucoseEditorViewModelTest
-import it.diab.glucose.overview.OverviewViewModelTest
-import it.diab.insulin.editor.InsulinEditorViewModelTest
+import it.diab.viewmodels.glucose.OverviewViewModelTest
 import org.junit.runner.RunWith
 import org.junit.runners.Suite
 
@@ -22,9 +20,9 @@ import org.junit.runners.Suite
 @Suite.SuiteClasses(
         AppDatabaseTest::class,
         DateConverterTest::class,
-        GlucoseEditorViewModelTest::class,
+        it.diab.viewmodels.glucose.EditorViewModelTest::class,
         GlucoseTest::class,
-        InsulinEditorViewModelTest::class,
+        it.diab.viewmodels.insulin.EditorViewModelTest::class,
         OverviewViewModelTest::class,
         TimeFrameConverterTest::class)
 class UnitTestSuite

@@ -9,16 +9,13 @@
 package it.diab.db.entities
 
 import android.os.Parcel
-import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.SmallTest
 import com.google.common.truth.Truth.assertThat
 import it.diab.util.extensions.glucose
 import it.diab.util.timeFrame.TimeFrame
 import org.junit.Test
-import org.junit.runner.RunWith
-import java.util.Date
+import java.util.*
 
-@RunWith(AndroidJUnit4::class)
 @SmallTest
 class GlucoseTest {
 

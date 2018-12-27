@@ -10,7 +10,6 @@ package it.diab.db
 
 import android.content.Context
 import androidx.test.core.app.ApplicationProvider
-import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.google.common.truth.Truth.assertThat
 import it.diab.db.dao.GlucoseDao
 import it.diab.db.dao.InsulinDao
@@ -20,9 +19,7 @@ import it.diab.util.extensions.insulin
 import it.diab.util.timeFrame.TimeFrame
 import org.junit.Before
 import org.junit.Test
-import org.junit.runner.RunWith
 
-@RunWith(AndroidJUnit4::class)
 class AppDatabaseTest {
     private var glucoseDao: GlucoseDao? = null
     private var insulinDao: InsulinDao? = null
