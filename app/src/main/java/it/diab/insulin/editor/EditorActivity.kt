@@ -19,7 +19,10 @@ import androidx.appcompat.widget.AppCompatSpinner
 import androidx.appcompat.widget.SwitchCompat
 import androidx.lifecycle.ViewModelProviders
 import it.diab.R
+import it.diab.db.repositories.InsulinRepository
 import it.diab.util.timeFrame.TimeFrame
+import it.diab.viewmodels.insulin.EditorViewModel
+import it.diab.viewmodels.insulin.EditorViewModelFactory
 
 class EditorActivity : AppCompatActivity() {
 
@@ -28,7 +31,7 @@ class EditorActivity : AppCompatActivity() {
     private lateinit var mBasalSwitch: SwitchCompat
     private lateinit var mHalfUnitsSwitch: SwitchCompat
 
-    private lateinit var mViewModel: EditorViewModel
+    private lateinit var viewModel: EditorViewModel
     private lateinit var mTimeFrames: Array<String>
     private var mEditMode = false
 
@@ -38,7 +41,8 @@ class EditorActivity : AppCompatActivity() {
 
         setFinishOnTouchOutside(true)
 
-        mViewModel = ViewModelProviders.of(this).get(EditorViewModel::class.java)
+        val factory = EditorViewModelFactory(InsulinRepository.getInstance(this))
+        viewModel = ViewModelProviders.of(this, factory)[EditorViewModel::class.java]
 
         val layoutInflater = getSystemService(LayoutInflater::class.java)
         val view = layoutInflater.inflate(R.layout.dialog_insulin_edit, null)
@@ -79,7 +83,7 @@ class EditorActivity : AppCompatActivity() {
             return
         }
 
-        mViewModel.setInsulin(uid) {
+        viewModel.setInsulin(uid) {
             mEditText.setText(it.name)
             mSpinner.setSelection(if (mEditMode) it.timeFrame.toInt() + 1 else 0)
             mBasalSwitch.isChecked = it.isBasal
@@ -88,19 +92,19 @@ class EditorActivity : AppCompatActivity() {
     }
 
     private fun onSaveInsulin() {
-        mViewModel.insulin.run {
+        viewModel.insulin.run {
             name = mEditText.text.toString()
             isBasal = mBasalSwitch.isChecked
             hasHalfUnits = mHalfUnitsSwitch.isChecked
             setTimeFrame(mSpinner.selectedItemPosition - 1)
         }
 
-        mViewModel.save()
+        viewModel.save()
         finish()
     }
 
     private fun onDeleteInsulin() {
-        mViewModel.delete()
+        viewModel.delete()
         finish()
     }
 

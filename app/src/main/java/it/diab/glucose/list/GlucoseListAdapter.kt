@@ -18,7 +18,6 @@ import android.widget.TextView
 import androidx.annotation.ColorRes
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.ViewModelProviders
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import it.diab.MainActivity
@@ -29,14 +28,15 @@ import it.diab.util.PreferencesUtil
 import it.diab.util.UIUtils
 import it.diab.util.extensions.diff
 import it.diab.util.extensions.setPrecomputedText
+import it.diab.viewmodels.glucose.GlucoseListViewModel
 import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
+import java.util.*
 
-class GlucoseListAdapter(private val mContext: Context, private val onItemClick: (Long) -> Unit) :
-        PagedListAdapter<Glucose, GlucoseListAdapter.GlucoseHolder>(CALLBACK) {
-
-    private lateinit var viewModel: GlucoseListViewModel
+class GlucoseListAdapter(
+        private val mContext: Context,
+        private val onItemClick: (Long) -> Unit,
+        private val viewModel: GlucoseListViewModel
+) : PagedListAdapter<Glucose, GlucoseListAdapter.GlucoseHolder>(CALLBACK) {
 
     // Store the these for better performance
     private val mLowIndicator = getIndicator(R.color.glucose_indicator_low)
@@ -46,7 +46,6 @@ class GlucoseListAdapter(private val mContext: Context, private val onItemClick:
             R.string.time_day_month_short_format), Locale.getDefault())
     private val highThreshold = PreferencesUtil.getGlucoseHighThreshold(mContext)
     private val lowThreshold = PreferencesUtil.getGlucoseLowThreshold(mContext)
-
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
             GlucoseHolder(LayoutInflater.from(parent.context)
@@ -93,14 +92,6 @@ class GlucoseListAdapter(private val mContext: Context, private val onItemClick:
         private val mHeaderDesc = view.findViewById<TextView>(R.id.item_glucose_header_description)
 
         fun onBind(glucose: Glucose, position: Int) {
-
-            // The viewModel must be ready in order to bind the viewHolder
-            if (!::viewModel.isInitialized) {
-                viewModel = ViewModelProviders.of(mContext as MainActivity)[GlucoseListViewModel::class.java]
-                viewModel.prepare { onBind(glucose, position) }
-                return
-            }
-
             id = glucose.uid
 
             val resources = mContext.resources

@@ -27,9 +27,6 @@ interface GlucoseDao {
     val all: LiveData<List<Glucose>>
 
     @get:Query("SELECT * FROM glucose ORDER BY date DESC")
-    val allStatic: List<Glucose>
-
-    @get:Query("SELECT * FROM glucose ORDER BY date DESC")
     val pagedList: DataSource.Factory<Int, Glucose>
 
     @Query("SELECT * FROM glucose WHERE uid IN (:uids)")

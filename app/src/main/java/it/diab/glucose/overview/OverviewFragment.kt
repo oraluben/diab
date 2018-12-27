@@ -9,6 +9,7 @@
 package it.diab.glucose.overview
 
 import android.os.Bundle
+import android.preference.PreferenceManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -22,20 +23,34 @@ import com.github.mikephil.charting.formatter.IValueFormatter
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
 import it.diab.R
 import it.diab.db.entities.Glucose
+import it.diab.db.repositories.GlucoseRepository
+import it.diab.fit.BaseFitHandler
 import it.diab.ui.BannerView
 import it.diab.ui.MainFragment
 import it.diab.ui.graph.OverviewGraphView
+import it.diab.util.SystemUtil
+import it.diab.viewmodels.glucose.OverviewViewModel
+import it.diab.viewmodels.glucose.OverviewViewModelFactory
 
 class OverviewFragment : MainFragment() {
     private lateinit var mBanner: BannerView
     private lateinit var mChart: OverviewGraphView
 
-    private lateinit var mViewModel: OverviewViewModel
+    private lateinit var viewModel: OverviewViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        mViewModel = ViewModelProviders.of(this)[OverviewViewModel::class.java]
+        val context = context ?: return
+
+        val factory = OverviewViewModelFactory(GlucoseRepository.getInstance(context))
+        viewModel = ViewModelProviders.of(this, factory)[OverviewViewModel::class.java]
+
+        viewModel.prepare(
+                PreferenceManager.getDefaultSharedPreferences(context),
+                SystemUtil.getOverrideObject(BaseFitHandler::class.java, context,
+                        R.string.config_class_fit_handler)
+        )
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -50,9 +65,9 @@ class OverviewFragment : MainFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        mViewModel.list.observe(this, Observer(this::update))
+        viewModel.list.observe(this, Observer(this::update))
 
-        val model = mViewModel.getBannerInfo()
+        val model = viewModel.getBannerInfo()
         model?.apply {
             mBanner.setModel(this)
             mBanner.visibility = View.VISIBLE
@@ -66,7 +81,7 @@ class OverviewFragment : MainFragment() {
             return
         }
 
-        mViewModel.getDataSets(data, this::setDataSets)
+        viewModel.getDataSets(data, this::setDataSets)
     }
 
     private fun setDataSets(today: List<Entry>, average: List<Entry>) {

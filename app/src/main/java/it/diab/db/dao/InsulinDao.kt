@@ -25,11 +25,11 @@ interface InsulinDao {
     @get:Query("SELECT * FROM insulin")
     val all: DataSource.Factory<Int, Insulin>
 
-    @get:Query("SELECT * FROM insulin")
-    val allStatic: List<Insulin>
+    @Query("SELECT * FROM insulin")
+    fun getInsulins(): List<Insulin>
 
-    @get:Query("SELECT * FROM insulin WHERE isBasal = 1")
-    val basalInsulins: List<Insulin>
+    @Query("SELECT * FROM insulin WHERE isBasal = 1")
+    fun getBasals(): List<Insulin>
 
     @Query("SELECT * FROM insulin WHERE uid IN (:uids)")
     fun getById(vararg uids: Long): List<Insulin>

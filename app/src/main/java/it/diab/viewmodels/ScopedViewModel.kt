@@ -6,17 +6,16 @@
  * The text of the license can be found in the LICENSE file
  * or at https://www.gnu.org/licenses/gpl.txt
  */
-package it.diab.util
+package it.diab.viewmodels
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.Job
 import kotlin.coroutines.CoroutineContext
 
-abstract class ScopedViewModel(application: Application) : AndroidViewModel(application), CoroutineScope {
+abstract class ScopedViewModel : ViewModel(), CoroutineScope {
     private val job = Job()
     val viewModelScope = CoroutineScope(IO + job)
 

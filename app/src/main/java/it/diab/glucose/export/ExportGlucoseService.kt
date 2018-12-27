@@ -22,6 +22,7 @@ import androidx.core.content.ContextCompat
 import it.diab.R
 import it.diab.db.AppDatabase
 import it.diab.db.entities.Glucose
+import it.diab.db.repositories.GlucoseRepository
 import it.diab.util.DateUtils
 import it.diab.util.timeFrame.TimeFrame
 import kotlinx.coroutines.async
@@ -36,7 +37,7 @@ import java.io.FileWriter
 import java.io.IOException
 
 class ExportGlucoseService : Service() {
-    private lateinit var mAppDatabase: AppDatabase
+    private lateinit var repository: GlucoseRepository
     private lateinit var mNotificationManager: NotificationManager
 
     private val job = Job()
@@ -45,7 +46,7 @@ class ExportGlucoseService : Service() {
     override fun onCreate() {
         super.onCreate()
 
-        mAppDatabase = AppDatabase.getInstance(this)
+        repository = GlucoseRepository.getInstance(this)
         mNotificationManager = getSystemService(NotificationManager::class.java)
     }
 
@@ -59,7 +60,7 @@ class ExportGlucoseService : Service() {
         startForeground(NOTIFICATION_ID, notification)
 
         serviceScope.launch {
-            val defResult = async { exportFiles(this, mAppDatabase) }
+            val defResult = async { exportFiles(this, repository) }
 
             val result = defResult.await()
 
@@ -107,11 +108,11 @@ class ExportGlucoseService : Service() {
         mNotificationManager.createNotificationChannel(newChannel)
     }
 
-    private suspend fun exportFiles(scope: CoroutineScope, db: AppDatabase): Boolean {
+    private suspend fun exportFiles(scope: CoroutineScope, repository: GlucoseRepository): Boolean {
         val baseName = "train_%1\$d.csv"
         val end = System.currentTimeMillis()
         val start = end - DateUtils.DAY * 60
-        val list = db.glucose().getInDateRange(start, end)
+        val list = repository.getInDateRange(start, end)
 
         val documentsDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS)
         val outDir = File(documentsDir, "diab").apply {
