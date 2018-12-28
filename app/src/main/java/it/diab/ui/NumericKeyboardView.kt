@@ -14,76 +14,82 @@ import android.util.AttributeSet
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.annotation.AttrRes
 
 import it.diab.R
+import it.diab.util.VibrationUtil
 
-class NumericKeyboardView(context: Context, attrs: AttributeSet) : LinearLayout(context, attrs) {
-    private lateinit var mButton0: View
-    private lateinit var mButton1: View
-    private lateinit var mButton2: View
-    private lateinit var mButton3: View
-    private lateinit var mButton4: View
-    private lateinit var mButton5: View
-    private lateinit var mButton6: View
-    private lateinit var mButton7: View
-    private lateinit var mButton8: View
-    private lateinit var mButton9: View
-    private lateinit var mButtonDel: View
+class NumericKeyboardView : LinearLayout {
+    private val btn0: View
+    private val btn1: View
+    private val btn2: View
+    private val btn3: View
+    private val btn4: View
+    private val btn5: View
+    private val btn6: View
+    private val btn7: View
+    private val btn8: View
+    private val btn9: View
+    private val btnDel: View
 
-    private lateinit var mInputTextView: TextView
-    private var mOnTextChanged: (String) -> Unit = {}
+    private lateinit var inputView: TextView
+    private var onTextChanged: (String) -> Unit = {}
 
     val input: Int
         get() = 
-            if (TextUtils.isEmpty(mInputTextView.text)) -1 
-            else mInputTextView.text.toString().toInt()
+            if (TextUtils.isEmpty(inputView.text)) -1
+            else inputView.text.toString().toInt()
+
+    constructor(context: Context) : super(context)
+
+    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
+
+    constructor(context: Context, attrs: AttributeSet?, @AttrRes defStyleAttr: Int) :
+            super(context, attrs, defStyleAttr)
 
     init {
         View.inflate(context, R.layout.component_numeric_keyboard, this)
-        setup()
+        btn0 = findViewById(R.id.keyboard_key_0)
+        btn1 = findViewById(R.id.keyboard_key_1)
+        btn2 = findViewById(R.id.keyboard_key_2)
+        btn3 = findViewById(R.id.keyboard_key_3)
+        btn4 = findViewById(R.id.keyboard_key_4)
+        btn5 = findViewById(R.id.keyboard_key_5)
+        btn6 = findViewById(R.id.keyboard_key_6)
+        btn7 = findViewById(R.id.keyboard_key_7)
+        btn8 = findViewById(R.id.keyboard_key_8)
+        btn9 = findViewById(R.id.keyboard_key_9)
+        btnDel = findViewById(R.id.keyboard_key_del)
     }
 
-    fun bindTextView(textView: TextView, onTextChanged: (String) -> Unit = {}) {
-        mInputTextView = textView
-        mOnTextChanged = onTextChanged
+    fun bindTextView(textView: TextView, callback: (String) -> Unit = {}) {
+        inputView = textView
+        onTextChanged = callback
         setupKeys()
     }
 
-    private fun setup() {
-        mButton0 = findViewById(R.id.keyboard_key_0)
-        mButton1 = findViewById(R.id.keyboard_key_1)
-        mButton2 = findViewById(R.id.keyboard_key_2)
-        mButton3 = findViewById(R.id.keyboard_key_3)
-        mButton4 = findViewById(R.id.keyboard_key_4)
-        mButton5 = findViewById(R.id.keyboard_key_5)
-        mButton6 = findViewById(R.id.keyboard_key_6)
-        mButton7 = findViewById(R.id.keyboard_key_7)
-        mButton8 = findViewById(R.id.keyboard_key_8)
-        mButton9 = findViewById(R.id.keyboard_key_9)
-        mButtonDel = findViewById(R.id.keyboard_key_del)
-    }
-
     private fun setupKeys() {
-        mButton0.setOnClickListener { input(0) }
-        mButton1.setOnClickListener { input(1) }
-        mButton2.setOnClickListener { input(2) }
-        mButton3.setOnClickListener { input(3) }
-        mButton4.setOnClickListener { input(4) }
-        mButton5.setOnClickListener { input(5) }
-        mButton6.setOnClickListener { input(6) }
-        mButton7.setOnClickListener { input(7) }
-        mButton8.setOnClickListener { input(8) }
-        mButton9.setOnClickListener { input(9) }
+        btn0.setOnClickListener { input(0) }
+        btn1.setOnClickListener { input(1) }
+        btn2.setOnClickListener { input(2) }
+        btn3.setOnClickListener { input(3) }
+        btn4.setOnClickListener { input(4) }
+        btn5.setOnClickListener { input(5) }
+        btn6.setOnClickListener { input(6) }
+        btn7.setOnClickListener { input(7) }
+        btn8.setOnClickListener { input(8) }
+        btn9.setOnClickListener { input(9) }
 
-        mButtonDel.setOnClickListener { del() }
-        mButtonDel.setOnLongClickListener {
-            mInputTextView.text = "0"
+        btnDel.setOnClickListener { del() }
+        btnDel.setOnLongClickListener {
+            inputView.text = "0"
+            VibrationUtil.vibrateForImportantClick(it)
             true
         }
     }
 
     private fun input(n: Int) {
-        var input = mInputTextView.text.toString()
+        var input = inputView.text.toString()
         if (input.length > 2) {
             return
         }
@@ -92,16 +98,16 @@ class NumericKeyboardView(context: Context, attrs: AttributeSet) : LinearLayout(
             input = input.substring(1, input.length)
         }
         input += n.toString()
-        mInputTextView.text = input
-        mOnTextChanged(input)
+        inputView.text = input
+        onTextChanged(input)
     }
 
     private fun del() {
-        val input = mInputTextView.text.toString()
+        val input = inputView.text.toString()
         if (input.length > 1) {
-            mInputTextView.text = input.substring(0, input.length - 1)
+            inputView.text = input.substring(0, input.length - 1)
         } else {
-            mInputTextView.text = "0"
+            inputView.text = "0"
         }
     }
 }
