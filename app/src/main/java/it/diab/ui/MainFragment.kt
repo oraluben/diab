@@ -8,10 +8,13 @@
  */
 package it.diab.ui
 
+import android.view.View
 import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
 
 abstract class MainFragment : Fragment() {
     @StringRes
     abstract fun getTitle(): Int
+
+    abstract fun onEditor(view: View)
 }

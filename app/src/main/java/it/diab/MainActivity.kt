@@ -9,6 +9,7 @@
 package it.diab
 
 import android.annotation.TargetApi
+import android.app.Activity
 import android.content.Intent
 import android.content.pm.ShortcutInfo
 import android.content.pm.ShortcutManager
@@ -19,8 +20,6 @@ import android.graphics.drawable.Icon
 import android.os.Build
 import android.os.Bundle
 import android.preference.PreferenceManager
-import android.view.Menu
-import android.view.MenuItem
 import android.view.View
 import androidx.annotation.DrawableRes
 import androidx.appcompat.app.AppCompatActivity
@@ -32,22 +31,21 @@ import androidx.fragment.app.FragmentPagerAdapter
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.tabs.TabLayout
-import it.diab.fit.BaseFitHandler
 import it.diab.glucose.editor.EditorActivity
 import it.diab.glucose.list.GlucoseListFragment
 import it.diab.glucose.overview.OverviewFragment
-import it.diab.insulin.InsulinActivity
-import it.diab.settings.SettingsActivity
-import it.diab.util.SystemUtil
+import it.diab.insulin.InsulinFragment
 
 class MainActivity : AppCompatActivity() {
     private lateinit var coordinator: CoordinatorLayout
     private lateinit var tabLayout: TabLayout
     private lateinit var viewPager: ViewPager
+    private lateinit var adapter: ViewPagerAdapter
     private lateinit var fab: FloatingActionButton
 
-    private lateinit var glucoseFragment: GlucoseListFragment
     private lateinit var overviewFragment: OverviewFragment
+    private lateinit var glucoseFragment: GlucoseListFragment
+    private lateinit var insulinFragment: InsulinFragment
 
     public override fun onCreate(savedInstance: Bundle?) {
         super.onCreate(savedInstance)
@@ -55,13 +53,16 @@ class MainActivity : AppCompatActivity() {
 
         overviewFragment = OverviewFragment()
         glucoseFragment = GlucoseListFragment()
+        insulinFragment = InsulinFragment()
 
         coordinator = findViewById(R.id.coordinator)
         tabLayout = findViewById(R.id.tabs)
         viewPager = findViewById(R.id.viewpager)
         fab = findViewById(R.id.fab)
 
-        viewPager.adapter = ViewPagerAdapter(supportFragmentManager)
+        adapter = ViewPagerAdapter(supportFragmentManager)
+        viewPager.adapter = adapter
+
         tabLayout.setupWithViewPager(viewPager)
         fab.setOnClickListener(this::onFabClick)
 
@@ -74,26 +75,13 @@ class MainActivity : AppCompatActivity() {
         val intent = Intent(this, EditorActivity::class.java).apply {
             putExtra(EditorActivity.EXTRA_GLUCOSE_ID, uid)
         }
-        openEditor(intent, fab)
+        val optionsCompat = ActivityOptionsCompat
+                .makeSceneTransitionAnimation(this, fab, fab.transitionName)
+        startActivity(intent, optionsCompat.toBundle())
     }
 
     private fun onFabClick(view: View) {
-        when (viewPager.currentItem) {
-            0, 1 -> addGlucose(view)
-        }
-    }
-
-    private fun addGlucose(view: View) {
-        val intent = Intent(this, EditorActivity::class.java).apply {
-            putExtra(EditorActivity.EXTRA_INSERT_MODE, true)
-        }
-        openEditor(intent, view)
-    }
-
-    private fun openEditor(intent: Intent, view: View) {
-        val optionsCompat = ActivityOptionsCompat
-                .makeSceneTransitionAnimation(this, view, view.transitionName)
-        startActivity(intent, optionsCompat.toBundle())
+        adapter.onEditor(view, viewPager.currentItem)
     }
 
     @TargetApi(26)
@@ -143,11 +131,15 @@ class MainActivity : AppCompatActivity() {
     }
 
     inner class ViewPagerAdapter(manager: FragmentManager) : FragmentPagerAdapter(manager) {
-        private val mFragments = arrayOf(overviewFragment, glucoseFragment)
+        private val fragments = arrayOf(overviewFragment, glucoseFragment, insulinFragment)
 
-        override fun getCount() = mFragments.size
-        override fun getItem(position: Int) = mFragments[position]
-        override fun getPageTitle(position: Int): String = getString(mFragments[position].getTitle())
+        override fun getCount() = fragments.size
+        override fun getItem(position: Int) = fragments[position]
+        override fun getPageTitle(position: Int): String = getString(fragments[position].getTitle())
+
+        fun onEditor(view: View, position: Int) {
+            fragments[position].onEditor(view)
+        }
     }
 
     companion object {

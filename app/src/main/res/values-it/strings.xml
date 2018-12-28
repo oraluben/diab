@@ -18,6 +18,7 @@
 
     <string name="fragment_overview">Panoramica</string>
     <string name="fragment_glucose">Glicemia</string>
+    <string name="fragment_insulin">Insulina</string>
 
     <!-- Time -->
     <string name="time_today">Oggi</string>
@@ -67,9 +68,6 @@
     <string name="insulin_suggestion_value">Dose suggerita: %1$.1f</string>
     <string name="insulin_suggestion_error">Impossibile determinare dose</string>
     <string name="insulin_suggestion_applied">Suggerimento salvato</string>
-
-    <!-- Insulin list -->
-    <string name="insulin_name">Insuline</string>
 
     <!-- Export database -->
     <string name="export_ask_title">Esporta dati</string>

@@ -22,7 +22,7 @@ import it.diab.db.entities.Insulin
 import it.diab.insulin.editor.EditorActivity
 import it.diab.ui.recyclerview.ViewHolderExt
 
-class InsulinAdapter(private val mContext: Context) :
+class InsulinAdapter(private val context: Context) :
         PagedListAdapter<Insulin, InsulinAdapter.InsulinHolder>(CALLBACK) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): InsulinHolder {
@@ -31,54 +31,33 @@ class InsulinAdapter(private val mContext: Context) :
     }
 
     override fun onBindViewHolder(holder: InsulinHolder, position: Int) {
-        if (position == itemCount - 1) {
-            holder.onBind(mContext, null)
+        val item = getItem(position)
+        if (item == null) {
+            holder.clear()
         } else {
-            val item = getItem(position)
-            if (item == null) {
-                holder.clear()
-            } else {
-                holder.onBind(mContext, item)
-            }
+            holder.onBind(context, item)
         }
     }
 
-    override fun getItemCount() = super.getItemCount() + 1
+    class InsulinHolder(view: View) : ViewHolderExt(view) {
+        private val title: TextView = view.findViewById(R.id.item_insulin_name)
+        private val icon: ImageView = view.findViewById(R.id.item_insulin_icon)
 
-    class InsulinHolder(view: View): ViewHolderExt(view) {
-        private val mTitle: TextView = view.findViewById(R.id.item_insulin_name)
-        private val mIcon: ImageView = view.findViewById(R.id.item_insulin_icon)
-
-        fun onBind(context: Context, insulin: Insulin?) {
-            if (insulin == null) {
-                bindAddView(context)
-            } else {
-                bindItemView(context, insulin)
-            }
-        }
-
-        fun clear() {
-            itemView.visibility = View.GONE
-        }
-
-        private fun bindAddView(context: Context) {
-            mTitle.text = context.getString(R.string.insulin_item_add)
-            mIcon.setImageResource(R.drawable.ic_add)
-            itemView.setOnClickListener {
-                context.startActivity(Intent(context, EditorActivity::class.java)) }
-        }
-
-        private fun bindItemView(context: Context, insulin: Insulin) {
+        fun onBind(context: Context, insulin: Insulin) {
             id = insulin.uid
 
-            mTitle.text = insulin.name
-            mIcon.setImageResource(insulin.timeFrame.icon)
+            title.text = insulin.name
+            icon.setImageResource(insulin.timeFrame.icon)
 
             itemView.setOnClickListener {
                 val intent = Intent(context, EditorActivity::class.java)
                 intent.putExtra(EditorActivity.EXTRA_UID, insulin.uid)
                 context.startActivity(intent)
             }
+        }
+
+        fun clear() {
+            itemView.visibility = View.GONE
         }
     }
 

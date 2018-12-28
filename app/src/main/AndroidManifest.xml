@@ -40,11 +40,6 @@
             android:windowSoftInputMode="stateHidden" />
 
         <activity
-            android:name=".insulin.InsulinActivity"
-            android:label="@string/insulin_name"
-            android:theme="@style/AppTheme.NoActionBar" />
-
-        <activity
             android:name=".insulin.editor.EditorActivity"
             android:excludeFromRecents="true"
             android:theme="@style/AppTheme.DialogActivity" />

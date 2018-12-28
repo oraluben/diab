@@ -18,6 +18,7 @@
 
     <string name="fragment_overview">Overview</string>
     <string name="fragment_glucose">Glucose</string>
+    <string name="fragment_insulin">Insulin</string>
 
     <!-- Time -->
     <string name="time_today">Today</string>
@@ -67,9 +68,6 @@
     <string name="insulin_suggestion_value">Suggested insulin: %1$.1f</string>
     <string name="insulin_suggestion_error">Unable to suggest right now</string>
     <string name="insulin_suggestion_applied">Suggestion applied</string>
-
-    <!-- Insulin list -->
-    <string name="insulin_name">Insulins</string>
 
     <!-- Export database -->
     <string name="export_ask_title">Export data</string>

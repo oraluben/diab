@@ -8,10 +8,12 @@
  */
 package it.diab.glucose.list
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.app.ActivityOptionsCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.paging.PagedList
@@ -20,6 +22,7 @@ import it.diab.R
 import it.diab.db.entities.Glucose
 import it.diab.db.repositories.GlucoseRepository
 import it.diab.db.repositories.InsulinRepository
+import it.diab.glucose.editor.EditorActivity
 import it.diab.ui.MainFragment
 import it.diab.ui.recyclerview.RecyclerViewExt
 import it.diab.viewmodels.glucose.GlucoseListViewModel
@@ -61,6 +64,18 @@ class GlucoseListFragment : MainFragment() {
     }
 
     override fun getTitle() = R.string.fragment_glucose
+
+    override fun onEditor(view: View) {
+        val activity = activity ?: return
+
+        val intent = Intent(activity, EditorActivity::class.java).apply {
+            putExtra(EditorActivity.EXTRA_INSERT_MODE, true)
+        }
+
+        val optionsCompat = ActivityOptionsCompat
+                .makeSceneTransitionAnimation(activity, view, view.transitionName)
+        startActivity(intent, optionsCompat.toBundle())
+    }
 
     private fun update(data: PagedList<Glucose>?) {
         mAdapter.submitList(data)
