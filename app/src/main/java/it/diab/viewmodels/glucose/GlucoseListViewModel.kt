@@ -43,12 +43,11 @@ class GlucoseListViewModel internal constructor(
             res: Resources,
             date: Date,
             format: SimpleDateFormat,
-            block: (String, String) -> Unit
+            block: (String) -> Unit
     ) {
         viewModelScope.launch {
-            val pair = date.getHeader(res, Date(), format)
-
-            GlobalScope.launch(Dispatchers.Main) { block(pair.first, pair.second) }
+            val text = date.getHeader(res, Date(), format)
+            GlobalScope.launch(Dispatchers.Main) { block(text) }
         }
     }
 }
