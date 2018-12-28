@@ -55,6 +55,12 @@
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.MaterialComponents.ActionBar" />
 
+    <style name="AppTheme.PopupMenuOverlapAnchor">
+        <item name="android:overlapAnchor">true</item>
+        <item name="android:dropDownVerticalOffset">0dp</item>
+        <item name="android:dropDownHorizontalOffset">0dp</item>
+    </style>
+
     <!-- Insulin editor -->
     <style name="AppTheme.DialogActivity" parent="AppTheme.NoActionBar">
         <item name="colorAccent">@color/colorAccent</item>

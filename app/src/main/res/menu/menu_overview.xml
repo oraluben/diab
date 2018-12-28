@@ -9,11 +9,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
-    <item
-        android:id="@+id/menu_insulin"
-        android:icon="@drawable/ic_menu_insulin"
-        android:title="@string/insulin_name"
-        app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/menu_fit"

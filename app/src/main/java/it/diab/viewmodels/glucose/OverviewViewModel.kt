@@ -42,8 +42,8 @@ class OverviewViewModel internal constructor(
     val list = glucoseRepository.all
     val last = glucoseRepository.last
 
+    lateinit var fitHandler: BaseFitHandler
     private lateinit var prefs: SharedPreferences
-    private lateinit var fitHandler: BaseFitHandler
 
     fun prepare(sPrefs: SharedPreferences, fHandler: BaseFitHandler) {
         prefs = sPrefs

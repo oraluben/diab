@@ -8,12 +8,20 @@
  */
 package it.diab.glucose.overview
 
+import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import android.preference.PreferenceManager
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.view.ContextThemeWrapper
+import androidx.appcompat.view.menu.MenuBuilder
+import androidx.appcompat.view.menu.MenuPopupHelper
+import androidx.appcompat.widget.PopupMenu
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -26,6 +34,7 @@ import it.diab.R
 import it.diab.db.entities.Glucose
 import it.diab.db.repositories.GlucoseRepository
 import it.diab.fit.BaseFitHandler
+import it.diab.settings.SettingsActivity
 import it.diab.ui.MainFragment
 import it.diab.ui.graph.OverviewGraphView
 import it.diab.util.SystemUtil
@@ -34,12 +43,14 @@ import it.diab.viewmodels.glucose.OverviewViewModel
 import it.diab.viewmodels.glucose.OverviewViewModelFactory
 import java.text.SimpleDateFormat
 import java.util.Locale
+import kotlin.collections.ArrayList
 
 
 class OverviewFragment : MainFragment() {
     private lateinit var lastValueView: TextView
     private lateinit var lastDescView: TextView
     private lateinit var chart: OverviewGraphView
+    private lateinit var menuView: ImageView
 
     private lateinit var viewModel: OverviewViewModel
 
@@ -66,6 +77,7 @@ class OverviewFragment : MainFragment() {
         lastValueView = view.findViewById(R.id.overview_last_value)
         lastDescView = view.findViewById(R.id.overview_last_desc)
         chart = view.findViewById(R.id.overview_chart)
+        menuView = view.findViewById(R.id.overview_menu)
 
         return view
     }
@@ -75,6 +87,8 @@ class OverviewFragment : MainFragment() {
 
         viewModel.last.observe(this, Observer(this::updateLast))
         viewModel.list.observe(this, Observer(this::updateChart))
+
+        setupMenu()
     }
 
     override fun getTitle() = R.string.fragment_overview
@@ -104,6 +118,45 @@ class OverviewFragment : MainFragment() {
         lastDescView.text = getString(R.string.overview_last_desc,
                 if (glucose.date.isToday()) hourFormatter.format(glucose.date)
                 else "")
+    }
+
+    @SuppressLint("RestrictedApi") // Needed for MenuPopupHelper
+    private fun setupMenu() {
+        val context = context ?: return
+        val ctxWrapper = ContextThemeWrapper(context, R.style.AppTheme_PopupMenuOverlapAnchor)
+        val popupMenu = PopupMenu(ctxWrapper, menuView, Gravity.NO_GRAVITY,
+                R.attr.actionOverflowMenuStyle, 0).apply {
+            inflate(R.menu.menu_overview)
+
+            if (viewModel.fitHandler.isEnabled) {
+                menu.findItem(R.id.menu_fit).isVisible = true
+            }
+
+            setOnMenuItemClickListener {
+                when (it.itemId) {
+                    R.id.menu_fit -> onMenuFit()
+                    R.id.menu_settings -> onMenuSettings()
+                    else -> false
+                }
+            }
+        }
+
+        val menuHelper = MenuPopupHelper(ctxWrapper, popupMenu.menu as MenuBuilder, menuView)
+
+        menuView.setOnClickListener { menuHelper.show() }
+    }
+
+    private fun onMenuFit(): Boolean {
+        val context = context ?: return false
+        viewModel.fitHandler.openFitActivity(context)
+        return true
+    }
+
+    private fun onMenuSettings(): Boolean {
+        val context = context ?: return false
+        val intent = Intent(context, SettingsActivity::class.java)
+        startActivity(intent)
+        return true
     }
 
     private fun setDataSets(today: List<Entry>, average: List<Entry>) {
