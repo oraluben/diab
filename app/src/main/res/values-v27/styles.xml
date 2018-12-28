@@ -22,4 +22,9 @@
         <item name="android:windowLightStatusBar">@bool/is_light</item>
         <item name="android:windowLightNavigationBar">@bool/is_light</item>
     </style>
+
+    <style name="AppTheme.Main" parent="AppTheme.NoActionBar">
+        <item name="android:navigationBarDividerColor">@color/navigationBar_color</item>
+    </style>
+
 </resources>

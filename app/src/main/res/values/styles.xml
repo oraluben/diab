@@ -43,6 +43,14 @@
         <item name="android:windowAllowReturnTransitionOverlap">true</item>
     </style>
 
+    <!-- Main -->
+
+    <style name="AppTheme.Main" parent="AppTheme.NoActionBar" />
+
+    <style name="AppTheme.Main.TabText" parent="@style/TextAppearance.AppCompat.Button">
+        <item name="android:textAllCaps">false</item>
+    </style>
+
     <!-- Toolbar -->
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.MaterialComponents.ActionBar" />

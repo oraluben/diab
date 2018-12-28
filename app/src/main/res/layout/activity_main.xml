@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <!--
   Copyright (c) 2018 Bevilacqua Joey
 
@@ -14,33 +13,6 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true">
 
-    <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/app_bar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:elevation="8dp"
-        android:theme="@style/AppTheme.AppBarOverlay">
-
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?actionBarSize"
-            app:layout_scrollFlags="scroll|enterAlways"
-            app:popupTheme="@style/AppTheme.AppBarOverlay" />
-
-        <com.google.android.material.tabs.TabLayout
-            android:id="@+id/tabs"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="?attr/diab_actionBarBackground"
-            app:tabGravity="fill"
-            app:tabMode="fixed"
-            app:tabRippleColor="?attr/diab_rippleColor"
-            app:tabSelectedTextColor="?attr/diab_titleContrastColor"
-            app:tabIndicatorColor="?colorAccent"
-            app:tabUnboundedRipple="true" />
-    </com.google.android.material.appbar.AppBarLayout>
-
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/viewpager"
         android:layout_width="match_parent"
@@ -52,7 +24,31 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|center_horizontal"
-        android:layout_margin="@dimen/fab_margin"
+        android:layout_marginStart="@dimen/fab_margin_base"
+        android:layout_marginEnd="@dimen/fab_margin_base"
+        android:layout_marginBottom="@dimen/fab_margin_vertical"
         android:transitionName="@string/transition_glucose_fab"
         app:srcCompat="@drawable/ic_add_glucose" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="@dimen/main_bottom_nav_height"
+        android:foreground="@color/item_header_divider" />
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tabs"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/main_bottom_nav_height"
+        android:layout_gravity="bottom"
+        android:background="@color/navigationBar_color"
+        app:tabGravity="center"
+        app:tabIndicatorColor="?colorAccent"
+        app:tabIndicatorFullWidth="false"
+        app:tabMode="fixed"
+        app:tabRippleColor="?attr/diab_rippleColor"
+        app:tabSelectedTextColor="?attr/diab_titleContrastColor"
+        app:tabTextAppearance="@style/AppTheme.Main.TabText"
+        app:tabUnboundedRipple="true" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

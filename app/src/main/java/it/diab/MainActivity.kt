@@ -24,7 +24,6 @@ import android.view.MenuItem
 import android.view.View
 import androidx.annotation.DrawableRes
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.content.ContextCompat
@@ -42,68 +41,49 @@ import it.diab.settings.SettingsActivity
 import it.diab.util.SystemUtil
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var mCoordinator: CoordinatorLayout
-    private lateinit var mTabLayout: TabLayout
-    private lateinit var mViewPager: ViewPager
-    private lateinit var mFab: FloatingActionButton
+    private lateinit var coordinator: CoordinatorLayout
+    private lateinit var tabLayout: TabLayout
+    private lateinit var viewPager: ViewPager
+    private lateinit var fab: FloatingActionButton
 
-    private lateinit var mGlucoseFragment: GlucoseListFragment
-    private lateinit var mOverviewFragment: OverviewFragment
-
-    private lateinit var fitHandler: BaseFitHandler
+    private lateinit var glucoseFragment: GlucoseListFragment
+    private lateinit var overviewFragment: OverviewFragment
 
     public override fun onCreate(savedInstance: Bundle?) {
         super.onCreate(savedInstance)
         setContentView(R.layout.activity_main)
 
-        mOverviewFragment = OverviewFragment()
-        mGlucoseFragment = GlucoseListFragment()
+        overviewFragment = OverviewFragment()
+        glucoseFragment = GlucoseListFragment()
 
-        val toolbar = findViewById<Toolbar>(R.id.toolbar)
-        setSupportActionBar(toolbar)
+        coordinator = findViewById(R.id.coordinator)
+        tabLayout = findViewById(R.id.tabs)
+        viewPager = findViewById(R.id.viewpager)
+        fab = findViewById(R.id.fab)
 
-        mCoordinator = findViewById(R.id.coordinator)
-        mTabLayout = findViewById(R.id.tabs)
-        mViewPager = findViewById(R.id.viewpager)
-        mFab = findViewById(R.id.fab)
-
-        mViewPager.adapter = ViewPagerAdapter(supportFragmentManager)
-        mTabLayout.setupWithViewPager(mViewPager)
-        mFab.setOnClickListener(this::onFabClick)
+        viewPager.adapter = ViewPagerAdapter(supportFragmentManager)
+        tabLayout.setupWithViewPager(viewPager)
+        fab.setOnClickListener(this::onFabClick)
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             addShortcuts()
         }
-
-        fitHandler = SystemUtil.getOverrideObject(BaseFitHandler::class.java, this,
-            R.string.config_class_fit_handler)
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.activity_main, menu)
-
-        // Hide fit if disabled
-        val fit = menu.findItem(R.id.menu_fit)
-        fit.isVisible = fitHandler.isEnabled
-
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
-        R.id.menu_insulin -> onMenuInsulin()
-        R.id.menu_fit -> onMenuFit()
-        R.id.menu_settings -> onMenuSettings()
-        else -> false
     }
 
     fun onItemClick(uid: Long) {
         val intent = Intent(this, EditorActivity::class.java).apply {
             putExtra(EditorActivity.EXTRA_GLUCOSE_ID, uid)
         }
-        openEditor(intent, mFab)
+        openEditor(intent, fab)
     }
 
     private fun onFabClick(view: View) {
+        when (viewPager.currentItem) {
+            0, 1 -> addGlucose(view)
+        }
+    }
+
+    private fun addGlucose(view: View) {
         val intent = Intent(this, EditorActivity::class.java).apply {
             putExtra(EditorActivity.EXTRA_INSERT_MODE, true)
         }
@@ -162,34 +142,12 @@ class MainActivity : AppCompatActivity() {
         return bm
     }
 
-    private fun onMenuInsulin(): Boolean {
-        val intent = Intent(this, InsulinActivity::class.java)
-        startActivity(intent)
-        return true
-    }
-
-    private fun onMenuFit(): Boolean {
-        if (!fitHandler.isEnabled) {
-            return false
-        }
-
-        fitHandler.openFitActivity(this)
-        return true
-    }
-
-    private fun onMenuSettings(): Boolean {
-        val intent = Intent(this, SettingsActivity::class.java)
-        startActivity(intent)
-        return true
-    }
-
     inner class ViewPagerAdapter(manager: FragmentManager) : FragmentPagerAdapter(manager) {
-        private val mFragments = arrayOf(mOverviewFragment, mGlucoseFragment)
+        private val mFragments = arrayOf(overviewFragment, glucoseFragment)
 
         override fun getCount() = mFragments.size
         override fun getItem(position: Int) = mFragments[position]
-        override fun getPageTitle(position: Int): String =
-                getString(mFragments[position].getTitle())
+        override fun getPageTitle(position: Int): String = getString(mFragments[position].getTitle())
     }
 
     companion object {
