@@ -8,28 +8,39 @@
  */
 package it.diab.viewmodels.glucose
 
-import android.content.Intent
 import android.content.SharedPreferences
 import com.github.mikephil.charting.data.Entry
-import it.diab.R
 import it.diab.db.entities.Glucose
 import it.diab.db.repositories.GlucoseRepository
 import it.diab.fit.BaseFitHandler
-import it.diab.insulin.InsulinActivity
 import it.diab.util.DateUtils
-import it.diab.util.extensions.*
+import it.diab.util.extensions.getAsMinutes
+import it.diab.util.extensions.isToday
+import it.diab.util.extensions.isZeroOrNan
+import it.diab.util.extensions.toTimeFrame
 import it.diab.util.timeFrame.TimeFrame
 import it.diab.viewmodels.ScopedViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
+import kotlin.collections.HashMap
+import kotlin.collections.List
+import kotlin.collections.distinctBy
+import kotlin.collections.filter
+import kotlin.collections.filterNot
+import kotlin.collections.indices
+import kotlin.collections.map
+import kotlin.collections.set
+import kotlin.collections.sortedBy
+import kotlin.collections.sum
 
 class OverviewViewModel internal constructor(
         private val glucoseRepository: GlucoseRepository
 ) : ScopedViewModel() {
 
     val list = glucoseRepository.all
+    val last = glucoseRepository.last
 
     private lateinit var prefs: SharedPreferences
     private lateinit var fitHandler: BaseFitHandler
@@ -73,32 +84,5 @@ class OverviewViewModel internal constructor(
 
             GlobalScope.launch(Dispatchers.Main) { block(today, average) }
         }
-    }
-
-    fun getBannerInfo() = when {
-        prefs[PREF_BANNER_INSULIN, true] -> getInsulinBanner()
-        prefs[PREF_BANNER_FIT, true] -> getFitBanner()
-        else -> null
-    }
-
-    private fun getInsulinBanner() = bannerModel {
-        title = R.string.banner_insulin_add
-        positiveText = R.string.banner_insulin_positive
-        onPositive = { it.context.startActivity(Intent(it.context, InsulinActivity::class.java)) }
-        onAction = { prefs[PREF_BANNER_INSULIN] = false }
-    }
-
-    private fun getFitBanner() = bannerModel {
-        title = R.string.banner_fit_integration
-        icon = R.drawable.ic_fitness_logo
-        positiveText = R.string.banner_fit_positive
-        negativeText = R.string.banner_negative
-        onPositive = { fitHandler.openFitActivity(it.context) }
-        onAction = { prefs[PREF_BANNER_FIT] = false }
-    }
-
-    companion object {
-        private const val PREF_BANNER_INSULIN = "pref_banner_insulin"
-        private const val PREF_BANNER_FIT = "pref_banner_fit"
     }
 }

@@ -10,7 +10,6 @@ package it.diab.db.repositories
 
 import android.content.Context
 import androidx.annotation.WorkerThread
-import androidx.lifecycle.LiveData
 import it.diab.db.AppDatabase
 import it.diab.db.dao.GlucoseDao
 import it.diab.db.entities.Glucose
@@ -23,6 +22,8 @@ class GlucoseRepository private constructor(private val dao: GlucoseDao) {
     val all = dao.all
 
     val pagedList = dao.pagedList
+
+    val last = dao.last
 
     @WorkerThread
     fun getById(uid: Long) = dao.getById(uid).firstOrNull() ?: Glucose()

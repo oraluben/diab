@@ -29,6 +29,9 @@ interface GlucoseDao {
     @get:Query("SELECT * FROM glucose ORDER BY date DESC")
     val pagedList: DataSource.Factory<Int, Glucose>
 
+    @get:Query("SELECT * FROM glucose ORDER BY date DESC LIMIT 1")
+    val last: LiveData<List<Glucose>>
+
     @Query("SELECT * FROM glucose WHERE uid IN (:uids)")
     fun getById(vararg uids: Long): List<Glucose>
 

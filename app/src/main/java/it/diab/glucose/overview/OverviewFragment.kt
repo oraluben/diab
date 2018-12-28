@@ -13,6 +13,7 @@ import android.preference.PreferenceManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -25,18 +26,24 @@ import it.diab.R
 import it.diab.db.entities.Glucose
 import it.diab.db.repositories.GlucoseRepository
 import it.diab.fit.BaseFitHandler
-import it.diab.ui.BannerView
 import it.diab.ui.MainFragment
 import it.diab.ui.graph.OverviewGraphView
 import it.diab.util.SystemUtil
+import it.diab.util.extensions.isToday
 import it.diab.viewmodels.glucose.OverviewViewModel
 import it.diab.viewmodels.glucose.OverviewViewModelFactory
+import java.text.SimpleDateFormat
+import java.util.Locale
+
 
 class OverviewFragment : MainFragment() {
-    private lateinit var mBanner: BannerView
-    private lateinit var mChart: OverviewGraphView
+    private lateinit var lastValueView: TextView
+    private lateinit var lastDescView: TextView
+    private lateinit var chart: OverviewGraphView
 
     private lateinit var viewModel: OverviewViewModel
+
+    private val hourFormatter = SimpleDateFormat(" (HH:mm)", Locale.getDefault())
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,8 +63,9 @@ class OverviewFragment : MainFragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View {
         val view = inflater.inflate(R.layout.fragment_overview, container, false)
-        mBanner = view.findViewById(R.id.overview_banner)
-        mChart = view.findViewById(R.id.overview_chart)
+        lastValueView = view.findViewById(R.id.overview_last_value)
+        lastDescView = view.findViewById(R.id.overview_last_desc)
+        chart = view.findViewById(R.id.overview_chart)
 
         return view
     }
@@ -65,23 +73,37 @@ class OverviewFragment : MainFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.list.observe(this, Observer(this::update))
-
-        val model = viewModel.getBannerInfo()
-        model?.apply {
-            mBanner.setModel(this)
-            mBanner.visibility = View.VISIBLE
-        }
+        viewModel.last.observe(this, Observer(this::updateLast))
+        viewModel.list.observe(this, Observer(this::updateChart))
     }
 
     override fun getTitle() = R.string.fragment_overview
 
-    private fun update(data: List<Glucose>?) {
+    private fun updateChart(data: List<Glucose>?) {
         if (data == null || data.isEmpty()) {
             return
         }
 
         viewModel.getDataSets(data, this::setDataSets)
+    }
+
+    private fun updateLast(data: List<Glucose>?) {
+        if (data == null) {
+            return
+        }
+
+        if (data.isEmpty()) {
+            lastValueView.text = getString(R.string.overview_last_fallback)
+            lastDescView.text = getString(R.string.overview_last_desc_fallback)
+            return
+        }
+
+        val glucose = data[0]
+
+        lastValueView.text = "${glucose.value}"
+        lastDescView.text = getString(R.string.overview_last_desc,
+                if (glucose.date.isToday()) hourFormatter.format(glucose.date)
+                else "")
     }
 
     private fun setDataSets(today: List<Entry>, average: List<Entry>) {
@@ -97,8 +119,8 @@ class OverviewFragment : MainFragment() {
             return
         }
 
-        mChart.data = LineData(dataSets)
-        mChart.invalidate()
+        chart.data = LineData(dataSets)
+        chart.invalidate()
     }
 
     private fun getTodayDataSet(entries: List<Entry>): LineDataSet? {

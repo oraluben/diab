@@ -36,6 +36,11 @@
     <string name="time_dinner">Dinner</string>
     <string name="time_night">Night</string>
 
+    <!-- Overview -->
+    <string name="overview_last_desc">Last value%1$s</string>
+    <string name="overview_last_fallback">Welcome</string>
+    <string name="overview_last_desc_fallback">Add a value by touching the +</string>
+
     <!-- Insulin Editor -->
     <string name="insulin_editor_add">Add insulin</string>
     <string name="insulin_editor_edit">Edit insulin</string>
@@ -82,13 +87,6 @@
 
     <!-- Fitness integration -->
     <string name="fit_name">Fit integration</string>
-
-    <!-- OnBoarding banners -->
-    <string name="banner_negative">Dismiss</string>
-    <string name="banner_insulin_add">Register your insulins to save them along with your glucose values</string>
-    <string name="banner_insulin_positive">Register insulins</string>
-    <string name="banner_fit_integration">Connect Diab to your fitness service to backup your glucose values automatically</string>
-    <string name="banner_fit_positive">Learn more</string>
 
     <!-- Settings -->
     <string name="settings_name">Settings</string>

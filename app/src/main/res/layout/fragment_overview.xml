@@ -6,22 +6,47 @@
   The text of the license can be found in the LICENSE file
   or at https://www.gnu.org/licenses/gpl.txt
   -->
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical">
 
-    <it.diab.ui.BannerView
-        android:id="@+id/overview_banner"
-        android:layout_width="match_parent"
-        android:layout_height="120dp"
-        android:visibility="gone"
-        tools:visibility="visible" />
+    <LinearLayout
+        android:id="@+id/overview_last"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:gravity="center"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_default="percent"
+        app:layout_constraintHeight_percent="0.4"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteY="0dp">
+
+        <TextView
+            android:id="@+id/overview_last_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="?android:attr/textColorPrimary"
+            android:textSize="96sp"
+            tools:text="121" />
+
+        <TextView
+            android:id="@+id/overview_last_desc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="?android:attr/textColorSecondary"
+            android:textSize="20sp"
+            tools:text="Last value (19:22)" />
+    </LinearLayout>
 
     <it.diab.ui.graph.OverviewGraphView
         android:id="@+id/overview_chart"
         android:layout_width="match_parent"
         android:layout_height="256dp"
-        android:paddingTop="8dp" />
-</LinearLayout>
+        android:paddingTop="8dp"
+        app:layout_constraintTop_toBottomOf="@id/overview_last" />
+</androidx.constraintlayout.widget.ConstraintLayout>

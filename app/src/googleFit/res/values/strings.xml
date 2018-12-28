@@ -24,6 +24,4 @@
     <string name="fit_disconnect_confim_message">You\'re about to disconnect from Google Fit. The app will no longer sync new glucose data (the existing values will be retained on Google Fit).\nDo you want to proceed?</string>
     <string name="fit_disconnect_confim_positive">Disconnect</string>
     <string name="fit_disconnect_success">Disconnected from Fit</string>
-
-    <string name="banner_fit_integration">Connect Diab to your Google Fit to backup your glucose values automatically</string>
 </resources>
