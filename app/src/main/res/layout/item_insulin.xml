@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <!--
   Copyright (c) 2018 Bevilacqua Joey
 
@@ -19,6 +18,7 @@
     android:focusable="true"
     android:foreground="?android:attr/selectableItemBackground"
     android:stateListAnimator="@animator/lift_on_touch"
+    app:cardBackgroundColor="@color/item_card_bg"
     app:cardCornerRadius="@dimen/app_radius"
     app:cardElevation="2dp"
     app:contentPadding="8dp">
@@ -29,8 +29,8 @@
         android:layout_weight="1"
         android:gravity="center"
         android:orientation="vertical"
-        android:paddingBottom="16dp"
         android:paddingTop="16dp"
+        android:paddingBottom="16dp"
         tools:ignore="UseCompoundDrawables">
 
         <ImageView
