@@ -6,7 +6,7 @@
  * The text of the license can be found in the LICENSE file
  * or at https://www.gnu.org/licenses/gpl.txt
  */
-package it.diab.glucose.list
+package it.diab.adapters
 
 import android.content.Context
 import android.graphics.drawable.Drawable
@@ -86,7 +86,6 @@ class GlucoseListAdapter(
     }
 
     inner class GlucoseHolder(view: View) : ViewHolderExt(view) {
-        private val layout = view.findViewById<ConstraintLayout>(R.id.item_glucose_layout)
         private val icon = view.findViewById<ImageView>(R.id.item_glucose_timezone)
         private val title = view.findViewById<TextView>(R.id.item_glucose_value)
         private val summary = view.findViewById<TextView>(R.id.item_glucose_insulin)
@@ -118,7 +117,7 @@ class GlucoseListAdapter(
 
             icon.setImageResource(glucose.timeFrame.icon)
 
-            layout.setOnClickListener { _openGlucose.value = Event(id) }
+            itemView.setOnClickListener { _openGlucose.value = Event(id) }
 
             val indicatorDrawable = when {
                 glucose.value > highThreshold -> highIndicator

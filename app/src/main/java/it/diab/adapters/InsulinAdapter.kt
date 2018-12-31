@@ -6,10 +6,8 @@
  * The text of the license can be found in the LICENSE file
  * or at https://www.gnu.org/licenses/gpl.txt
  */
-package it.diab.insulin
+package it.diab.adapters
 
-import android.content.Context
-import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -24,8 +22,7 @@ import it.diab.db.entities.Insulin
 import it.diab.ui.recyclerview.ViewHolderExt
 import it.diab.util.event.Event
 
-class InsulinAdapter(private val context: Context) :
-        PagedListAdapter<Insulin, InsulinAdapter.InsulinHolder>(CALLBACK) {
+class InsulinAdapter : PagedListAdapter<Insulin, InsulinAdapter.InsulinHolder>(CALLBACK) {
 
     private val _editInsulin = MutableLiveData<Event<Long>>()
     internal val editInsulin: LiveData<Event<Long>> = _editInsulin
@@ -40,7 +37,7 @@ class InsulinAdapter(private val context: Context) :
         if (item == null) {
             holder.clear()
         } else {
-            holder.onBind(context, item)
+            holder.onBind(item)
         }
     }
 
@@ -49,7 +46,7 @@ class InsulinAdapter(private val context: Context) :
         private val title: TextView = view.findViewById(R.id.item_insulin_name)
         private val icon: ImageView = view.findViewById(R.id.item_insulin_icon)
 
-        fun onBind(context: Context, insulin: Insulin) {
+        fun onBind(insulin: Insulin) {
             id = insulin.uid
 
             title.text = insulin.name

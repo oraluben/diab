@@ -20,6 +20,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.paging.PagedList
 import it.diab.R
+import it.diab.adapters.GlucoseListAdapter
 import it.diab.db.entities.Glucose
 import it.diab.db.repositories.GlucoseRepository
 import it.diab.db.repositories.InsulinRepository

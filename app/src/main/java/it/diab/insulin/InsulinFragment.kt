@@ -17,6 +17,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.paging.PagedList
 import it.diab.R
+import it.diab.adapters.InsulinAdapter
 import it.diab.db.entities.Insulin
 import it.diab.db.repositories.InsulinRepository
 import it.diab.insulin.editor.EditorActivity
@@ -54,7 +55,7 @@ class InsulinFragment : MainFragment() {
 
         val context = context ?: return
 
-        val adapter = InsulinAdapter(context)
+        val adapter = InsulinAdapter()
         recyclerView.adapter = adapter
         viewModel.list.observe(this, Observer<PagedList<Insulin>>(adapter::submitList))
 
