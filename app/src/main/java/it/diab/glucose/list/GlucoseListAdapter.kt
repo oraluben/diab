@@ -18,6 +18,8 @@ import android.widget.TextView
 import androidx.annotation.ColorRes
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import it.diab.R
@@ -25,6 +27,7 @@ import it.diab.db.entities.Glucose
 import it.diab.ui.recyclerview.ViewHolderExt
 import it.diab.util.PreferencesUtil
 import it.diab.util.UIUtils
+import it.diab.util.event.Event
 import it.diab.util.extensions.diff
 import it.diab.util.extensions.setPrecomputedText
 import it.diab.viewmodels.glucose.GlucoseListViewModel
@@ -34,9 +37,11 @@ import java.util.Locale
 
 class GlucoseListAdapter(
         private val context: Context,
-        private val onItemClick: (Long) -> Unit,
         private val viewModel: GlucoseListViewModel
 ) : PagedListAdapter<Glucose, GlucoseListAdapter.GlucoseHolder>(CALLBACK) {
+
+    private val _openGlucose = MutableLiveData<Event<Long>>()
+    val openGlucose: LiveData<Event<Long>> = _openGlucose
 
     // Store the these for better performance
     private val lowIndicator = getIndicator(R.color.glucose_indicator_low)
@@ -113,7 +118,7 @@ class GlucoseListAdapter(
 
             icon.setImageResource(glucose.timeFrame.icon)
 
-            layout.setOnClickListener { onItemClick(id) }
+            layout.setOnClickListener { _openGlucose.value = Event(id) }
 
             val indicatorDrawable = when {
                 glucose.value > highThreshold -> highIndicator

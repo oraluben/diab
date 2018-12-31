@@ -9,7 +9,6 @@
 package it.diab
 
 import android.annotation.TargetApi
-import android.app.Activity
 import android.content.Intent
 import android.content.pm.ShortcutInfo
 import android.content.pm.ShortcutManager
@@ -35,6 +34,7 @@ import it.diab.glucose.editor.EditorActivity
 import it.diab.glucose.list.GlucoseListFragment
 import it.diab.glucose.overview.OverviewFragment
 import it.diab.insulin.InsulinFragment
+import it.diab.util.event.EventObserver
 
 class MainActivity : AppCompatActivity() {
     private lateinit var coordinator: CoordinatorLayout
@@ -66,12 +66,14 @@ class MainActivity : AppCompatActivity() {
         tabLayout.setupWithViewPager(viewPager)
         fab.setOnClickListener(this::onFabClick)
 
+        glucoseFragment.openGlucose.observe(this, EventObserver(this::onGlucoseClick))
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             addShortcuts()
         }
     }
 
-    fun onItemClick(uid: Long) {
+    private fun onGlucoseClick(uid: Long) {
         val intent = Intent(this, EditorActivity::class.java).apply {
             putExtra(EditorActivity.EXTRA_GLUCOSE_ID, uid)
         }

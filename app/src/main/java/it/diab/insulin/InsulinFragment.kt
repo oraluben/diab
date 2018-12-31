@@ -22,6 +22,7 @@ import it.diab.db.repositories.InsulinRepository
 import it.diab.insulin.editor.EditorActivity
 import it.diab.ui.MainFragment
 import it.diab.ui.recyclerview.RecyclerViewExt
+import it.diab.util.event.EventObserver
 import it.diab.viewmodels.insulin.InsulinViewModel
 import it.diab.viewmodels.insulin.InsulinViewModelFactory
 
@@ -56,6 +57,13 @@ class InsulinFragment : MainFragment() {
         val adapter = InsulinAdapter(context)
         recyclerView.adapter = adapter
         viewModel.list.observe(this, Observer<PagedList<Insulin>>(adapter::submitList))
+
+        adapter.editInsulin.observe(viewLifecycleOwner, EventObserver { uid ->
+            val intent = Intent(context, EditorActivity::class.java).apply {
+                putExtra(EditorActivity.EXTRA_UID, uid)
+            }
+            startActivity(intent)
+        })
     }
 
     override fun getTitle() = R.string.fragment_insulin

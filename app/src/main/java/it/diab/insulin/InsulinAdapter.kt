@@ -15,15 +15,20 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import it.diab.R
 import it.diab.db.entities.Insulin
-import it.diab.insulin.editor.EditorActivity
 import it.diab.ui.recyclerview.ViewHolderExt
+import it.diab.util.event.Event
 
 class InsulinAdapter(private val context: Context) :
         PagedListAdapter<Insulin, InsulinAdapter.InsulinHolder>(CALLBACK) {
+
+    private val _editInsulin = MutableLiveData<Event<Long>>()
+    internal val editInsulin: LiveData<Event<Long>> = _editInsulin
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): InsulinHolder {
         return InsulinHolder(LayoutInflater.from(parent.context)
@@ -39,7 +44,8 @@ class InsulinAdapter(private val context: Context) :
         }
     }
 
-    class InsulinHolder(view: View) : ViewHolderExt(view) {
+
+    inner class InsulinHolder(view: View) : ViewHolderExt(view) {
         private val title: TextView = view.findViewById(R.id.item_insulin_name)
         private val icon: ImageView = view.findViewById(R.id.item_insulin_icon)
 
@@ -49,11 +55,7 @@ class InsulinAdapter(private val context: Context) :
             title.text = insulin.name
             icon.setImageResource(insulin.timeFrame.icon)
 
-            itemView.setOnClickListener {
-                val intent = Intent(context, EditorActivity::class.java)
-                intent.putExtra(EditorActivity.EXTRA_UID, insulin.uid)
-                context.startActivity(intent)
-            }
+            itemView.setOnClickListener { _editInsulin.value = Event(id) }
         }
 
         fun clear() {
