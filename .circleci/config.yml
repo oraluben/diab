@@ -26,8 +26,8 @@ jobs:
                     - ~/.gradle/caches
                     - ~/.gradle/wrapper
             - run:
-                name: Assemble debug
-                command: ./gradlew assembleOssDebug -PisCiBuild
+                name: JVM tests and Lint
+                command: ./gradlew check -PisCiBuild
             - store_artifacts:
                 path: app/build/reports
                 destination: reports
