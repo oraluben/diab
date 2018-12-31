@@ -7,9 +7,10 @@ function install_pre_push() {
 
 function install_ktlint() {
   echo "Downloading ktlint..."
-  curl -sSLO https://github.com/shyiko/ktlint/releases/download/0.28.0/ktlint
-  chmod +x ktlint
-  ./ktlint --apply-to-idea-project --android -y
+  curl -sSLO https://github.com/shyiko/ktlint/releases/download/0.29.0/ktlint
+  chmod a+x ktlint
+  ktlint --apply-to-idea-project --android -y
+  ktlint --install-git-pre-commit-hook
 }
 
 function disable_git_track_changes() {
@@ -18,7 +19,7 @@ function disable_git_track_changes() {
 }
 
 function assume_models_unchanged() {
-  disable_git_track_changes plugin/src/main/assets/estimator_*.json
+  disable_git_track_changes ml/export
   disable_git_track_changes ml/data/test_*.csv
   disable_git_track_changes ml/data/train_*.csv
 }
