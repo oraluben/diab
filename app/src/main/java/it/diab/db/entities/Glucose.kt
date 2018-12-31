@@ -23,8 +23,10 @@ import it.diab.util.extensions.toTimeFrame
 import it.diab.util.timeFrame.TimeFrame
 import java.util.Date
 
-@Entity(tableName = "glucose",
-        indices = [Index(value = ["date", "uid"], unique = true)])
+@Entity(
+    tableName = "glucose",
+    indices = [Index(value = ["date", "uid"], unique = true)]
+)
 class Glucose : Parcelable {
 
     @PrimaryKey(autoGenerate = true)
@@ -66,9 +68,17 @@ class Glucose : Parcelable {
         timeFrame = input.readInt().toTimeFrame()
     }
 
-    constructor(uid: Long, value: Int, date: Date, insulinId0: Long,
-                insulinValue0: Float, insulinId1: Long, insulinValue1: Float,
-                @EatLevel eatLevel: Int, timeFrame: TimeFrame) {
+    constructor(
+        uid: Long,
+        value: Int,
+        date: Date,
+        insulinId0: Long,
+        insulinValue0: Float,
+        insulinId1: Long,
+        insulinValue1: Float,
+        @EatLevel eatLevel: Int,
+        timeFrame: TimeFrame
+    ) {
         this.uid = uid
         this.value = value
         this.date = date
@@ -86,13 +96,13 @@ class Glucose : Parcelable {
         }
 
         return other.value == value &&
-                other.date.time == date.time &&
-                other.insulinId0 == insulinId0 &&
-                other.insulinValue0 == insulinValue0 &&
-                other.insulinId1 == insulinId1 &&
-                other.insulinValue1 == insulinValue1 &&
-                other.eatLevel == eatLevel &&
-                other.timeFrame == timeFrame
+            other.date.time == date.time &&
+            other.insulinId0 == insulinId0 &&
+            other.insulinValue0 == insulinValue0 &&
+            other.insulinId1 == insulinId1 &&
+            other.insulinValue1 == insulinValue1 &&
+            other.eatLevel == eatLevel &&
+            other.timeFrame == timeFrame
     }
 
     override fun hashCode() = super.hashCode() + 1
@@ -116,6 +126,7 @@ class Glucose : Parcelable {
         @IntDef(LOW, MEDIUM, HIGH, MAX)
         @Retention(AnnotationRetention.SOURCE)
         annotation class EatLevel
+
         const val LOW = 0
         const val MEDIUM = 1
         const val HIGH = 2

@@ -22,5 +22,4 @@ object PreferencesUtil {
 
     fun getGlucoseLowThreshold(context: Context): Int =
         PreferenceManager.getDefaultSharedPreferences(context)[GLUCOSE_THRESHOLD_LOW, 60]
-
 }

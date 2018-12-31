@@ -14,7 +14,7 @@ import com.google.common.truth.Truth.assertThat
 import it.diab.util.extensions.glucose
 import it.diab.util.timeFrame.TimeFrame
 import org.junit.Test
-import java.util.*
+import java.util.Date
 
 @SmallTest
 class GlucoseTest {

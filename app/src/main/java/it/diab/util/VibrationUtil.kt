@@ -31,7 +31,9 @@ object VibrationUtil {
     }
 
     fun vibrateForImportantClick(view: View) {
-        view.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY,
-                HapticFeedbackConstants.FLAG_IGNORE_VIEW_SETTING)
+        view.performHapticFeedback(
+            HapticFeedbackConstants.VIRTUAL_KEY,
+            HapticFeedbackConstants.FLAG_IGNORE_VIEW_SETTING
+        )
     }
 }

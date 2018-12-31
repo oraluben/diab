@@ -15,8 +15,8 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 class EditorViewModel internal constructor(
-        private val insulinRepository: InsulinRepository
-): ScopedViewModel() {
+    private val insulinRepository: InsulinRepository
+) : ScopedViewModel() {
 
     var insulin = Insulin()
 

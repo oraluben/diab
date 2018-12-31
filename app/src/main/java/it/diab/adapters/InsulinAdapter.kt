@@ -28,8 +28,10 @@ class InsulinAdapter : PagedListAdapter<Insulin, InsulinAdapter.InsulinHolder>(C
     internal val editInsulin: LiveData<Event<Long>> = _editInsulin
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): InsulinHolder {
-        return InsulinHolder(LayoutInflater.from(parent.context)
-                .inflate(R.layout.item_insulin, parent, false))
+        return InsulinHolder(
+            LayoutInflater.from(parent.context)
+                .inflate(R.layout.item_insulin, parent, false)
+        )
     }
 
     override fun onBindViewHolder(holder: InsulinHolder, position: Int) {
@@ -40,7 +42,6 @@ class InsulinAdapter : PagedListAdapter<Insulin, InsulinAdapter.InsulinHolder>(C
             holder.onBind(item)
         }
     }
-
 
     inner class InsulinHolder(view: View) : ViewHolderExt(view) {
         private val title: TextView = view.findViewById(R.id.item_insulin_name)
@@ -63,10 +64,10 @@ class InsulinAdapter : PagedListAdapter<Insulin, InsulinAdapter.InsulinHolder>(C
     companion object {
         private val CALLBACK = object : DiffUtil.ItemCallback<Insulin>() {
             override fun areContentsTheSame(oldItem: Insulin, newItem: Insulin) =
-                    oldItem == newItem
+                oldItem == newItem
 
             override fun areItemsTheSame(oldItem: Insulin, newItem: Insulin) =
-                    oldItem.uid == newItem.uid
+                oldItem.uid == newItem.uid
         }
     }
 }

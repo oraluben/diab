@@ -22,8 +22,8 @@ import java.util.concurrent.TimeUnit
 
 class FitViewModel(owner: Application) : AndroidViewModel(owner) {
     private val mOptions = FitnessOptions.builder()
-            .addDataType(HealthDataTypes.TYPE_BLOOD_GLUCOSE, FitnessOptions.ACCESS_WRITE)
-            .build()
+        .addDataType(HealthDataTypes.TYPE_BLOOD_GLUCOSE, FitnessOptions.ACCESS_WRITE)
+        .build()
     private val mAccount = GoogleSignIn.getLastSignedInAccount(owner)
 
     fun isConnected() = GoogleSignIn.hasPermissions(mAccount, mOptions)
@@ -35,12 +35,12 @@ class FitViewModel(owner: Application) : AndroidViewModel(owner) {
     fun disconnect(context: Context) {
         // Disable fitness client
         Fitness.getConfigClient(context, mAccount!!)
-                .disableFit()
+            .disableFit()
 
         // Log out
         val signInOptions = GoogleSignInOptions.Builder()
-                .addExtension(mOptions)
-                .build()
+            .addExtension(mOptions)
+            .build()
 
         val client = GoogleSignIn.getClient(context, signInOptions)
         client.revokeAccess()
@@ -48,13 +48,13 @@ class FitViewModel(owner: Application) : AndroidViewModel(owner) {
 
     fun deleteAllData(context: Context, onSuccess: () -> Unit, onFailure: () -> Unit) {
         val request = DataDeleteRequest.Builder()
-                .deleteAllData()
-                .setTimeInterval(1L, System.currentTimeMillis(), TimeUnit.MILLISECONDS)
-                .build()
+            .deleteAllData()
+            .setTimeInterval(1L, System.currentTimeMillis(), TimeUnit.MILLISECONDS)
+            .build()
 
         Fitness.getHistoryClient(context, mAccount!!)
-                .deleteData(request)
-                .addOnCompleteListener { onSuccess() }
-                .addOnFailureListener { onFailure() }
+            .deleteData(request)
+            .addOnCompleteListener { onSuccess() }
+            .addOnFailureListener { onFailure() }
     }
 }

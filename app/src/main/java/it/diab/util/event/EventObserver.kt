@@ -29,4 +29,3 @@ class EventObserver<T>(private val onEventUnconsumedContent: (T) -> Unit) : Obse
         event?.consume()?.run(onEventUnconsumedContent)
     }
 }
-

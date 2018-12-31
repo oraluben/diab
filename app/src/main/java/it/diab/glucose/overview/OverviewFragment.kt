@@ -47,7 +47,6 @@ import java.text.SimpleDateFormat
 import java.util.Locale
 import kotlin.collections.ArrayList
 
-
 class OverviewFragment : MainFragment() {
     private lateinit var lastValueView: TextView
     private lateinit var lastDescView: TextView
@@ -67,14 +66,19 @@ class OverviewFragment : MainFragment() {
         viewModel = ViewModelProviders.of(this, factory)[OverviewViewModel::class.java]
 
         viewModel.prepare(
-                PreferenceManager.getDefaultSharedPreferences(context),
-                SystemUtil.getOverrideObject(BaseFitHandler::class.java, context,
-                        R.string.config_class_fit_handler)
+            PreferenceManager.getDefaultSharedPreferences(context),
+            SystemUtil.getOverrideObject(
+                BaseFitHandler::class.java, context,
+                R.string.config_class_fit_handler
+            )
         )
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         val view = inflater.inflate(R.layout.fragment_overview, container, false)
         lastValueView = view.findViewById(R.id.overview_last_value)
         lastDescView = view.findViewById(R.id.overview_last_desc)
@@ -95,7 +99,6 @@ class OverviewFragment : MainFragment() {
 
     override fun getTitle() = R.string.fragment_overview
 
-
     override fun onEditor(view: View) {
         val activity = activity ?: return
 
@@ -104,7 +107,7 @@ class OverviewFragment : MainFragment() {
         }
 
         val optionsCompat = ActivityOptionsCompat
-                .makeSceneTransitionAnimation(activity, view, view.transitionName)
+            .makeSceneTransitionAnimation(activity, view, view.transitionName)
         startActivity(intent, optionsCompat.toBundle())
     }
 
@@ -130,17 +133,21 @@ class OverviewFragment : MainFragment() {
         val glucose = data[0]
 
         lastValueView.text = "${glucose.value}"
-        lastDescView.text = getString(R.string.overview_last_desc,
-                if (glucose.date.isToday()) hourFormatter.format(glucose.date)
-                else "")
+        lastDescView.text = getString(
+            R.string.overview_last_desc,
+            if (glucose.date.isToday()) hourFormatter.format(glucose.date)
+            else ""
+        )
     }
 
     @SuppressLint("RestrictedApi") // Needed for MenuPopupHelper
     private fun setupMenu() {
         val context = context ?: return
         val ctxWrapper = ContextThemeWrapper(context, R.style.AppTheme_PopupMenuOverlapAnchor)
-        val popupMenu = PopupMenu(ctxWrapper, menuView, Gravity.NO_GRAVITY,
-                R.attr.actionOverflowMenuStyle, 0).apply {
+        val popupMenu = PopupMenu(
+            ctxWrapper, menuView, Gravity.NO_GRAVITY,
+            R.attr.actionOverflowMenuStyle, 0
+        ).apply {
             inflate(R.menu.menu_overview)
 
             if (viewModel.fitHandler.isEnabled) {

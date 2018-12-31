@@ -19,12 +19,12 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Date
 
 class GlucoseListViewModel internal constructor(
-        glucoseRepository: GlucoseRepository,
-        private val insulinRepository: InsulinRepository
-): ScopedViewModel() {
+    glucoseRepository: GlucoseRepository,
+    private val insulinRepository: InsulinRepository
+) : ScopedViewModel() {
     val pagedList = LivePagedListBuilder(glucoseRepository.pagedList, 5).build()
 
     private lateinit var insulins: List<Insulin>
@@ -40,10 +40,10 @@ class GlucoseListViewModel internal constructor(
     fun getInsulin(uid: Long) = insulins.firstOrNull { it.uid == uid } ?: Insulin()
 
     fun setHeader(
-            res: Resources,
-            date: Date,
-            format: SimpleDateFormat,
-            block: (String) -> Unit
+        res: Resources,
+        date: Date,
+        format: SimpleDateFormat,
+        block: (String) -> Unit
     ) {
         viewModelScope.launch {
             val text = date.getHeader(res, Date(), format)

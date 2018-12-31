@@ -36,13 +36,14 @@ object UIUtils {
     }
 
     fun setStyleMode(value: String) {
-        AppCompatDelegate.setDefaultNightMode(when (value) {
-            "0" -> AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
-            "2" -> AppCompatDelegate.MODE_NIGHT_YES
-            else -> AppCompatDelegate.MODE_NIGHT_NO
-        })
+        AppCompatDelegate.setDefaultNightMode(
+            when (value) {
+                "0" -> AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
+                "2" -> AppCompatDelegate.MODE_NIGHT_YES
+                else -> AppCompatDelegate.MODE_NIGHT_NO
+            }
+        )
     }
-
 
     fun supportsAutoStyleMode() = when {
         Build.VERSION.SDK_INT >= Build.VERSION_CODES.P -> true

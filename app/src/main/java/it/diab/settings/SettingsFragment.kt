@@ -127,7 +127,6 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
         } else {
             activity.startService(intent)
         }
-
     }
 
     private fun handleExportResult() {
@@ -163,8 +162,10 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
             pluginManager.setSummary(R.string.settings_plugin_manage_summary_new)
         } else {
             pluginRemover.isVisible = true
-            pluginManager.summary = getString(R.string.settings_plugin_manage_summary_installed,
-                Date(lastUpdated).format("yyyy-MM-dd HH:mm"))
+            pluginManager.summary = getString(
+                R.string.settings_plugin_manage_summary_installed,
+                Date(lastUpdated).format("yyyy-MM-dd HH:mm")
+            )
         }
     }
 
@@ -217,10 +218,12 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
         val entries = if (supportsAuto) arrayOf(
             getString(R.string.settings_ui_theme_system),
             getString(R.string.settings_ui_theme_light),
-            getString(R.string.settings_ui_theme_dark))
+            getString(R.string.settings_ui_theme_dark)
+        )
         else arrayOf(
             getString(R.string.settings_ui_theme_light),
-            getString(R.string.settings_ui_theme_dark))
+            getString(R.string.settings_ui_theme_dark)
+        )
 
         val values = if (supportsAuto) arrayOf("0", "1", "2") else arrayOf("1", "2")
 
@@ -232,9 +235,10 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
         requestPermissions(arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), requestCode)
     }
 
-    private fun hasStorageAccess(context: Context) = ContextCompat.checkSelfPermission(context,
-        Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
-
+    private fun hasStorageAccess(context: Context) = ContextCompat.checkSelfPermission(
+        context,
+        Manifest.permission.WRITE_EXTERNAL_STORAGE
+    ) == PackageManager.PERMISSION_GRANTED
 
     companion object {
         private const val REQUEST_STORAGE_EXPORT = 391

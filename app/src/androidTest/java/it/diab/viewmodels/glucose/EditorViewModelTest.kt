@@ -61,8 +61,9 @@ class EditorViewModelTest {
         val context = ApplicationProvider.getApplicationContext<Context>()
         db = AppDatabase.getInstance(context)
         viewModel = EditorViewModel(
-                GlucoseRepository.getInstance(context),
-                InsulinRepository.getInstance(context))
+            GlucoseRepository.getInstance(context),
+            InsulinRepository.getInstance(context)
+        )
         pluginManager = PluginManager(context)
 
         db.glucose().insert(testGlucose)
@@ -125,7 +126,7 @@ class EditorViewModelTest {
         viewModel.prepare(pluginManager) {
             viewModel.glucose.timeFrame = testInsulin.timeFrame
             assertThat(viewModel.getInsulinByTimeFrame().timeFrame)
-                    .isEqualTo(viewModel.glucose.timeFrame)
+                .isEqualTo(viewModel.glucose.timeFrame)
         }
     }
 

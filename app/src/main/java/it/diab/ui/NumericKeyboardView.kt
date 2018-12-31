@@ -36,7 +36,7 @@ class NumericKeyboardView : LinearLayout {
     private var onTextChanged: (String) -> Unit = {}
 
     val input: Int
-        get() = 
+        get() =
             if (TextUtils.isEmpty(inputView.text)) -1
             else inputView.text.toString().toInt()
 
@@ -45,7 +45,7 @@ class NumericKeyboardView : LinearLayout {
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
 
     constructor(context: Context, attrs: AttributeSet?, @AttrRes defStyleAttr: Int) :
-            super(context, attrs, defStyleAttr)
+        super(context, attrs, defStyleAttr)
 
     init {
         View.inflate(context, R.layout.component_numeric_keyboard, this)

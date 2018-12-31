@@ -42,7 +42,7 @@ class InsulinSuggestionView : LinearLayout {
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
 
     constructor(context: Context, attrs: AttributeSet?, @AttrRes defStyleAttr: Int) :
-            super(context, attrs, defStyleAttr)
+        super(context, attrs, defStyleAttr)
 
     init {
         View.inflate(context, R.layout.component_insulin_suggestion, this)
@@ -73,11 +73,13 @@ class InsulinSuggestionView : LinearLayout {
                 return
             }
 
-            textView.text = resources.getString(when (result) {
-                PluginManager.TOO_HIGH -> R.string.insulin_suggestion_warning_high
-                PluginManager.TOO_LOW -> R.string.insulin_suggestion_warning_low
-                else -> R.string.insulin_suggestion_error
-            })
+            textView.text = resources.getString(
+                when (result) {
+                    PluginManager.TOO_HIGH -> R.string.insulin_suggestion_warning_high
+                    PluginManager.TOO_LOW -> R.string.insulin_suggestion_warning_low
+                    else -> R.string.insulin_suggestion_error
+                }
+            )
 
             val errorColor = ContextCompat.getColor(context, R.color.action_dangerous)
             rootView.setCardBackgroundColor(errorColor)
@@ -118,7 +120,7 @@ class InsulinSuggestionView : LinearLayout {
     private fun onSuggestionApplied() {
         hasSuggestions = false
         animate().alpha(0f)
-                .withEndAction { rootView.visibility = View.GONE }
-                .start()
+            .withEndAction { rootView.visibility = View.GONE }
+            .start()
     }
 }

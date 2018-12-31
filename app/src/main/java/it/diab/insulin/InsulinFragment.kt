@@ -42,8 +42,11 @@ class InsulinFragment : MainFragment() {
         viewModel = ViewModelProviders.of(this, factory)[InsulinViewModel::class.java]
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         val view = inflater.inflate(R.layout.fragment_insulin, container, false)
 
         recyclerView = view.findViewById(R.id.insulin_list)
@@ -73,4 +76,4 @@ class InsulinFragment : MainFragment() {
         val context = context ?: return
         startActivity(Intent(context, EditorActivity::class.java))
     }
-} 
+}

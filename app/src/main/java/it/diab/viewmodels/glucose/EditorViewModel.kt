@@ -21,9 +21,9 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
 class EditorViewModel internal constructor(
-        private val glucoseRepository: GlucoseRepository,
-        private val insulinRepository: InsulinRepository
-): ScopedViewModel() {
+    private val glucoseRepository: GlucoseRepository,
+    private val insulinRepository: InsulinRepository
+) : ScopedViewModel() {
     var glucose = Glucose()
         private set
 
@@ -43,9 +43,10 @@ class EditorViewModel internal constructor(
                 val timeFrame = glucose.timeFrame
 
                 glucoseRepository.getInDateRangeWithTimeFrame(
-                        time - DateUtils.WEEK,
-                        time,
-                        timeFrame.toInt())
+                    time - DateUtils.WEEK,
+                    time,
+                    timeFrame.toInt()
+                )
             }
 
             pluginManager = pManager
@@ -74,7 +75,7 @@ class EditorViewModel internal constructor(
     fun hasPotentialBasal() = basalInsulins.any { it.timeFrame == glucose.timeFrame }
 
     fun getInsulinByTimeFrame() =
-            insulins.firstOrNull { it.timeFrame == glucose.timeFrame } ?: Insulin()
+        insulins.firstOrNull { it.timeFrame == glucose.timeFrame } ?: Insulin()
 
     fun getInsulinSuggestion(block: (Float) -> Unit) {
         viewModelScope.launch {

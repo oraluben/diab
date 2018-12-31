@@ -24,7 +24,13 @@ import it.diab.db.entities.Glucose
 import it.diab.db.repositories.GlucoseRepository
 import it.diab.util.DateUtils
 import it.diab.util.timeFrame.TimeFrame
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.async
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import java.io.File
 import java.io.FileWriter
 import java.io.IOException
@@ -67,18 +73,20 @@ class ExportGlucoseService : Service() {
     override fun onBind(intent: Intent?) = null
 
     private fun buildNotification() = NotificationCompat.Builder(this, CHANNEL)
-            .setContentTitle(getString(R.string.export_notification_title))
-            .setSmallIcon(R.drawable.ic_export)
-            .setColor(ContextCompat.getColor(this, R.color.colorAccent))
-            .setProgress(100, 10, true)
-            .build()
+        .setContentTitle(getString(R.string.export_notification_title))
+        .setSmallIcon(R.drawable.ic_export)
+        .setColor(ContextCompat.getColor(this, R.color.colorAccent))
+        .setProgress(100, 10, true)
+        .build()
 
     private fun onTaskCompleted(result: Boolean) {
         mNotificationManager.cancel(NOTIFICATION_ID)
 
-        Toast.makeText(this,
-                if (result) R.string.export_completed_success
-                else R.string.export_completed_failure, Toast.LENGTH_LONG).show()
+        Toast.makeText(
+            this,
+            if (result) R.string.export_completed_success
+            else R.string.export_completed_failure, Toast.LENGTH_LONG
+        ).show()
 
         stopSelf()
     }

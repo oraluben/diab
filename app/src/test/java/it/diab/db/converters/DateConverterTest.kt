@@ -10,11 +10,10 @@ package it.diab.db.converters
 
 import org.junit.Assert.assertEquals
 import org.junit.Test
-import java.util.*
+import java.util.Date
 
 class DateConverterTest {
     private val converter = DateConverter()
-
 
     @Test
     fun convertToDate() {

@@ -23,7 +23,8 @@ class DiabApplication : Application() {
         super.onCreate()
 
         if (!LeakCanary.isInAnalyzerProcess(this) &&
-            LeakCanary.installedRefWatcher() == RefWatcher.DISABLED) {
+            LeakCanary.installedRefWatcher() == RefWatcher.DISABLED
+        ) {
             LeakCanary.install(this)
         }
 

@@ -19,7 +19,7 @@ class FloatExtTest {
         assertTrue(0f.isZeroOrNan())
         assertTrue(Float.NaN.isZeroOrNan())
         @Suppress("DIVISION_BY_ZERO")
-        assertTrue((0f /0f).isZeroOrNan())
+        assertTrue((0f / 0f).isZeroOrNan())
         assertFalse(2f.isZeroOrNan())
     }
 }

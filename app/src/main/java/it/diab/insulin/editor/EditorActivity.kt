@@ -74,9 +74,11 @@ class EditorActivity : AppCompatActivity() {
         val uid = intent.getLongExtra(EXTRA_UID, -1)
         mEditMode = uid >= 0
 
-        mSpinner.adapter = ArrayAdapter(this,
-                androidx.appcompat.R.layout.support_simple_spinner_dropdown_item,
-                mTimeFrames)
+        mSpinner.adapter = ArrayAdapter(
+            this,
+            androidx.appcompat.R.layout.support_simple_spinner_dropdown_item,
+            mTimeFrames
+        )
 
         if (!mEditMode) {
             title = getString(R.string.insulin_editor_add)
@@ -111,4 +113,4 @@ class EditorActivity : AppCompatActivity() {
     companion object {
         const val EXTRA_UID = "InsulinEditorExtraUid"
     }
-} 
+}

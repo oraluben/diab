@@ -47,14 +47,17 @@ class GlucoseListFragment : MainFragment() {
         val context = context ?: return
 
         val factory = GlucoseListViewModelFactory(
-                GlucoseRepository.getInstance(context),
-                InsulinRepository.getInstance(context)
+            GlucoseRepository.getInstance(context),
+            InsulinRepository.getInstance(context)
         )
         viewModel = ViewModelProviders.of(this, factory)[GlucoseListViewModel::class.java]
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                                       savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         val view = inflater.inflate(R.layout.fragment_glucose, container, false)
         recyclerView = view.findViewById(R.id.glucose_recyclerview)
         return view
@@ -85,7 +88,7 @@ class GlucoseListFragment : MainFragment() {
         }
 
         val optionsCompat = ActivityOptionsCompat
-                .makeSceneTransitionAnimation(activity, view, view.transitionName)
+            .makeSceneTransitionAnimation(activity, view, view.transitionName)
         startActivity(intent, optionsCompat.toBundle())
     }
 

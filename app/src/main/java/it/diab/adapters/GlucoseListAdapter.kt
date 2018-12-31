@@ -36,8 +36,8 @@ import java.util.Date
 import java.util.Locale
 
 class GlucoseListAdapter(
-        private val context: Context,
-        private val viewModel: GlucoseListViewModel
+    private val context: Context,
+    private val viewModel: GlucoseListViewModel
 ) : PagedListAdapter<Glucose, GlucoseListAdapter.GlucoseHolder>(CALLBACK) {
 
     private val _openGlucose = MutableLiveData<Event<Long>>()
@@ -47,14 +47,19 @@ class GlucoseListAdapter(
     private val lowIndicator = getIndicator(R.color.glucose_indicator_low)
     private val highIndicator = getIndicator(R.color.glucose_indicator_high)
     private val hourFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
-    private val dateFormat = SimpleDateFormat(context.getString(
-            R.string.time_day_month_short_format), Locale.getDefault())
+    private val dateFormat = SimpleDateFormat(
+        context.getString(
+            R.string.time_day_month_short_format
+        ), Locale.getDefault()
+    )
     private val highThreshold = PreferencesUtil.getGlucoseHighThreshold(context)
     private val lowThreshold = PreferencesUtil.getGlucoseLowThreshold(context)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
-            GlucoseHolder(LayoutInflater.from(parent.context)
-                    .inflate(R.layout.item_glucose, parent, false))
+        GlucoseHolder(
+            LayoutInflater.from(parent.context)
+                .inflate(R.layout.item_glucose, parent, false)
+        )
 
     override fun onBindViewHolder(holder: GlucoseHolder, position: Int) {
         val item = getItem(position)
@@ -112,8 +117,9 @@ class GlucoseListAdapter(
 
             // Content
             title.setPrecomputedText(
-                    "%1\$d (%2\$s)".format(glucose.value, hourFormat.format(glucose.date)),
-                    viewModel.viewModelScope)
+                "%1\$d (%2\$s)".format(glucose.value, hourFormat.format(glucose.date)),
+                viewModel.viewModelScope
+            )
 
             icon.setImageResource(glucose.timeFrame.icon)
 
@@ -168,10 +174,10 @@ class GlucoseListAdapter(
     companion object {
         private val CALLBACK = object : DiffUtil.ItemCallback<Glucose>() {
             override fun areContentsTheSame(oldItem: Glucose, newItem: Glucose) =
-                    oldItem == newItem
+                oldItem == newItem
 
             override fun areItemsTheSame(oldItem: Glucose, newItem: Glucose) =
-                    oldItem.uid == newItem.uid
+                oldItem.uid == newItem.uid
         }
     }
 }

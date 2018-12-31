@@ -31,7 +31,7 @@ class EatBar : AppCompatSeekBar {
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
 
     constructor(context: Context, attrs: AttributeSet?, @AttrRes defStyleAttr: Int) :
-            super(context, attrs, defStyleAttr)
+        super(context, attrs, defStyleAttr)
 
     init {
         max = BAR_COLORS.size - 1
@@ -43,6 +43,7 @@ class EatBar : AppCompatSeekBar {
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
                 recolor(BAR_COLORS[progress])
             }
+
             override fun onStartTrackingTouch(seekBar: SeekBar?) = Unit
             override fun onStopTrackingTouch(seekBar: SeekBar?) = Unit
         })
@@ -56,7 +57,7 @@ class EatBar : AppCompatSeekBar {
     private fun recolor(@ColorRes color: Int) {
         if (!::coloredProgressDrawable.isInitialized && progressDrawable is LayerDrawable) {
             coloredProgressDrawable = (progressDrawable as LayerDrawable)
-                    .findDrawableByLayerId(android.R.id.progress)
+                .findDrawableByLayerId(android.R.id.progress)
         }
 
         val tintColor = ContextCompat.getColor(context, color)
@@ -75,10 +76,10 @@ class EatBar : AppCompatSeekBar {
     companion object {
         @ColorRes
         private val BAR_COLORS = arrayOf(
-                R.color.eat_bar_low,
-                R.color.eat_bar_medium,
-                R.color.eat_bar_high,
-                R.color.eat_bar_max
+            R.color.eat_bar_low,
+            R.color.eat_bar_medium,
+            R.color.eat_bar_high,
+            R.color.eat_bar_max
         )
     }
 }

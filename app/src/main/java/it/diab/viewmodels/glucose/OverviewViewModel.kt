@@ -24,19 +24,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
-import kotlin.collections.HashMap
-import kotlin.collections.List
-import kotlin.collections.distinctBy
-import kotlin.collections.filter
-import kotlin.collections.filterNot
-import kotlin.collections.indices
-import kotlin.collections.map
 import kotlin.collections.set
-import kotlin.collections.sortedBy
-import kotlin.collections.sum
 
 class OverviewViewModel internal constructor(
-        private val glucoseRepository: GlucoseRepository
+    private val glucoseRepository: GlucoseRepository
 ) : ScopedViewModel() {
 
     val list = glucoseRepository.all
@@ -63,20 +54,20 @@ class OverviewViewModel internal constructor(
 
                     val lastWeek = glucoseRepository.getInDateRangeWithTimeFrame(start, end, i)
                     val avgVal = lastWeek.indices.map { lastWeek[it].value }.sum() /
-                            lastWeek.size.toFloat()
+                        lastWeek.size.toFloat()
                     avg[tf.reprHour] = avgVal
                 }
 
                 avg.filterNot { it.value.isZeroOrNan() }
-                        .map { Entry(it.key * 60f, it.value) }
-                        .sortedBy { it.x }
+                    .map { Entry(it.key * 60f, it.value) }
+                    .sortedBy { it.x }
             }
 
             val todayDef = async {
                 data.sortedBy { it.date.time }
-                        .filter { it.date.isToday() }
-                        .map { Entry(it.date.getAsMinutes(), it.value.toFloat()) }
-                        .distinctBy { it.x }
+                    .filter { it.date.isToday() }
+                    .map { Entry(it.date.getAsMinutes(), it.value.toFloat()) }
+                    .distinctBy { it.x }
             }
 
             val today = todayDef.await()

@@ -16,9 +16,10 @@ import org.junit.runners.Suite
 
 @RunWith(Suite::class)
 @Suite.SuiteClasses(
-        AppDatabaseTest::class,
-        it.diab.viewmodels.glucose.EditorViewModelTest::class,
-        GlucoseTest::class,
-        it.diab.viewmodels.insulin.EditorViewModelTest::class,
-        OverviewViewModelTest::class)
+    AppDatabaseTest::class,
+    it.diab.viewmodels.glucose.EditorViewModelTest::class,
+    GlucoseTest::class,
+    it.diab.viewmodels.insulin.EditorViewModelTest::class,
+    OverviewViewModelTest::class
+)
 class AndroidTestSuite

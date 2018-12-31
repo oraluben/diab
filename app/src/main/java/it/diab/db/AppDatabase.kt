@@ -33,14 +33,15 @@ abstract class AppDatabase protected constructor() : RoomDatabase() {
     companion object : SingletonHolder<AppDatabase, Context>({
         if (AppDatabase.TEST_MODE)
             Room.inMemoryDatabaseBuilder(it, AppDatabase::class.java)
-                    .allowMainThreadQueries()
-                    .build()
+                .allowMainThreadQueries()
+                .build()
         else
             Room.databaseBuilder(it.applicationContext, AppDatabase::class.java, "diab_database")
                 .addMigrations(
-                        Companion.MIGRATION_1_2,
-                        Companion.MIGRATION_2_3,
-                        Companion.MIGRATION_3_4)
+                    Companion.MIGRATION_1_2,
+                    Companion.MIGRATION_2_3,
+                    Companion.MIGRATION_3_4
+                )
                 .build()
     }) {
         // This is used during unit tests
@@ -118,9 +119,10 @@ abstract class AppDatabase protected constructor() : RoomDatabase() {
                     val date = Date(cursor.getLong(1))
                     item.put("timeFrame", date.asTimeFrame().toInt())
 
-                    database.update("glucose", SQLiteDatabase.CONFLICT_REPLACE, item,
-                            "uid = ?", arrayOf("$uid"))
-
+                    database.update(
+                        "glucose", SQLiteDatabase.CONFLICT_REPLACE, item,
+                        "uid = ?", arrayOf("$uid")
+                    )
                 } while (cursor.moveToNext())
                 cursor.close()
             }

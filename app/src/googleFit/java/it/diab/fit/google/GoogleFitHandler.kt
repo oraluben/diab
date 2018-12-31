@@ -52,8 +52,13 @@ class GoogleFitHandler : BaseFitHandler() {
         context.startActivity(intent)
     }
 
-    override fun upload(context: Context, glucose: Glucose, isNew: Boolean,
-        onSuccess: () -> Unit, onFailure: (Exception) -> Unit) {
+    override fun upload(
+        context: Context,
+        glucose: Glucose,
+        isNew: Boolean,
+        onSuccess: () -> Unit,
+        onFailure: (Exception) -> Unit
+    ) {
         val timeStamp = glucose.date.time
         val source = DataSource.Builder()
             .setType(DataSource.TYPE_RAW)
@@ -67,7 +72,8 @@ class GoogleFitHandler : BaseFitHandler() {
             getValue(HealthFields.FIELD_BLOOD_GLUCOSE_LEVEL).setFloat(glucose.value / 18f)
 
             getValue(HealthFields.FIELD_BLOOD_GLUCOSE_SPECIMEN_SOURCE).setInt(
-                HealthFields.BLOOD_GLUCOSE_SPECIMEN_SOURCE_CAPILLARY_BLOOD)
+                HealthFields.BLOOD_GLUCOSE_SPECIMEN_SOURCE_CAPILLARY_BLOOD
+            )
 
             getValue(HealthFields.FIELD_TEMPORAL_RELATION_TO_MEAL).setInt(glucose.timeFrame.toFitMealRelation())
 

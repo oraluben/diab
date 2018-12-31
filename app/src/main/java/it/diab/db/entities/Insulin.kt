@@ -35,8 +35,13 @@ class Insulin {
     @Ignore
     constructor()
 
-    constructor(uid: Long, name: String, timeFrame: TimeFrame,
-                isBasal: Boolean, hasHalfUnits: Boolean) {
+    constructor(
+        uid: Long,
+        name: String,
+        timeFrame: TimeFrame,
+        isBasal: Boolean,
+        hasHalfUnits: Boolean
+    ) {
         this.uid = uid
         this.name = name
         this.timeFrame = timeFrame

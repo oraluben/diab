@@ -18,7 +18,7 @@ import java.util.Locale
 
 operator fun Date.get(diff: Int): Date {
     val calendar = getCalendar()
-    calendar.add(Calendar.DAY_OF_YEAR , diff)
+    calendar.add(Calendar.DAY_OF_YEAR, diff)
     return calendar.time
 }
 
@@ -45,7 +45,7 @@ fun Date.isToday(): Boolean {
     val calendar = getCalendar()
     val today = Calendar.getInstance()
     return calendar[Calendar.YEAR] == today[Calendar.YEAR] &&
-            calendar[Calendar.DAY_OF_YEAR] == today[Calendar.DAY_OF_YEAR]
+        calendar[Calendar.DAY_OF_YEAR] == today[Calendar.DAY_OF_YEAR]
 }
 
 fun Date.getHour() = getCalendar()[Calendar.HOUR_OF_DAY]
@@ -58,7 +58,7 @@ fun Date.diff(other: Date): Int {
     val a = getCalendar()
     val b = other.getCalendar()
     return (a[Calendar.YEAR] - b[Calendar.YEAR]) * 365 +
-            a[Calendar.DAY_OF_YEAR] - b[Calendar.DAY_OF_YEAR]
+        a[Calendar.DAY_OF_YEAR] - b[Calendar.DAY_OF_YEAR]
 }
 
 fun Date.getHeader(res: Resources, comparedTo: Date, format: SimpleDateFormat): String {
@@ -76,4 +76,4 @@ fun Date.getDetailedString() =
         .upperCaseFirstChar()
 
 fun Date.format(format: String): String =
-        SimpleDateFormat(format, Locale.getDefault()).format(this)
+    SimpleDateFormat(format, Locale.getDefault()).format(this)

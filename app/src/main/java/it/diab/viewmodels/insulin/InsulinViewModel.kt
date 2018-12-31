@@ -13,7 +13,7 @@ import it.diab.db.repositories.InsulinRepository
 import it.diab.viewmodels.ScopedViewModel
 
 class InsulinViewModel internal constructor(
-        insulinRepository: InsulinRepository
+    insulinRepository: InsulinRepository
 ) : ScopedViewModel() {
 
     val list = LivePagedListBuilder(insulinRepository.all, 5).build()

@@ -46,7 +46,8 @@ import it.diab.util.extensions.getCalendar
 import it.diab.util.extensions.getDetailedString
 import it.diab.viewmodels.glucose.EditorViewModel
 import it.diab.viewmodels.glucose.EditorViewModelFactory
-import java.util.*
+import java.util.Calendar
+import java.util.Date
 import kotlin.math.roundToInt
 
 class EditorActivity : AppCompatActivity() {
@@ -91,8 +92,8 @@ class EditorActivity : AppCompatActivity() {
 
         val id = intent.getLongExtra(EXTRA_GLUCOSE_ID, -1)
         val factory = EditorViewModelFactory(
-                GlucoseRepository.getInstance(this),
-                InsulinRepository.getInstance(this)
+            GlucoseRepository.getInstance(this),
+            InsulinRepository.getInstance(this)
         )
         viewModel = ViewModelProviders.of(this, factory)[EditorViewModel::class.java]
         viewModel.setGlucose(id) {
@@ -176,11 +177,10 @@ class EditorActivity : AppCompatActivity() {
         mInfoView.text = getInfo(data)
         mDateView.text = viewModel.glucose.date.getDetailedString()
 
-
         val targetInsulin = viewModel.getInsulinByTimeFrame()
         mSuggestionView.bind(viewModel.glucose, targetInsulin, this::onSuggestionApply)
         viewModel.getInsulinSuggestion(mSuggestionView::onSuggestionLoaded)
-        
+
         mFab.setImageResource(R.drawable.ic_edit)
     }
 
@@ -198,9 +198,10 @@ class EditorActivity : AppCompatActivity() {
         val newTime = Calendar.getInstance()
 
         val options = arrayOf(
-                getString(R.string.time_today),
-                getString(R.string.time_yesterday),
-                getString(R.string.time_pick))
+            getString(R.string.time_today),
+            getString(R.string.time_yesterday),
+            getString(R.string.time_pick)
+        )
 
         val onTimeSet = { _: View, hour: Int, minute: Int ->
             newTime[Calendar.HOUR_OF_DAY] = hour
@@ -213,30 +214,37 @@ class EditorActivity : AppCompatActivity() {
 
         val onCustomDateSet = { _: View, year: Int, month: Int, day: Int ->
             newTime.set(year, month, day)
-            TimePickerDialog(this, R.style.AppTheme_DatePickerDialog, onTimeSet,
+            TimePickerDialog(
+                this, R.style.AppTheme_DatePickerDialog, onTimeSet,
                 glucoseCal[Calendar.HOUR_OF_DAY],
-                glucoseCal[Calendar.MINUTE], true).show()
+                glucoseCal[Calendar.MINUTE], true
+            ).show()
         }
 
         val onPredefinedDateSet = { _: DialogInterface, i: Int ->
             when (i) {
-                0 -> {}
+                0 -> {
+                }
                 1 -> newTime.time = Date()[-1]
-                else -> DatePickerDialog(this, R.style.AppTheme_DatePickerDialog, onCustomDateSet,
+                else -> DatePickerDialog(
+                    this, R.style.AppTheme_DatePickerDialog, onCustomDateSet,
                     glucoseCal[Calendar.YEAR], glucoseCal[Calendar.MONTH],
-                    glucoseCal[Calendar.DAY_OF_MONTH]).show()
+                    glucoseCal[Calendar.DAY_OF_MONTH]
+                ).show()
             }
 
             if (i == 0 || i == 1) {
-                TimePickerDialog(this, R.style.AppTheme_DatePickerDialog, onTimeSet,
-                    glucoseCal[Calendar.HOUR_OF_DAY], glucoseCal[Calendar.MINUTE], true).show()
+                TimePickerDialog(
+                    this, R.style.AppTheme_DatePickerDialog, onTimeSet,
+                    glucoseCal[Calendar.HOUR_OF_DAY], glucoseCal[Calendar.MINUTE], true
+                ).show()
             }
         }
 
         AlertDialog.Builder(this)
-                .setItems(options, onPredefinedDateSet)
-                .setTitle(R.string.glucose_editor_time_dialog)
-                .show()
+            .setItems(options, onPredefinedDateSet)
+            .setTitle(R.string.glucose_editor_time_dialog)
+            .show()
     }
 
     private fun onInsulinClicked() {
@@ -248,9 +256,9 @@ class EditorActivity : AppCompatActivity() {
         dialog.setInsulins(viewModel.insulins)
 
         dialog.show(
-                { insulin, value -> onInsulinPositive(insulin, value, false) },
-                { onInsulinNeutral(false) },
-                { setShowUi() })
+            { insulin, value -> onInsulinPositive(insulin, value, false) },
+            { onInsulinNeutral(false) },
+            { setShowUi() })
     }
 
     private fun onBasalClicked() {
@@ -262,9 +270,9 @@ class EditorActivity : AppCompatActivity() {
         dialog.setInsulins(viewModel.basalInsulins)
 
         dialog.show(
-                { insulin, value -> onInsulinPositive(insulin, value, true) },
-                { onInsulinNeutral(true) },
-                { setShowUi() })
+            { insulin, value -> onInsulinPositive(insulin, value, true) },
+            { onInsulinNeutral(true) },
+            { setShowUi() })
     }
 
     private fun onFabClicked() {
@@ -288,13 +296,13 @@ class EditorActivity : AppCompatActivity() {
         checkForErrors()
         if (mErrorStatus != 0) {
             Snackbar.make(mConstraintRoot, R.string.glucose_editor_save_error, Snackbar.LENGTH_LONG)
-                    .show()
+                .show()
             VibrationUtil.vibrateForError(this)
             return
         }
 
         Snackbar.make(mConstraintRoot, R.string.saved, 800)
-                .show()
+            .show()
         Handler().postDelayed({
             saveData()
             saveToFit()
@@ -321,17 +329,16 @@ class EditorActivity : AppCompatActivity() {
 
     private fun edit() {
         mInsulinView.animate()
-                .alpha(0f)
-                .start()
+            .alpha(0f)
+            .start()
         mBasalView.animate()
-                .alpha(0f)
-                .start()
+            .alpha(0f)
+            .start()
 
         val editSet = ConstraintSet()
         editSet.clone(this, R.layout.constraint_glucose_edit)
         TransitionManager.beginDelayedTransition(mConstraintRoot)
         editSet.applyTo(mConstraintRoot)
-
 
         Handler().postDelayed({
             mEditMode = true
@@ -339,8 +346,12 @@ class EditorActivity : AppCompatActivity() {
         }, 350)
     }
 
-    private fun onInsulinPositive(insulin: Insulin, value: Float, isBasal: Boolean,
-                                  shouldSaveData: Boolean = true) {
+    private fun onInsulinPositive(
+        insulin: Insulin,
+        value: Float,
+        isBasal: Boolean,
+        shouldSaveData: Boolean = true
+    ) {
         if (isBasal) {
             viewModel.glucose.insulinId1 = insulin.uid
             viewModel.glucose.insulinValue1 = value
@@ -371,8 +382,10 @@ class EditorActivity : AppCompatActivity() {
     }
 
     private fun saveToFit() {
-        val handler = SystemUtil.getOverrideObject(BaseFitHandler::class.java,
-            this, R.string.config_class_fit_handler)
+        val handler = SystemUtil.getOverrideObject(
+            BaseFitHandler::class.java,
+            this, R.string.config_class_fit_handler
+        )
 
         if (!handler.hasFit(this)) {
             finish()
@@ -408,7 +421,7 @@ class EditorActivity : AppCompatActivity() {
         viewModel.applyInsulinSuggestion(suggestion, insulin, this::refresh)
 
         Snackbar.make(mConstraintRoot, R.string.insulin_suggestion_applied, Snackbar.LENGTH_LONG)
-                .show()
+            .show()
     }
 
     private fun TextView.setErrorStatus(toError: Boolean) {
@@ -416,8 +429,9 @@ class EditorActivity : AppCompatActivity() {
         val errorColor = ContextCompat.getColor(this@EditorActivity, R.color.action_dangerous)
 
         val animator = ValueAnimator.ofArgb(
-                if (toError) originalColor else errorColor,
-                if (toError) errorColor else originalColor)
+            if (toError) originalColor else errorColor,
+            if (toError) errorColor else originalColor
+        )
 
         val drawable = compoundDrawables[0]
 

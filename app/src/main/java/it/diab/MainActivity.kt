@@ -78,7 +78,7 @@ class MainActivity : AppCompatActivity() {
             putExtra(EditorActivity.EXTRA_GLUCOSE_ID, uid)
         }
         val optionsCompat = ActivityOptionsCompat
-                .makeSceneTransitionAnimation(this, fab, fab.transitionName)
+            .makeSceneTransitionAnimation(this, fab, fab.transitionName)
         startActivity(intent, optionsCompat.toBundle())
     }
 
@@ -101,11 +101,11 @@ class MainActivity : AppCompatActivity() {
         editIntent.action = Intent.ACTION_VIEW
         val bm = getShortcutIcon(R.drawable.ic_shortcut_add_glucose)
         val addShortcut = ShortcutInfo.Builder(this, title)
-                .setShortLabel(title)
-                .setLongLabel(title)
-                .setIntent(editIntent)
-                .setIcon(Icon.createWithAdaptiveBitmap(bm))
-                .build()
+            .setShortLabel(title)
+            .setLongLabel(title)
+            .setIntent(editIntent)
+            .setIcon(Icon.createWithAdaptiveBitmap(bm))
+            .build()
 
         manager.removeAllDynamicShortcuts()
         manager.addDynamicShortcuts(listOf(addShortcut))
@@ -123,8 +123,10 @@ class MainActivity : AppCompatActivity() {
             throw IllegalArgumentException("Could not get a valid drawable from argument")
         }
 
-        val bm = Bitmap.createBitmap(drawable.intrinsicWidth, drawable.intrinsicHeight,
-                Bitmap.Config.ARGB_8888)
+        val bm = Bitmap.createBitmap(
+            drawable.intrinsicWidth, drawable.intrinsicHeight,
+            Bitmap.Config.ARGB_8888
+        )
         val canvas = Canvas(bm)
         drawable.setBounds(0, 0, canvas.width, canvas.height)
         drawable.draw(canvas)

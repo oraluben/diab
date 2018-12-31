@@ -23,9 +23,11 @@ import it.diab.util.extensions.asTimeFrame
 import java.util.Date
 
 @SuppressLint("InflateParams")
-class AddInsulinDialog(private val mContext: Context,
-                       private val glucose: Glucose,
-                       private val isFirst: Boolean) {
+class AddInsulinDialog(
+    private val mContext: Context,
+    private val glucose: Glucose,
+    private val isFirst: Boolean
+) {
     private val mView: View
     private val mNameSpinner: AppCompatSpinner
     private val mValueEditText: EditText
@@ -56,13 +58,16 @@ class AddInsulinDialog(private val mContext: Context,
             names[i] = "${insulins[i].name} (${mContext.getString(insulins[i].timeFrame.string)})"
 
             if (spinnerPosition == -1 && (insulins[i].uid == currentId ||
-                    insulins[i].timeFrame === now)) {
+                    insulins[i].timeFrame === now)
+            ) {
                 spinnerPosition = i
             }
         }
 
-        mNameSpinner.adapter = ArrayAdapter<String>(mContext,
-                androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, names)
+        mNameSpinner.adapter = ArrayAdapter<String>(
+            mContext,
+            androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, names
+        )
 
         mNameSpinner.setSelection(if (spinnerPosition == -1) 0 else spinnerPosition)
     }

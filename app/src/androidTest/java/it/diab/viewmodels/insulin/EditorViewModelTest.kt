@@ -69,7 +69,7 @@ class EditorViewModelTest {
     }
 
     @Test
-    fun save()  {
+    fun save() {
         viewModel.setInsulin(-1) {
             runBlocking {
                 val initialSize = db.insulin().getInsulins().size
