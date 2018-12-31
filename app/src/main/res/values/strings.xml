@@ -24,7 +24,6 @@
     <string name="time_today">Today</string>
     <string name="time_yesterday">Yesterday</string>
     <string name="time_last_x">Last %1$s</string>
-    <string name="time_x_y_ago">%1$d %2$s ago</string>
     <string name="time_day_month_short_format">dd MMM</string>
     <string name="time_pick">Select another date\u2026</string>
 
@@ -46,7 +45,6 @@
     <string name="insulin_editor_add">Add insulin</string>
     <string name="insulin_editor_edit">Edit insulin</string>
     <string name="insulin_editor_name">Name</string>
-    <string name="insulin_item_add">Add</string>
     <string name="insulin_item_basal">Basal</string>
     <string name="insulin_item_half_units">Half units</string>
 
@@ -104,4 +102,6 @@
     <string name="settings_ui_theme_light">Light</string>
     <string name="settings_ui_theme_dark">Dark</string>
 
+    <!-- Accessibility -->
+    <string name="a11y_overview_menu">Options</string>
 </resources>

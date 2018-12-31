@@ -17,7 +17,6 @@ import it.diab.db.repositories.GlucoseRepository
 import it.diab.util.extensions.asTimeFrame
 import it.diab.util.extensions.glucose
 import it.diab.util.timeFrame.TimeFrame
-import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test

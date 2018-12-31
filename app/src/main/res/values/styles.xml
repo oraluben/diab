@@ -53,8 +53,6 @@
 
     <!-- Toolbar -->
 
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.MaterialComponents.ActionBar" />
-
     <style name="AppTheme.PopupMenuOverlapAnchor">
         <item name="android:overlapAnchor">true</item>
         <item name="android:dropDownVerticalOffset">0dp</item>

@@ -24,7 +24,6 @@
     <string name="time_today">Oggi</string>
     <string name="time_yesterday">Ieri</string>
     <string name="time_last_x">%1$s scorso</string>
-    <string name="time_x_y_ago">%1$d %2$s fa</string>
     <string name="time_day_month_short_format">dd MMM</string>
     <string name="time_pick">Seleziona un\'altra data\u2026</string>
 
@@ -46,7 +45,6 @@
     <string name="insulin_editor_add">Aggungi insulina</string>
     <string name="insulin_editor_edit">Modifica insulina</string>
     <string name="insulin_editor_name">Nome</string>
-    <string name="insulin_item_add">Aggiungi</string>
     <string name="insulin_item_basal">Basale</string>
     <string name="insulin_item_half_units">Mezze unit\u00E0</string>
 
@@ -104,4 +102,6 @@
     <string name="settings_ui_theme_light">Chiaro</string>
     <string name="settings_ui_theme_dark">Scuro</string>
 
+    <!-- Accessibility -->
+    <string name="a11y_overview_menu">Opzioni</string>
 </resources>

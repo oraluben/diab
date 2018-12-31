@@ -16,11 +16,8 @@ import it.diab.db.AppDatabase
 import it.diab.db.repositories.InsulinRepository
 import it.diab.util.extensions.insulin
 import it.diab.util.timeFrame.TimeFrame
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
-import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test

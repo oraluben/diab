@@ -22,7 +22,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 class GlucoseListViewModel internal constructor(
-        private val glucoseRepository: GlucoseRepository,
+        glucoseRepository: GlucoseRepository,
         private val insulinRepository: InsulinRepository
 ): ScopedViewModel() {
     val pagedList = LivePagedListBuilder(glucoseRepository.pagedList, 5).build()
