@@ -9,8 +9,6 @@
 package it.diab
 
 import it.diab.db.AppDatabaseTest
-import it.diab.db.converters.DateConverterTest
-import it.diab.db.converters.TimeFrameConverterTest
 import it.diab.db.entities.GlucoseTest
 import it.diab.viewmodels.glucose.OverviewViewModelTest
 import org.junit.runner.RunWith
@@ -19,10 +17,8 @@ import org.junit.runners.Suite
 @RunWith(Suite::class)
 @Suite.SuiteClasses(
         AppDatabaseTest::class,
-        DateConverterTest::class,
         it.diab.viewmodels.glucose.EditorViewModelTest::class,
         GlucoseTest::class,
         it.diab.viewmodels.insulin.EditorViewModelTest::class,
-        OverviewViewModelTest::class,
-        TimeFrameConverterTest::class)
-class UnitTestSuite
+        OverviewViewModelTest::class)
+class AndroidTestSuite

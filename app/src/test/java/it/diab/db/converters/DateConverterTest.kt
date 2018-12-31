@@ -8,12 +8,10 @@
  */
 package it.diab.db.converters
 
-import androidx.test.filters.SmallTest
-import com.google.common.truth.Truth.assertThat
+import org.junit.Assert.assertEquals
 import org.junit.Test
-import java.util.Date
+import java.util.*
 
-@SmallTest
 class DateConverterTest {
     private val converter = DateConverter()
 
@@ -21,12 +19,12 @@ class DateConverterTest {
     @Test
     fun convertToDate() {
         val now = System.currentTimeMillis()
-        assertThat(converter.toDate(now)!!.time).isEqualTo(now)
+        assertEquals(converter.toDate(now)!!.time, now)
     }
 
     @Test
     fun convertToLong() {
         val now = Date()
-        assertThat(converter.toLong(now)).isEqualTo(now.time)
+        assertEquals(converter.toLong(now), now.time)
     }
 }

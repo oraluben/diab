@@ -73,7 +73,7 @@ fun Date.getHeader(res: Resources, comparedTo: Date, format: SimpleDateFormat): 
 
 fun Date.getDetailedString() =
     SimpleDateFormat("EEE dd-MM HH:mm", Locale.getDefault()).format(this)
-        .upperCaseFirstChrar()
+        .upperCaseFirstChar()
 
 fun Date.format(format: String): String =
         SimpleDateFormat(format, Locale.getDefault()).format(this)
