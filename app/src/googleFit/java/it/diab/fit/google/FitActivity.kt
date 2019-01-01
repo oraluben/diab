@@ -22,45 +22,49 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.snackbar.Snackbar
 import it.diab.R
+import it.diab.fit.google.viewmodel.FitViewModel
+import it.diab.fit.google.viewmodel.FitViewModelFactory
 
 class FitActivity : AppCompatActivity() {
 
-    private lateinit var mViewModel: FitViewModel
+    private lateinit var viewModel: FitViewModel
 
-    private lateinit var mCoordinator: CoordinatorLayout
-    private lateinit var mHeaderText: TextView
-    private lateinit var mConnectButton: AppCompatButton
-    private lateinit var mDisconnectButton: AppCompatButton
-    private lateinit var mDeleteAllButton: AppCompatButton
+    private lateinit var coordinator: CoordinatorLayout
+    private lateinit var headerText: TextView
+    private lateinit var connectButton: AppCompatButton
+    private lateinit var disconnectButton: AppCompatButton
+    private lateinit var deleteAllButton: AppCompatButton
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        mViewModel = ViewModelProviders.of(this)[FitViewModel::class.java]
+        val factory = FitViewModelFactory()
+        viewModel = ViewModelProviders.of(this, factory)[FitViewModel::class.java]
 
         setContentView(R.layout.activity_fit)
 
-        val toolbar = findViewById<Toolbar>(R.id.toolbar)
-        setSupportActionBar(toolbar)
-        toolbar.setNavigationIcon(R.drawable.ic_toolbar_back)
-        toolbar.setNavigationOnClickListener { finish() }
+        findViewById<Toolbar>(R.id.toolbar).apply {
+            setSupportActionBar(this)
+            setNavigationIcon(R.drawable.ic_toolbar_back)
+            setNavigationOnClickListener { finish() }
+        }
 
-        mCoordinator = findViewById(R.id.coordinator)
-        mHeaderText = findViewById(R.id.fit_header_text)
-        mConnectButton = findViewById(R.id.fit_connect_button)
-        mDisconnectButton = findViewById(R.id.fit_disconnect_button)
-        mDeleteAllButton = findViewById(R.id.fit_delete_all_button)
+        coordinator = findViewById(R.id.coordinator)
+        headerText = findViewById(R.id.fit_header_text)
+        connectButton = findViewById(R.id.fit_connect_button)
+        disconnectButton = findViewById(R.id.fit_disconnect_button)
+        deleteAllButton = findViewById(R.id.fit_delete_all_button)
 
-        mConnectButton.setOnClickListener {
-            mViewModel.connect(
+        connectButton.setOnClickListener {
+            viewModel.connect(
                 this,
                 FitActivity.GOOGLE_FIT_REQUEST_CODE
             )
         }
-        mDisconnectButton.setOnClickListener { confirmDisconnect() }
-        mDeleteAllButton.setOnClickListener { confirmDelete() }
+        disconnectButton.setOnClickListener { confirmDisconnect() }
+        deleteAllButton.setOnClickListener { confirmDelete() }
 
-        setupUi(mViewModel.isConnected())
+        setupUi(viewModel.isConnected())
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -77,20 +81,20 @@ class FitActivity : AppCompatActivity() {
     }
 
     private fun onDisconnect() {
-        mViewModel.disconnect(this)
+        viewModel.disconnect(this)
 
         showSnack(R.string.fit_disconnect_success)
         setupUi(false)
     }
 
     private fun onDeleteAll() {
-        mViewModel.deleteAllData(this,
+        viewModel.deleteAllData(this,
             { showSnack(R.string.fit_delete_success) },
             { showSnack(R.string.fit_delete_failure) })
     }
 
     private fun showSnack(@StringRes message: Int) {
-        Snackbar.make(mCoordinator, getString(message), Snackbar.LENGTH_LONG)
+        Snackbar.make(coordinator, getString(message), Snackbar.LENGTH_LONG)
             .show()
     }
 
@@ -113,10 +117,10 @@ class FitActivity : AppCompatActivity() {
     }
 
     private fun setupUi(isConnected: Boolean) {
-        mHeaderText.setText(if (isConnected) R.string.fit_status_connected else R.string.fit_status_prompt)
-        mConnectButton.visibility = if (isConnected) View.GONE else View.VISIBLE
-        mDeleteAllButton.isEnabled = isConnected
-        mDisconnectButton.isEnabled = isConnected
+        headerText.setText(if (isConnected) R.string.fit_status_connected else R.string.fit_status_prompt)
+        connectButton.visibility = if (isConnected) View.GONE else View.VISIBLE
+        deleteAllButton.isEnabled = isConnected
+        disconnectButton.isEnabled = isConnected
     }
 
     companion object {
