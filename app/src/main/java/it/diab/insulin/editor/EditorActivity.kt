@@ -11,29 +11,37 @@ package it.diab.insulin.editor
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.View
 import android.widget.ArrayAdapter
-import androidx.appcompat.app.AlertDialog
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.appcompat.widget.AppCompatSpinner
 import androidx.appcompat.widget.SwitchCompat
 import androidx.lifecycle.ViewModelProviders
+import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.android.material.button.MaterialButton
 import it.diab.R
 import it.diab.db.repositories.InsulinRepository
+import it.diab.util.UIUtils
 import it.diab.util.timeFrame.TimeFrame
 import it.diab.viewmodels.insulin.EditorViewModel
 import it.diab.viewmodels.insulin.EditorViewModelFactory
 
 class EditorActivity : AppCompatActivity() {
 
-    private lateinit var mEditText: AppCompatEditText
-    private lateinit var mSpinner: AppCompatSpinner
-    private lateinit var mBasalSwitch: SwitchCompat
-    private lateinit var mHalfUnitsSwitch: SwitchCompat
+    private lateinit var dialog: BottomSheetDialog
+    private lateinit var titleView: TextView
+    private lateinit var editText: AppCompatEditText
+    private lateinit var spinner: AppCompatSpinner
+    private lateinit var basalSwitch: SwitchCompat
+    private lateinit var halfUnitsSwitch: SwitchCompat
+    private lateinit var saveButton: MaterialButton
+    private lateinit var deleteButton: MaterialButton
 
     private lateinit var viewModel: EditorViewModel
-    private lateinit var mTimeFrames: Array<String>
-    private var mEditMode = false
+    private lateinit var timeFrames: Array<String>
+    private var editMode = false
 
     public override fun onCreate(savedInstance: Bundle?) {
         super.onCreate(savedInstance)
@@ -47,67 +55,71 @@ class EditorActivity : AppCompatActivity() {
         @SuppressLint("InflateParams")
         val view = layoutInflater.inflate(R.layout.dialog_insulin_edit, null)
 
-        mEditText = view.findViewById(R.id.insulin_edit_name)
-        mSpinner = view.findViewById(R.id.insulin_edit_time)
-        mBasalSwitch = view.findViewById(R.id.insulin_edit_basal)
-        mHalfUnitsSwitch = view.findViewById(R.id.insulin_edit_half_units)
+        titleView = view.findViewById(R.id.insulin_edit_dialog_title)
+        editText = view.findViewById(R.id.insulin_edit_name)
+        spinner = view.findViewById(R.id.insulin_edit_time)
+        basalSwitch = view.findViewById(R.id.insulin_edit_basal)
+        halfUnitsSwitch = view.findViewById(R.id.insulin_edit_half_units)
+        saveButton = view.findViewById(R.id.insulin_edit_save)
+        deleteButton = view.findViewById(R.id.insulin_edit_delete)
 
-        mTimeFrames = Array(TimeFrame.values().size) { getString(TimeFrame.values()[it].string) }
+        timeFrames = Array(TimeFrame.values().size) { getString(TimeFrame.values()[it].string) }
+
+        dialog = BottomSheetDialog(this).apply {
+            setContentView(view)
+            setOnDismissListener { finish() }
+        }
 
         setupUI()
 
-        val builder = AlertDialog.Builder(this)
-            .setTitle(R.string.insulin_editor_edit)
-            .setView(view)
-            .setOnDismissListener { finish() }
-            .setPositiveButton(R.string.save) { _, _ -> onSaveInsulin() }
-            .setNegativeButton(R.string.cancel) { _, _ -> finish() }
-
-        if (mEditMode) {
-            builder.setNeutralButton(R.string.remove) { _, _ -> onDeleteInsulin() }
-        }
-
-        builder.show()
+        UIUtils.setWhiteNavBarIfNeeded(this, dialog)
+        dialog.show()
     }
 
     private fun setupUI() {
         val uid = intent.getLongExtra(EXTRA_UID, -1)
-        mEditMode = uid >= 0
+        editMode = uid >= 0
 
-        mSpinner.adapter = ArrayAdapter(
+        spinner.adapter = ArrayAdapter(
             this,
             androidx.appcompat.R.layout.support_simple_spinner_dropdown_item,
-            mTimeFrames
+            timeFrames
         )
 
-        if (!mEditMode) {
-            title = getString(R.string.insulin_editor_add)
+        saveButton.setOnClickListener { onSaveInsulin() }
+
+        if (!editMode) {
+            titleView.text = getString(R.string.insulin_editor_add)
+            deleteButton.visibility = View.GONE
             return
         }
 
+        titleView.text = getString(R.string.insulin_editor_edit)
+        deleteButton.setOnClickListener { onDeleteInsulin() }
+
         viewModel.setInsulin(uid) {
-            mEditText.setText(it.name)
-            mSpinner.setSelection(if (mEditMode) it.timeFrame.toInt() + 1 else 0)
-            mBasalSwitch.isChecked = it.isBasal
-            mHalfUnitsSwitch.isChecked = it.hasHalfUnits
+            editText.setText(it.name)
+            spinner.setSelection(if (editMode) it.timeFrame.toInt() + 1 else 0)
+            basalSwitch.isChecked = it.isBasal
+            halfUnitsSwitch.isChecked = it.hasHalfUnits
         }
     }
 
     private fun onSaveInsulin() {
         viewModel.insulin.run {
-            name = mEditText.text.toString()
-            isBasal = mBasalSwitch.isChecked
-            hasHalfUnits = mHalfUnitsSwitch.isChecked
-            setTimeFrame(mSpinner.selectedItemPosition - 1)
+            name = editText.text.toString()
+            isBasal = basalSwitch.isChecked
+            hasHalfUnits = halfUnitsSwitch.isChecked
+            setTimeFrame(spinner.selectedItemPosition - 1)
         }
 
         viewModel.save()
-        finish()
+        dialog.dismiss()
     }
 
     private fun onDeleteInsulin() {
         viewModel.delete()
-        finish()
+        dialog.dismiss()
     }
 
     companion object {
