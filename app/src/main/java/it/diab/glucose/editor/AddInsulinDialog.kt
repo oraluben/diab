@@ -9,35 +9,46 @@
 package it.diab.glucose.editor
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Context
 import android.view.LayoutInflater
-import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.EditText
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.AppCompatSpinner
+import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.android.material.button.MaterialButton
 import it.diab.R
 import it.diab.db.entities.Glucose
 import it.diab.db.entities.Insulin
+import it.diab.util.UIUtils
 import it.diab.util.extensions.asTimeFrame
 import java.util.Date
 
 @SuppressLint("InflateParams")
 class AddInsulinDialog(
-    private val mContext: Context,
+    private val activity: Activity,
     private val glucose: Glucose,
     private val isFirst: Boolean
 ) {
-    private val mView: View
-    private val mNameSpinner: AppCompatSpinner
-    private val mValueEditText: EditText
+    private val dialog = BottomSheetDialog(activity)
+
+    private val nameSpinner: AppCompatSpinner
+    private val valueEditText: EditText
+    private val addButton: MaterialButton
+    private val removeButton: MaterialButton
+
     private lateinit var insulins: Array<Insulin>
 
     init {
-        val inflater = mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-        mView = inflater.inflate(R.layout.dialog_insulin_to_glucose, null)
-        mNameSpinner = mView.findViewById(R.id.glucose_editor_insulin_spinner)
-        mValueEditText = mView.findViewById(R.id.glucose_editor_insulin_value)
+        val inflater = activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+        val view = inflater.inflate(R.layout.dialog_insulin_to_glucose, null)
+
+        nameSpinner = view.findViewById(R.id.glucose_editor_insulin_spinner)
+        valueEditText = view.findViewById(R.id.glucose_editor_insulin_value)
+        addButton = view.findViewById(R.id.glucose_editor_insulin_add)
+        removeButton = view.findViewById(R.id.glucose_editor_insulin_remove)
+
+        dialog.setContentView(view)
     }
 
     fun setInsulins(list: List<Insulin>) {
@@ -51,40 +62,42 @@ class AddInsulinDialog(
         val currentValue = if (isFirst) glucose.insulinValue0 else glucose.insulinValue1
 
         if (currentValue != 0f) {
-            mValueEditText.setText(currentValue.toString())
+            valueEditText.setText(currentValue.toString())
         }
 
         for (i in insulins.indices) {
-            names[i] = "${insulins[i].name} (${mContext.getString(insulins[i].timeFrame.string)})"
+            names[i] = "${insulins[i].name} (${activity.getString(insulins[i].timeFrame.string)})"
 
             if (spinnerPosition == -1 && (insulins[i].uid == currentId ||
-                    insulins[i].timeFrame === now)
+                            insulins[i].timeFrame === now)
             ) {
                 spinnerPosition = i
             }
         }
 
-        mNameSpinner.adapter = ArrayAdapter<String>(
-            mContext,
-            androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, names
+        nameSpinner.adapter = ArrayAdapter<String>(
+                activity,
+                androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, names
         )
 
-        mNameSpinner.setSelection(if (spinnerPosition == -1) 0 else spinnerPosition)
+        nameSpinner.setSelection(if (spinnerPosition == -1) 0 else spinnerPosition)
     }
 
-    fun show(onPositive: (Insulin, Float) -> Unit, onNeutral: () -> Unit, onDismiss: () -> Unit) {
-        AlertDialog.Builder(mContext)
-            .setTitle(R.string.glucose_editor_insulin_add)
-            .setView(mView)
-            .setPositiveButton(R.string.add) { _, _ ->
-                val selected = insulins[mNameSpinner.selectedItemPosition]
-                val value = mValueEditText.text.toString().toFloatOrNull() ?: 0F
+    fun show(onAdd: (Insulin, Float) -> Unit, onRemove: () -> Unit, onDismiss: () -> Unit) {
+        addButton.setOnClickListener {
+            val selected = insulins[nameSpinner.selectedItemPosition]
+            val value = valueEditText.text.toString().toFloatOrNull() ?: 0F
 
-                onPositive(selected, value)
-            }
-            .setNegativeButton(R.string.cancel, null)
-            .setNeutralButton(R.string.remove) { _, _ -> onNeutral() }
-            .setOnDismissListener { onDismiss() }
-            .show()
+            onAdd(selected, value)
+            dialog.dismiss()
+        }
+        removeButton.setOnClickListener {
+            onRemove()
+            dialog.dismiss()
+        }
+        dialog.setOnDismissListener { onDismiss() }
+
+        UIUtils.setWhiteNavBarIfNeeded(activity, dialog)
+        dialog.show()
     }
 }

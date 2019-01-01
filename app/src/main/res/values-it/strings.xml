@@ -15,6 +15,7 @@
     <string name="add">Aggiungi</string>
     <string name="saved">Salvato</string>
     <string name="remove">Rimuovi</string>
+    <string name="apply">Applica</string>
 
     <string name="fragment_overview">Panoramica</string>
     <string name="fragment_glucose">Glicemia</string>
