@@ -15,7 +15,7 @@
 
     <!-- Show numeric keyboard -->
     <View
-        android:id="@+id/glucose_editor_keyboard"
+        android:id="@id/glucose_editor_keyboard"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -24,7 +24,7 @@
 
     <!-- Expand card -->
     <View
-        android:id="@+id/glucose_editor_base_card"
+        android:id="@id/glucose_editor_base_card"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@id/glucose_editor_keyboard"
@@ -35,6 +35,7 @@
 
     <!-- Hide unused views -->
     <View
+        android:id="@id/glucose_editor_scroll_info"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:alpha="0"
