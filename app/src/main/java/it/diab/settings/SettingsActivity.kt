@@ -20,9 +20,10 @@ class SettingsActivity : AppCompatActivity() {
 
         setContentView(R.layout.activity_settings)
 
-        val toolbar = findViewById<Toolbar>(R.id.toolbar)
-        setSupportActionBar(toolbar)
-        toolbar.setNavigationIcon(R.drawable.ic_toolbar_back)
-        toolbar.setNavigationOnClickListener { finish() }
+        findViewById<Toolbar>(R.id.toolbar).apply {
+            setSupportActionBar(this)
+            setNavigationIcon(R.drawable.ic_toolbar_back)
+            setNavigationOnClickListener { finish() }
+        }
     }
 }

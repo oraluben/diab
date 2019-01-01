@@ -29,7 +29,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.async
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.io.File
 import java.io.FileWriter
@@ -37,7 +36,7 @@ import java.io.IOException
 
 class ExportGlucoseService : Service() {
     private lateinit var repository: GlucoseRepository
-    private lateinit var mNotificationManager: NotificationManager
+    private lateinit var notificationManager: NotificationManager
 
     private val job = Job()
     private val serviceScope = CoroutineScope(Dispatchers.IO + job)
@@ -46,7 +45,15 @@ class ExportGlucoseService : Service() {
         super.onCreate()
 
         repository = GlucoseRepository.getInstance(this)
-        mNotificationManager = getSystemService(NotificationManager::class.java)
+        notificationManager = getSystemService(NotificationManager::class.java)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+        if (!job.isCompleted) {
+            job.cancel()
+        }
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
@@ -59,11 +66,7 @@ class ExportGlucoseService : Service() {
         startForeground(NOTIFICATION_ID, notification)
 
         serviceScope.launch {
-            val defResult = async { exportFiles(this, repository) }
-
-            val result = defResult.await()
-
-            delay(1500)
+            val result = exportFiles(this, repository)
             GlobalScope.launch(Dispatchers.Main) { onTaskCompleted(result) }
         }
 
@@ -80,7 +83,7 @@ class ExportGlucoseService : Service() {
         .build()
 
     private fun onTaskCompleted(result: Boolean) {
-        mNotificationManager.cancel(NOTIFICATION_ID)
+        notificationManager.cancel(NOTIFICATION_ID)
 
         Toast.makeText(
             this,
@@ -93,7 +96,7 @@ class ExportGlucoseService : Service() {
 
     @RequiresApi(26)
     private fun createChannelIfNeeded() {
-        val channel = mNotificationManager.getNotificationChannel(CHANNEL)
+        val channel = notificationManager.getNotificationChannel(CHANNEL)
         if (channel != null) {
             return
         }
@@ -106,7 +109,7 @@ class ExportGlucoseService : Service() {
             lockscreenVisibility = NotificationCompat.VISIBILITY_SECRET
         }
 
-        mNotificationManager.createNotificationChannel(newChannel)
+        notificationManager.createNotificationChannel(newChannel)
     }
 
     private suspend fun exportFiles(scope: CoroutineScope, repository: GlucoseRepository): Boolean {

@@ -45,7 +45,6 @@ import it.diab.viewmodels.glucose.OverviewViewModel
 import it.diab.viewmodels.glucose.OverviewViewModelFactory
 import java.text.SimpleDateFormat
 import java.util.Locale
-import kotlin.collections.ArrayList
 
 class OverviewFragment : MainFragment() {
     private lateinit var lastValueView: TextView
@@ -199,12 +198,14 @@ class OverviewFragment : MainFragment() {
     }
 
     private fun getTodayDataSet(entries: List<Entry>): LineDataSet? {
-        if (entries.isEmpty() || context == null) {
+        val context = context ?: return null
+
+        if (entries.isEmpty()) {
             return null
         }
 
-        val color = ContextCompat.getColor(context!!, R.color.graph_overview_today)
-        val textColor = ContextCompat.getColor(context!!, R.color.textPrimary)
+        val color = ContextCompat.getColor(context, R.color.graph_overview_today)
+        val textColor = ContextCompat.getColor(context, R.color.textPrimary)
 
         return LineDataSet(entries, "").apply {
             setCircleColor(color)
@@ -219,11 +220,13 @@ class OverviewFragment : MainFragment() {
     }
 
     private fun getAverageDataSet(entries: List<Entry>): LineDataSet? {
-        if (entries.isEmpty() || context == null) {
+        val context = context ?: return null
+
+        if (entries.isEmpty()) {
             return null
         }
 
-        val color = ContextCompat.getColor(context!!, R.color.graph_overview_average)
+        val color = ContextCompat.getColor(context, R.color.graph_overview_average)
 
         return LineDataSet(entries, "").apply {
             this.color = color

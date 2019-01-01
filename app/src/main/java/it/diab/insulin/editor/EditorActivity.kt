@@ -35,7 +35,6 @@ class EditorActivity : AppCompatActivity() {
     private lateinit var mTimeFrames: Array<String>
     private var mEditMode = false
 
-    @SuppressLint("InflateParams")
     public override fun onCreate(savedInstance: Bundle?) {
         super.onCreate(savedInstance)
 
@@ -45,6 +44,7 @@ class EditorActivity : AppCompatActivity() {
         viewModel = ViewModelProviders.of(this, factory)[EditorViewModel::class.java]
 
         val layoutInflater = getSystemService(LayoutInflater::class.java)
+        @SuppressLint("InflateParams")
         val view = layoutInflater.inflate(R.layout.dialog_insulin_edit, null)
 
         mEditText = view.findViewById(R.id.insulin_edit_name)

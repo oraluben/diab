@@ -137,9 +137,11 @@ class PluginManager(context: Context) {
 
         while (iterator.hasNext()) {
             val key = iterator.next()
-            val value = json[key] as Double
+            val value = json[key]
 
-            map[key.toInt()] = value.toFloat()
+            if (value is Double) {
+                map[key.toInt()] = value.toFloat()
+            }
         }
 
         return map
