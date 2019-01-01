@@ -87,8 +87,8 @@ class OverviewFragment : MainFragment() {
         return view
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
 
         viewModel.last.observe(this, Observer(this::updateLast))
         viewModel.list.observe(this, Observer(this::updateChart))

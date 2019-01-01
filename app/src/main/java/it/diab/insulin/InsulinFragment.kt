@@ -53,15 +53,14 @@ class InsulinFragment : MainFragment() {
         return view
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
 
         val context = context ?: return
 
         val adapter = InsulinAdapter()
         recyclerView.adapter = adapter
-        viewModel.list.observe(this, Observer<PagedList<Insulin>>(adapter::submitList))
-
+        viewModel.list.observe(viewLifecycleOwner, Observer<PagedList<Insulin>>(adapter::submitList))
         adapter.editInsulin.observe(viewLifecycleOwner, EventObserver { uid ->
             val intent = Intent(context, EditorActivity::class.java).apply {
                 putExtra(EditorActivity.EXTRA_UID, uid)
