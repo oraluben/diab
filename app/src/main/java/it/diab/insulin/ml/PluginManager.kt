@@ -53,7 +53,7 @@ class PluginManager(context: Context) {
             val zipStream = ZipInputStream(iStream)
             var entry: ZipEntry? = zipStream.nextEntry
 
-            val pattern = Pattern.compile("estimator_[0-6].json")
+            val pattern = Pattern.compile("^estimator_[0-6].json")
 
             var wasValid = false
 
