@@ -21,6 +21,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.json.JSONObject
 import java.io.BufferedReader
@@ -105,25 +106,26 @@ class PluginManager(context: Context) {
         }
     }
 
-    fun fetchSuggestion(glucose: Glucose, onExecuted: (Float) -> Unit) {
-        scope.launch {
-            val value = glucose.value / 10 * 10
-            if (value < LOWEST_SUGGESTION) {
-                GlobalScope.launch(Dispatchers.Main) { onExecuted(TOO_LOW) }
-                return@launch
-            }
-            if (value > HIGHEST_SUGGESTION) {
-                GlobalScope.launch(Dispatchers.Main) { onExecuted(TOO_HIGH) }
-                return@launch
-            }
+    suspend fun fetchSuggestion(glucose: Glucose, onExecuted: (Float) -> Unit) {
+        delay(1000)
 
-            val iStream = getStreamFor(glucose.timeFrame)
-            val map = parseInputStream(iStream)
+        val value = glucose.value / 10 * 10
+        if (value <= LOWEST_SUGGESTION) {
+            GlobalScope.launch(Dispatchers.Main) { onExecuted(TOO_LOW) }
+            return
+        }
+        if (value >= HIGHEST_SUGGESTION) {
+            GlobalScope.launch(Dispatchers.Main) { onExecuted(TOO_HIGH) }
+            return
+        }
 
-            val result = map[value] ?: PARSE_ERROR
-            GlobalScope.launch(Dispatchers.Main) {
-                onExecuted(if (result == PARSE_ERROR) PARSE_ERROR else result + glucose.eatLevel - 1)
-            }
+        val iStream = getStreamFor(glucose.timeFrame)
+        val map = parseInputStream(iStream)
+
+        val result = map[value] ?: PARSE_ERROR
+
+        GlobalScope.launch(Dispatchers.Main) {
+            onExecuted(if (result == PARSE_ERROR) PARSE_ERROR else result + glucose.eatLevel - 1)
         }
     }
 

@@ -33,7 +33,7 @@ class NumericKeyboardView : LinearLayout {
     private val btnDel: View
 
     private lateinit var inputView: TextView
-    private var onTextChanged: (String) -> Unit = {}
+    private var onTextChanged: (Int) -> Unit = {}
 
     val input: Int
         get() =
@@ -62,7 +62,7 @@ class NumericKeyboardView : LinearLayout {
         btnDel = findViewById(R.id.keyboard_key_del)
     }
 
-    fun bindTextView(textView: TextView, callback: (String) -> Unit = {}) {
+    fun bindTextView(textView: TextView, callback: (Int) -> Unit = {}) {
         inputView = textView
         onTextChanged = callback
         setupKeys()
@@ -89,25 +89,26 @@ class NumericKeyboardView : LinearLayout {
     }
 
     private fun input(n: Int) {
-        var input = inputView.text.toString()
-        if (input.length > 2) {
+        var inStr = inputView.text.toString()
+        if (inStr.length > 2) {
             return
         }
 
-        while (input.startsWith("0")) {
-            input = input.substring(1, input.length)
+        while (inStr.startsWith("0")) {
+            inStr = inStr.substring(1, inStr.length)
         }
-        input += n.toString()
-        inputView.text = input
+        inStr += n.toString()
+        inputView.text = inStr
         onTextChanged(input)
     }
 
     private fun del() {
-        val input = inputView.text.toString()
-        if (input.length > 1) {
-            inputView.text = input.substring(0, input.length - 1)
+        val inStr = inputView.text.toString()
+        if (inStr.length > 1) {
+            inputView.text = inStr.substring(0, inStr.length - 1)
         } else {
             inputView.text = "0"
         }
+        onTextChanged(input)
     }
 }

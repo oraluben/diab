@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Bevilacqua Joey
+ * Copyright (c) 2019 Bevilacqua Joey
  *
  * Licensed under the GNU GPLv3 license
  *
@@ -8,27 +8,19 @@
  */
 package it.diab.glucose.editor
 
-import android.animation.ValueAnimator
-import android.app.DatePickerDialog
-import android.app.TimePickerDialog
-import android.content.DialogInterface
-import android.graphics.PorterDuff
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
 import android.view.View
 import android.widget.TextView
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProviders
 import androidx.transition.TransitionManager
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import it.diab.R
-import it.diab.db.entities.Glucose
 import it.diab.db.entities.Insulin
 import it.diab.db.repositories.GlucoseRepository
 import it.diab.db.repositories.InsulinRepository
@@ -37,354 +29,244 @@ import it.diab.insulin.ml.PluginManager
 import it.diab.ui.EatBar
 import it.diab.ui.InsulinSuggestionView
 import it.diab.ui.NumericKeyboardView
-import it.diab.util.PreferencesUtil
 import it.diab.util.SystemUtil
 import it.diab.util.VibrationUtil
 import it.diab.util.extensions.asTimeFrame
-import it.diab.util.extensions.get
-import it.diab.util.extensions.getCalendar
 import it.diab.util.extensions.getDetailedString
+import it.diab.util.extensions.insulin
+import it.diab.util.extensions.setErrorStatus
+import it.diab.util.extensions.setPrecomputedText
+import it.diab.util.extensions.setTextErrorStatus
 import it.diab.viewmodels.glucose.EditorViewModel
 import it.diab.viewmodels.glucose.EditorViewModelFactory
-import java.util.Calendar
-import java.util.Date
-import kotlin.math.roundToInt
 
 class EditorActivity : AppCompatActivity() {
 
+    private lateinit var constraintView: ConstraintLayout
+    private lateinit var valueView: TextView
+    private lateinit var timeView: TextView
+    private lateinit var eatView: EatBar
+    private lateinit var insulinView: TextView
+    private lateinit var basalView: TextView
+    private lateinit var suggestionView: InsulinSuggestionView
+    private lateinit var fabView: FloatingActionButton
+    private lateinit var keyboardView: NumericKeyboardView
+
     private lateinit var viewModel: EditorViewModel
-
-    private lateinit var mConstraintRoot: ConstraintLayout
-    private lateinit var mValueView: TextView
-    private lateinit var mDateView: TextView
-    private lateinit var mEatBar: EatBar
-    private lateinit var mInsulinView: TextView
-    private lateinit var mBasalView: TextView
-    private lateinit var mSuggestionView: InsulinSuggestionView
-    private lateinit var mInfoView: TextView
-    private lateinit var mKeyboardView: NumericKeyboardView
-    private lateinit var mFab: FloatingActionButton
-
-    private var mEditMode = false
-    private var mErrorStatus = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContentView(R.layout.activity_glucose_editor)
 
-        // Common views
-        mConstraintRoot = findViewById(R.id.glucose_editor_root)
-        mValueView = findViewById(R.id.glucose_editor_edit_value)
-        mDateView = findViewById(R.id.glucose_editor_edit_date)
-        mEatBar = findViewById(R.id.glucose_editor_eat_bar)
-        mFab = findViewById(R.id.fab)
-
-        // Edit views
-        mKeyboardView = findViewById(R.id.glucose_editor_keyboard)
-
-        // Show views
-        mInsulinView = findViewById(R.id.glucose_editor_insulin_value)
-        mBasalView = findViewById(R.id.glucose_editor_insulin_basal_value)
-        mSuggestionView = findViewById(R.id.glucose_editor_insulin_suggestion)
-        mInfoView = findViewById(R.id.glucose_editor_info)
-
-        mEditMode = intent.getBooleanExtra(EXTRA_INSERT_MODE, false)
-
-        val id = intent.getLongExtra(EXTRA_GLUCOSE_ID, -1)
         val factory = EditorViewModelFactory(
             GlucoseRepository.getInstance(this),
             InsulinRepository.getInstance(this)
         )
         viewModel = ViewModelProviders.of(this, factory)[EditorViewModel::class.java]
-        viewModel.setGlucose(id) {
-            val pluginManager = PluginManager(this)
 
-            viewModel.prepare(pluginManager) {
-                setup()
-                refresh()
-            }
-        }
+        constraintView = findViewById(R.id.editor_root)
+        valueView = findViewById(R.id.editor_value)
+        timeView = findViewById(R.id.editor_time)
+        eatView = findViewById(R.id.editor_eat_bar)
+        insulinView = findViewById(R.id.editor_insulin)
+        basalView = findViewById(R.id.editor_basal)
+        suggestionView = findViewById(R.id.editor_suggestion)
+        fabView = findViewById(R.id.editor_fab)
+        keyboardView = findViewById(R.id.editor_keyboard)
+
+        viewModel.prepare(PluginManager(this), this::setup)
     }
 
     private fun setup() {
-        mValueView.text = viewModel.glucose.value.toString()
-        mKeyboardView.bindTextView(mValueView, this::onValueTextChanged)
+        val extraUid = intent.getLongExtra(EXTRA_GLUCOSE_ID, -1)
+        viewModel.isEditMode = extraUid < 0
+        viewModel.setGlucose(extraUid) {
+            setupCommon()
 
-        mDateView.text = viewModel.glucose.date.getDetailedString()
-        mDateView.setOnClickListener { onDateClicked() }
-        mEatBar.progress = viewModel.glucose.eatLevel
-
-        mInsulinView.setOnClickListener { onInsulinClicked() }
-        mBasalView.setOnClickListener { onBasalClicked() }
-
-        mFab.setOnClickListener { onFabClicked() }
-    }
-
-    private fun refresh() {
-        if (mEditMode) {
-            setEditUi()
-        } else {
-            setShowUi()
-        }
-    }
-
-    private fun setEditUi() {
-        if (intent.getBooleanExtra(EXTRA_INSERT_MODE, false)) {
-            val editMode = ConstraintSet()
-            editMode.clone(this, R.layout.constraint_glucose_edit)
-            editMode.applyTo(mConstraintRoot)
-
-            viewModel.glucose.timeFrame = Date().asTimeFrame()
-        }
-
-        mInsulinView.visibility = View.GONE
-        mBasalView.visibility = View.GONE
-        mInsulinView.alpha = 1f
-        mBasalView.alpha = 1f
-        mEatBar.isEnabled = true
-
-        mFab.setImageResource(R.drawable.ic_done)
-    }
-
-    private fun setShowUi() {
-        mInsulinView.visibility = View.VISIBLE
-        mEatBar.isEnabled = false
-
-        val ids = Pair(viewModel.glucose.insulinId0, viewModel.glucose.insulinId1)
-
-        if (ids.first == -1L) {
-            mInsulinView.text = getString(R.string.glucose_editor_insulin_add)
-        } else {
-            val insulin = viewModel.getInsulin(ids.first)
-            val value = viewModel.glucose.insulinValue0
-            mInsulinView.text = insulin.getDisplayedString(value)
-        }
-
-        if (viewModel.hasPotentialBasal()) {
-            mBasalView.visibility = View.VISIBLE
-            if (ids.second == -1L) {
-                mBasalView.text = getString(R.string.glucose_editor_basal_add)
+            if (viewModel.isEditMode) {
+                setupEdit(false)
             } else {
-                val basal = viewModel.getInsulin(ids.second)
-                val value = viewModel.glucose.insulinValue1
-                mBasalView.text = basal.getDisplayedString(value)
+                setupView(false)
             }
-        } else {
-            mBasalView.visibility = View.GONE
         }
-
-        val data = viewModel.previousWeek
-        mInfoView.text = getInfo(data)
-        mDateView.text = viewModel.glucose.date.getDetailedString()
-
-        val targetInsulin = viewModel.getInsulinByTimeFrame()
-        mSuggestionView.bind(viewModel.glucose, targetInsulin, this::onSuggestionApply)
-        viewModel.getInsulinSuggestion(mSuggestionView::onSuggestionLoaded)
-
-        mFab.setImageResource(R.drawable.ic_edit)
     }
 
-    private fun onDateClicked() {
-        if (!mEditMode) {
-            return
+    private fun setupCommon() {
+        valueView.text = viewModel.glucose.value.toString()
+        timeView.setPrecomputedText(viewModel.glucose.date.getDetailedString(), viewModel.viewModelScope)
+        fabView.setOnClickListener { onFabClick() }
+        eatView.progress = viewModel.glucose.eatLevel
+    }
+
+    private fun setupEdit(animate: Boolean) {
+        ConstraintSet().run {
+            clone(this@EditorActivity, R.layout.constraint_editor_edit)
+            if (animate) {
+                TransitionManager.beginDelayedTransition(constraintView)
+            }
+            applyTo(constraintView)
         }
 
-        if (mErrorStatus and (1 shl 1) != 0) {
-            mErrorStatus = mErrorStatus and (1 shl 1).inv()
-            mDateView.setErrorStatus(false)
+        timeView.setOnClickListener { onDateClick() }
+        eatView.unlock()
+        keyboardView.bindTextView(valueView, this::checkForError)
+        fabView.setImageResource(R.drawable.ic_done)
+
+        if (valueView.text == "0") {
+            // Make sure the user sets a value
+            viewModel.setError(EditorViewModel.ERROR_VALUE)
+        }
+    }
+
+    private fun setupView(animate: Boolean) {
+        ConstraintSet().run {
+            clone(this@EditorActivity, R.layout.constraint_editor_view)
+            if (animate) {
+                TransitionManager.beginDelayedTransition(constraintView)
+            }
+            applyTo(constraintView)
         }
 
-        val glucoseCal = viewModel.glucose.date.getCalendar()
-        val newTime = Calendar.getInstance()
-
-        val options = arrayOf(
-            getString(R.string.time_today),
-            getString(R.string.time_yesterday),
-            getString(R.string.time_pick)
+        eatView.lock()
+        setupInsulinView()
+        insulinView.setOnClickListener { onInsulinClick(false) }
+        setupBasalView()
+        if (viewModel.hasPotentialBasal()) {
+            basalView.apply {
+                visibility = View.VISIBLE
+                setOnClickListener { onInsulinClick(true) }
+            }
+        }
+        suggestionView.bind(
+            viewModel.glucose,
+            viewModel.getInsulinByTimeFrame(),
+            this::onSuggestionApplied
         )
-
-        val onTimeSet = { _: View, hour: Int, minute: Int ->
-            newTime[Calendar.HOUR_OF_DAY] = hour
-            newTime[Calendar.MINUTE] = minute
-
-            viewModel.glucose.date = newTime.time
-            viewModel.glucose.timeFrame = newTime.time.asTimeFrame()
-            mDateView.text = newTime.time.getDetailedString()
-        }
-
-        val onCustomDateSet = { _: View, year: Int, month: Int, day: Int ->
-            newTime.set(year, month, day)
-            TimePickerDialog(
-                this, R.style.AppTheme_DatePickerDialog, onTimeSet,
-                glucoseCal[Calendar.HOUR_OF_DAY],
-                glucoseCal[Calendar.MINUTE], true
-            ).show()
-        }
-
-        val onPredefinedDateSet = { _: DialogInterface, i: Int ->
-            when (i) {
-                0 -> {
-                }
-                1 -> newTime.time = Date()[-1]
-                else -> DatePickerDialog(
-                    this, R.style.AppTheme_DatePickerDialog, onCustomDateSet,
-                    glucoseCal[Calendar.YEAR], glucoseCal[Calendar.MONTH],
-                    glucoseCal[Calendar.DAY_OF_MONTH]
-                ).show()
-            }
-
-            if (i == 0 || i == 1) {
-                TimePickerDialog(
-                    this, R.style.AppTheme_DatePickerDialog, onTimeSet,
-                    glucoseCal[Calendar.HOUR_OF_DAY], glucoseCal[Calendar.MINUTE], true
-                ).show()
-            }
-        }
-
-        AlertDialog.Builder(this)
-            .setItems(options, onPredefinedDateSet)
-            .setTitle(R.string.glucose_editor_time_dialog)
-            .show()
+        viewModel.getInsulinSuggestion(suggestionView::onSuggestionLoaded)
+        fabView.setImageResource(R.drawable.ic_edit)
     }
 
-    private fun onInsulinClicked() {
-        if (mEditMode) {
-            return
+    private fun setupInsulinView() {
+        val uid = viewModel.glucose.insulinId0
+        val value = viewModel.glucose.insulinValue0
+
+        insulinView.text = if (uid > -1) {
+            viewModel.getInsulin(uid).getDisplayedString(value)
+        } else {
+            getString(R.string.glucose_editor_insulin_add)
         }
-
-        val dialog = AddInsulinDialog(this, viewModel.glucose, true)
-        dialog.setInsulins(viewModel.insulins)
-
-        dialog.show(
-            { insulin, value -> onInsulinPositive(insulin, value, false) },
-            { onInsulinNeutral(false) },
-            { setShowUi() })
     }
 
-    private fun onBasalClicked() {
-        if (mEditMode) {
-            return
+    private fun setupBasalView() {
+        val uid = viewModel.glucose.insulinId1
+        val value = viewModel.glucose.insulinValue1
+
+        basalView.text = if (uid > -1) {
+            viewModel.getInsulin(uid).getDisplayedString(value)
+        } else {
+            getString(R.string.glucose_editor_basal_add)
         }
-
-        val dialog = AddInsulinDialog(this, viewModel.glucose, false)
-        dialog.setInsulins(viewModel.basalInsulins)
-
-        dialog.show(
-            { insulin, value -> onInsulinPositive(insulin, value, true) },
-            { onInsulinNeutral(true) },
-            { setShowUi() })
     }
 
-    private fun onFabClicked() {
-        if (mEditMode) {
+    private fun onFabClick() {
+        if (viewModel.isEditMode) {
             save()
         } else {
-            edit()
+            viewModel.isEditMode = true
+            setupEdit(true)
         }
     }
 
-    private fun onValueTextChanged(value: String) {
-        if (mErrorStatus and 1 == 0) {
-            return
-        }
-
-        mErrorStatus = mErrorStatus and 1.inv()
-        mValueView.setErrorStatus(value == "0")
+    private fun onDateClick() {
+        DateTimeDialog(this, this::onDateSelected).show(viewModel.glucose.date)
     }
 
-    private fun save() {
-        checkForErrors()
-        if (mErrorStatus != 0) {
-            Snackbar.make(mConstraintRoot, R.string.glucose_editor_save_error, Snackbar.LENGTH_LONG)
-                .show()
-            VibrationUtil.vibrateForError(this)
-            return
+    private fun onDateSelected(timeInMillis: Long) {
+        if (timeInMillis > System.currentTimeMillis()) {
+            if (!viewModel.hasError(EditorViewModel.ERROR_DATE)) {
+                timeView.setErrorStatus(this, true)
+            }
+
+            viewModel.setError(EditorViewModel.ERROR_DATE)
+        } else {
+            viewModel.clearError(EditorViewModel.ERROR_DATE)
         }
 
-        Snackbar.make(mConstraintRoot, R.string.saved, 800)
-            .show()
-        Handler().postDelayed({
-            saveData()
-            saveToFit()
-        }, 1000)
+        viewModel.glucose.date.time = timeInMillis
+        timeView.text = viewModel.glucose.date.getDetailedString()
     }
 
-    private fun saveData() {
-        viewModel.glucose.value = mKeyboardView.input
-        viewModel.glucose.eatLevel = mEatBar.progress
+    private fun onInsulinClick(isBasal: Boolean) {
+        AddInsulinDialog(this, viewModel.glucose, isBasal).apply {
+            setInsulins(viewModel.insulins.filter { it.isBasal == isBasal })
+        }.show(
+            { insulin, value -> onInsulinApply(insulin, value, isBasal) },
+            { onInsulinApply(insulin { uid = -1 }, 0f, isBasal) }
+        )
+    }
+
+    private fun checkForError(value: Int) {
+        val hadError = viewModel.hasError(EditorViewModel.ERROR_VALUE)
+        val hasError = value == 0
+
+        if (hadError != hasError) {
+            valueView.setTextErrorStatus(this, hasError)
+        }
+
+        if (hasError) {
+            viewModel.setError(EditorViewModel.ERROR_VALUE)
+        } else {
+            viewModel.clearError(EditorViewModel.ERROR_VALUE)
+        }
+    }
+
+    private fun onInsulinApply(insulin: Insulin, value: Float, isBasal: Boolean) {
+        viewModel.glucose.apply {
+            if (isBasal) {
+                insulinId1 = insulin.uid
+                insulinValue1 = value
+                setupBasalView()
+            } else {
+                insulinId0 = insulin.uid
+                insulinValue0 = value
+                setupInsulinView()
+            }
+        }
+
         viewModel.save()
     }
 
-    private fun checkForErrors() {
-        if ("0" == mValueView.text) {
-            mValueView.setErrorStatus(true)
-            mErrorStatus = mErrorStatus or 1
-        }
-
-        if (Date().time < viewModel.glucose.date.time) {
-            mDateView.setErrorStatus(true)
-            mErrorStatus = mErrorStatus or (1 shl 1)
+    private fun onSuggestionApplied(value: Float, insulin: Insulin) {
+        viewModel.applyInsulinSuggestion(value, insulin) {
+            onInsulinApply(insulin, value, false)
+            Snackbar.make(constraintView, R.string.insulin_suggestion_applied, Snackbar.LENGTH_LONG).show()
         }
     }
 
-    private fun edit() {
-        mInsulinView.animate()
-            .alpha(0f)
-            .start()
-        mBasalView.animate()
-            .alpha(0f)
-            .start()
-
-        val editSet = ConstraintSet()
-        editSet.clone(this, R.layout.constraint_glucose_edit)
-        TransitionManager.beginDelayedTransition(mConstraintRoot)
-        editSet.applyTo(mConstraintRoot)
-
-        Handler().postDelayed({
-            mEditMode = true
-            refresh()
-        }, 350)
-    }
-
-    private fun onInsulinPositive(
-        insulin: Insulin,
-        value: Float,
-        isBasal: Boolean,
-        shouldSaveData: Boolean = true
-    ) {
-        if (isBasal) {
-            viewModel.glucose.insulinId1 = insulin.uid
-            viewModel.glucose.insulinValue1 = value
-            mBasalView.text = insulin.getDisplayedString(value)
-        } else {
-            viewModel.glucose.insulinId0 = insulin.uid
-            viewModel.glucose.insulinValue0 = value
-            mInsulinView.text = insulin.getDisplayedString(value)
+    private fun save() {
+        if (viewModel.hasErrors()) {
+            VibrationUtil.vibrateForError(this)
+            Snackbar.make(constraintView, R.string.glucose_editor_save_error, Snackbar.LENGTH_LONG).show()
+            return
         }
 
-        if (shouldSaveData) {
-            saveData()
-        }
-    }
-
-    private fun onInsulinNeutral(isBasal: Boolean) {
-        if (isBasal) {
-            viewModel.glucose.insulinId1 = -1
-            viewModel.glucose.insulinValue1 = 0f
-            mBasalView.text = getString(R.string.glucose_editor_insulin_add)
-        } else {
-            viewModel.glucose.insulinId0 = -1
-            viewModel.glucose.insulinValue0 = 0f
-            mInsulinView.text = getString(R.string.glucose_editor_basal_add)
+        viewModel.glucose.apply {
+            value = keyboardView.input
+            eatLevel = eatView.progress
+            timeFrame = date.asTimeFrame()
         }
 
-        saveData()
+        viewModel.save()
+        Snackbar.make(constraintView, R.string.saved, 800).show()
+        Handler().postDelayed(this::addToFit, 1000)
     }
 
-    private fun saveToFit() {
+    private fun addToFit() {
         val handler = SystemUtil.getOverrideObject(
             BaseFitHandler::class.java,
-            this, R.string.config_class_fit_handler
+            this,
+            R.string.config_class_fit_handler
         )
 
         if (!handler.hasFit(this)) {
@@ -392,58 +274,16 @@ class EditorActivity : AppCompatActivity() {
             return
         }
 
-        handler.upload(this, viewModel.glucose, !mEditMode, { finish() }, { e -> Log.e(TAG, e.message) })
-    }
-
-    private fun getInfo(list: List<Glucose>): String {
-        var average = 0f
-
-        if (!list.isEmpty()) {
-            for (i in list.indices) {
-                average += list[i].value.toFloat()
-            }
-            average /= list.size
-        }
-
-        val highThreshold = PreferencesUtil.getGlucoseHighThreshold(this)
-        val lowThreshold = PreferencesUtil.getGlucoseLowThreshold(this)
-
-        val status = when {
-            average > highThreshold -> R.string.glucose_type_high
-            average > lowThreshold -> R.string.glucose_type_medium
-            else -> R.string.glucose_type_low
-        }
-
-        return getString(R.string.glucose_report_base, getString(status), average.roundToInt())
-    }
-
-    private fun onSuggestionApply(suggestion: Float, insulin: Insulin) {
-        viewModel.applyInsulinSuggestion(suggestion, insulin, this::refresh)
-
-        Snackbar.make(mConstraintRoot, R.string.insulin_suggestion_applied, Snackbar.LENGTH_LONG)
-            .show()
-    }
-
-    private fun TextView.setErrorStatus(toError: Boolean) {
-        val originalColor = ContextCompat.getColor(this@EditorActivity, R.color.colorAccent)
-        val errorColor = ContextCompat.getColor(this@EditorActivity, R.color.action_dangerous)
-
-        val animator = ValueAnimator.ofArgb(
-            if (toError) originalColor else errorColor,
-            if (toError) errorColor else originalColor
+        handler.upload(
+            this,
+            viewModel.glucose,
+            !viewModel.isEditMode,
+            { finish() },
+            { e -> Log.e(TAG, e.message) }
         )
-
-        val drawable = compoundDrawables[0]
-
-        animator.addUpdateListener { animation ->
-            drawable.setColorFilter(animation.animatedValue as Int, PorterDuff.Mode.SRC_ATOP)
-        }
-
-        animator.start()
     }
 
     companion object {
-        const val EXTRA_INSERT_MODE = "extra_insert"
         const val EXTRA_GLUCOSE_ID = "glucose_id"
 
         private const val TAG = "EditorActivity"

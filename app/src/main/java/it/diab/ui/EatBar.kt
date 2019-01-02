@@ -24,6 +24,7 @@ import it.diab.db.entities.Glucose
 
 class EatBar : AppCompatSeekBar {
     private var currentColor: Int
+    private var editable = false
     private lateinit var coloredProgressDrawable: Drawable
 
     constructor(context: Context) : super(context)
@@ -47,11 +48,46 @@ class EatBar : AppCompatSeekBar {
             override fun onStartTrackingTouch(seekBar: SeekBar?) = Unit
             override fun onStopTrackingTouch(seekBar: SeekBar?) = Unit
         })
+
+        setOnTouchListener { _, _ -> !editable }
+        thumb.alpha = 0x00
     }
 
     @Glucose.CREATOR.EatLevel
     override fun getProgress(): Int {
         return super.getProgress()
+    }
+
+    fun lock() {
+        if (!editable) {
+            return
+        }
+
+        ValueAnimator.ofInt(0xff, 0x00).apply {
+            addUpdateListener {
+                val value = it.animatedValue
+                if (value is Int) {
+                    thumb.alpha = value
+                }
+            }
+        }.start()
+        editable = false
+    }
+
+    fun unlock() {
+        if (editable) {
+            return
+        }
+
+        ValueAnimator.ofInt(0x00, 0xff).apply {
+            addUpdateListener {
+                val value = it.animatedValue
+                if (value is Int) {
+                    thumb.alpha = value
+                }
+            }
+        }.start()
+        editable = true
     }
 
     private fun recolor(@ColorRes color: Int) {

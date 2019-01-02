@@ -8,28 +8,27 @@
  */
 package it.diab.ui
 
+import android.animation.Animator
 import android.content.Context
 import android.os.Handler
 import android.util.AttributeSet
 import android.view.View
 import android.widget.LinearLayout
-import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.annotation.AttrRes
-import androidx.cardview.widget.CardView
-import androidx.core.content.ContextCompat
 import it.diab.R
 import it.diab.db.entities.Glucose
 import it.diab.db.entities.Insulin
 import it.diab.insulin.ml.PluginManager
 import it.diab.util.VibrationUtil
+import it.diab.util.extensions.animateThreeDots
 import it.diab.util.timeFrame.TimeFrame
 import kotlin.math.roundToInt
 
 class InsulinSuggestionView : LinearLayout {
-    private val rootView: CardView
-    private val progressBar: ProgressBar
     private val textView: TextView
+
+    private lateinit var animator: Animator
 
     private var onSuggestionApply: (Float, Insulin) -> Unit = { _, _ -> }
     private var hasSuggestions = false
@@ -46,8 +45,6 @@ class InsulinSuggestionView : LinearLayout {
 
     init {
         View.inflate(context, R.layout.component_insulin_suggestion, this)
-        rootView = findViewById(R.id.insulin_suggestion_card)
-        progressBar = findViewById(R.id.insulin_suggestion_progress)
         textView = findViewById(R.id.insulin_suggestion_text)
     }
 
@@ -65,7 +62,9 @@ class InsulinSuggestionView : LinearLayout {
     }
 
     fun onSuggestionLoaded(result: Float) {
-        progressBar.visibility = View.GONE
+        if (::animator.isInitialized) {
+            animator.cancel()
+        }
 
         if (result < 0) {
             if (result == PluginManager.NO_MODEL) {
@@ -81,8 +80,7 @@ class InsulinSuggestionView : LinearLayout {
                 }
             )
 
-            val errorColor = ContextCompat.getColor(context, R.color.action_dangerous)
-            rootView.setCardBackgroundColor(errorColor)
+            textView.isEnabled = false
             return
         }
 
@@ -93,7 +91,7 @@ class InsulinSuggestionView : LinearLayout {
             result.roundToInt().toFloat()
         textView.text = resources.getString(R.string.insulin_suggestion_value, formattedResult)
 
-        rootView.setOnClickListener {
+        textView.setOnClickListener {
             VibrationUtil.vibrateForImportantClick(it)
             onSuggestionApply(formattedResult, insulin)
             Handler().postDelayed(this::onSuggestionApplied, 350)
@@ -113,14 +111,14 @@ class InsulinSuggestionView : LinearLayout {
             return
         }
 
-        progressBar.visibility = View.VISIBLE
         textView.text = resources.getString(R.string.insulin_suggestion_loading)
+        animator = textView.animateThreeDots()
     }
 
     private fun onSuggestionApplied() {
         hasSuggestions = false
         animate().alpha(0f)
-            .withEndAction { rootView.visibility = View.GONE }
+            .withEndAction { textView.visibility = View.GONE }
             .start()
     }
 }

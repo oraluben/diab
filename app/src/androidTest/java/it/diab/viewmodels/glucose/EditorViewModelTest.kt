@@ -140,4 +140,42 @@ class EditorViewModelTest {
             }
         }
     }
+
+    @Test
+    fun errors() {
+        val a = 0
+        val b = 1
+        val c = 1 shl 1
+        val d = 1 shl 2
+
+        viewModel.setError(a)
+        assertThat(viewModel.hasError(a)).isFalse()
+        assertThat(viewModel.hasErrors()).isFalse()
+
+        viewModel.setError(b)
+        assertThat(viewModel.hasError(b)).isTrue()
+        assertThat(viewModel.hasError(c)).isFalse()
+
+        viewModel.setError(c)
+        assertThat(viewModel.hasError(b)).isTrue()
+        assertThat(viewModel.hasError(c)).isTrue()
+        assertThat(viewModel.hasError(d)).isFalse()
+
+        viewModel.clearError(b)
+        assertThat(viewModel.hasError(b)).isFalse()
+        assertThat(viewModel.hasError(c)).isTrue()
+        assertThat(viewModel.hasError(d)).isFalse()
+
+        assertThat(viewModel.hasErrors()).isTrue()
+
+        viewModel.setError(d)
+        assertThat(viewModel.hasError(b)).isFalse()
+        assertThat(viewModel.hasError(c)).isTrue()
+        assertThat(viewModel.hasError(d)).isTrue()
+
+        viewModel.setError(b)
+        assertThat(viewModel.hasError(b)).isTrue()
+        assertThat(viewModel.hasError(c)).isTrue()
+        assertThat(viewModel.hasError(d)).isTrue()
+    }
 }

@@ -96,9 +96,7 @@ class MainActivity : AppCompatActivity() {
         val manager = getSystemService(ShortcutManager::class.java)
 
         val title = getString(R.string.app_shortcut_add_glucose)
-        val editIntent = Intent(this, EditorActivity::class.java)
-        editIntent.putExtra(EditorActivity.EXTRA_INSERT_MODE, true)
-        editIntent.action = Intent.ACTION_VIEW
+        val editIntent = Intent(this, EditorActivity::class.java).apply { action = Intent.ACTION_VIEW }
         val bm = getShortcutIcon(R.drawable.ic_shortcut_add_glucose)
         val addShortcut = ShortcutInfo.Builder(this, title)
             .setShortLabel(title)

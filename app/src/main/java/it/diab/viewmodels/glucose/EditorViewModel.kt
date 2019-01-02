@@ -13,7 +13,6 @@ import it.diab.db.entities.Insulin
 import it.diab.db.repositories.GlucoseRepository
 import it.diab.db.repositories.InsulinRepository
 import it.diab.insulin.ml.PluginManager
-import it.diab.util.DateUtils
 import it.diab.viewmodels.ScopedViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -27,32 +26,22 @@ class EditorViewModel internal constructor(
     var glucose = Glucose()
         private set
 
+    var isEditMode = false
+
     lateinit var insulins: List<Insulin>
-    lateinit var basalInsulins: List<Insulin>
 
-    lateinit var previousWeek: List<Glucose>
-
+    private lateinit var basalInsulins: List<Insulin>
     private lateinit var pluginManager: PluginManager
+    private var errorStatus = 0
 
     fun prepare(pManager: PluginManager, block: () -> Unit) {
         viewModelScope.launch {
             val defAll = async { insulinRepository.getInsulins() }
             val defBasal = async { insulinRepository.getBasals() }
-            val defPrevious = async {
-                val time = glucose.date.time
-                val timeFrame = glucose.timeFrame
-
-                glucoseRepository.getInDateRangeWithTimeFrame(
-                    time - DateUtils.WEEK,
-                    time,
-                    timeFrame.toInt()
-                )
-            }
 
             pluginManager = pManager
             insulins = defAll.await()
             basalInsulins = defBasal.await()
-            previousWeek = defPrevious.await()
 
             GlobalScope.launch(Dispatchers.Main) { block() }
         }
@@ -95,5 +84,22 @@ class EditorViewModel internal constructor(
 
             GlobalScope.launch(Dispatchers.Main) { block() }
         }
+    }
+
+    fun setError(value: Int) {
+        errorStatus = errorStatus or value
+    }
+
+    fun clearError(value: Int) {
+        errorStatus = errorStatus and value.inv()
+    }
+
+    fun hasError(value: Int) = errorStatus and value != 0
+
+    fun hasErrors() = errorStatus != 0
+
+    companion object {
+        const val ERROR_VALUE = 1
+        const val ERROR_DATE = 1 shl 1
     }
 }

@@ -83,10 +83,7 @@ class GlucoseListFragment : MainFragment() {
     override fun onEditor(view: View) {
         val activity = activity ?: return
 
-        val intent = Intent(activity, EditorActivity::class.java).apply {
-            putExtra(EditorActivity.EXTRA_INSERT_MODE, true)
-        }
-
+        val intent = Intent(activity, EditorActivity::class.java)
         val optionsCompat = ActivityOptionsCompat
             .makeSceneTransitionAnimation(activity, view, view.transitionName)
         startActivity(intent, optionsCompat.toBundle())

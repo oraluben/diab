@@ -9,8 +9,16 @@
   -->
 <resources>
     <!-- Glucose Editor constraints -->
-    <item type="id" name="glucose_editor_keyboard" />
-    <item type="id" name="glucose_editor_base_card" />
-    <item type="id" name="glucose_editor_scroll_info" />
+
+    <item type="id" name="editor_root" />
+    <item type="id" name="editor_value" />
+    <item type="id" name="editor_time" />
+    <item type="id" name="editor_eat_icon" />
+    <item type="id" name="editor_eat_bar" />
+    <item type="id" name="editor_insulin" />
+    <item type="id" name="editor_basal" />
+    <item type="id" name="editor_keyboard" />
+    <item type="id" name="editor_fab" />
+    <item type="id" name="editor_suggestion" />
 
 </resources>

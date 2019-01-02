@@ -56,11 +56,7 @@
     <string name="glucose_editor_save_error">Check the values again</string>
 
     <!-- Glucose suggestions -->
-    <string name="glucose_report_base">During the last week, at this time of the day your glucose has been %1$s (average %2$d).</string>
-    <string name="glucose_type_high">high</string>
-    <string name="glucose_type_medium">fine</string>
-    <string name="glucose_type_low">low</string>
-    <string name="insulin_suggestion_loading">Loading\u2026</string>
+    <string name="insulin_suggestion_loading">Loading</string>
     <string name="insulin_suggestion_warning_low">Too low</string>
     <string name="insulin_suggestion_warning_high">Too high</string>
     <string name="insulin_suggestion_value">Suggested insulin: %1$.1f</string>
