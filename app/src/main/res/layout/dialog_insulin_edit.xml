@@ -10,85 +10,86 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingStart="16dp"
-    android:paddingEnd="16dp"
-    android:paddingTop="16dp"
+    android:background="@color/navigationBar_color"
+    android:minWidth="288dp"
     android:orientation="vertical"
-    android:minWidth="288dp">
+    android:paddingStart="16dp"
+    android:paddingTop="16dp"
+    android:paddingEnd="16dp">
 
     <TextView
         android:id="@+id/insulin_edit_dialog_title"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:paddingBottom="16dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        android:text="@string/insulin_editor_add"
         android:textAppearance="@style/TextAppearance.AppCompat.Title"
         android:textSize="24sp"
-        android:text="@string/insulin_editor_add"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/insulin_edit_icon_name"
         android:layout_width="24dp"
         android:layout_height="48dp"
-        app:layout_constraintTop_toBottomOf="@id/insulin_edit_dialog_title"
         android:contentDescription="@null"
-        app:srcCompat="@drawable/ic_editor_insulin"/>
+        app:layout_constraintTop_toBottomOf="@id/insulin_edit_dialog_title"
+        app:srcCompat="@drawable/ic_editor_insulin" />
 
     <androidx.appcompat.widget.AppCompatEditText
         android:id="@+id/insulin_edit_name"
         android:layout_width="0dp"
         android:layout_height="48dp"
         android:layout_marginStart="16dp"
-        app:layout_constraintStart_toEndOf="@id/insulin_edit_icon_name"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/insulin_edit_icon_name"
+        android:hint="@string/insulin_editor_name"
         android:maxLines="1"
-        android:hint="@string/insulin_editor_name"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/insulin_edit_icon_name"
+        app:layout_constraintTop_toTopOf="@id/insulin_edit_icon_name" />
 
     <ImageView
         android:id="@+id/insulin_edit_icon_time"
         android:layout_width="24dp"
         android:layout_height="48dp"
-        app:layout_constraintTop_toBottomOf="@id/insulin_edit_icon_name"
         android:contentDescription="@null"
-        app:srcCompat="@drawable/ic_editor_time"/>
+        app:layout_constraintTop_toBottomOf="@id/insulin_edit_icon_name"
+        app:srcCompat="@drawable/ic_editor_time" />
 
     <androidx.appcompat.widget.AppCompatSpinner
         android:id="@+id/insulin_edit_time"
         android:layout_width="0dp"
         android:layout_height="48dp"
         android:layout_marginStart="8dp"
-        app:layout_constraintStart_toEndOf="@id/insulin_edit_icon_time"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/insulin_edit_icon_time"/>
+        app:layout_constraintStart_toEndOf="@id/insulin_edit_icon_time"
+        app:layout_constraintTop_toTopOf="@id/insulin_edit_icon_time" />
 
     <ImageView
         android:id="@+id/insulin_edit_icon_basal"
         android:layout_width="24dp"
         android:layout_height="48dp"
-        app:layout_constraintTop_toBottomOf="@id/insulin_edit_icon_time"
         android:contentDescription="@null"
-        app:srcCompat="@drawable/ic_basal"/>
+        app:layout_constraintTop_toBottomOf="@id/insulin_edit_icon_time"
+        app:srcCompat="@drawable/ic_basal" />
 
     <androidx.appcompat.widget.SwitchCompat
         android:id="@+id/insulin_edit_basal"
         android:layout_width="0dp"
         android:layout_height="48dp"
         android:layout_marginStart="16dp"
-        app:layout_constraintStart_toEndOf="@id/insulin_edit_icon_basal"
+        android:text="@string/insulin_item_basal"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/insulin_edit_icon_basal"
-        android:text="@string/insulin_item_basal"/>
+        app:layout_constraintStart_toEndOf="@id/insulin_edit_icon_basal"
+        app:layout_constraintTop_toTopOf="@id/insulin_edit_icon_basal" />
 
     <ImageView
         android:id="@+id/insulin_edit_icon_half_units"
         android:layout_width="24dp"
         android:layout_height="48dp"
-        app:layout_constraintTop_toBottomOf="@id/insulin_edit_icon_basal"
         android:contentDescription="@null"
-        app:srcCompat="@drawable/ic_half_units"/>
+        app:layout_constraintTop_toBottomOf="@id/insulin_edit_icon_basal"
+        app:srcCompat="@drawable/ic_half_units" />
 
 
     <androidx.appcompat.widget.SwitchCompat
@@ -96,31 +97,31 @@
         android:layout_width="0dp"
         android:layout_height="48dp"
         android:layout_marginStart="16dp"
-        app:layout_constraintStart_toEndOf="@id/insulin_edit_icon_half_units"
+        android:text="@string/insulin_item_half_units"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/insulin_edit_icon_half_units"
-        android:text="@string/insulin_item_half_units"/>
+        app:layout_constraintStart_toEndOf="@id/insulin_edit_icon_half_units"
+        app:layout_constraintTop_toTopOf="@id/insulin_edit_icon_half_units" />
 
     <com.google.android.material.button.MaterialButton
-        style="@style/Widget.MaterialComponents.Button.TextButton.Dialog"
         android:id="@+id/insulin_edit_save"
+        style="@style/Widget.MaterialComponents.Button.TextButton.Dialog"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        app:layout_constraintWidth_default="percent"
+        android:text="@string/save"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/insulin_edit_icon_half_units"
-        app:layout_constraintWidth_percent="0.3"
-        android:text="@string/save"/>
+        app:layout_constraintWidth_default="percent"
+        app:layout_constraintWidth_percent="0.3" />
 
     <com.google.android.material.button.MaterialButton
-        style="@style/Widget.MaterialComponents.Button.TextButton.Dialog"
         android:id="@+id/insulin_edit_delete"
+        style="@style/Widget.MaterialComponents.Button.TextButton.Dialog"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintWidth_default="percent"
+        android:text="@string/remove"
         app:layout_constraintEnd_toStartOf="@id/insulin_edit_save"
         app:layout_constraintTop_toTopOf="@id/insulin_edit_save"
-        app:layout_constraintWidth_percent="0.3"
-        android:text="@string/remove"/>
+        app:layout_constraintWidth_default="percent"
+        app:layout_constraintWidth_percent="0.3" />
 </androidx.constraintlayout.widget.ConstraintLayout>

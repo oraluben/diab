@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><!--
+<!--
   Copyright (c) 2019 Bevilacqua Joey
   
   Licensed under the GNU GPLv3 license
@@ -9,6 +9,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/navigationBar_color"
     android:orientation="vertical"
     android:paddingTop="8dp">
 
@@ -63,5 +64,4 @@
         android:text="@string/time_pick"
         android:textColor="?android:attr/textColorPrimary"
         android:textSize="18sp" />
-
 </LinearLayout>
