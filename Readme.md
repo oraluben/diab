@@ -6,38 +6,99 @@
 Diab
 =====
 
+![hero](docs/assets/hero.png)
 
-[![Icon](app/src/main/ic_launcher-web.png)](#)
+**Diab** is a smart opensource application that helps you managing your diabetes by
+keeping track of your glucose values and insulin injections.
+
+Using the data registered inside the app it's possible to generate a
+customized plugin that once applied to the app will provide smart insights
+for insulin dosages based on real-time context.
+
+It's also possible to integrate the app with other fitness services to share
+the data.
 
 ## Features
 
-* Save records of glucose and insulins
-* Google Fit integration (optional)
-* Insulin suggestions
+* Save records of glucose and insulin dosages
+* Insulin suggestions plugin
+* [optional] Google Fit integration
 
-## License
+For upcoming features, see the [bug tracker](https://github.com/bvlj/diab/issues).
+
+## Open source
+
+### License
 
 Released under the [GNU GPLv3](https://www.gnu.org/licenses/gpl-3.0.txt).
 
-## Working with the repository
+### Working with the repository
 
 Clone the repository with git
 
-```
+```shell
 git clone https://github.com/bvlj/diab
 ```
 
 Setup the work environment
 
-* Install git pre-push hooks (all the unit test must pass before pushing to master)
-* Install ktlint (enforces code style guidelines)
-* Prevent git from tracking changes to your trained models
+* Install git pre-push hooks (all the tests must pass before pushing to master)
+* Install [ktlint](https://ktlint.github.io) (enforces code style guidelines)
+* Prevent git from tracking changes to your trained plugin models
 
-```
+```shell
 ./setup.sh
 ```
 
-### Creating insulin suggestion models
+### Compile
 
-To create your customized insulin suggestions models, see
-the [readme found in the `ml` module](ml/Readme.md)
+The builds can be compiled using [gradle](https://gradle.org/).
+The following build variants are available:
+
+1. `oss`
+2.  `googleFit`
+
+#### oss builds
+
+Builds the app without any fitness services integration.
+The output is composed of 100% open source code.
+
+```shell
+./gradlew assembleOssRelease
+```
+
+#### googleFit builds
+
+Builds the app with (optional) Google Fit integration.
+The output includes proprietary libraries from Google used for Fit.
+
+```shell
+./gradlew assembleGoogleFitRelease
+```
+
+## Insulin suggestions plugin
+
+> :warning: This feature could be dangerous, use with extreme caution. :warning:
+>
+> **DO NOT** blindly rely on it as while it's efficient enough for
+> providing hints, it's NOT supposed to replace medical advices
+> or suggestions from more-experienced humans.
+>
+> The developer and contributors disclaim any responsibility over any
+> form of injury derived from (mis)usage of this feature.
+
+The insulin suggestion plugin allows the app to provide smart insulin
+dosage hints.
+
+The plugin is created by using a machine-learning model created with data from
+the app which is tested against a wide set of possible scenarios.
+
+Given the strictly sensitive and personal nature of dealt with data, no plugin
+is bundled with the app, nor made available for download.
+
+### Build your own suggestion plugin
+
+To create your customized insulin suggestions plugins using ml, see the
+[readme found in the `ml` module](ml/Readme.md).
+
+It's also possible to build a plugin manually, but no documentation is available for the time being.

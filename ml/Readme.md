@@ -1,4 +1,4 @@
-# ML estimator model for insulin suggestions
+# ML estimator model for insulin suggestions plugin
 
 ## Setup
 
@@ -9,33 +9,39 @@ Required software:
 
 Install dependencies
 
-`pip3 install -r requirements.txt`
+```shell
+pip3 install -r requirements.txt
+```
 
 ## Prepare the data for training
 
 ### Export data from the app
 
 From the app settings, click on _"Export data"_ and authenticate to allow
-the app to save your glucose data for ml training
+the app to save your glucose data for ml training.
 
 #### Import using adb
 
-Enable usb debugging on your device, plug it in and then run
-`bash import.sh data` on your pc
+Enable usb debugging on your device, plug it in and then run on your pc
+```shell
+bash import.sh data
+```
 
 #### Import manually
 
-Copy the files from the sdcard to the out directory
+Copy the files from the `Documents` directory inside the device memory
+to the 'data' directory.
 
 #### Setup the tests
 
-Fill the `data/test_*.csv` files with random data with optimal results
-(you can pick some from the train files).
+Fill the `data/test_*.csv` files with data with desired results
+(pick some from the train files).
 
-## Train the model and get the json result
+## Train the model and get the results
 
-The app uses some json files to look at references of the model results instead
-of shipping the real model itself in order to allow lower-end devices to use this feature too.
+The app uses some [json](https://json.org) files to look at references of
+the model results instead of shipping the real model itself in
+order to allow lower-end devices to use this feature too.
 
 All you need to do is execute the python script:
 
@@ -49,15 +55,17 @@ root: `ml/export/plugin.zip`.
 
 Send this file to the device, open the app settings, click on
 _"Suggestions plugin"_, select the zip file and wait until it's
-installed. 
+installed.
+
+To update the plugin, repeat this procedure.
 
 ## Disable tracking git changes of sensitive files
 
-Sensitive file changes should be disabled by running the
+Sensitive file changes tracking should be disabled by running the
 `setup.sh` file found in the root of this repository, or
 by updating the git index manually:
 
-```
+```shell
  git update-index --skip-worktree ml/data/*
  git update-index --skip-worktree ml/export/*
 ```
