@@ -48,15 +48,9 @@ class InsulinFragment : MainFragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_insulin, container, false)
-
         recyclerView = view.findViewById(R.id.insulin_list)
-        return view
-    }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-
-        val context = context ?: return
+        val context = context ?: return view
 
         val adapter = InsulinAdapter()
         recyclerView.adapter = adapter
@@ -67,6 +61,8 @@ class InsulinFragment : MainFragment() {
             }
             startActivity(intent)
         })
+
+        return view
     }
 
     override fun getTitle() = R.string.fragment_insulin

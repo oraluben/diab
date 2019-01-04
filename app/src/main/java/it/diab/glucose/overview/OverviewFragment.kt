@@ -84,14 +84,14 @@ class OverviewFragment : MainFragment() {
         chart = view.findViewById(R.id.overview_chart)
         menuView = view.findViewById(R.id.overview_menu)
 
+        viewModel.last.observe(this, Observer(this::updateLast))
+        viewModel.list.observe(this, Observer(this::updateChart))
+
         return view
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-
-        viewModel.last.observe(this, Observer(this::updateLast))
-        viewModel.list.observe(this, Observer(this::updateChart))
 
         setupMenu()
     }
