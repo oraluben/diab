@@ -59,7 +59,7 @@ class DateTimeDialog(
         view.findViewById<TextView>(R.id.edit_dialog_date_yesterday).apply {
             setOnClickListener {
                 dialog.dismiss()
-                calendar.timeInMillis -= DateUtils.DAY
+                calendar.timeInMillis = System.currentTimeMillis() - DateUtils.DAY
                 showTimePicker()
             }
         }
