@@ -14,6 +14,7 @@
         android:id="@+id/menu_fit"
         android:title="@string/fit_name"
         app:showAsAction="never"
+        android:visible="false"
         tools:visible="true" />
 
     <item
