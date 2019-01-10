@@ -9,8 +9,9 @@ function install_ktlint() {
   echo "Downloading ktlint..."
   curl -sSLO https://github.com/shyiko/ktlint/releases/download/0.29.0/ktlint
   chmod a+x ktlint
-  ktlint --apply-to-idea-project --android -y
-  ktlint --install-git-pre-commit-hook
+  ./ktlint --apply-to-idea-project --android -y
+  ./ktlint --install-git-pre-commit-hook
+  sed -i "s:xargs ktlint:xargs ./ktlint:" .git/hooks/pre-commit
 }
 
 function disable_git_track_changes() {
