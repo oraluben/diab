@@ -16,6 +16,8 @@
 /ml/include
 /ml/lib
 /ml/out
+/ml/pip-selfcheck.json
+/ml/pyvenv.cfg
 app/release
 app/oss/release
 app/googleFit/release
