@@ -8,24 +8,21 @@
  */
 package it.diab.glucose.editor
 
-import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
-import android.view.LayoutInflater
+import android.content.DialogInterface
 import android.view.View
-import android.widget.TextView
-import com.google.android.material.bottomsheet.BottomSheetDialog
+import androidx.appcompat.app.AlertDialog
 import it.diab.R
 import it.diab.util.DateUtils
-import it.diab.util.UIUtils
 import java.util.Calendar
 import java.util.Date
 
 class DateTimeDialog(
     private val activity: Activity,
     private val onSelected: (Long) -> Unit
-) {
+) : DialogInterface.OnClickListener {
 
     private var calendar = Calendar.getInstance()
 
@@ -42,37 +39,39 @@ class DateTimeDialog(
         showTimePicker()
     }
 
-    fun show(date: Date) {
-        calendar.time = date
-        val dialog = BottomSheetDialog(activity)
-
-        val inflater = activity.getSystemService(LayoutInflater::class.java)
-        @SuppressLint("InflateParams")
-        val view = inflater.inflate(R.layout.dialog_date_picker, null)
-
-        view.findViewById<TextView>(R.id.edit_dialog_date_today).apply {
-            setOnClickListener {
-                dialog.dismiss()
+    override fun onClick(dialog: DialogInterface?, which: Int) {
+        when (which) {
+            0 -> {
+                dialog?.dismiss()
                 showTimePicker()
             }
-        }
-        view.findViewById<TextView>(R.id.edit_dialog_date_yesterday).apply {
-            setOnClickListener {
-                dialog.dismiss()
+            1 -> {
+                dialog?.dismiss()
                 calendar.timeInMillis = System.currentTimeMillis() - DateUtils.DAY
                 showTimePicker()
             }
-        }
-        view.findViewById<TextView>(R.id.edit_dialog_date_pick).apply {
-            setOnClickListener {
-                dialog.dismiss()
+            2 -> {
+                dialog?.dismiss()
                 showDatePicker()
             }
         }
+    }
 
-        dialog.setContentView(view)
-        UIUtils.setWhiteNavBarIfNeeded(activity, dialog)
-        dialog.show()
+    fun show(date: Date) {
+        calendar.time = date
+
+        val options = activity.resources.run {
+            arrayOf(
+                getString(R.string.time_today),
+                getString(R.string.time_yesterday),
+                getString(R.string.time_pick)
+            )
+        }
+
+        AlertDialog.Builder(activity)
+            .setTitle(R.string.glucose_editor_time_dialog)
+            .setItems(options, this)
+            .show()
     }
 
     private fun showTimePicker() {
