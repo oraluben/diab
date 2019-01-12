@@ -17,6 +17,7 @@
         android:id="@+id/overview_last_value"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:maxLines="1"
         android:textColor="?android:attr/textColorPrimary"
         android:textSize="96sp"
         tools:text="121" />
@@ -25,6 +26,10 @@
         android:id="@+id/overview_last_desc"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:maxLines="2"
+        android:paddingStart="24dp"
+        android:paddingEnd="24dp"
+        android:textAlignment="center"
         android:textColor="?android:attr/textColorSecondary"
         android:textSize="20sp"
         tools:text="Last value (19:22)" />

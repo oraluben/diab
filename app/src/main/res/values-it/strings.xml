@@ -39,7 +39,7 @@
     <!-- Overview -->
     <string name="overview_last_desc">Ultimo valore%1$s</string>
     <string name="overview_last_fallback">Ciao</string>
-    <string name="overview_last_desc_fallback">Aggiungi un valore toccando la +</string>
+    <string name="overview_last_desc_fallback">Aggiungi un valore toccando il pulsante blu</string>
 
     <!-- Insulin Editor -->
     <string name="insulin_editor_add">Aggungi insulina</string>

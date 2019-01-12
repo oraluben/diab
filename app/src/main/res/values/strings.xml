@@ -38,8 +38,8 @@
 
     <!-- Overview -->
     <string name="overview_last_desc">Last value%1$s</string>
-    <string name="overview_last_fallback">Welcome</string>
-    <string name="overview_last_desc_fallback">Add a value by touching the +</string>
+    <string name="overview_last_fallback">Hello</string>
+    <string name="overview_last_desc_fallback">Add a value by touching the blue button</string>
 
     <!-- Insulin Editor -->
     <string name="insulin_editor_add">Add insulin</string>
