@@ -41,6 +41,7 @@
         android:layout_height="56dp"
         android:paddingStart="16dp"
         android:paddingEnd="16dp"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/editor_time" />
 
     <View

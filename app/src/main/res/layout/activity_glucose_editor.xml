@@ -54,6 +54,7 @@
         android:paddingStart="16dp"
         android:paddingEnd="16dp"
         android:src="@drawable/ic_editor_eat"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/editor_time" />
 
     <it.diab.ui.EatBar
@@ -91,15 +92,15 @@
         android:gravity="center_vertical"
         android:maxLines="1"
         android:paddingStart="16dp"
-        android:visibility="gone"
-        tools:visibility="visible"
         android:paddingEnd="16dp"
         android:textColor="?android:textColorPrimary"
         android:textSize="24sp"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/editor_insulin"
-        tools:text="Basal 20" />
+        tools:text="Basal 20"
+        tools:visibility="visible" />
 
     <it.diab.ui.InsulinSuggestionView
         android:id="@id/editor_suggestion"
