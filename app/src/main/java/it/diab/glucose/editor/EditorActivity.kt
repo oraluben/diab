@@ -79,7 +79,7 @@ class EditorActivity : AppCompatActivity() {
     }
 
     private fun setup() {
-        val extraUid = intent.getLongExtra(EXTRA_GLUCOSE_ID, -1)
+        val extraUid = intent.getLongExtra(EXTRA_UID, -1)
         viewModel.isEditMode = extraUid < 0
         viewModel.setGlucose(extraUid) {
             setupCommon()
@@ -284,7 +284,7 @@ class EditorActivity : AppCompatActivity() {
     }
 
     companion object {
-        const val EXTRA_GLUCOSE_ID = "glucose_id"
+        const val EXTRA_UID = "glucose_uid"
 
         private const val TAG = "EditorActivity"
     }

@@ -6,7 +6,7 @@
  * The text of the license can be found in the LICENSE file
  * or at https://www.gnu.org/licenses/gpl.txt
  */
-package it.diab.glucose.list
+package it.diab.fragments
 
 import android.content.Intent
 import android.os.Bundle
@@ -25,7 +25,6 @@ import it.diab.db.entities.Glucose
 import it.diab.db.repositories.GlucoseRepository
 import it.diab.db.repositories.InsulinRepository
 import it.diab.glucose.editor.EditorActivity
-import it.diab.ui.MainFragment
 import it.diab.ui.recyclerview.RecyclerViewExt
 import it.diab.util.event.Event
 import it.diab.util.event.EventObserver

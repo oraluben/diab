@@ -6,7 +6,7 @@
  * The text of the license can be found in the LICENSE file
  * or at https://www.gnu.org/licenses/gpl.txt
  */
-package it.diab.glucose.overview
+package it.diab.fragments
 
 import android.annotation.SuppressLint
 import android.content.Intent
@@ -37,7 +37,6 @@ import it.diab.db.repositories.GlucoseRepository
 import it.diab.fit.BaseFitHandler
 import it.diab.glucose.editor.EditorActivity
 import it.diab.settings.SettingsActivity
-import it.diab.ui.MainFragment
 import it.diab.ui.graph.OverviewGraphView
 import it.diab.util.SystemUtil
 import it.diab.util.extensions.isToday

@@ -31,9 +31,9 @@ import androidx.viewpager.widget.ViewPager
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.tabs.TabLayout
 import it.diab.glucose.editor.EditorActivity
-import it.diab.glucose.list.GlucoseListFragment
-import it.diab.glucose.overview.OverviewFragment
-import it.diab.insulin.InsulinFragment
+import it.diab.fragments.GlucoseListFragment
+import it.diab.fragments.OverviewFragment
+import it.diab.fragments.InsulinFragment
 import it.diab.util.event.EventObserver
 
 class MainActivity : AppCompatActivity() {
@@ -75,7 +75,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun onGlucoseClick(uid: Long) {
         val intent = Intent(this, EditorActivity::class.java).apply {
-            putExtra(EditorActivity.EXTRA_GLUCOSE_ID, uid)
+            putExtra(EditorActivity.EXTRA_UID, uid)
         }
         val optionsCompat = ActivityOptionsCompat
             .makeSceneTransitionAnimation(this, fab, fab.transitionName)

@@ -123,6 +123,6 @@ class EditorActivity : AppCompatActivity() {
     }
 
     companion object {
-        const val EXTRA_UID = "InsulinEditorExtraUid"
+        const val EXTRA_UID = "insulin_uid"
     }
 }
