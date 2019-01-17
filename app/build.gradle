@@ -91,11 +91,6 @@ dependencies {
     googleFitImplementation "com.google.android.gms:play-services-auth:16.0.1"
     googleFitImplementation "com.google.android.gms:play-services-fitness:16.0.1"
 
-    // LeakCanary
-    debugImplementation "com.squareup.leakcanary:leakcanary-android:1.6.2"
-    debugImplementation "com.squareup.leakcanary:leakcanary-support-fragment:1.6.2"
-    releaseImplementation "com.squareup.leakcanary:leakcanary-android-no-op:1.6.2"
-
     // Testing
     androidTestImplementation 'androidx.arch.core:core-testing:2.0.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'
