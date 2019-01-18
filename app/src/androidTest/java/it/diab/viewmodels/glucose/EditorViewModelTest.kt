@@ -71,73 +71,69 @@ class EditorViewModelTest {
     }
 
     @Test
-    fun setGlucose() {
-        viewModel.setGlucose(testGlucose.uid) {
-            viewModel.glucose.apply {
-                assertThat(uid).isEqualTo(testGlucose.uid)
-                assertThat(this).isEqualTo(testGlucose)
-            }
+    fun setGlucose() = runBlocking {
+        viewModel.runSetGlucose(testGlucose.uid)
+        viewModel.glucose.run {
+            assertThat(uid).isEqualTo(testGlucose.uid)
+            assertThat(this).isEqualTo(testGlucose)
         }
     }
 
     @Test
-    fun save() {
-        viewModel.setGlucose(-1) {
-            runBlocking {
-                val initialSize = db.glucose().getInDateRange(0, System.currentTimeMillis()).size
+    fun save() = runBlocking {
+        viewModel.runSetGlucose(-1)
 
-                viewModel.glucose.apply {
-                    value = 81
-                    insulinId0 = 0
-                    insulinValue0 = 10.5f
-                    eatLevel = Glucose.MAX
-                }
+        val initialSize = db.glucose().getInDateRange(0, System.currentTimeMillis()).size
 
-                viewModel.save()
+        viewModel.glucose.apply {
+            value = 81
+            insulinId0 = 0
+            insulinValue0 = 10.5f
+            eatLevel = Glucose.MAX
+        }
 
-                delay(500)
+        viewModel.runSave()
 
-                val finalSize = db.glucose().getInDateRange(0, System.currentTimeMillis()).size
-                assertThat(finalSize).isEqualTo(initialSize + 1)
-            }
+        delay(500)
+
+        val finalSize = db.glucose().getInDateRange(0, System.currentTimeMillis()).size
+        assertThat(finalSize).isGreaterThan(initialSize)
+    }
+
+    @Test
+    fun getInsulin() = runBlocking {
+        viewModel.runPrepare(pluginManager)
+        viewModel.getInsulin(testInsulin.uid).run {
+            assertThat(uid).isEqualTo(testInsulin.uid)
+            assertThat(this).isEqualTo(testInsulin)
         }
     }
 
     @Test
-    fun getInsulin() {
-        viewModel.prepare(pluginManager) {
-            viewModel.getInsulin(testInsulin.uid).run {
-                assertThat(uid).isEqualTo(testInsulin.uid)
-                assertThat(this).isEqualTo(testInsulin)
-            }
-        }
+    fun hasPotentialBasal() = runBlocking {
+        viewModel.runPrepare(pluginManager)
+
+        viewModel.glucose.timeFrame = testBasal.timeFrame
+        assertThat(viewModel.hasPotentialBasal()).isTrue()
     }
 
     @Test
-    fun hasPotentialBasal() {
-        viewModel.prepare(pluginManager) {
-            viewModel.glucose.timeFrame = testBasal.timeFrame
-            assertThat(viewModel.hasPotentialBasal()).isTrue()
-        }
+    fun getInsulinByTimeFrame() = runBlocking {
+        viewModel.runPrepare(pluginManager)
+        viewModel.glucose.timeFrame = testInsulin.timeFrame
+
+        assertThat(viewModel.getInsulinByTimeFrame().timeFrame)
+            .isEqualTo(viewModel.glucose.timeFrame)
     }
 
     @Test
-    fun getInsulinByTimeFrame() {
-        viewModel.prepare(pluginManager) {
-            viewModel.glucose.timeFrame = testInsulin.timeFrame
-            assertThat(viewModel.getInsulinByTimeFrame().timeFrame)
-                .isEqualTo(viewModel.glucose.timeFrame)
-        }
-    }
-
-    @Test
-    fun applyInsulinSugestion() {
+    fun applyInsulinSugestion() = runBlocking {
         val test = 6.5f
-        viewModel.applyInsulinSuggestion(test, testInsulin) {
-            viewModel.glucose.apply {
-                assertThat(insulinValue0).isEqualTo(test)
-                assertThat(insulinId0).isEqualTo(testInsulin.uid)
-            }
+
+        viewModel.runApplySuggestion(test, testInsulin)
+        viewModel.glucose.run {
+            assertThat(insulinValue0).isEqualTo(test)
+            assertThat(insulinId0).isEqualTo(testInsulin.uid)
         }
     }
 

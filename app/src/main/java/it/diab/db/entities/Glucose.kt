@@ -90,6 +90,10 @@ class Glucose : Parcelable {
         this.timeFrame = timeFrame
     }
 
+    override fun toString() = "Glucose $uid: value: $value, date: $date, " +
+        "insulin0: {$insulinId0, $insulinValue0}, insulin1: {$insulinId1, $insulinValue1}, " +
+        "eat: $eatLevel, timeFrame: $timeFrame"
+
     override fun equals(other: Any?): Boolean {
         if (other == null || other !is Glucose) {
             return false

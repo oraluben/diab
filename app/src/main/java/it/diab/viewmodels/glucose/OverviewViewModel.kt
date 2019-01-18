@@ -9,6 +9,7 @@
 package it.diab.viewmodels.glucose
 
 import android.content.SharedPreferences
+import androidx.annotation.VisibleForTesting
 import com.github.mikephil.charting.data.Entry
 import it.diab.db.entities.Glucose
 import it.diab.db.repositories.GlucoseRepository
@@ -41,39 +42,46 @@ class OverviewViewModel internal constructor(
         fitHandler = fHandler
     }
 
-    fun getDataSets(data: List<Glucose>, block: (List<Entry>, List<Entry>) -> Unit) {
+    fun getDataSets(block: (List<Entry>, List<Entry>) -> Unit) {
         viewModelScope.launch {
-            val averageDef = async {
-                val avg = HashMap<Int, Float>()
-                val end = System.currentTimeMillis()
-                val start = end - DateUtils.WEEK
-
-                val size = TimeFrame.values().size - 2 // -1 for the iterator and -1 for "EXTRA"
-                for (i in 0..size) {
-                    val tf = i.toTimeFrame()
-
-                    val lastWeek = glucoseRepository.getInDateRangeWithTimeFrame(start, end, i)
-                    val avgVal = lastWeek.indices.map { lastWeek[it].value }.sum() /
-                        lastWeek.size.toFloat()
-                    avg[tf.reprHour] = avgVal
-                }
-
-                avg.filterNot { it.value.isZeroOrNan() }
-                    .map { Entry(it.key * 60f, it.value) }
-                    .sortedBy { it.x }
-            }
-
-            val todayDef = async {
-                data.sortedBy { it.date.time }
-                    .filter { it.date.isToday() }
-                    .map { Entry(it.date.getAsMinutes(), it.value.toFloat()) }
-                    .distinctBy { it.x }
-            }
-
-            val today = todayDef.await()
-            val average = averageDef.await()
-
-            GlobalScope.launch(Dispatchers.Main) { block(today, average) }
+            val end = System.currentTimeMillis()
+            val start = end - DateUtils.WEEK
+            val data = glucoseRepository.getInDateRange(start, end)
+            val pair = runGetDataSets(data)
+            GlobalScope.launch(Dispatchers.Main) { block(pair.first, pair.second) }
         }
+    }
+
+    @VisibleForTesting
+    suspend fun runGetDataSets(data: List<Glucose>): Pair<List<Entry>, List<Entry>> {
+        val averageDef = async {
+            val avg = HashMap<Int, Float>()
+
+            val size = TimeFrame.values().size - 2 // -1 for the iterator and -1 for "EXTRA"
+            for (i in 0..size) {
+                val tf = i.toTimeFrame()
+
+                val lastWeek = data.filter { it.timeFrame == tf }
+                val avgVal = lastWeek.indices.map { lastWeek[it].value }.sum() /
+                    lastWeek.size.toFloat()
+                avg[tf.reprHour] = avgVal
+            }
+
+            avg.filterNot { it.value.isZeroOrNan() }
+                .map { Entry(it.key * 60f, it.value) }
+                .sortedBy { it.x }
+        }
+
+        val todayDef = async {
+            data.sortedBy { it.date.time }
+                .filter { it.date.isToday() }
+                .map { Entry(it.date.getAsMinutes(), it.value.toFloat()) }
+                .distinctBy { it.x }
+        }
+
+        val today = todayDef.await()
+        val average = averageDef.await()
+
+        return Pair(today, average)
     }
 }

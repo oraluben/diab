@@ -100,7 +100,7 @@ class OverviewFragment : MainFragment() {
             return
         }
 
-        viewModel.getDataSets(data, this::setDataSets)
+        viewModel.getDataSets(this::setDataSets)
     }
 
     private fun updateLast(data: List<Glucose>?) {

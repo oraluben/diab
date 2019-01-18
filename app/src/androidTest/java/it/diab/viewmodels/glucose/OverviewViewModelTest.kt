@@ -14,23 +14,23 @@ import androidx.test.core.app.ApplicationProvider
 import com.google.common.truth.Truth.assertThat
 import it.diab.db.AppDatabase
 import it.diab.db.repositories.GlucoseRepository
-import it.diab.util.extensions.asTimeFrame
 import it.diab.util.extensions.glucose
 import it.diab.util.timeFrame.TimeFrame
+import kotlinx.coroutines.runBlocking
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import java.util.Calendar
 
 class OverviewViewModelTest {
 
-    private lateinit var db: AppDatabase
     private lateinit var viewModel: OverviewViewModel
 
+    private val testTimeFrame = TimeFrame.MORNING
     private val glucoseValues = arrayOf(69, 99, 301, 132)
-    private val glucoseList = Array(4) { i -> glucose { value = glucoseValues[i] } }
-
-    private lateinit var testTimeFrame: TimeFrame
+    private val glucoseList = Array(4) { i -> glucose {
+        value = glucoseValues[i]
+        timeFrame = testTimeFrame
+    } }
 
     @get:Rule
     val rule = InstantTaskExecutorRule()
@@ -40,16 +40,16 @@ class OverviewViewModelTest {
         AppDatabase.TEST_MODE = true
 
         val context = ApplicationProvider.getApplicationContext<Context>()
-        db = AppDatabase.getInstance(context)
         viewModel = OverviewViewModel(GlucoseRepository.getInstance(context))
-
-        testTimeFrame = Calendar.getInstance().time.asTimeFrame()
     }
 
     @Test
-    fun getAverageLastWeek() {
-        viewModel.getDataSets(glucoseList.asList()) { _, avg ->
-            assertThat(avg[testTimeFrame.toInt()].x).isEqualTo(glucoseValues.average().toFloat())
-        }
+    fun getAverageLastWeek() = runBlocking {
+        val pair = viewModel.runGetDataSets(glucoseList.asList())
+
+        val b = 1
+
+        assertThat(pair.second[testTimeFrame.toInt()].y)
+            .isEqualTo(glucoseValues.average().toFloat())
     }
 }

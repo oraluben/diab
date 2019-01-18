@@ -16,14 +16,13 @@ import it.diab.db.AppDatabase
 import it.diab.db.repositories.InsulinRepository
 import it.diab.util.extensions.insulin
 import it.diab.util.timeFrame.TimeFrame
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
 class EditorViewModelTest {
-    private lateinit var db: AppDatabase
+    private lateinit var repository: InsulinRepository
     private lateinit var viewModel: EditorViewModel
 
     @get:Rule
@@ -34,23 +33,22 @@ class EditorViewModelTest {
         AppDatabase.TEST_MODE = true
 
         val context = ApplicationProvider.getApplicationContext<Context>()
-        db = AppDatabase.getInstance(context)
-        viewModel = EditorViewModel(InsulinRepository.getInstance(context))
+        repository = InsulinRepository.getInstance(context)
+        viewModel = EditorViewModel(repository)
     }
 
     @Test
-    fun setInsulin() {
+    fun setInsulin() = runBlocking {
         val insulin = insulin {
-            uid = 81
+            uid = 12
             name = "FooBar"
-        }.also { db.insulin().insert(it) }
-
-        viewModel.setInsulin(insulin.uid) {
-            viewModel.insulin.apply {
-                assertThat(uid).isEqualTo(insulin.uid)
-                assertThat(this).isEqualTo(insulin)
-            }
         }
+
+        repository.insert(insulin)
+
+        val result = viewModel.runSetInsulin(insulin.uid)
+        assertThat(result.uid).isEqualTo(insulin.uid)
+        assertThat(result).isEqualTo(insulin)
     }
 
     @Test
@@ -58,36 +56,32 @@ class EditorViewModelTest {
         val insulin = insulin {
             uid = 12
             name = "FooBar"
-        }.also { db.insulin().insert(it) }
+        }
+
+        repository.insert(insulin)
 
         viewModel.insulin = insulin
-        viewModel.delete()
+        viewModel.runDelete()
 
-        delay(500)
-
-        assertThat(db.insulin().getById(insulin.uid)).isEmpty()
+        assertThat(repository.getById(insulin.uid).uid).isNotEqualTo(insulin.uid)
     }
 
     @Test
-    fun save() {
-        viewModel.setInsulin(-1) {
-            runBlocking {
-                val initialSize = db.insulin().getInsulins().size
+    fun save() = runBlocking {
+        viewModel.runSetInsulin(-1)
 
-                viewModel.insulin.apply {
-                    name = "BarFoo"
-                    timeFrame = TimeFrame.LATE_MORNING
-                    isBasal = true
-                }
+        val testUid = 12L
+        assertThat(repository.getById(testUid).uid).isNotEqualTo(testUid)
 
-                viewModel.save()
-
-                delay(500)
-
-                val finalSize = db.insulin().getInsulins().size
-
-                assertThat(finalSize).isEqualTo(initialSize + 1)
-            }
+        viewModel.insulin.apply {
+            uid = testUid
+            name = "BarFoo"
+            timeFrame = TimeFrame.LATE_MORNING
+            isBasal = true
         }
+
+        viewModel.runSave()
+
+        assertThat(repository.getById(testUid).uid).isEqualTo(testUid)
     }
 }

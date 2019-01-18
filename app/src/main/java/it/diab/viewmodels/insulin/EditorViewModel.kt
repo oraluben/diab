@@ -8,6 +8,7 @@
  */
 package it.diab.viewmodels.insulin
 
+import androidx.annotation.VisibleForTesting
 import it.diab.db.entities.Insulin
 import it.diab.db.repositories.InsulinRepository
 import it.diab.viewmodels.ScopedViewModel
@@ -22,17 +23,32 @@ class EditorViewModel internal constructor(
 
     fun setInsulin(uid: Long, block: (Insulin) -> Unit) {
         viewModelScope.launch {
-            insulin = insulinRepository.getById(uid)
+            insulin = runSetInsulin(uid)
 
             GlobalScope.launch { block(insulin) }
         }
     }
 
     fun delete() {
-        viewModelScope.launch { insulinRepository.delete(insulin) }
+        viewModelScope.launch { runDelete() }
     }
 
     fun save() {
-        viewModelScope.launch { insulinRepository.insert(insulin) }
+        viewModelScope.launch { runSave() }
+    }
+
+    @VisibleForTesting
+    fun runSetInsulin(uid: Long): Insulin {
+        return insulinRepository.getById(uid)
+    }
+
+    @VisibleForTesting
+    suspend fun runDelete() {
+        insulinRepository.delete(insulin)
+    }
+
+    @VisibleForTesting
+    suspend fun runSave() {
+        insulinRepository.insert(insulin)
     }
 }

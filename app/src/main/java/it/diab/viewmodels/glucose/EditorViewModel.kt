@@ -8,6 +8,7 @@
  */
 package it.diab.viewmodels.glucose
 
+import androidx.annotation.VisibleForTesting
 import it.diab.db.entities.Glucose
 import it.diab.db.entities.Insulin
 import it.diab.db.repositories.GlucoseRepository
@@ -36,27 +37,20 @@ class EditorViewModel internal constructor(
 
     fun prepare(pManager: PluginManager, block: () -> Unit) {
         viewModelScope.launch {
-            val defAll = async { insulinRepository.getInsulins() }
-            val defBasal = async { insulinRepository.getBasals() }
-
-            pluginManager = pManager
-            insulins = defAll.await()
-            basalInsulins = defBasal.await()
-
+            runPrepare(pManager)
             GlobalScope.launch(Dispatchers.Main) { block() }
         }
     }
 
     fun setGlucose(uid: Long, block: () -> Unit) {
         viewModelScope.launch {
-            glucose = glucoseRepository.getById(uid)
-
+            runSetGlucose(uid)
             GlobalScope.launch(Dispatchers.Main) { block() }
         }
     }
 
     fun save() {
-        viewModelScope.launch { glucoseRepository.insert(glucose) }
+        viewModelScope.launch { runSave() }
     }
 
     fun getInsulin(uid: Long) = insulins.firstOrNull { it.uid == uid } ?: Insulin()
@@ -67,21 +61,16 @@ class EditorViewModel internal constructor(
         insulins.firstOrNull { it.timeFrame == glucose.timeFrame } ?: Insulin()
 
     fun getInsulinSuggestion(block: (Float) -> Unit) {
-        viewModelScope.launch {
-            if (pluginManager.isInstalled()) {
-                pluginManager.fetchSuggestion(glucose, block)
-            } else {
-                GlobalScope.launch(Dispatchers.Main) { block(PluginManager.NO_MODEL) }
-            }
+        if (pluginManager.isInstalled()) {
+            viewModelScope.launch { pluginManager.fetchSuggestion(glucose, block) }
+        } else {
+            GlobalScope.launch(Dispatchers.Main) { block(PluginManager.NO_MODEL) }
         }
     }
 
     fun applyInsulinSuggestion(value: Float, insulin: Insulin, block: () -> Unit) {
         viewModelScope.launch {
-            glucose.insulinId0 = insulin.uid
-            glucose.insulinValue0 = value
-            glucoseRepository.insert(glucose)
-
+            runApplySuggestion(value, insulin)
             GlobalScope.launch(Dispatchers.Main) { block() }
         }
     }
@@ -97,6 +86,33 @@ class EditorViewModel internal constructor(
     fun hasError(value: Int) = errorStatus and value != 0
 
     fun hasErrors() = errorStatus != 0
+
+    @VisibleForTesting
+    suspend fun runPrepare(pManager: PluginManager) {
+        val defAll = async { insulinRepository.getInsulins() }
+        val defBasal = async { insulinRepository.getBasals() }
+
+        pluginManager = pManager
+        insulins = defAll.await()
+        basalInsulins = defBasal.await()
+    }
+
+    @VisibleForTesting
+    fun runSetGlucose(uid: Long) {
+        glucose = glucoseRepository.getById(uid)
+    }
+
+    @VisibleForTesting
+    suspend fun runSave() {
+        glucoseRepository.insert(glucose)
+    }
+
+    @VisibleForTesting
+    suspend fun runApplySuggestion(value: Float, insulin: Insulin) {
+        glucose.insulinId0 = insulin.uid
+        glucose.insulinValue0 = value
+        glucoseRepository.insert(glucose)
+    }
 
     companion object {
         const val ERROR_VALUE = 1

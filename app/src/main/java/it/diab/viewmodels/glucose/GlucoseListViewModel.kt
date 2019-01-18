@@ -9,6 +9,7 @@
 package it.diab.viewmodels.glucose
 
 import android.content.res.Resources
+import androidx.annotation.VisibleForTesting
 import androidx.paging.LivePagedListBuilder
 import it.diab.db.entities.Insulin
 import it.diab.db.repositories.GlucoseRepository
@@ -31,8 +32,7 @@ class GlucoseListViewModel internal constructor(
 
     fun prepare(block: () -> Unit) {
         viewModelScope.launch {
-            insulins = insulinRepository.getInsulins()
-
+            runPrepare()
             GlobalScope.launch(Dispatchers.Main) { block() }
         }
     }
@@ -46,8 +46,18 @@ class GlucoseListViewModel internal constructor(
         block: (String) -> Unit
     ) {
         viewModelScope.launch {
-            val text = date.getHeader(res, Date(), format)
+            val text = runSetHeader(res, date, format)
             GlobalScope.launch(Dispatchers.Main) { block(text) }
         }
+    }
+
+    @VisibleForTesting
+    fun runPrepare() {
+        insulins = insulinRepository.getInsulins()
+    }
+
+    @VisibleForTesting
+    fun runSetHeader(res: Resources, date: Date, format: SimpleDateFormat): String {
+        return date.getHeader(res, Date(), format)
     }
 }
