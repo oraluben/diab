@@ -8,6 +8,8 @@
   -->
 <resources>
 
+    <string name="cancel">Cancel</string>
+
     <string name="fit_status_prompt"><b>Google Fit</b> lets you backup your fitness and heath data from multiple apps and devices.\nBy connecting Google Fit and Diab, you\'ll be able to backup your <b>glucose data</b>.</string>
     <string name="fit_status_connected">Diab is connected to <b>Google Fit</b>. Your <b>glucose</b> will be synced.</string>
     <string name="fit_button_connect">Connect to Google Fit</string>

@@ -8,6 +8,8 @@
   -->
 <resources>
 
+    <string name="cancel">Annulla</string>
+
     <string name="fit_status_prompt"><b>Google Fit</b> ti consente di tenere traccia delle tue attivita e dati relativi alla salute con pi\u00F9 app e dispositivi.\nConnettendo Google Fit e Diab, potrai salvare le tue <b>glicemie</b>.</string>
     <string name="fit_status_connected">Diab \u00E8 connesso a <b>Google Fit</b>. Le tue <b>glicemie</b> verranno sincronizzate.</string>
     <string name="fit_button_connect">Connetti a Google Fit</string>
