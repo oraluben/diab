@@ -34,7 +34,15 @@ class InsulinAdapter : PagedListAdapter<Insulin, InsulinAdapter.InsulinHolder>(C
         )
     }
 
+    override fun getItemCount() = super.getItemCount() + 1
+
     override fun onBindViewHolder(holder: InsulinHolder, position: Int) {
+        if (position == itemCount - 1) {
+            // Last item: add new insulin
+            holder.onBind()
+            return
+        }
+
         val item = getItem(position)
         if (item == null) {
             holder.clear()
@@ -52,6 +60,16 @@ class InsulinAdapter : PagedListAdapter<Insulin, InsulinAdapter.InsulinHolder>(C
 
             title.text = insulin.name
             icon.setImageResource(insulin.timeFrame.icon)
+
+            itemView.setOnClickListener { _editInsulin.value = Event(id) }
+        }
+
+        fun onBind() {
+            id = -1
+
+            val res = itemView.resources
+            title.text = res.getString(R.string.add)
+            icon.setImageResource(R.drawable.ic_add)
 
             itemView.setOnClickListener { _editInsulin.value = Event(id) }
         }

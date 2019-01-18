@@ -22,7 +22,6 @@ import androidx.appcompat.view.ContextThemeWrapper
 import androidx.appcompat.view.menu.MenuBuilder
 import androidx.appcompat.view.menu.MenuPopupHelper
 import androidx.appcompat.widget.PopupMenu
-import androidx.core.app.ActivityOptionsCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -35,7 +34,6 @@ import it.diab.R
 import it.diab.db.entities.Glucose
 import it.diab.db.repositories.GlucoseRepository
 import it.diab.fit.BaseFitHandler
-import it.diab.glucose.editor.EditorActivity
 import it.diab.settings.SettingsActivity
 import it.diab.ui.graph.OverviewGraphView
 import it.diab.util.SystemUtil
@@ -96,15 +94,6 @@ class OverviewFragment : MainFragment() {
     }
 
     override fun getTitle() = R.string.fragment_overview
-
-    override fun onEditor(view: View) {
-        val activity = activity ?: return
-
-        val intent = Intent(activity, EditorActivity::class.java)
-        val optionsCompat = ActivityOptionsCompat
-            .makeSceneTransitionAnimation(activity, view, view.transitionName)
-        startActivity(intent, optionsCompat.toBundle())
-    }
 
     private fun updateChart(data: List<Glucose>?) {
         if (data == null || data.isEmpty()) {

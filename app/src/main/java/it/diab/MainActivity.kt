@@ -19,7 +19,6 @@ import android.graphics.drawable.Icon
 import android.os.Build
 import android.os.Bundle
 import android.preference.PreferenceManager
-import android.view.View
 import androidx.annotation.DrawableRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -30,10 +29,10 @@ import androidx.fragment.app.FragmentPagerAdapter
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.tabs.TabLayout
-import it.diab.glucose.editor.EditorActivity
 import it.diab.fragments.GlucoseListFragment
-import it.diab.fragments.OverviewFragment
 import it.diab.fragments.InsulinFragment
+import it.diab.fragments.OverviewFragment
+import it.diab.glucose.editor.EditorActivity
 import it.diab.util.event.EventObserver
 
 class MainActivity : AppCompatActivity() {
@@ -64,7 +63,7 @@ class MainActivity : AppCompatActivity() {
         viewPager.adapter = adapter
 
         tabLayout.setupWithViewPager(viewPager)
-        fab.setOnClickListener(this::onFabClick)
+        fab.setOnClickListener { onGlucoseClick(-1) }
 
         glucoseFragment.openGlucose.observe(this, EventObserver(this::onGlucoseClick))
 
@@ -80,10 +79,6 @@ class MainActivity : AppCompatActivity() {
         val optionsCompat = ActivityOptionsCompat
             .makeSceneTransitionAnimation(this, fab, fab.transitionName)
         startActivity(intent, optionsCompat.toBundle())
-    }
-
-    private fun onFabClick(view: View) {
-        adapter.onEditor(view, viewPager.currentItem)
     }
 
     @TargetApi(26)
@@ -138,10 +133,6 @@ class MainActivity : AppCompatActivity() {
         override fun getCount() = fragments.size
         override fun getItem(position: Int) = fragments[position]
         override fun getPageTitle(position: Int): String = getString(fragments[position].getTitle())
-
-        fun onEditor(view: View, position: Int) {
-            fragments[position].onEditor(view)
-        }
     }
 
     companion object {

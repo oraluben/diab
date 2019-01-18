@@ -65,9 +65,4 @@ class InsulinFragment : MainFragment() {
     }
 
     override fun getTitle() = R.string.fragment_insulin
-
-    override fun onEditor(view: View) {
-        val context = context ?: return
-        startActivity(Intent(context, EditorActivity::class.java))
-    }
 }
