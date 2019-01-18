@@ -101,6 +101,6 @@ dependencies {
 }
 
 repositories {
-    mavenCentral()
     google()
+    mavenCentral()
 }
