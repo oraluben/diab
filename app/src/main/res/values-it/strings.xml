@@ -15,6 +15,7 @@
     <string name="add">Aggiungi</string>
     <string name="remove">Rimuovi</string>
     <string name="apply">Applica</string>
+    <string name="share">Share</string>
 
     <string name="fragment_overview">Panoramica</string>
     <string name="fragment_glucose">Glicemia</string>
@@ -64,8 +65,11 @@
     <string name="insulin_suggestion_applied">Suggerimento salvato</string>
 
     <!-- Export database -->
-    <string name="export_ask_title">Esporta dati</string>
-    <string name="export_ask_message">Vuoi esportare i dati delle glicemie per il machine learning nella memoria interna?</string>
+    <string name="export_ask_ml_title">Prepara dati per la creazione di un plugin</string>
+    <string name="export_ask_ml_message">Stai per esportare i dati glicemici in modo da poter produrre un plugin di suggerimenti per l\'insulina.\nQuesti dati potrebbero essere letti da chiunque abbia accesso alla memoria interna di questo dispositivo.\nDesiderate procedere?</string>
+    <string name="export_ask_xlsx_title">Esporta</string>
+    <string name="export_ask_xlsx_summary">Crea un foglio di calcolo elettronico per consultare facilmente i tuoi dati sul PC</string>
+    <string name="export_ask_xlsx_message">Stai per esportare i dati glicemici in un foglio di calcolo elettronico.\nQuesti dati potrebbero essere letti da chiunque abbia accesso alla memoria interna di questo dispositivo.\nDesiderate procedere?</string>
     <string name="export_ask_positive">Esporta</string>
     <string name="export_ask_permission_message">L\'accesso alla memoria interna \u00E8 necessario per esportare i dati. Per favore concedilo.</string>
     <string name="export_ask_permission_positive">Chiedi di nuovo</string>
@@ -76,6 +80,19 @@
     <string name="export_notification_channel">Operazioni di esportazione</string>
     <string name="export_completed_success">I dati sono stati esportati nella memoria interna</string>
     <string name="export_completed_failure">Impossibile esportare i dati nella memoria interna</string>
+
+    <!-- Export sheet -->
+    <string name="export_sheet_glucose">Glicemie</string>
+    <string name="export_sheet_glucose_value">Valore</string>
+    <string name="export_sheet_glucose_date">Data</string>
+    <string name="export_sheet_glucose_eat">Quantit\u00E0</string>
+    <string name="export_sheet_glucose_insulin">Insulina</string>
+    <string name="export_sheet_glucose_basal">Basale</string>
+    <string name="export_sheet_insulin">Insuline</string>
+    <string name="export_sheet_insulin_name">Nome</string>
+    <string name="export_sheet_insulin_time_frame">Periodo</string>
+    <string name="export_sheet_insulin_basal">Basale</string>
+    <string name="export_sheet_insulin_half_units">Mezze unit\u00E0</string>
 
     <!-- Fitness integration -->
     <string name="fit_name">Integrazione Fit</string>

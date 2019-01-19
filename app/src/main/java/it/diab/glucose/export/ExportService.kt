@@ -10,16 +10,17 @@ package it.diab.glucose.export
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
+import android.app.PendingIntent
 import android.app.Service
 import android.content.Intent
 import android.os.Build
 import android.os.Environment
 import android.util.Log
-import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.annotation.WorkerThread
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
+import androidx.core.content.FileProvider
 import it.diab.BuildConfig
 import it.diab.R
 import it.diab.db.entities.Glucose
@@ -76,7 +77,7 @@ class ExportService : Service() {
             createChannelIfNeeded()
         }
 
-        startForeground(NOTIFICATION_ID, notification)
+        startForeground(RUNNING_NOTIFICATION_ID, notification)
 
         val targetAction = intent?.getIntExtra(EXPORT_TARGET, -1) ?: -1
         when (targetAction) {
@@ -90,42 +91,69 @@ class ExportService : Service() {
     override fun onBind(intent: Intent?) = null
 
     private fun buildNotification() = NotificationCompat.Builder(this, CHANNEL)
-        .setContentTitle(getString(R.string.export_notification_title))
         .setSmallIcon(R.drawable.ic_export)
+        .setContentTitle(getString(R.string.export_notification_title))
         .setColor(ContextCompat.getColor(this, R.color.colorAccent))
         .setProgress(100, 10, true)
         .build()
 
-    private fun exportCsv(onTaskCompleted: (Boolean) -> Unit) {
+    private fun buildCompletedNotification(file: File?, success: Boolean) {
+        val message = getString(if (success) R.string.export_completed_success else R.string.export_completed_failure)
+
+        val notification = NotificationCompat.Builder(this, CHANNEL)
+            .setSmallIcon(R.drawable.ic_export)
+            .setContentTitle(getString(R.string.export_notification_title))
+            .setContentText(message)
+            .setColor(ContextCompat.getColor(this, R.color.colorAccent))
+
+        if (success && file != null && file.exists()) {
+            val uri = FileProvider.getUriForFile(this, "it.diab.files", file)
+            val shareIntent = Intent(Intent.ACTION_SEND).apply {
+                putExtra(Intent.EXTRA_STREAM, uri)
+                addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                type = "application/octet-stream"
+            }
+
+            val pendingIntent = PendingIntent.getActivity(this, 0,
+                Intent.createChooser(shareIntent, getString(R.string.share)), PendingIntent.FLAG_CANCEL_CURRENT)
+
+            notification.addAction(R.drawable.ic_export, getString(R.string.share), pendingIntent)
+        }
+
+        notificationManager.notify(COMPLETED_NOTIFICATION_ID, notification.build())
+    }
+
+    private fun exportCsv(onTaskCompleted: (File?, Boolean) -> Unit) {
         serviceScope.launch {
             val result = exportCsv(this, glucoseRepository)
-            GlobalScope.launch(Dispatchers.Main) { onTaskCompleted(result) }
+            GlobalScope.launch(Dispatchers.Main) { onTaskCompleted(null, result) }
         }
     }
 
-    private fun exportXlxs(onTaskCompleted: (Boolean) -> Unit) {
+    private fun exportXlxs(onTaskCompleted: (File?, Boolean) -> Unit) {
         val glucoseHeaders = listOf(
-            getString(R.string.add)
+            getString(R.string.export_sheet_glucose_value),
+            getString(R.string.export_sheet_glucose_date),
+            getString(R.string.export_sheet_glucose_eat),
+            getString(R.string.export_sheet_glucose_insulin),
+            getString(R.string.export_sheet_glucose_basal)
         )
         val insulinHeaders = listOf(
-            getString(R.string.add)
+            getString(R.string.export_sheet_insulin_name),
+            getString(R.string.export_sheet_insulin_time_frame),
+            getString(R.string.export_sheet_insulin_basal),
+            getString(R.string.export_sheet_insulin_half_units)
         )
 
         serviceScope.launch {
             val result = exportSheet(this, glucoseRepository, insulinRepository, glucoseHeaders, insulinHeaders)
-            GlobalScope.launch(Dispatchers.Main) { onTaskCompleted(result) }
+            GlobalScope.launch(Dispatchers.Main) { onTaskCompleted(result, result != null) }
         }
     }
 
-    private fun onTaskCompleted(result: Boolean) {
-        notificationManager.cancel(NOTIFICATION_ID)
-
-        Toast.makeText(
-            this,
-            if (result) R.string.export_completed_success
-            else R.string.export_completed_failure, Toast.LENGTH_LONG
-        ).show()
-
+    private fun onTaskCompleted(output: File?, result: Boolean) {
+        notificationManager.cancel(RUNNING_NOTIFICATION_ID)
+        buildCompletedNotification(output, result)
         stopSelf()
     }
 
@@ -153,7 +181,7 @@ class ExportService : Service() {
         insulinRepository: InsulinRepository,
         glucoseHeaders: List<String>,
         insulinHeaders: List<String>
-    ): Boolean {
+    ): File? {
         val documentsDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS)
         val outDir = File(documentsDir, "diab").apply {
             if (!exists()) {
@@ -179,13 +207,13 @@ class ExportService : Service() {
                 glucoseDeferred.await()
                 insulinDeferred.await()
                 workBook.finish()
-                return true
+                return file
             } catch (e: IOException) {
                 Log.e(TAG, e.message)
             }
         }
 
-        return false
+        return null
     }
 
     @WorkerThread
@@ -196,6 +224,7 @@ class ExportService : Service() {
         headers: List<String>
     ) {
         headers.forEachWithIndex { i, str -> sheet.value(0, i, str) }
+        sheet.style(0, headers.size - 1).bold()
 
         val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault())
         val list = glucoseRepository.getAllItems()
@@ -216,7 +245,7 @@ class ExportService : Service() {
             }
         }
 
-        sheet.range(0, 0, list.size, headers.size)
+        sheet.range(0, 0, list.size, headers.size - 1)
             .style()
             .shadeAlternateRows(Color.GRAY2)
             .set()
@@ -229,6 +258,7 @@ class ExportService : Service() {
         headers: List<String>
     ) {
         headers.forEachWithIndex { i, str -> sheet.value(0, i, str) }
+        sheet.style(0, headers.size - 1).bold()
 
         val list = insulinRepository.getInsulins()
         list.forEachWithIndex { i, insulin ->
@@ -240,7 +270,7 @@ class ExportService : Service() {
             }
         }
 
-        sheet.range(0, 0, list.size, headers.size)
+        sheet.range(0, 0, list.size, headers.size - 1)
             .style()
             .shadeAlternateRows(Color.GRAY2)
             .set()
@@ -302,7 +332,8 @@ class ExportService : Service() {
     }
 
     companion object {
-        const val NOTIFICATION_ID = 1927
+        const val RUNNING_NOTIFICATION_ID = 1927
+        private const val COMPLETED_NOTIFICATION_ID = 1928
 
         const val EXPORT_TARGET = "export_target"
         const val TARGET_CSV = 0

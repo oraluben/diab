@@ -15,6 +15,10 @@
         app:title="@string/settings_ui_theme_title"
         app:summary="%s" />
 
+    <androidx.preference.Preference
+        app:key="pref_export_xlsx"
+        app:summary="@string/export_ask_xlsx_summary"
+        app:title="@string/export_ask_xlsx_title" />
 
     <androidx.preference.PreferenceCategory app:title="@string/settings_glucose_thresholds_category">
 
@@ -51,8 +55,8 @@
             app:title="@string/settings_plugin_remove" />
 
         <androidx.preference.Preference
-            app:key="pref_export_data"
+            app:key="pref_export_ml_data"
             app:persistent="false"
-            app:title="@string/export_ask_title" />
+            app:title="@string/export_ask_ml_title" />
     </androidx.preference.PreferenceCategory>
 </androidx.preference.PreferenceScreen>

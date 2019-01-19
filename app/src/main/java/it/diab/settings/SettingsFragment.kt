@@ -18,6 +18,7 @@ import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.widget.Toast
+import androidx.annotation.StringRes
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.preference.ListPreference
@@ -43,9 +44,22 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
 
         prefs = preferenceManager.sharedPreferences
 
-        val exportData = findPreference("pref_export_data")
-        exportData?.onPreferenceClickListener = Preference.OnPreferenceClickListener {
-            showExportDialog()
+        val exportPluginData = findPreference("pref_export_ml_data")
+        exportPluginData?.onPreferenceClickListener = Preference.OnPreferenceClickListener {
+            showExportDialog(
+                R.string.export_ask_ml_title,
+                R.string.export_ask_ml_message,
+                REQUEST_ML_EXPORT
+            )
+        }
+
+        val exportXlsx = findPreference("pref_export_xlsx")
+        exportXlsx?.onPreferenceClickListener = Preference.OnPreferenceClickListener {
+            showExportDialog(
+                R.string.export_ask_xlsx_title,
+                R.string.export_ask_xlsx_message,
+                REQUEST_XLSX_EXPORT
+            )
         }
 
         val pluginCategory = findPreference("plugin_category") as PreferenceCategory
@@ -64,8 +78,10 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         when (requestCode) {
-            REQUEST_STORAGE_EXPORT -> handleExportResult()
-            REQUEST_USER_AUTH -> handleUserAuthResult(resultCode)
+            REQUEST_ML_EXPORT -> handleExportResult(REQUEST_ML_EXPORT)
+            REQUEST_ML_AUTH -> handleUserAuthResult(REQUEST_ML_EXPORT, resultCode)
+            REQUEST_XLSX_EXPORT -> handleExportResult(REQUEST_XLSX_EXPORT)
+            REQUEST_XLSX_AUTH -> handleUserAuthResult(REQUEST_XLSX_EXPORT, resultCode)
             REQUEST_SELECT_PLUGIN -> onPluginSelected(resultCode, data)
         }
     }
@@ -83,24 +99,28 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
         }
     }
 
-    private fun showExportDialog(): Boolean {
+    private fun showExportDialog(
+        @StringRes title: Int,
+        @StringRes message: Int,
+        requestCode: Int
+    ): Boolean {
         val activity = activity ?: return false
 
         AlertDialog.Builder(activity)
-            .setTitle(R.string.export_ask_title)
-            .setMessage(R.string.export_ask_message)
-            .setPositiveButton(R.string.export_ask_positive) { _, _ -> requestExport() }
+            .setTitle(title)
+            .setMessage(message)
+            .setPositiveButton(R.string.export_ask_positive) { _, _ -> requestExport(requestCode) }
             .setNegativeButton(android.R.string.cancel, null)
             .show()
 
         return true
     }
 
-    private fun requestExport() {
+    private fun requestExport(requestCode: Int) {
         val activity = activity ?: return
 
         if (!hasStorageAccess(activity)) {
-            requestStorageAccess(REQUEST_STORAGE_EXPORT)
+            requestStorageAccess(requestCode)
             return
         }
 
@@ -109,20 +129,32 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
         val message = getString(R.string.export_ask_auth_message)
         val requestIntent = keyguardManager.createConfirmDeviceCredentialIntent(title, message)
 
+        val authCode = when (requestCode) {
+            REQUEST_ML_EXPORT -> REQUEST_ML_AUTH
+            REQUEST_XLSX_EXPORT -> REQUEST_XLSX_AUTH
+            else -> -1
+        }
+
         if (requestIntent != null) {
-            activity.startActivityForResult(requestIntent, REQUEST_USER_AUTH)
+            startActivityForResult(requestIntent, authCode)
             return
         }
 
         // No secure lock screen is set
-        startExport()
+        startExport(requestCode)
     }
 
-    private fun startExport() {
+    private fun startExport(requestCode: Int) {
         val activity = activity ?: return
 
+        val action = when (requestCode) {
+            REQUEST_ML_EXPORT -> ExportService.TARGET_CSV
+            REQUEST_XLSX_EXPORT -> ExportService.TARGET_XLSX
+            else -> -1
+        }
+
         val intent = Intent(activity, ExportService::class.java)
-        intent.putExtra(ExportService.EXPORT_TARGET, ExportService.TARGET_CSV)
+        intent.putExtra(ExportService.EXPORT_TARGET, action)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             activity.startForegroundService(intent)
         } else {
@@ -130,25 +162,31 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
         }
     }
 
-    private fun handleExportResult() {
+    private fun handleExportResult(requestCode: Int) {
         val activity = activity ?: return
 
         if (hasStorageAccess(activity)) {
-            requestExport()
+            requestExport(requestCode)
             return
         }
 
+        val title = when (requestCode) {
+            REQUEST_ML_AUTH -> R.string.export_ask_ml_title
+            REQUEST_XLSX_AUTH -> R.string.export_ask_xlsx_title
+            else -> 0
+        }
+
         AlertDialog.Builder(activity)
-            .setTitle(R.string.export_ask_title)
+            .setTitle(title)
             .setMessage(R.string.export_ask_permission_message)
-            .setPositiveButton(R.string.export_ask_permission_positive) { _, _ -> startExport() }
+            .setPositiveButton(R.string.export_ask_permission_positive) { _, _ -> startExport(requestCode) }
             .setNegativeButton(android.R.string.cancel, null)
             .show()
     }
 
-    private fun handleUserAuthResult(resultCode: Int) {
+    private fun handleUserAuthResult(requestCode: Int, resultCode: Int) {
         if (resultCode == Activity.RESULT_OK) {
-            startExport()
+            startExport(requestCode)
             return
         }
 
@@ -242,9 +280,11 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
     ) == PackageManager.PERMISSION_GRANTED
 
     companion object {
-        private const val REQUEST_STORAGE_EXPORT = 391
-        private const val REQUEST_USER_AUTH = 392
+        private const val REQUEST_ML_EXPORT = 391
+        private const val REQUEST_ML_AUTH = 392
         private const val REQUEST_SELECT_PLUGIN = 393
+        private const val REQUEST_XLSX_EXPORT = 394
+        private const val REQUEST_XLSX_AUTH = 395
 
         const val PREF_UI_STYLE = "pref_ui_style"
     }
