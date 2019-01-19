@@ -35,6 +35,9 @@ interface GlucoseDao {
     @Query("SELECT * FROM glucose WHERE uid IN (:uids)")
     fun getById(vararg uids: Long): List<Glucose>
 
+    @Query("SELECT * FROM glucose ORDER BY date DESC")
+    fun getAllItems(): List<Glucose>
+
     @Query("SELECT * FROM glucose WHERE date >= :minTime AND date <= :maxTime ORDER BY date DESC")
     fun getInDateRange(minTime: Long, maxTime: Long): List<Glucose>
 

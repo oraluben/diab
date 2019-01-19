@@ -29,6 +29,9 @@ class GlucoseRepository private constructor(private val dao: GlucoseDao) {
     fun getById(uid: Long) = dao.getById(uid).firstOrNull() ?: Glucose()
 
     @WorkerThread
+    fun getAllItems() = dao.getAllItems()
+
+    @WorkerThread
     fun getInDateRange(minTime: Long, maxTime: Long) =
         dao.getInDateRange(minTime, maxTime)
 

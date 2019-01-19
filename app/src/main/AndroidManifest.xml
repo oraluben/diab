@@ -10,6 +10,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="it.diab">
 
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
@@ -60,7 +61,7 @@
         </activity>
 
         <service
-            android:name=".glucose.export.ExportGlucoseService"
+            android:name=".glucose.export.ExportService"
             android:enabled="true" />
     </application>
 </manifest>

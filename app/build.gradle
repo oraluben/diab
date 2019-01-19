@@ -87,6 +87,8 @@ dependencies {
 
     implementation "com.github.PhilJay:MPAndroidChart:v3.0.3"
 
+    implementation "org.dhatim:fastexcel:0.9.3"
+
     // Google Fit
     googleFitImplementation "com.google.android.gms:play-services-auth:16.0.1"
     googleFitImplementation "com.google.android.gms:play-services-fitness:16.0.1"

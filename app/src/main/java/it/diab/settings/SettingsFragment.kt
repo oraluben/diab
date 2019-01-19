@@ -25,7 +25,7 @@ import androidx.preference.Preference
 import androidx.preference.PreferenceCategory
 import androidx.preference.PreferenceFragmentCompat
 import it.diab.R
-import it.diab.glucose.export.ExportGlucoseService
+import it.diab.glucose.export.ExportService
 import it.diab.insulin.ml.PluginManager
 import it.diab.util.UIUtils
 import it.diab.util.extensions.format
@@ -121,7 +121,8 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
     private fun startExport() {
         val activity = activity ?: return
 
-        val intent = Intent(activity, ExportGlucoseService::class.java)
+        val intent = Intent(activity, ExportService::class.java)
+        intent.putExtra(ExportService.EXPORT_TARGET, ExportService.TARGET_CSV)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             activity.startForegroundService(intent)
         } else {
