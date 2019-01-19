@@ -38,9 +38,6 @@ interface GlucoseDao {
     @Query("SELECT * FROM glucose WHERE date >= :minTime AND date <= :maxTime ORDER BY date DESC")
     fun getInDateRange(minTime: Long, maxTime: Long): List<Glucose>
 
-    @Query("SELECT * FROM glucose WHERE date >= :minTime AND date <= :maxTime AND timeFrame = :timeFrame ORDER BY date DESC")
-    fun getInDateRangeWithTimeFrame(minTime: Long, maxTime: Long, timeFrame: Int): List<Glucose>
-
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(vararg glucose: Glucose)
 

@@ -32,10 +32,6 @@ class GlucoseRepository private constructor(private val dao: GlucoseDao) {
     fun getInDateRange(minTime: Long, maxTime: Long) =
         dao.getInDateRange(minTime, maxTime)
 
-    @WorkerThread
-    fun getInDateRangeWithTimeFrame(minTime: Long, maxTime: Long, timeFrame: Int) =
-        dao.getInDateRangeWithTimeFrame(minTime, maxTime, timeFrame)
-
     suspend fun insert(glucose: Glucose) = withContext(IO) { dao.insert(glucose) }
 
     suspend fun delete(glucose: Glucose) = withContext(IO) { dao.delete(glucose) }

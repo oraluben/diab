@@ -47,8 +47,6 @@ class OverviewViewModelTest {
     fun getAverageLastWeek() = runBlocking {
         val pair = viewModel.runGetDataSets(glucoseList.asList())
 
-        val b = 1
-
         assertThat(pair.second[testTimeFrame.toInt()].y)
             .isEqualTo(glucoseValues.average().toFloat())
     }

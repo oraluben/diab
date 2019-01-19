@@ -10,6 +10,8 @@ package it.diab
 
 import it.diab.db.AppDatabaseTest
 import it.diab.db.entities.GlucoseTest
+import it.diab.db.repositories.GlucoseRepositoryTest
+import it.diab.db.repositories.InsulinRepositoryTest
 import it.diab.viewmodels.glucose.OverviewViewModelTest
 import org.junit.runner.RunWith
 import org.junit.runners.Suite
@@ -17,8 +19,10 @@ import org.junit.runners.Suite
 @RunWith(Suite::class)
 @Suite.SuiteClasses(
     AppDatabaseTest::class,
-    it.diab.viewmodels.glucose.EditorViewModelTest::class,
+    GlucoseRepositoryTest::class,
     GlucoseTest::class,
+    InsulinRepositoryTest::class,
+    it.diab.viewmodels.glucose.EditorViewModelTest::class,
     it.diab.viewmodels.insulin.EditorViewModelTest::class,
     OverviewViewModelTest::class
 )
