@@ -15,6 +15,7 @@ import it.diab.db.repositories.GlucoseRepository
 import it.diab.db.repositories.InsulinRepository
 import it.diab.insulin.ml.PluginManager
 import it.diab.viewmodels.ScopedViewModel
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
@@ -37,7 +38,7 @@ class EditorViewModel internal constructor(
 
     fun prepare(pManager: PluginManager, block: () -> Unit) {
         viewModelScope.launch {
-            runPrepare(pManager)
+            runPrepare(this, pManager)
             GlobalScope.launch(Dispatchers.Main) { block() }
         }
     }
@@ -88,9 +89,9 @@ class EditorViewModel internal constructor(
     fun hasErrors() = errorStatus != 0
 
     @VisibleForTesting
-    suspend fun runPrepare(pManager: PluginManager) {
-        val defAll = async { insulinRepository.getInsulins() }
-        val defBasal = async { insulinRepository.getBasals() }
+    suspend fun runPrepare(scope: CoroutineScope, pManager: PluginManager) {
+        val defAll = scope.async { insulinRepository.getInsulins() }
+        val defBasal = scope.async { insulinRepository.getBasals() }
 
         pluginManager = pManager
         insulins = defAll.await()
