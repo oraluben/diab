@@ -13,6 +13,7 @@ import android.app.Activity
 import android.view.LayoutInflater
 import android.widget.ArrayAdapter
 import android.widget.EditText
+import android.widget.Toast
 import androidx.appcompat.widget.AppCompatSpinner
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.button.MaterialButton
@@ -20,6 +21,7 @@ import it.diab.R
 import it.diab.db.entities.Glucose
 import it.diab.db.entities.Insulin
 import it.diab.util.UIUtils
+import it.diab.util.VibrationUtil
 import it.diab.util.extensions.asTimeFrame
 
 class AddInsulinDialog(
@@ -82,6 +84,12 @@ class AddInsulinDialog(
     }
 
     fun show(onAdd: (Insulin, Float) -> Unit, onRemove: () -> Unit) {
+        if (nameSpinner.adapter.isEmpty) {
+            VibrationUtil.vibrateForError(activity)
+            Toast.makeText(activity, R.string.glucose_editor_no_insulin, Toast.LENGTH_LONG).show()
+            return
+        }
+
         addButton.setOnClickListener {
             val selected = insulins[nameSpinner.selectedItemPosition]
             val value = valueEditText.text.toString().toFloatOrNull() ?: 0F

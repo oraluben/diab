@@ -55,6 +55,7 @@
     <string name="glucose_editor_basal_add">Add basal</string>
     <string name="glucose_editor_insulin_value">Quantity</string>
     <string name="glucose_editor_save_error">Check the values again</string>
+    <string name="glucose_editor_no_insulin">No insulin found</string>
 
     <!-- Glucose suggestions -->
     <string name="insulin_suggestion_loading">Loading</string>
