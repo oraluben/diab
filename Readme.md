@@ -22,6 +22,7 @@ the data.
 
 * Save records of glucose and insulin dosages
 * Insulin suggestions plugin
+* Export records as Excel file
 * [optional] Google Fit integration
 
 For upcoming features, see the [bug tracker](https://github.com/bvlj/diab/issues).

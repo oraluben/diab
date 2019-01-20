@@ -15,7 +15,7 @@
     <string name="add">Aggiungi</string>
     <string name="remove">Rimuovi</string>
     <string name="apply">Applica</string>
-    <string name="share">Share</string>
+    <string name="share">Condividi</string>
 
     <string name="fragment_overview">Panoramica</string>
     <string name="fragment_glucose">Glicemia</string>
@@ -82,13 +82,12 @@
     <string name="export_completed_failure">Impossibile esportare i dati nella memoria interna</string>
 
     <!-- Export sheet -->
-    <string name="export_sheet_glucose">Glicemie</string>
     <string name="export_sheet_glucose_value">Valore</string>
     <string name="export_sheet_glucose_date">Data</string>
-    <string name="export_sheet_glucose_eat">Quantit\u00E0</string>
+    <string name="export_sheet_glucose_eat">Quantit\u00E0 cibo</string>
     <string name="export_sheet_glucose_insulin">Insulina</string>
+    <string name="export_sheet_glucose_insulin_value">Unit\u00E0</string>
     <string name="export_sheet_glucose_basal">Basale</string>
-    <string name="export_sheet_insulin">Insuline</string>
     <string name="export_sheet_insulin_name">Nome</string>
     <string name="export_sheet_insulin_time_frame">Periodo</string>
     <string name="export_sheet_insulin_basal">Basale</string>

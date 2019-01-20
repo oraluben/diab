@@ -44,7 +44,6 @@ import java.io.FileWriter
 import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.Date
-import java.util.Locale
 
 class ExportService : Service() {
     private lateinit var glucoseRepository: GlucoseRepository
@@ -114,10 +113,20 @@ class ExportService : Service() {
                 type = "application/octet-stream"
             }
 
-            val pendingIntent = PendingIntent.getActivity(this, 0,
+            val sharePendingIntent = PendingIntent.getActivity(this, 0,
                 Intent.createChooser(shareIntent, getString(R.string.share)), PendingIntent.FLAG_CANCEL_CURRENT)
 
-            notification.addAction(R.drawable.ic_export, getString(R.string.share), pendingIntent)
+            val openIntent = Intent(Intent.ACTION_VIEW).apply {
+                setDataAndType(uri, contentResolver.getType(uri))
+                addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+            }
+
+            val openPendingIntent = PendingIntent.getActivity(this, 0,
+                Intent.createChooser(openIntent, getString(R.string.share)), PendingIntent.FLAG_CANCEL_CURRENT)
+
+            notification.addAction(R.drawable.ic_export, getString(R.string.share), sharePendingIntent)
+                .setContentIntent(openPendingIntent)
+                .setAutoCancel(true)
         }
 
         notificationManager.notify(COMPLETED_NOTIFICATION_ID, notification.build())
@@ -136,7 +145,9 @@ class ExportService : Service() {
             getString(R.string.export_sheet_glucose_date),
             getString(R.string.export_sheet_glucose_eat),
             getString(R.string.export_sheet_glucose_insulin),
-            getString(R.string.export_sheet_glucose_basal)
+            getString(R.string.export_sheet_glucose_insulin_value),
+            getString(R.string.export_sheet_glucose_basal),
+            getString(R.string.export_sheet_glucose_insulin_value)
         )
         val insulinHeaders = listOf(
             getString(R.string.export_sheet_insulin_name),
@@ -226,7 +237,6 @@ class ExportService : Service() {
         headers.forEachWithIndex { i, str -> sheet.value(0, i, str) }
         sheet.style(0, headers.size - 1).bold()
 
-        val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault())
         val list = glucoseRepository.getAllItems()
         list.forEachWithIndex { i, glucose ->
             sheet.run {
@@ -234,13 +244,15 @@ class ExportService : Service() {
                 val basal = insulinRepository.getById(glucose.insulinId1)
 
                 value(i + 1, 0, glucose.value)
-                value(i + 1, 1, dateFormat.format(glucose.date))
+                value(i + 1, 1, glucose.date)
                 value(i + 1, 2, glucose.eatLevel)
                 if (insulin.name.isNotEmpty()) {
-                    value(i + 1, 3, "${insulin.name}: ${glucose.insulinValue0}")
+                    value(i + 1, 3, insulin.name)
+                    value(i + 1, 4, glucose.insulinValue0)
                 }
                 if (basal.name.isNotEmpty()) {
-                    value(i + 1, 4, "${basal.name}: ${glucose.insulinValue1}")
+                    value(i + 1, 5, basal.name)
+                    value(i + 1, 6, glucose.insulinValue1)
                 }
             }
         }
@@ -248,6 +260,11 @@ class ExportService : Service() {
         sheet.range(0, 0, list.size, headers.size - 1)
             .style()
             .shadeAlternateRows(Color.GRAY2)
+            .set()
+
+        sheet.range(1, 1, list.size, 1)
+            .style()
+            .format("yyyy-MM-dd HH:mm")
             .set()
     }
 

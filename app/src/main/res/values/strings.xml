@@ -82,13 +82,12 @@
     <string name="export_completed_failure">Unable to export the data to the internal memory</string>
 
     <!-- Export sheet -->
-    <string name="export_sheet_glucose">Glucose</string>
     <string name="export_sheet_glucose_value">Value</string>
     <string name="export_sheet_glucose_date">Date</string>
     <string name="export_sheet_glucose_eat">Eat level</string>
     <string name="export_sheet_glucose_insulin">Insulin</string>
+    <string name="export_sheet_glucose_insulin_value">Units</string>
     <string name="export_sheet_glucose_basal">Basal</string>
-    <string name="export_sheet_insulin">Insulins</string>
     <string name="export_sheet_insulin_name">Name</string>
     <string name="export_sheet_insulin_time_frame">Time frame</string>
     <string name="export_sheet_insulin_basal">Is basal</string>
