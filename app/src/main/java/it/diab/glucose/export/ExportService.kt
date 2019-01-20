@@ -28,6 +28,7 @@ import it.diab.db.repositories.GlucoseRepository
 import it.diab.db.repositories.InsulinRepository
 import it.diab.util.DateUtils
 import it.diab.util.extensions.forEachWithIndex
+import it.diab.util.extensions.format
 import it.diab.util.timeFrame.TimeFrame
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -244,7 +245,12 @@ class ExportService : Service() {
                 val basal = insulinRepository.getById(glucose.insulinId1)
 
                 value(i + 1, 0, glucose.value)
-                value(i + 1, 1, glucose.date)
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    // Java 8's java.time.LocalDateTime is required for this
+                    value(i + 1, 1, glucose.date)
+                } else {
+                    value(i + 1, 1, glucose.date.format("yyyy-MM-dd HH:mm"))
+                }
                 value(i + 1, 2, glucose.eatLevel)
                 if (insulin.name.isNotEmpty()) {
                     value(i + 1, 3, insulin.name)
@@ -262,10 +268,13 @@ class ExportService : Service() {
             .shadeAlternateRows(Color.GRAY2)
             .set()
 
-        sheet.range(1, 1, list.size, 1)
-            .style()
-            .format("yyyy-MM-dd HH:mm")
-            .set()
+        // Java 8's java.time.LocalDateTime is required for this
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            sheet.range(1, 1, list.size, 1)
+                .style()
+                .format("yyyy-MM-dd HH:mm")
+                .set()
+        }
     }
 
     @WorkerThread
