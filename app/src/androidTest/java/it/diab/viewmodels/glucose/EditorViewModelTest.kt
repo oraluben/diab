@@ -102,7 +102,7 @@ class EditorViewModelTest {
 
     @Test
     fun getInsulin() = runBlocking {
-        viewModel.runPrepare(pluginManager)
+        viewModel.runPrepare(this, pluginManager)
         viewModel.getInsulin(testInsulin.uid).run {
             assertThat(uid).isEqualTo(testInsulin.uid)
             assertThat(this).isEqualTo(testInsulin)
@@ -111,7 +111,7 @@ class EditorViewModelTest {
 
     @Test
     fun hasPotentialBasal() = runBlocking {
-        viewModel.runPrepare(pluginManager)
+        viewModel.runPrepare(this, pluginManager)
 
         viewModel.glucose.timeFrame = testBasal.timeFrame
         assertThat(viewModel.hasPotentialBasal()).isTrue()
@@ -119,7 +119,7 @@ class EditorViewModelTest {
 
     @Test
     fun getInsulinByTimeFrame() = runBlocking {
-        viewModel.runPrepare(pluginManager)
+        viewModel.runPrepare(this, pluginManager)
         viewModel.glucose.timeFrame = testInsulin.timeFrame
 
         assertThat(viewModel.getInsulinByTimeFrame().timeFrame)
@@ -127,7 +127,7 @@ class EditorViewModelTest {
     }
 
     @Test
-    fun applyInsulinSugestion() = runBlocking {
+    fun applyInsulinSuggestion() = runBlocking {
         val test = 6.5f
 
         viewModel.runApplySuggestion(test, testInsulin)
