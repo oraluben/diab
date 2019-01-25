@@ -10,5 +10,4 @@
 ext {
 
     appVersionCode = 100 + Integer.parseInt('git rev-list --count HEAD'.execute([], project.rootDir).text.trim())
-    appVersionName = 'git rev-parse --short HEAD'.execute([], project.rootDir).text.trim()
 }
