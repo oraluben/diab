@@ -29,11 +29,12 @@ import androidx.fragment.app.FragmentPagerAdapter
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.tabs.TabLayout
+import it.diab.core.util.Activities
+import it.diab.core.util.event.EventObserver
+import it.diab.core.util.intentTo
 import it.diab.fragments.GlucoseListFragment
 import it.diab.fragments.InsulinFragment
 import it.diab.fragments.OverviewFragment
-import it.diab.glucose.editor.EditorActivity
-import it.diab.core.util.event.EventObserver
 
 class MainActivity : AppCompatActivity() {
     private lateinit var coordinator: CoordinatorLayout
@@ -73,8 +74,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun onGlucoseClick(uid: Long) {
-        val intent = Intent(this, EditorActivity::class.java).apply {
-            putExtra(EditorActivity.EXTRA_UID, uid)
+        val intent = intentTo(Activities.Glucose.Editor).apply {
+            putExtra(Activities.Glucose.Editor.EXTRA_UID, uid)
         }
         val optionsCompat = ActivityOptionsCompat
             .makeSceneTransitionAnimation(this, fab, fab.transitionName)
@@ -91,7 +92,7 @@ class MainActivity : AppCompatActivity() {
         val manager = getSystemService(ShortcutManager::class.java)
 
         val title = getString(R.string.app_shortcut_add_glucose)
-        val editIntent = Intent(this, EditorActivity::class.java).apply { action = Intent.ACTION_VIEW }
+        val editIntent = intentTo(Activities.Glucose.Editor).apply { action = Intent.ACTION_VIEW }
         val bm = getShortcutIcon(R.drawable.ic_shortcut_add_glucose)
         val addShortcut = ShortcutInfo.Builder(this, title)
             .setShortLabel(title)

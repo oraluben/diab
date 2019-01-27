@@ -1,0 +1,57 @@
+<!--
+  Copyright (c) 2019 Bevilacqua Joey
+
+  Licensed under the GNU GPLv3 license
+
+  The text of the license can be found in the LICENSE file
+  or at https://www.gnu.org/licenses/gpl.txt
+  -->
+<resources>
+
+    <!-- Settings -->
+    <string name="settings_glucose_thresholds_category">Glucose thresholds</string>
+    <string name="settings_glucose_thresholds_high">High threshold</string>
+    <string name="settings_glucose_thresholds_low">Low threshold</string>
+    <string name="settings_plugin_category_title">Insulin suggestions</string>
+    <string name="settings_plugin_manage_title">Suggestions plugin</string>
+    <string name="settings_plugin_manage_summary_new">Install a plugin\u2026</string>
+    <string name="settings_plugin_manage_summary_installed">Plugin installed.\nLast updated: %1$s</string>
+    <string name="settings_plugin_installing">Installing\u2026</string>
+    <string name="settings_plugin_remove">Uninstall plugin</string>
+    <string name="settings_plugin_remove_confirmation">The insulin suggestions are going to be disabled until a new plugin is installed.\nThis action cannot be undone, do you want to proceed?</string>
+    <string name="settings_plugin_remove_confirmation_positive">Remove</string>
+    <string name="settings_ui_theme_title">Style</string>
+    <string name="settings_ui_theme_system">Auto (system)</string>
+    <string name="settings_ui_theme_light">Light</string>
+    <string name="settings_ui_theme_dark">Dark</string>
+
+    <!-- Export database -->
+    <string name="export_ask_ml_title">Prepare data to build a plugin</string>
+    <string name="export_ask_ml_message">You\'re about to export your glucose data to build an insulin suggestion plugin.\nThis data may become readable by anyone who has access to the internal memory of this device.\nDo you want to proceed?</string>
+    <string name="export_ask_xlsx_title">Export</string>
+    <string name="export_ask_xlsx_summary">Create an electronic sheet file to easily read your data on a PC</string>
+    <string name="export_ask_xlsx_message">You\'re about to export the glucose data as an electronic sheet file.\nThis data may become readable by anyone who has access to the internal memory of this device.\nDo you want to proceed?</string>
+    <string name="export_ask_positive">Export</string>
+    <string name="export_ask_permission_message">Storage access is needed to export the data to the internal memory. Please grant it.</string>
+    <string name="export_ask_permission_positive">Ask again</string>
+    <string name="export_ask_auth_title">Diab ∙ Export</string>
+    <string name="export_ask_auth_message">Authenticate to export your data</string>
+    <string name="export_failed_auth">Auth failed, data export has been canceled</string>
+    <string name="export_notification_title">Export glucose data</string>
+    <string name="export_notification_channel">Export operations</string>
+    <string name="export_completed_success">The data has been exported to the internal memory</string>
+    <string name="export_completed_failure">Unable to export the data to the internal memory</string>
+    <string name="export_share">Share</string>
+
+    <!-- Export sheet -->
+    <string name="export_sheet_glucose_value">Value</string>
+    <string name="export_sheet_glucose_date">Date</string>
+    <string name="export_sheet_glucose_eat">Eat level</string>
+    <string name="export_sheet_glucose_insulin">Insulin</string>
+    <string name="export_sheet_glucose_insulin_value">Units</string>
+    <string name="export_sheet_glucose_basal">Basal</string>
+    <string name="export_sheet_insulin_name">Name</string>
+    <string name="export_sheet_insulin_time_frame">Time frame</string>
+    <string name="export_sheet_insulin_basal">Is basal</string>
+    <string name="export_sheet_insulin_half_units">Has half units</string>
+</resources>

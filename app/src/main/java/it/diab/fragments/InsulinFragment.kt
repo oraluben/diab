@@ -8,7 +8,6 @@
  */
 package it.diab.fragments
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -21,8 +20,9 @@ import it.diab.R
 import it.diab.adapters.InsulinAdapter
 import it.diab.core.data.entities.Insulin
 import it.diab.core.data.repositories.InsulinRepository
+import it.diab.core.util.Activities
 import it.diab.core.util.event.EventObserver
-import it.diab.insulin.editor.EditorActivity
+import it.diab.core.util.intentTo
 import it.diab.viewmodels.insulin.InsulinViewModel
 import it.diab.viewmodels.insulin.InsulinViewModelFactory
 
@@ -48,14 +48,12 @@ class InsulinFragment : MainFragment() {
         val view = inflater.inflate(R.layout.fragment_insulin, container, false)
         recyclerView = view.findViewById(R.id.insulin_list)
 
-        val context = context ?: return view
-
         val adapter = InsulinAdapter()
         recyclerView.adapter = adapter
         viewModel.list.observe(viewLifecycleOwner, Observer<PagedList<Insulin>>(adapter::submitList))
         adapter.editInsulin.observe(viewLifecycleOwner, EventObserver { uid ->
-            val intent = Intent(context, EditorActivity::class.java).apply {
-                putExtra(EditorActivity.EXTRA_UID, uid)
+            val intent = intentTo(Activities.Insulin.Editor).apply {
+                putExtra(Activities.Insulin.Editor.EXTRA_UID, uid)
             }
             startActivity(intent)
         })

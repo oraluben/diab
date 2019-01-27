@@ -9,8 +9,10 @@
 package it.diab.core.util.extensions
 
 import it.diab.core.data.timeframe.TimeFrame
+import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
+import java.util.Locale
 
 fun Date.asTimeFrame(): TimeFrame {
     val hour = getHour()
@@ -24,6 +26,9 @@ fun Date.asTimeFrame(): TimeFrame {
         else -> TimeFrame.NIGHT
     }
 }
+
+fun Date.format(format: String): String =
+    SimpleDateFormat(format, Locale.getDefault()).format(this)
 
 fun Date.getCalendar(): Calendar {
     val calendar = Calendar.getInstance()

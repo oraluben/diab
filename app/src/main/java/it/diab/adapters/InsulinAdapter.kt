@@ -64,7 +64,7 @@ class InsulinAdapter : PagedListAdapter<Insulin, InsulinAdapter.InsulinHolder>(C
 
         fun onBind() {
             val res = itemView.resources
-            title.text = res.getString(R.string.add)
+            title.text = res.getString(R.string.insulin_add_item)
             icon.setImageResource(R.drawable.ic_add)
 
             itemView.setOnClickListener { _editInsulin.value = Event(-1) }

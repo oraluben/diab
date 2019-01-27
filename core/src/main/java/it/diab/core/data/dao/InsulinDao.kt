@@ -34,9 +34,6 @@ interface InsulinDao {
     @Query("SELECT * FROM insulin WHERE uid IN (:uids)")
     fun getById(vararg uids: Long): List<Insulin>
 
-    @Query("SELECT * FROM insulin WHERE isBasal = :isBasal AND timeFrame = :timeFrame")
-    fun getByTimeFrame(isBasal: Int, timeFrame: Int): List<Insulin>
-
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(vararg insulins: Insulin): Array<Long>
 

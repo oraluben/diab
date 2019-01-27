@@ -13,7 +13,7 @@ import androidx.annotation.VisibleForTesting
 import com.github.mikephil.charting.data.Entry
 import it.diab.core.data.entities.Glucose
 import it.diab.core.data.repositories.GlucoseRepository
-import it.diab.fit.BaseFitHandler
+import it.diab.core.override.BaseFitHandler
 import it.diab.core.util.DateUtils
 import it.diab.util.extensions.getAsMinutes
 import it.diab.util.extensions.isToday

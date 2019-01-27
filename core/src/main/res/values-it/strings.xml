@@ -7,19 +7,13 @@
   or at https://www.gnu.org/licenses/gpl.txt
   -->
 <resources>
-    <string name="save">Salva</string>
-    <string name="saved">Salvato</string>
-    <string name="add">Aggiungi</string>
     <string name="remove">Rimuovi</string>
-    <string name="apply">Applica</string>
-    <string name="share">Condividi</string>
+
+    <string name="settings_name">Impostazioni</string>
 
     <!-- Time -->
     <string name="time_today">Oggi</string>
     <string name="time_yesterday">Ieri</string>
-    <string name="time_last_x">%1$s scorso</string>
-    <string name="time_day_month_short_format">dd MMM</string>
-    <string name="time_pick">Seleziona un\'altra data\u2026</string>
 
     <!-- Time zone -->
     <string name="time_extra">Extra</string>

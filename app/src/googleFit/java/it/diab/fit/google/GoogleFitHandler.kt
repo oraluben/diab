@@ -23,7 +23,7 @@ import com.google.android.gms.fitness.data.HealthDataTypes
 import com.google.android.gms.fitness.data.HealthFields
 import com.google.android.gms.fitness.request.DataUpdateRequest
 import it.diab.core.data.entities.Glucose
-import it.diab.fit.BaseFitHandler
+import it.diab.core.override.BaseFitHandler
 import it.diab.core.data.timeframe.TimeFrame
 import java.util.concurrent.TimeUnit
 

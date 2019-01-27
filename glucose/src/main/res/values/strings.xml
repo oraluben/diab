@@ -1,0 +1,29 @@
+<!--
+  Copyright (c) 2019 Bevilacqua Joey
+
+  Licensed under the GNU GPLv3 license
+
+  The text of the license can be found in the LICENSE file
+  or at https://www.gnu.org/licenses/gpl.txt
+  -->
+<resources>
+
+    <!-- Glucose Editor -->
+    <string name="glucose_editor_time_dialog">Select the time</string>
+    <string name="glucose_editor_insulin_add">Add insulin</string>
+    <string name="glucose_editor_insulin_apply">Apply</string>
+    <string name="glucose_editor_basal_add">Add basal</string>
+    <string name="glucose_editor_insulin_value">Quantity</string>
+    <string name="glucose_editor_save_error">Check the values again</string>
+    <string name="glucose_editor_no_insulin">No insulin found</string>
+    <string name="glucose_editor_date_pick">Select another date\u2026</string>
+    <string name="glucose_editor_saved">Saved</string>
+
+    <!-- Glucose suggestions -->
+    <string name="insulin_suggestion_loading">Loading</string>
+    <string name="insulin_suggestion_warning_low">Too low</string>
+    <string name="insulin_suggestion_warning_high">Too high</string>
+    <string name="insulin_suggestion_value">Suggested insulin: %1$.1f</string>
+    <string name="insulin_suggestion_error">Unable to suggest right now</string>
+    <string name="insulin_suggestion_applied">Suggestion applied</string>
+</resources>

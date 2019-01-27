@@ -40,13 +40,10 @@ android {
     }
 
     flavorDimensions "fit"
-
     productFlavors {
-
         oss {
             // Fitness-integration-less app, no closed source library included
         }
-
         googleFit {
             // Google Fit integration, includes closed source libraries
         }
@@ -55,15 +52,14 @@ android {
 
 dependencies {
     implementation project(':core')
+    implementation project(':glucose')
+    implementation project(':insulin')
+    implementation project(':settings')
 
     // UI
     implementation "androidx.cardview:cardview:1.0.0"
-    implementation "androidx.constraintlayout:constraintlayout:2.0.0-alpha3"
-    implementation "androidx.preference:preference:1.0.0"
 
     implementation "com.github.PhilJay:MPAndroidChart:v3.0.3"
-
-    implementation "org.dhatim:fastexcel:0.9.3"
 
     // Google Fit
     googleFitImplementation "com.google.android.gms:play-services-auth:16.0.1"

@@ -21,29 +21,4 @@
         <item name="android:dropDownVerticalOffset">0dp</item>
         <item name="android:dropDownHorizontalOffset">0dp</item>
     </style>
-
-    <!-- Insulin editor -->
-    <style name="AppTheme.DialogActivity" parent="AppTheme.NoActionBar">
-        <item name="colorAccent">@color/colorAccent</item>
-        <item name="dialogCornerRadius">@dimen/app_radius</item>
-        <item name="android:backgroundDimEnabled">false</item>
-        <item name="android:windowBackground">@android:color/transparent</item>
-        <item name="android:windowContentOverlay">@null</item>
-        <item name="android:windowIsFloating">true</item>
-        <item name="android:windowIsTranslucent">true</item>
-        <item name="android:windowNoTitle">true</item>
-    </style>
-
-    <!-- Glucose editor -->
-    <style name="AppTheme.GlucoseEditor_Key" parent="@style/TextAppearance.AppCompat.Display1">
-        <item name="android:layout_weight">1</item>
-        <item name="android:clickable">true</item>
-        <item name="android:focusable">true</item>
-        <item name="android:textAlignment">center</item>
-        <item name="android:background">?selectableItemBackground</item>
-    </style>
-
-    <style name="AppTheme.DatePickerDialog" parent="ThemeOverlay.MaterialComponents.Dialog">
-        <item name="android:windowBackground">@color/colorPrimary</item>
-    </style>
 </resources>

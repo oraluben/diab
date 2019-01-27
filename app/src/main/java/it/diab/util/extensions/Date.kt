@@ -10,12 +10,12 @@ package it.diab.util.extensions
 
 import android.content.res.Resources
 import it.diab.R
+import it.diab.core.util.extensions.format
 import it.diab.core.util.extensions.getCalendar
 import it.diab.core.util.extensions.getHour
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
-import java.util.Locale
 
 operator fun Date.get(diff: Int): Date {
     val calendar = getCalendar()
@@ -46,14 +46,7 @@ fun Date.getHeader(res: Resources, comparedTo: Date, format: SimpleDateFormat): 
     return when {
         diff == 0 -> res.getString(R.string.time_today)
         diff == -1 -> res.getString(R.string.time_yesterday)
-        diff > -7 -> res.getString(R.string.time_last_x, getWeekDay())
+        diff > -7 -> res.getString(R.string.glucose_header_last, getWeekDay())
         else -> format.format(this)
     }
 }
-
-fun Date.getDetailedString() =
-    SimpleDateFormat("EEE dd-MM HH:mm", Locale.getDefault()).format(this)
-        .upperCaseFirstChar()
-
-fun Date.format(format: String): String =
-    SimpleDateFormat(format, Locale.getDefault()).format(this)

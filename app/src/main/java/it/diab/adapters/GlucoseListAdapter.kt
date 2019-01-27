@@ -26,10 +26,10 @@ import androidx.recyclerview.widget.RecyclerView
 import it.diab.R
 import it.diab.core.data.entities.Glucose
 import it.diab.core.util.event.Event
+import it.diab.core.util.extensions.setPrecomputedText
 import it.diab.util.PreferencesUtil
 import it.diab.util.UIUtils
 import it.diab.util.extensions.diff
-import it.diab.util.extensions.setPrecomputedText
 import it.diab.viewmodels.glucose.GlucoseListViewModel
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -49,7 +49,7 @@ class GlucoseListAdapter(
     private val hourFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
     private val dateFormat = SimpleDateFormat(
         context.getString(
-            R.string.time_day_month_short_format
+            R.string.glucose_header_month
         ), Locale.getDefault()
     )
     private val highThreshold = PreferencesUtil.getGlucoseHighThreshold(context)
