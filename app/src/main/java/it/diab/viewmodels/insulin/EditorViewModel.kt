@@ -9,9 +9,9 @@
 package it.diab.viewmodels.insulin
 
 import androidx.annotation.VisibleForTesting
-import it.diab.db.entities.Insulin
-import it.diab.db.repositories.InsulinRepository
-import it.diab.viewmodels.ScopedViewModel
+import it.diab.core.data.entities.Insulin
+import it.diab.core.data.repositories.InsulinRepository
+import it.diab.core.viewmodels.ScopedViewModel
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 

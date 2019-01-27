@@ -21,9 +21,11 @@ import androidx.transition.TransitionManager
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import it.diab.R
-import it.diab.db.entities.Insulin
-import it.diab.db.repositories.GlucoseRepository
-import it.diab.db.repositories.InsulinRepository
+import it.diab.core.data.entities.Insulin
+import it.diab.core.data.repositories.GlucoseRepository
+import it.diab.core.data.repositories.InsulinRepository
+import it.diab.core.util.extensions.asTimeFrame
+import it.diab.core.util.extensions.insulin
 import it.diab.fit.BaseFitHandler
 import it.diab.insulin.ml.PluginManager
 import it.diab.ui.EatBar
@@ -31,9 +33,7 @@ import it.diab.ui.InsulinSuggestionView
 import it.diab.ui.NumericKeyboardView
 import it.diab.util.SystemUtil
 import it.diab.util.VibrationUtil
-import it.diab.util.extensions.asTimeFrame
 import it.diab.util.extensions.getDetailedString
-import it.diab.util.extensions.insulin
 import it.diab.util.extensions.setErrorStatus
 import it.diab.util.extensions.setPrecomputedText
 import it.diab.util.extensions.setTextErrorStatus

@@ -9,8 +9,8 @@
 package it.diab.viewmodels.insulin
 
 import androidx.paging.LivePagedListBuilder
-import it.diab.db.repositories.InsulinRepository
-import it.diab.viewmodels.ScopedViewModel
+import it.diab.core.data.repositories.InsulinRepository
+import it.diab.core.viewmodels.ScopedViewModel
 
 class InsulinViewModel internal constructor(
     insulinRepository: InsulinRepository

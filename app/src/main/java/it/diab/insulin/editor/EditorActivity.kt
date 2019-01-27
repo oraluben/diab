@@ -22,9 +22,9 @@ import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.button.MaterialButton
 import it.diab.R
-import it.diab.db.repositories.InsulinRepository
+import it.diab.core.data.repositories.InsulinRepository
+import it.diab.core.data.timeframe.TimeFrame
 import it.diab.util.UIUtils
-import it.diab.util.timeFrame.TimeFrame
 import it.diab.viewmodels.insulin.EditorViewModel
 import it.diab.viewmodels.insulin.EditorViewModelFactory
 

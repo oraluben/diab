@@ -17,10 +17,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.RecyclerView
 import it.diab.R
-import it.diab.db.entities.Insulin
-import it.diab.ui.recyclerview.ViewHolderExt
-import it.diab.util.event.Event
+import it.diab.core.data.entities.Insulin
+import it.diab.core.util.event.Event
 
 class InsulinAdapter : PagedListAdapter<Insulin, InsulinAdapter.InsulinHolder>(CALLBACK) {
 
@@ -51,27 +51,23 @@ class InsulinAdapter : PagedListAdapter<Insulin, InsulinAdapter.InsulinHolder>(C
         }
     }
 
-    inner class InsulinHolder(view: View) : ViewHolderExt(view) {
+    inner class InsulinHolder(view: View) : RecyclerView.ViewHolder(view) {
         private val title: TextView = view.findViewById(R.id.item_insulin_name)
         private val icon: ImageView = view.findViewById(R.id.item_insulin_icon)
 
         fun onBind(insulin: Insulin) {
-            id = insulin.uid
-
             title.text = insulin.name
             icon.setImageResource(insulin.timeFrame.icon)
 
-            itemView.setOnClickListener { _editInsulin.value = Event(id) }
+            itemView.setOnClickListener { _editInsulin.value = Event(insulin.uid) }
         }
 
         fun onBind() {
-            id = -1
-
             val res = itemView.resources
             title.text = res.getString(R.string.add)
             icon.setImageResource(R.drawable.ic_add)
 
-            itemView.setOnClickListener { _editInsulin.value = Event(id) }
+            itemView.setOnClickListener { _editInsulin.value = Event(-1) }
         }
 
         fun clear() {

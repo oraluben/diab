@@ -17,12 +17,12 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.annotation.AttrRes
 import it.diab.R
-import it.diab.db.entities.Glucose
-import it.diab.db.entities.Insulin
+import it.diab.core.data.entities.Glucose
+import it.diab.core.data.entities.Insulin
 import it.diab.insulin.ml.PluginManager
 import it.diab.util.VibrationUtil
 import it.diab.util.extensions.animateThreeDots
-import it.diab.util.timeFrame.TimeFrame
+import it.diab.core.data.timeframe.TimeFrame
 import kotlin.math.roundToInt
 
 class InsulinSuggestionView : LinearLayout {

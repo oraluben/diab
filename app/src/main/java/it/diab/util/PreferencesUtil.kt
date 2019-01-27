@@ -9,7 +9,7 @@
 package it.diab.util
 
 import android.content.Context
-import androidx.preference.PreferenceManager
+import android.preference.PreferenceManager
 import it.diab.util.extensions.get
 
 object PreferencesUtil {

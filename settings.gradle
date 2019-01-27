@@ -7,4 +7,4 @@
  * or at https://www.gnu.org/licenses/gpl.txt
  */
 
-include ':app'
+include ':app', ':core'

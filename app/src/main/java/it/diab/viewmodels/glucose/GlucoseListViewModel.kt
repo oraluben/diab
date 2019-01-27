@@ -11,11 +11,11 @@ package it.diab.viewmodels.glucose
 import android.content.res.Resources
 import androidx.annotation.VisibleForTesting
 import androidx.paging.LivePagedListBuilder
-import it.diab.db.entities.Insulin
-import it.diab.db.repositories.GlucoseRepository
-import it.diab.db.repositories.InsulinRepository
+import it.diab.core.data.entities.Insulin
+import it.diab.core.data.repositories.GlucoseRepository
+import it.diab.core.data.repositories.InsulinRepository
 import it.diab.util.extensions.getHeader
-import it.diab.viewmodels.ScopedViewModel
+import it.diab.core.viewmodels.ScopedViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch

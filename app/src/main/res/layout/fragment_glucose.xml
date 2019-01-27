@@ -7,7 +7,7 @@
   The text of the license can be found in the LICENSE file
   or at https://www.gnu.org/licenses/gpl.txt
   -->
-<it.diab.ui.recyclerview.RecyclerViewExt xmlns:android="http://schemas.android.com/apk/res/android"
+<it.diab.core.ui.RecyclerViewExt xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/glucose_recyclerview"
     android:layout_width="match_parent"

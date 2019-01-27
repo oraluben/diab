@@ -16,19 +16,18 @@ import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.paging.PagedList
+import androidx.recyclerview.widget.RecyclerView
 import it.diab.R
 import it.diab.adapters.InsulinAdapter
-import it.diab.db.entities.Insulin
-import it.diab.db.repositories.InsulinRepository
+import it.diab.core.data.entities.Insulin
+import it.diab.core.data.repositories.InsulinRepository
+import it.diab.core.util.event.EventObserver
 import it.diab.insulin.editor.EditorActivity
-import it.diab.ui.recyclerview.RecyclerViewExt
-import it.diab.util.event.EventObserver
 import it.diab.viewmodels.insulin.InsulinViewModel
 import it.diab.viewmodels.insulin.InsulinViewModelFactory
 
 class InsulinFragment : MainFragment() {
-
-    private lateinit var recyclerView: RecyclerViewExt
+    private lateinit var recyclerView: RecyclerView
 
     private lateinit var viewModel: InsulinViewModel
 

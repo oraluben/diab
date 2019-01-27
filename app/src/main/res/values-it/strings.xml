@@ -10,32 +10,9 @@
     <string name="app_name">Diab</string>
     <string name="app_shortcut_add_glucose">Aggiungi glicemia</string>
 
-    <string name="save">Salva</string>
-    <string name="saved">Salvato</string>
-    <string name="add">Aggiungi</string>
-    <string name="remove">Rimuovi</string>
-    <string name="apply">Applica</string>
-    <string name="share">Condividi</string>
-
     <string name="fragment_overview">Panoramica</string>
     <string name="fragment_glucose">Glicemia</string>
     <string name="fragment_insulin">Insulina</string>
-
-    <!-- Time -->
-    <string name="time_today">Oggi</string>
-    <string name="time_yesterday">Ieri</string>
-    <string name="time_last_x">%1$s scorso</string>
-    <string name="time_day_month_short_format">dd MMM</string>
-    <string name="time_pick">Seleziona un\'altra data\u2026</string>
-
-    <!-- Time zone -->
-    <string name="time_extra">Extra</string>
-    <string name="time_morning">Mattina</string>
-    <string name="time_late_morning">Tarda mattinata</string>
-    <string name="time_lunch">Pranzo</string>
-    <string name="time_afternoon">Pomeriggio</string>
-    <string name="time_dinner">Cena</string>
-    <string name="time_night">Notte</string>
 
     <!-- Overview -->
     <string name="overview_last_desc">Ultimo valore%1$s</string>

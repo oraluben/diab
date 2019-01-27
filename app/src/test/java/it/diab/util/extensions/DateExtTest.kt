@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Bevilacqua Joey
+ * Copyright (c) 2019 Bevilacqua Joey
  *
  * Licensed under the GNU GPLv3 license
  *
@@ -8,7 +8,7 @@
  */
 package it.diab.util.extensions
 
-import it.diab.util.DateUtils
+import it.diab.core.util.DateUtils
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import java.util.Calendar
@@ -21,13 +21,6 @@ class DateExtTest {
         val now = System.currentTimeMillis()
         val diff = 2
         assertEquals(Date(now)[diff].time, now + (DateUtils.DAY * diff))
-    }
-
-    @Test
-    fun getCalendar() {
-        val calendar = Calendar.getInstance()
-        val date = calendar.time
-        assertEquals(date.getCalendar(), calendar)
     }
 
     @Test

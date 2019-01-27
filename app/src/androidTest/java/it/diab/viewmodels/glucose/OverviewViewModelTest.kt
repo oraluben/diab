@@ -12,10 +12,10 @@ import android.content.Context
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.test.core.app.ApplicationProvider
 import com.google.common.truth.Truth.assertThat
-import it.diab.db.AppDatabase
-import it.diab.db.repositories.GlucoseRepository
-import it.diab.util.extensions.glucose
-import it.diab.util.timeFrame.TimeFrame
+import it.diab.core.data.AppDatabase
+import it.diab.core.data.repositories.GlucoseRepository
+import it.diab.core.util.extensions.glucose
+import it.diab.core.data.timeframe.TimeFrame
 import kotlinx.coroutines.runBlocking
 import org.junit.Before
 import org.junit.Rule
@@ -27,10 +27,12 @@ class OverviewViewModelTest {
 
     private val testTimeFrame = TimeFrame.MORNING
     private val glucoseValues = arrayOf(69, 99, 301, 132)
-    private val glucoseList = Array(4) { i -> glucose {
-        value = glucoseValues[i]
-        timeFrame = testTimeFrame
-    } }
+    private val glucoseList = Array(4) { i ->
+        glucose {
+            value = glucoseValues[i]
+            timeFrame = testTimeFrame
+        }
+    }
 
     @get:Rule
     val rule = InstantTaskExecutorRule()

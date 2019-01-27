@@ -20,7 +20,7 @@ import androidx.annotation.ColorRes
 import androidx.appcompat.widget.AppCompatSeekBar
 import androidx.core.content.ContextCompat
 import it.diab.R
-import it.diab.db.entities.Glucose
+import it.diab.core.data.entities.Glucose
 
 class EatBar : AppCompatSeekBar {
     private var currentColor: Int

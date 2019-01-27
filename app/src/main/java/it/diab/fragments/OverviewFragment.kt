@@ -31,8 +31,8 @@ import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.formatter.IValueFormatter
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
 import it.diab.R
-import it.diab.db.entities.Glucose
-import it.diab.db.repositories.GlucoseRepository
+import it.diab.core.data.entities.Glucose
+import it.diab.core.data.repositories.GlucoseRepository
 import it.diab.fit.BaseFitHandler
 import it.diab.settings.SettingsActivity
 import it.diab.ui.graph.OverviewGraphView

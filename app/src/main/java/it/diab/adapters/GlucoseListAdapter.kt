@@ -22,12 +22,12 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.RecyclerView
 import it.diab.R
-import it.diab.db.entities.Glucose
-import it.diab.ui.recyclerview.ViewHolderExt
+import it.diab.core.data.entities.Glucose
+import it.diab.core.util.event.Event
 import it.diab.util.PreferencesUtil
 import it.diab.util.UIUtils
-import it.diab.util.event.Event
 import it.diab.util.extensions.diff
 import it.diab.util.extensions.setPrecomputedText
 import it.diab.viewmodels.glucose.GlucoseListViewModel
@@ -90,7 +90,7 @@ class GlucoseListAdapter(
         return UIUtils.createRoundDrawable(resources, size, color)
     }
 
-    inner class GlucoseHolder(view: View) : ViewHolderExt(view) {
+    inner class GlucoseHolder(view: View) : RecyclerView.ViewHolder(view) {
         private val icon = view.findViewById<ImageView>(R.id.item_glucose_timezone)
         private val title = view.findViewById<TextView>(R.id.item_glucose_value)
         private val summary = view.findViewById<TextView>(R.id.item_glucose_insulin)
@@ -100,7 +100,6 @@ class GlucoseListAdapter(
         private val headerTitle = view.findViewById<TextView>(R.id.item_glucose_header_title)
 
         fun onBind(glucose: Glucose, position: Int) {
-            id = glucose.uid
             itemView.visibility = View.VISIBLE
 
             val resources = context.resources ?: return
@@ -123,7 +122,7 @@ class GlucoseListAdapter(
 
             icon.setImageResource(glucose.timeFrame.icon)
 
-            itemView.setOnClickListener { _openGlucose.value = Event(id) }
+            itemView.setOnClickListener { _openGlucose.value = Event(glucose.uid) }
 
             val indicatorDrawable = when {
                 glucose.value > highThreshold -> highIndicator

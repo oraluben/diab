@@ -24,10 +24,6 @@ android {
         versionName "1.3"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-
-        kapt.arguments {
-            arg("room.schemaLocation", "$projectDir/schemas".toString())
-        }
     }
 
     compileOptions {
@@ -39,7 +35,6 @@ android {
 
         release {
             minifyEnabled true
-            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
@@ -59,30 +54,12 @@ android {
 }
 
 dependencies {
-    // Kotlin
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.3.11"
-
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.0.1"
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.0.1"
-
-    // AppCompat
-    implementation "androidx.appcompat:appcompat:1.0.2"
-
-    // Architecture
-    implementation "androidx.lifecycle:lifecycle-extensions:2.0.0"
-    kapt "androidx.lifecycle:lifecycle-compiler:2.0.0"
-
-    implementation "androidx.room:room-runtime:2.0.0"
-    kapt "androidx.room:room-compiler:2.0.0"
-
-    implementation "androidx.paging:paging-runtime:2.0.0"
+    implementation project(':core')
 
     // UI
     implementation "androidx.cardview:cardview:1.0.0"
     implementation "androidx.constraintlayout:constraintlayout:2.0.0-alpha3"
     implementation "androidx.preference:preference:1.0.0"
-
-    implementation "com.google.android.material:material:1.0.0"
 
     implementation "com.github.PhilJay:MPAndroidChart:v3.0.3"
 

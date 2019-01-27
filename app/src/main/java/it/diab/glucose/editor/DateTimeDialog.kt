@@ -15,7 +15,7 @@ import android.content.DialogInterface
 import android.view.View
 import androidx.appcompat.app.AlertDialog
 import it.diab.R
-import it.diab.util.DateUtils
+import it.diab.core.util.DateUtils
 import java.util.Calendar
 import java.util.Date
 

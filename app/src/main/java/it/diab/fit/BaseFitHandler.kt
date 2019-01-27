@@ -9,7 +9,7 @@
 package it.diab.fit
 
 import android.content.Context
-import it.diab.db.entities.Glucose
+import it.diab.core.data.entities.Glucose
 import java.lang.Exception
 
 /**

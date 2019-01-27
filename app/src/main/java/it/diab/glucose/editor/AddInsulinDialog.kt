@@ -18,11 +18,11 @@ import androidx.appcompat.widget.AppCompatSpinner
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.button.MaterialButton
 import it.diab.R
-import it.diab.db.entities.Glucose
-import it.diab.db.entities.Insulin
+import it.diab.core.data.entities.Glucose
+import it.diab.core.data.entities.Insulin
+import it.diab.core.util.extensions.asTimeFrame
 import it.diab.util.UIUtils
 import it.diab.util.VibrationUtil
-import it.diab.util.extensions.asTimeFrame
 
 class AddInsulinDialog(
     private val activity: Activity,

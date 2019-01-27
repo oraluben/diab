@@ -1,0 +1,32 @@
+<!--
+  Copyright (c) 2019 Bevilacqua Joey
+
+  Licensed under the GNU GPLv3 license
+
+  The text of the license can be found in the LICENSE file
+  or at https://www.gnu.org/licenses/gpl.txt
+  -->
+<resources>
+    <string name="save">Save</string>
+    <string name="saved">Saved</string>
+    <string name="add">Add</string>
+    <string name="remove">Remove</string>
+    <string name="apply">Apply</string>
+    <string name="share">Share</string>
+
+    <!-- Time -->
+    <string name="time_today">Today</string>
+    <string name="time_yesterday">Yesterday</string>
+    <string name="time_last_x">Last %1$s</string>
+    <string name="time_day_month_short_format">dd MMM</string>
+    <string name="time_pick">Select another date\u2026</string>
+
+    <!-- Time frame -->
+    <string name="time_extra">Extra</string>
+    <string name="time_morning">Morning</string>
+    <string name="time_late_morning">Late morning</string>
+    <string name="time_lunch">Lunch</string>
+    <string name="time_afternoon">Afternoon</string>
+    <string name="time_dinner">Dinner</string>
+    <string name="time_night">Night</string>
+</resources>

@@ -33,7 +33,7 @@ import it.diab.fragments.GlucoseListFragment
 import it.diab.fragments.InsulinFragment
 import it.diab.fragments.OverviewFragment
 import it.diab.glucose.editor.EditorActivity
-import it.diab.util.event.EventObserver
+import it.diab.core.util.event.EventObserver
 
 class MainActivity : AppCompatActivity() {
     private lateinit var coordinator: CoordinatorLayout

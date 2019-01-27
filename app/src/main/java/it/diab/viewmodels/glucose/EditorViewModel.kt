@@ -9,12 +9,12 @@
 package it.diab.viewmodels.glucose
 
 import androidx.annotation.VisibleForTesting
-import it.diab.db.entities.Glucose
-import it.diab.db.entities.Insulin
-import it.diab.db.repositories.GlucoseRepository
-import it.diab.db.repositories.InsulinRepository
+import it.diab.core.data.entities.Glucose
+import it.diab.core.data.entities.Insulin
+import it.diab.core.data.repositories.GlucoseRepository
+import it.diab.core.data.repositories.InsulinRepository
 import it.diab.insulin.ml.PluginManager
-import it.diab.viewmodels.ScopedViewModel
+import it.diab.core.viewmodels.ScopedViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope

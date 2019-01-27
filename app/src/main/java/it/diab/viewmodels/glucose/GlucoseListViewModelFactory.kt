@@ -10,8 +10,8 @@ package it.diab.viewmodels.glucose
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import it.diab.db.repositories.GlucoseRepository
-import it.diab.db.repositories.InsulinRepository
+import it.diab.core.data.repositories.GlucoseRepository
+import it.diab.core.data.repositories.InsulinRepository
 
 class GlucoseListViewModelFactory(
     private val glucoseRepository: GlucoseRepository,

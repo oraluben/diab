@@ -17,19 +17,19 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.paging.PagedList
+import androidx.recyclerview.widget.RecyclerView
 import it.diab.R
 import it.diab.adapters.GlucoseListAdapter
-import it.diab.db.entities.Glucose
-import it.diab.db.repositories.GlucoseRepository
-import it.diab.db.repositories.InsulinRepository
-import it.diab.ui.recyclerview.RecyclerViewExt
-import it.diab.util.event.Event
-import it.diab.util.event.EventObserver
+import it.diab.core.data.entities.Glucose
+import it.diab.core.data.repositories.GlucoseRepository
+import it.diab.core.data.repositories.InsulinRepository
+import it.diab.core.util.event.Event
+import it.diab.core.util.event.EventObserver
 import it.diab.viewmodels.glucose.GlucoseListViewModel
 import it.diab.viewmodels.glucose.GlucoseListViewModelFactory
 
 class GlucoseListFragment : MainFragment() {
-    private lateinit var recyclerView: RecyclerViewExt
+    private lateinit var recyclerView: RecyclerView
 
     private lateinit var viewModel: GlucoseListViewModel
     private lateinit var adapter: GlucoseListAdapter

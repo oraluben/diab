@@ -10,7 +10,7 @@ package it.diab.viewmodels.insulin
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import it.diab.db.repositories.InsulinRepository
+import it.diab.core.data.repositories.InsulinRepository
 
 class EditorViewModelFactory(
     private val insulinRepository: InsulinRepository
