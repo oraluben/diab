@@ -11,6 +11,8 @@ Diab
 **Diab** is a smart opensource application that helps you managing your diabetes by
 keeping track of your glucose values and insulin injections.
 
+[<img src="https://f-droid.org/badge/get-it-on.png" alt="Get it on F-Droid" height="80">](https://f-droid.org/app/it.diab)
+
 Using the data registered inside the app it's possible to generate a
 customized plugin that once applied to the app will provide smart insights
 for insulin dosages based on real-time context.
