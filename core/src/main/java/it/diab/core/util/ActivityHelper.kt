@@ -19,7 +19,7 @@ package it.diab.core.util
 
 import android.content.Intent
 
-/**
+/*
  * Helpers to start activities in a modularized world.
  */
 
