@@ -53,7 +53,7 @@ class EatBar : AppCompatSeekBar {
         thumb.alpha = 0x00
     }
 
-    @Glucose.CREATOR.EatLevel
+    @Glucose.Companion.EatLevel
     override fun getProgress(): Int {
         return super.getProgress()
     }

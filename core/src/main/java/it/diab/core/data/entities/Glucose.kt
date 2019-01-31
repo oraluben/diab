@@ -8,7 +8,6 @@
  */
 package it.diab.core.data.entities
 
-import android.os.Parcel
 import androidx.annotation.IntDef
 import androidx.room.ColumnInfo
 import androidx.room.Entity
@@ -18,7 +17,6 @@ import androidx.room.PrimaryKey
 import androidx.room.TypeConverters
 import it.diab.core.data.converters.DateConverter
 import it.diab.core.data.converters.TimeFrameConverter
-import it.diab.core.util.extensions.toTimeFrame
 import java.util.Date
 
 @Entity(
@@ -52,19 +50,6 @@ class Glucose {
 
     @Ignore
     constructor()
-
-    @Ignore
-    constructor(input: Parcel) {
-        uid = input.readLong()
-        value = input.readInt()
-        date = Date(input.readLong())
-        insulinId0 = input.readLong()
-        insulinValue0 = input.readFloat()
-        insulinId1 = input.readLong()
-        insulinValue1 = input.readFloat()
-        eatLevel = input.readInt()
-        timeFrame = input.readInt().toTimeFrame()
-    }
 
     constructor(
         uid: Long,
@@ -109,7 +94,7 @@ class Glucose {
 
     override fun hashCode() = super.hashCode() + 1
 
-    companion object CREATOR {
+    companion object {
 
         @IntDef(
             LOW,
