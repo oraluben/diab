@@ -18,7 +18,7 @@ import android.widget.TextView
 import androidx.annotation.AttrRes
 import it.diab.core.data.entities.Glucose
 import it.diab.core.data.entities.Insulin
-import it.diab.core.data.timeframe.TimeFrame
+import it.diab.core.data.entities.TimeFrame
 import it.diab.core.util.PluginManager
 import it.diab.glucose.R
 import it.diab.glucose.util.VibrationUtil

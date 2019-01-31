@@ -24,7 +24,7 @@ import com.google.android.gms.fitness.data.HealthFields
 import com.google.android.gms.fitness.request.DataUpdateRequest
 import it.diab.core.data.entities.Glucose
 import it.diab.core.override.BaseFitHandler
-import it.diab.core.data.timeframe.TimeFrame
+import it.diab.core.data.entities.TimeFrame
 import java.util.concurrent.TimeUnit
 
 @Suppress("unused")

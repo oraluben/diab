@@ -21,8 +21,8 @@ import androidx.appcompat.widget.SwitchCompat
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.button.MaterialButton
+import it.diab.core.data.entities.TimeFrame
 import it.diab.core.data.repositories.InsulinRepository
-import it.diab.core.data.timeframe.TimeFrame
 import it.diab.core.util.Activities
 import it.diab.core.util.UIUtils
 import it.diab.insulin.R

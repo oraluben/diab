@@ -8,7 +8,7 @@
  */
 package it.diab.core.util.extensions
 
-import it.diab.core.data.timeframe.TimeFrame
+import it.diab.core.data.entities.TimeFrame
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date

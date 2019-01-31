@@ -14,7 +14,6 @@ import androidx.room.Ignore
 import androidx.room.PrimaryKey
 import androidx.room.TypeConverters
 import it.diab.core.data.converters.TimeFrameConverter
-import it.diab.core.data.timeframe.TimeFrame
 
 @Entity(tableName = "insulin")
 class Insulin {

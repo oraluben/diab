@@ -15,7 +15,7 @@ import com.google.common.truth.Truth.assertThat
 import it.diab.core.data.AppDatabase
 import it.diab.core.data.repositories.GlucoseRepository
 import it.diab.core.util.extensions.glucose
-import it.diab.core.data.timeframe.TimeFrame
+import it.diab.core.data.entities.TimeFrame
 import kotlinx.coroutines.runBlocking
 import org.junit.Before
 import org.junit.Rule

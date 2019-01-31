@@ -16,7 +16,7 @@ import it.diab.core.data.AppDatabase
 import it.diab.core.data.entities.Glucose
 import it.diab.core.data.repositories.GlucoseRepository
 import it.diab.core.data.repositories.InsulinRepository
-import it.diab.core.data.timeframe.TimeFrame
+import it.diab.core.data.entities.TimeFrame
 import it.diab.core.util.PluginManager
 import it.diab.core.util.extensions.glucose
 import it.diab.core.util.extensions.insulin

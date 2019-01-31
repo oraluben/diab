@@ -14,7 +14,7 @@ import com.google.common.truth.Truth.assertThat
 import it.diab.core.data.dao.GlucoseDao
 import it.diab.core.data.dao.InsulinDao
 import it.diab.core.data.entities.Glucose
-import it.diab.core.data.timeframe.TimeFrame
+import it.diab.core.data.entities.TimeFrame
 import it.diab.core.util.extensions.glucose
 import it.diab.core.util.extensions.insulin
 import org.junit.Before

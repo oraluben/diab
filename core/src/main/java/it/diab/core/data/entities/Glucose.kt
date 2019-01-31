@@ -18,7 +18,6 @@ import androidx.room.PrimaryKey
 import androidx.room.TypeConverters
 import it.diab.core.data.converters.DateConverter
 import it.diab.core.data.converters.TimeFrameConverter
-import it.diab.core.data.timeframe.TimeFrame
 import it.diab.core.util.extensions.toTimeFrame
 import java.util.Date
 

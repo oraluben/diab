@@ -23,9 +23,9 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import it.diab.core.BuildConfig
 import it.diab.core.data.entities.Glucose
+import it.diab.core.data.entities.TimeFrame
 import it.diab.core.data.repositories.GlucoseRepository
 import it.diab.core.data.repositories.InsulinRepository
-import it.diab.core.data.timeframe.TimeFrame
 import it.diab.core.util.DateUtils
 import it.diab.core.util.extensions.forEachWithIndex
 import it.diab.core.util.extensions.format

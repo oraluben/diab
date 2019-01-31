@@ -6,14 +6,14 @@
  * The text of the license can be found in the LICENSE file
  * or at https://www.gnu.org/licenses/gpl.txt
  */
-package it.diab.core.data.timeframe
+package it.diab.core.data.entities
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 
 import it.diab.core.R
 
-enum class TimeFrame : ITimeFrame {
+enum class TimeFrame {
     EXTRA {
         @DrawableRes
         override val icon = R.drawable.ic_time_extra
@@ -75,5 +75,10 @@ enum class TimeFrame : ITimeFrame {
         override val string = R.string.time_night
         override val reprHour = 22
         override fun toInt() = 5
-    }
+    };
+
+    abstract val icon: Int
+    abstract val string: Int
+    abstract val reprHour: Int
+    abstract fun toInt(): Int
 }

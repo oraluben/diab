@@ -19,7 +19,7 @@ import it.diab.util.extensions.getAsMinutes
 import it.diab.util.extensions.isToday
 import it.diab.util.extensions.isZeroOrNan
 import it.diab.core.util.extensions.toTimeFrame
-import it.diab.core.data.timeframe.TimeFrame
+import it.diab.core.data.entities.TimeFrame
 import it.diab.core.viewmodels.ScopedViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope

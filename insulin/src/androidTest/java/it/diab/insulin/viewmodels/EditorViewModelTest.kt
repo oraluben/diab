@@ -14,7 +14,7 @@ import androidx.test.core.app.ApplicationProvider
 import com.google.common.truth.Truth.assertThat
 import it.diab.core.data.AppDatabase
 import it.diab.core.data.repositories.InsulinRepository
-import it.diab.core.data.timeframe.TimeFrame
+import it.diab.core.data.entities.TimeFrame
 import it.diab.core.util.extensions.insulin
 import kotlinx.coroutines.runBlocking
 import org.junit.Before

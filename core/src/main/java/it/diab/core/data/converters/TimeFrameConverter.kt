@@ -9,7 +9,7 @@
 package it.diab.core.data.converters
 
 import androidx.room.TypeConverter
-import it.diab.core.data.timeframe.TimeFrame
+import it.diab.core.data.entities.TimeFrame
 
 class TimeFrameConverter {
 

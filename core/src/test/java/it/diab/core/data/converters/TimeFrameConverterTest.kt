@@ -8,7 +8,7 @@
  */
 package it.diab.core.data.converters
 
-import it.diab.core.data.timeframe.TimeFrame
+import it.diab.core.data.entities.TimeFrame
 import org.junit.Assert.assertEquals
 import org.junit.Test
 

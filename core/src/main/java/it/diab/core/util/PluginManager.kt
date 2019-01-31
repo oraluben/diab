@@ -14,7 +14,7 @@ import android.preference.PreferenceManager
 import androidx.annotation.WorkerThread
 import androidx.core.content.ContextCompat
 import it.diab.core.data.entities.Glucose
-import it.diab.core.data.timeframe.TimeFrame
+import it.diab.core.data.entities.TimeFrame
 import it.diab.core.util.extensions.set
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
