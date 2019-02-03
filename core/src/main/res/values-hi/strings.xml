@@ -1,0 +1,27 @@
+
+<!--
+  Copyright (c) 2019 Bevilacqua Joey
+
+  Licensed under the GNU GPLv3 license
+
+  The text of the license can be found in the LICENSE file
+  or at https://www.gnu.org/licenses/gpl.txt
+  -->
+<resources>
+    <string name="remove">हटाए</string>
+
+    <string name="settings_name">सेटिंग्स</string>
+
+    <!-- Time -->
+    <string name="time_today">आज</string>
+    <string name="time_yesterday">कल</string>
+
+    <!-- Time frame -->
+    <string name="time_extra">अतिरिक्त</string>
+    <string name="time_morning">सुबह</string>
+    <string name="time_late_morning">देर सुबह</string>
+    <string name="time_lunch">दोपहर का भोजन</string>
+    <string name="time_afternoon">दोपहर</string>
+    <string name="time_dinner">रात का खाना</string>
+    <string name="time_night">रात</string>
+</resources>

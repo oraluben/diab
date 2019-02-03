@@ -1,0 +1,34 @@
+<!--
+  Copyright (c) 2019 Bevilacqua Joey
+
+  Licensed under the GNU GPLv3 license
+
+  The text of the license can be found in the LICENSE file
+  or at https://www.gnu.org/licenses/gpl.txt
+  -->
+<resources>
+    <string name="app_name">Diab</string>
+    <string name="app_shortcut_add_glucose">ग्लूकोज जोड़ें</string>
+
+    <string name="fragment_overview">अवलोकन</string>
+    <string name="fragment_glucose">ग्लूकोस </string>
+    <string name="fragment_insulin">इंसुलिन</string>
+
+    <!-- Menu -->
+    <string name="fit_name">फिट एकीकरण</string>
+
+    <!-- Overview -->
+    <string name="overview_last_desc">अंतिम मान %1$s</string>
+    <string name="overview_last_fallback">नमस्ते</string>
+    <string name="overview_last_desc_fallback">नीले बटन को दबाकर एक मान जोड़ें</string>
+
+    <!-- Glucose -->
+    <string name="glucose_header_last">अंतिम %1$s</string>
+    <string name="glucose_header_month">dd MMM</string>
+
+    <!-- Insulin -->
+    <string name="insulin_add_item">जोड़े</string>
+
+    <!-- Accessibility -->
+    <string name="a11y_overview_menu">विकल्प</string>
+</resources>
