@@ -49,10 +49,10 @@ class Insulin {
     }
 
     fun setTimeFrame(timeFrame: Int) {
-        this.timeFrame = TimeFrameConverter().toTimeFrame(timeFrame) ?: TimeFrame.EXTRA
+        this.timeFrame = TimeFrameConverter().toTimeFrame(timeFrame)
     }
 
-    fun getDisplayedString(value: Float) = "%1\$s %2\$s".format(name, "%.1f".format(value))
+    fun getDisplayedString(value: Float) = "%1\$s %2\$.1f".format(name, value)
 
     override fun equals(other: Any?): Boolean {
         if (other == null || other !is Insulin) {

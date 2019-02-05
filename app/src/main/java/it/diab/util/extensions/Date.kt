@@ -12,7 +12,6 @@ import android.content.res.Resources
 import it.diab.R
 import it.diab.core.util.extensions.format
 import it.diab.core.util.extensions.getCalendar
-import it.diab.core.util.extensions.getHour
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
@@ -30,7 +29,11 @@ fun Date.isToday(): Boolean {
         calendar[Calendar.DAY_OF_YEAR] == today[Calendar.DAY_OF_YEAR]
 }
 
-fun Date.getAsMinutes() = getHour() * 60f + getCalendar()[Calendar.MINUTE]
+fun Date.getAsMinutes(): Float {
+    return getCalendar().run {
+        get(Calendar.HOUR_OF_DAY) * 60f + get(Calendar.MINUTE)
+    }
+}
 
 fun Date.getWeekDay(): String = format("EEEE")
 
