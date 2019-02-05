@@ -47,7 +47,7 @@ abstract class AppDatabase protected constructor() : RoomDatabase() {
         // This is used during unit tests
         var TEST_MODE = false
 
-        /**
+        /*
          * DB version 2
          *
          * Glucose
@@ -76,7 +76,7 @@ abstract class AppDatabase protected constructor() : RoomDatabase() {
             }
         }
 
-        /**
+        /*
          * DB version 3
          *
          * Insulin
@@ -89,7 +89,7 @@ abstract class AppDatabase protected constructor() : RoomDatabase() {
             }
         }
 
-        /**
+        /*
          * DB version 4
          *
          * Glucose
