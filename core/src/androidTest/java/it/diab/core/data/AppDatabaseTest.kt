@@ -21,8 +21,8 @@ import org.junit.Before
 import org.junit.Test
 
 class AppDatabaseTest {
-    private var glucoseDao: GlucoseDao? = null
-    private var insulinDao: InsulinDao? = null
+    private lateinit var glucoseDao: GlucoseDao
+    private lateinit var insulinDao: InsulinDao
 
     @Before
     fun setup() {
@@ -42,8 +42,8 @@ class AppDatabaseTest {
             timeFrame = TimeFrame.MORNING
         }
 
-        glucoseDao?.insert(item)
-        val test = glucoseDao?.getById(1)!![0]
+        glucoseDao.insert(item)
+        val test = glucoseDao.getById(1)[0]
         assertThat(item).isEqualTo(test)
     }
 
@@ -54,9 +54,9 @@ class AppDatabaseTest {
             name = "TEST 0"
             timeFrame = TimeFrame.LUNCH
             hasHalfUnits = true
-        }.also { insulinDao?.insert(it) }
+        }.also { insulinDao.insert(it) }
 
-        val test = insulinDao?.getById(1)!![0]
+        val test = insulinDao.getById(1)[0]
         assertThat(item).isEqualTo(test)
     }
 
@@ -66,7 +66,7 @@ class AppDatabaseTest {
             uid = 2
             name = "TEST 1"
             timeFrame = TimeFrame.DINNER
-        }.also { insulinDao?.insert(it) }
+        }.also { insulinDao.insert(it) }
 
         val basal = insulin {
             uid = 3
@@ -74,9 +74,9 @@ class AppDatabaseTest {
             timeFrame = TimeFrame.DINNER
             isBasal = true
             hasHalfUnits = true
-        }.also { insulinDao?.insert(it) }
+        }.also { insulinDao.insert(it) }
 
-        glucoseDao?.insert(glucose {
+        glucoseDao.insert(glucose {
             uid = 2
             value = 100
             insulinId0 = insulin.uid
@@ -87,9 +87,9 @@ class AppDatabaseTest {
             timeFrame = TimeFrame.EXTRA
         })
 
-        glucoseDao?.getById(2)!![0].run {
-            val test1 = insulinDao?.getById(insulinId0)!![0]
-            val test2 = insulinDao?.getById(insulinId1)!![0]
+        glucoseDao.getById(2)[0].run {
+            val test1 = insulinDao.getById(insulinId0)[0]
+            val test2 = insulinDao.getById(insulinId1)[0]
 
             assertThat(insulin.uid).isEqualTo(test1.uid)
             assertThat(basal.uid).isEqualTo(test2.uid)
