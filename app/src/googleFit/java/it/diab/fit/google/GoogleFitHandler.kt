@@ -23,8 +23,8 @@ import com.google.android.gms.fitness.data.HealthDataTypes
 import com.google.android.gms.fitness.data.HealthFields
 import com.google.android.gms.fitness.request.DataUpdateRequest
 import it.diab.core.data.entities.Glucose
-import it.diab.core.override.BaseFitHandler
 import it.diab.core.data.entities.TimeFrame
+import it.diab.core.override.BaseFitHandler
 import java.util.concurrent.TimeUnit
 
 @Suppress("unused")
@@ -87,7 +87,8 @@ class GoogleFitHandler : BaseFitHandler() {
             .setTimeInterval(timeStamp, timeStamp, TimeUnit.MILLISECONDS)
             .build() ?: return
 
-        Fitness.getHistoryClient(context, GoogleSignIn.getLastSignedInAccount(context)!!)
+        val account = GoogleSignIn.getLastSignedInAccount(context) ?: return
+        Fitness.getHistoryClient(context, account)
             .run { if (isNew) insertData(set) else updateData(request) }
             .addOnFailureListener { e -> onFailure(e) }
             .addOnSuccessListener { onSuccess() }
