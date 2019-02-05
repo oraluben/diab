@@ -1,0 +1,40 @@
+<!--
+  Copyright (c) 2019 Bevilacqua Joey
+
+  Licensed under the GNU GPLv3 license
+
+  The text of the license can be found in the LICENSE file
+  or at https://www.gnu.org/licenses/gpl.txt
+  -->
+<resources>
+
+    <!-- Export database -->
+    <string name="export_ask_ml_title">Prepare data to build a plugin</string>
+    <string name="export_ask_ml_message">You\'re about to export your glucose data to build an insulin suggestion plugin.\nThis data may become readable by anyone who has access to the internal memory of this device.\nDo you want to proceed?</string>
+    <string name="export_ask_xlsx_title">Export</string>
+    <string name="export_ask_xlsx_summary">Create an electronic sheet file to easily read your data on a PC</string>
+    <string name="export_ask_xlsx_message">You\'re about to export the glucose data as an electronic sheet file.\nThis data may become readable by anyone who has access to the internal memory of this device.\nDo you want to proceed?</string>
+    <string name="export_ask_positive">Export</string>
+    <string name="export_ask_permission_message">Storage access is needed to export the data to the internal memory. Please grant it.</string>
+    <string name="export_ask_permission_positive">Ask again</string>
+    <string name="export_ask_auth_title">Diab ∙ Export</string>
+    <string name="export_ask_auth_message">Authenticate to export your data</string>
+    <string name="export_failed_auth">Auth failed, data export has been canceled</string>
+    <string name="export_notification_title">Export glucose data</string>
+    <string name="export_notification_channel">Export operations</string>
+    <string name="export_completed_success">The data has been exported to the internal memory</string>
+    <string name="export_completed_failure">Unable to export the data to the internal memory</string>
+    <string name="export_share">Share</string>
+
+    <!-- Export sheet -->
+    <string name="export_sheet_glucose_value">Value</string>
+    <string name="export_sheet_glucose_date">Date</string>
+    <string name="export_sheet_glucose_eat">Eat level</string>
+    <string name="export_sheet_glucose_insulin">Insulin</string>
+    <string name="export_sheet_glucose_insulin_value">Units</string>
+    <string name="export_sheet_glucose_basal">Basal</string>
+    <string name="export_sheet_insulin_name">Name</string>
+    <string name="export_sheet_insulin_time_frame">Time frame</string>
+    <string name="export_sheet_insulin_basal">Is basal</string>
+    <string name="export_sheet_insulin_half_units">Has half units</string>
+</resources>

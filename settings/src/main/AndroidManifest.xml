@@ -9,10 +9,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="it.diab.settings">
 
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-
-
     <application android:name="it.diab.core.DiabApplication">
 
         <activity
@@ -25,20 +21,5 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-
-        <service
-            android:name=".export.ExportService"
-            android:enabled="true" />
-
-        <provider
-            android:authorities="it.diab.files"
-            android:name="androidx.core.content.FileProvider"
-            android:exported="false"
-            android:grantUriPermissions="true">
-
-            <meta-data
-                android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/provider_paths"/>
-        </provider>
     </application>
 </manifest>

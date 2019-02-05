@@ -7,5 +7,5 @@
  * or at https://www.gnu.org/licenses/gpl.txt
  */
 
-include ':app', ':core', ':glucose'
-include ':insulin', ':settings'
+include ':app', ':core'
+include ':export', ':glucose', ':insulin', ':settings'

@@ -35,6 +35,9 @@ jobs:
                 path: core/build/reports
                 destination: core-reports
             - store_artifacts:
+                path: export/build/reports
+                destination: export-reports
+            - store_artifacts:
                 path: glucose/build/reports
                 destination: glucose-reports
             - store_artifacts:

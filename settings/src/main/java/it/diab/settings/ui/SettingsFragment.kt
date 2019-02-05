@@ -30,8 +30,8 @@ import it.diab.core.util.PluginManager
 import it.diab.core.util.UIUtils
 import it.diab.core.util.extensions.format
 import it.diab.core.util.extensions.get
+import it.diab.export.ExportService
 import it.diab.settings.R
-import it.diab.settings.export.ExportService
 import java.util.Date
 
 class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedPreferenceChangeListener {
