@@ -18,12 +18,16 @@ class DateConverterTest {
     @Test
     fun convertToDate() {
         val now = System.currentTimeMillis()
-        assertEquals(converter.toDate(now)!!.time, now)
+        assertEquals(converter.toDate(now).time, now)
+
+        assertEquals(converter.toDate(null).time, 0)
     }
 
     @Test
     fun convertToLong() {
         val now = Date()
         assertEquals(converter.toLong(now), now.time)
+
+        assertEquals(converter.toLong(null), 0)
     }
 }

@@ -14,10 +14,8 @@ import java.util.Date
 class DateConverter {
 
     @TypeConverter
-    fun toDate(value: Long?): Date? =
-        if (value == null) Date(0)
-        else Date(value)
+    fun toDate(value: Long?) = Date(value ?: 0)
 
     @TypeConverter
-    fun toLong(value: Date?): Long? = value?.time ?: 0L
+    fun toLong(value: Date?) = value?.time ?: 0L
 }

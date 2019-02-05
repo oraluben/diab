@@ -20,11 +20,15 @@ class TimeFrameConverterTest {
         val tf = TimeFrame.LATE_MORNING
 
         assertEquals(converter.toInt(tf), 1)
+
+        assertEquals(converter.toInt(null), TimeFrame.EXTRA.toInt())
     }
 
     @Test
     fun convertToTimeFrame() {
         val tf = 1
         assertEquals(converter.toTimeFrame(tf), TimeFrame.LATE_MORNING)
+
+        assertEquals(converter.toTimeFrame(null), TimeFrame.EXTRA)
     }
 }
