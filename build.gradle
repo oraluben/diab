@@ -52,5 +52,6 @@ spotless {
     }
 }
 
-// Load versioning
-apply from: 'versioning.gradle'
+ext {
+    appVersionCode = 100 + Integer.parseInt('git rev-list --count HEAD'.execute([], project.rootDir).text.trim())
+}
