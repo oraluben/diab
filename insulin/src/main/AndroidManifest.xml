@@ -14,7 +14,10 @@
         <activity
             android:name=".ui.EditorActivity"
             android:excludeFromRecents="true"
-            android:exported="true"
-            android:theme="@style/AppTheme.DialogActivity" />
+            android:theme="@style/AppTheme.DialogActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+            </intent-filter>
+        </activity>
     </application>
 </manifest>

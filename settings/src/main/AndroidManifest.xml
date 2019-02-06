@@ -14,11 +14,13 @@
         <activity
             android:name=".ui.SettingsActivity"
             android:label="@string/settings_name"
-            android:exported="true"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.APPLICATION_PREFERENCES" />
                 <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
             </intent-filter>
         </activity>
     </application>

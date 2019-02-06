@@ -15,9 +15,12 @@
 
         <activity
             android:name=".ui.EditorActivity"
-            android:exported="true"
             android:configChanges="screenSize|orientation"
             android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="stateHidden" />
+            android:windowSoftInputMode="stateHidden">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+            </intent-filter>
+        </activity>
     </application>
 </manifest>
