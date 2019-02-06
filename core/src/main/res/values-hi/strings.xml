@@ -10,6 +10,7 @@
 <resources>
     <string name="remove">हटाए</string>
 
+    <string name="fit_name">फिट एकीकरण</string>
     <string name="settings_name">सेटिंग्स</string>
 
     <!-- Time -->

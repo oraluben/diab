@@ -8,4 +8,4 @@
  */
 
 include ':app', ':core'
-include ':export', ':glucose', ':insulin', ':settings'
+include ':export', ':glucose', ':googlefit', ':insulin', ':settings'

@@ -14,9 +14,6 @@
     <string name="fragment_glucose">Glicemia</string>
     <string name="fragment_insulin">Insulina</string>
 
-    <!-- Menu -->
-    <string name="fit_name">Integrazione Fit</string>
-
     <!-- Overview -->
     <string name="overview_last_desc">Ultimo valore%1$s</string>
     <string name="overview_last_fallback">Ciao</string>

@@ -14,9 +14,6 @@
     <string name="fragment_glucose">ग्लूकोस </string>
     <string name="fragment_insulin">इंसुलिन</string>
 
-    <!-- Menu -->
-    <string name="fit_name">फिट एकीकरण</string>
-
     <!-- Overview -->
     <string name="overview_last_desc">अंतिम मान %1$s</string>
     <string name="overview_last_fallback">नमस्ते</string>

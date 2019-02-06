@@ -9,6 +9,7 @@
 <resources>
     <string name="remove">Rimuovi</string>
 
+    <string name="fit_name">Integrazione Fit</string>
     <string name="settings_name">Impostazioni</string>
 
     <!-- Time -->

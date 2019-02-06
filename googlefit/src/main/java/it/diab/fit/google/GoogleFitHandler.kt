@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Bevilacqua Joey
+ * Copyright (c) 2019 Bevilacqua Joey
  *
  * Licensed under the GNU GPLv3 license
  *
@@ -25,6 +25,7 @@ import com.google.android.gms.fitness.request.DataUpdateRequest
 import it.diab.core.data.entities.Glucose
 import it.diab.core.data.entities.TimeFrame
 import it.diab.core.override.BaseFitHandler
+import it.diab.fit.google.ui.FitActivity
 import java.util.concurrent.TimeUnit
 
 @Suppress("unused")

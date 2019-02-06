@@ -55,21 +55,13 @@ dependencies {
     implementation project(':glucose')
     implementation project(':insulin')
     implementation project(':settings')
+    googleFitImplementation project(':googlefit')
 
     // UI
     implementation "androidx.cardview:cardview:1.0.0"
 
     implementation "com.github.PhilJay:MPAndroidChart:v3.0.3"
-
-    // Google Fit
-    googleFitImplementation "com.google.android.gms:play-services-auth:16.0.1"
-    googleFitImplementation "com.google.android.gms:play-services-fitness:16.0.1"
 }
 
 // Testing dependencies
 apply from: "../deps_test.gradle"
-
-repositories {
-    google()
-    mavenCentral()
-}

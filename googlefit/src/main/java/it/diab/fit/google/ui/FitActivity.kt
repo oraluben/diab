@@ -1,12 +1,12 @@
 /*
- * Copyright (c) 2018 Bevilacqua Joey
+ * Copyright (c) 2019 Bevilacqua Joey
  *
  * Licensed under the GNU GPLv3 license
  *
  * The text of the license can be found in the LICENSE file
  * or at https://www.gnu.org/licenses/gpl.txt
  */
-package it.diab.fit.google
+package it.diab.fit.google.ui
 
 import android.app.Activity
 import android.content.Intent
@@ -21,13 +21,13 @@ import androidx.appcompat.widget.Toolbar
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.snackbar.Snackbar
-import it.diab.R
-import it.diab.fit.google.viewmodel.FitViewModel
-import it.diab.fit.google.viewmodel.FitViewModelFactory
+import it.diab.fit.google.R
+import it.diab.fit.google.viewmodels.FitViewModel
+import it.diab.fit.google.viewmodels.FitViewModelFactory
 
 class FitActivity : AppCompatActivity() {
 
-    private lateinit var viewModel: FitViewModel
+    private lateinit var viewModel: it.diab.fit.google.viewmodels.FitViewModel
 
     private lateinit var coordinator: CoordinatorLayout
     private lateinit var headerText: TextView
