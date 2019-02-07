@@ -1,6 +1,6 @@
-[![Build Status](https://api.travis-ci.org/bvlj/diab.svg)](https://travis-ci.org/bvlj/diab)
+[![Gitlab Pipeline](https://gitlab.com/bvlj/diab/badges/staging/build.svg)](https://gitlab.com/bvlj/diab/pipelines)
 [![CircleCI](https://circleci.com/gh/bvlj/diab/tree/staging.svg?style=svg)](https://circleci.com/gh/bvlj/diab/tree/staging)
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/5ba8b95a14d04075b86cce7ce71c46f0)](https://www.codacy.com/app/bvlj/diab?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=bvlj/diab&amp;utm_campaign=Badge_Grade)
+[![Maintainability](https://api.codeclimate.com/v1/badges/017008168f8e5910c7c2/maintainability)](https://codeclimate.com/github/bvlj/diab/maintainability)
 [![ktlint](https://img.shields.io/badge/code%20style-%E2%9D%A4-FF4081.svg)](https://ktlint.github.io/)
 
 Diab
