@@ -32,18 +32,33 @@ before_script:
 stages:
   - build
   - test
+  - release
 
 assembleOss:
   stage: build
   script:
     - ./gradlew assembleOssDebug
-#   - ./gradlew assembleGoogleFitDebug
-  artifacts:
-    paths:
-      - app/build/outputs/ 
 
+assembleFit:
+  stage: build
+  script:
+  - ./gradlew assembleGoogleFitDebug
 
 checks:
   stage: test
   script:
-    - ./gradlew check -PisCiBuild
+  - ./gradlew check -PisCiBuild
+
+assembleOssRelease:
+  stage: release
+  script:
+  - echo $KEYSTORE_FILE | base64 -d > gitlab.keystore
+  - ./gradlew assembleOssRelease
+    -Pandroid.injected.signign.store.file=gitlab.keystore
+    -Pandroid.injected.signing.key.alias=$KEY_ALIAS
+    -Pandroid.injected.signing.key.password=$KEY_PASSWORD
+    -Pandroid.injected.signing.store.password=$KEYSTORE_PASSWORD
+  artifacts:
+    paths:
+    - app/oss/release/app-oss-release.apk
+    - app/build/outputs/mapping/r8/oss/release/mapping.txt
