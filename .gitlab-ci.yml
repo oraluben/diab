@@ -11,6 +11,9 @@ cache:
   paths:
     - .m2/
     - .gradle/
+    - gradle/
+    - gradlew
+
 
 before_script:
   - export GRADLE_USER_HOME=$(pwd)/.gradle
@@ -32,25 +35,20 @@ before_script:
 stages:
   - build
   - test
-  - release
 
-assembleOss:
+assemble:
   stage: build
   script:
     - ./gradlew assembleOssDebug
-
-assembleFit:
-  stage: build
-  script:
-  - ./gradlew assembleGoogleFitDebug
 
 checks:
   stage: test
   script:
   - ./gradlew check -PisCiBuild
 
-assembleOssRelease:
-  stage: release
+weekly:
+  only:
+  - schedules
   script:
   - echo $KEYSTORE_FILE | base64 -d > gitlab.keystore
   - ./gradlew assembleOssRelease
@@ -61,4 +59,4 @@ assembleOssRelease:
   artifacts:
     paths:
     - app/oss/release/app-oss-release.apk
-    - app/build/outputs/mapping/r8/oss/release/mapping.txt
+    expire_in: 30 days
