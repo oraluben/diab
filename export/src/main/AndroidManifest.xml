@@ -12,22 +12,27 @@
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
+    <permission
+        android:name="it.diab.export.ALLOW_EXPORT"
+        android:protectionLevel="dangerous" />
 
     <application android:name="it.diab.core.DiabApplication">
 
         <service
             android:name=".ExportService"
-            android:enabled="true" />
+            android:enabled="true"
+            android:permission="it.diab.export.ALLOW_EXPORT">
+        </service>
 
         <provider
-            android:authorities="it.diab.files"
             android:name="androidx.core.content.FileProvider"
+            android:authorities="it.diab.files"
             android:exported="false"
             android:grantUriPermissions="true">
 
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/provider_paths"/>
+                android:resource="@xml/provider_paths" />
         </provider>
     </application>
 </manifest>

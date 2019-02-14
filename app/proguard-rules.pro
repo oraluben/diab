@@ -31,6 +31,14 @@
 -keepclassmembernames class kotlinx.** { volatile <fields>; }
 -keepnames class kotlinx.coroutines.internal.MainDispatcherFactory {}
 -keepnames class kotlinx.coroutines.CoroutineExceptionHandler {}
+-keep class kotlinx.coroutines.android.AndroidExceptionPreHandler { *; }
+-keep class kotlinx.coroutines.android.AndroidDispatcherFactory { *; }
 
 # Keep fitness classes
 -keep class it.diab.fit.** {}
+
+# Keep enums
+-keepclassmembers enum * {
+    public static **[] values();
+    public static ** valueOf(java.lang.String);
+}

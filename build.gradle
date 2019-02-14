@@ -48,7 +48,7 @@ subprojects {
 spotless {
     kotlin {
         target "**/*.kt"
-        ktlint("0.29.0") // Also update `setup.sh` file when changing this
+        ktlint("0.30.0") // Also update `setup.sh` file when changing this
     }
 }
 
