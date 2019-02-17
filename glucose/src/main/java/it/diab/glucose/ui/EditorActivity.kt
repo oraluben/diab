@@ -12,6 +12,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.util.Log
 import android.view.View
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -42,6 +43,7 @@ import it.diab.glucose.widget.NumericKeyboardView
 class EditorActivity : AppCompatActivity() {
 
     private lateinit var constraintView: ConstraintLayout
+    private lateinit var closeView: ImageView
     private lateinit var valueView: TextView
     private lateinit var timeView: TextView
     private lateinit var eatView: EatBar
@@ -65,6 +67,7 @@ class EditorActivity : AppCompatActivity() {
         viewModel = ViewModelProviders.of(this, factory)[it.diab.glucose.viewmodels.EditorViewModel::class.java]
 
         constraintView = findViewById(R.id.editor_root)
+        closeView = findViewById(R.id.editor_close)
         valueView = findViewById(R.id.editor_value)
         timeView = findViewById(R.id.editor_time)
         eatView = findViewById(R.id.editor_eat_bar)
@@ -92,6 +95,7 @@ class EditorActivity : AppCompatActivity() {
     }
 
     private fun setupCommon() {
+        closeView.setOnClickListener { finish() }
         valueView.text = viewModel.glucose.value.toString()
         timeView.setPrecomputedText(viewModel.glucose.date.getDetailedString(), viewModel.viewModelScope)
         fabView.setOnClickListener { onFabClick() }

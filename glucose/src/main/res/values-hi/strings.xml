@@ -18,6 +18,7 @@
     <string name="glucose_editor_no_insulin">कोई इंसुलिन नहीं मिला</string>
     <string name="glucose_editor_date_pick">एक और तारीख चुनें\u2026</string>
     <string name="glucose_editor_saved">संरक्षित किया</string>
+    <string name="glucose_editor_close">Close</string>
 
     <!-- Glucose suggestions -->
     <string name="insulin_suggestion_loading">लोड हो रहा है</string>

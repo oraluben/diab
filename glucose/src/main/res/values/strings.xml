@@ -18,6 +18,7 @@
     <string name="glucose_editor_no_insulin">No insulin found</string>
     <string name="glucose_editor_date_pick">Select another date\u2026</string>
     <string name="glucose_editor_saved">Saved</string>
+    <string name="glucose_editor_close">Close</string>
 
     <!-- Glucose suggestions -->
     <string name="insulin_suggestion_loading">Loading</string>

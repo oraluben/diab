@@ -11,6 +11,7 @@
     <!-- Glucose Editor constraints -->
 
     <item type="id" name="editor_root" />
+    <item type="id" name="editor_close" />
     <item type="id" name="editor_value" />
     <item type="id" name="editor_time" />
     <item type="id" name="editor_eat_icon" />
