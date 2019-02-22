@@ -32,13 +32,16 @@ import it.diab.core.util.extensions.asTimeFrame
 import it.diab.core.util.extensions.insulin
 import it.diab.core.util.extensions.setPrecomputedText
 import it.diab.glucose.R
+import it.diab.glucose.suggestion.InsulinSuggestion
 import it.diab.glucose.util.VibrationUtil
+import it.diab.glucose.util.extensions.forEachUntilTrue
 import it.diab.glucose.util.extensions.getDetailedString
 import it.diab.glucose.util.extensions.setErrorStatus
 import it.diab.glucose.util.extensions.setTextErrorStatus
+import it.diab.glucose.viewmodels.EditorViewModel
 import it.diab.glucose.widget.EatBar
-import it.diab.glucose.widget.InsulinSuggestionView
 import it.diab.glucose.widget.NumericKeyboardView
+import it.diab.glucose.widget.SuggestionView
 
 class EditorActivity : AppCompatActivity() {
 
@@ -49,11 +52,13 @@ class EditorActivity : AppCompatActivity() {
     private lateinit var eatView: EatBar
     private lateinit var insulinView: TextView
     private lateinit var basalView: TextView
-    private lateinit var suggestionView: InsulinSuggestionView
+    private lateinit var suggestionView: SuggestionView
     private lateinit var fabView: FloatingActionButton
     private lateinit var keyboardView: NumericKeyboardView
 
-    private lateinit var viewModel: it.diab.glucose.viewmodels.EditorViewModel
+    private lateinit var viewModel: EditorViewModel
+
+    private val supportedSuggestions = arrayOf(this::setupInsulinSuggestion)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -141,13 +146,27 @@ class EditorActivity : AppCompatActivity() {
                 setOnClickListener { onInsulinClick(true) }
             }
         }
-        suggestionView.bind(
+
+        // Try to run all the suggestion setups until one completes successfully
+        supportedSuggestions.forEachUntilTrue { it() }
+
+        fabView.setImageResource(R.drawable.ic_edit)
+    }
+
+    private fun setupInsulinSuggestion(): Boolean {
+        val insulinSuggestion = InsulinSuggestion(
             viewModel.glucose,
             viewModel.getInsulinByTimeFrame(),
             this::onSuggestionApplied
         )
-        viewModel.getInsulinSuggestion(suggestionView::onSuggestionLoaded)
-        fabView.setImageResource(R.drawable.ic_edit)
+
+        if (!insulinSuggestion.isValid) {
+            return false
+        }
+
+        suggestionView.setup(insulinSuggestion)
+        viewModel.getInsulinSuggestion { suggestionView.onSuggestionLoaded(it, insulinSuggestion) }
+        return true
     }
 
     private fun setupInsulinView() {
