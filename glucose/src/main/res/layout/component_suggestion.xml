@@ -24,7 +24,7 @@
     android:paddingEnd="16dp"
     android:paddingBottom="8dp"
     android:stateListAnimator="@animator/lift_on_touch"
-    android:text="@string/insulin_suggestion_loading"
+    android:text="@string/glucose_editor_suggestion_loading"
     android:textColor="@color/component_insulin_suggestion_fg"
     android:textSize="16sp"
     tools:text="Suggested insulin: 4.5" />

@@ -19,12 +19,18 @@
     <string name="glucose_editor_date_pick">Select another date\u2026</string>
     <string name="glucose_editor_saved">Saved</string>
     <string name="glucose_editor_close">Close</string>
+    <string name="glucose_editor_suggestion_loading">Loading</string>
 
     <!-- Glucose suggestions -->
-    <string name="insulin_suggestion_loading">Loading</string>
     <string name="insulin_suggestion_warning_low">Too low</string>
     <string name="insulin_suggestion_warning_high">Too high</string>
     <string name="insulin_suggestion_value">Suggested insulin: %1$.1f</string>
     <string name="insulin_suggestion_error">Unable to suggest right now</string>
     <string name="insulin_suggestion_applied">Suggestion applied</string>
+
+    <!-- Check again -->
+    <string name="check_again_suggestion_remind">Remind to check again</string>
+    <string name="check_again_notification_title">Check glucose again</string>
+    <string name="check_again_notification_content">Glucose value was low not so long ago, would you mind checking it again?</string>
+    <string name="check_again_notification_channel">Reminders</string>
 </resources>

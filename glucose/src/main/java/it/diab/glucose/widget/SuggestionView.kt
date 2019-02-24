@@ -39,7 +39,7 @@ class SuggestionView : LinearLayout {
         textView = findViewById(R.id.insulin_suggestion_text)
     }
 
-    fun setup(config: SuggestionConfig) {
+    fun config(config: SuggestionConfig) {
         if (!config.isValid) {
             visibility = View.GONE
             return
@@ -79,7 +79,7 @@ class SuggestionView : LinearLayout {
     }
 
     private fun showLoad() {
-        textView.text = resources.getString(R.string.insulin_suggestion_loading)
+        textView.text = resources.getString(R.string.glucose_editor_suggestion_loading)
         animator = textView.animateThreeDots()
     }
 

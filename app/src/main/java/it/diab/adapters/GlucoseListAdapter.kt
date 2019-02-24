@@ -25,9 +25,9 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import it.diab.R
 import it.diab.core.data.entities.Glucose
+import it.diab.core.util.PreferencesUtil
 import it.diab.core.util.event.Event
 import it.diab.core.util.extensions.setPrecomputedText
-import it.diab.util.PreferencesUtil
 import it.diab.util.UIUtils
 import it.diab.util.extensions.diff
 import it.diab.viewmodels.glucose.GlucoseListViewModel

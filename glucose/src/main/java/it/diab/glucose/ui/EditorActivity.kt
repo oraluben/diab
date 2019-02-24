@@ -27,11 +27,13 @@ import it.diab.core.data.repositories.InsulinRepository
 import it.diab.core.override.BaseFitHandler
 import it.diab.core.util.Activities
 import it.diab.core.util.PluginManager
+import it.diab.core.util.PreferencesUtil
 import it.diab.core.util.SystemUtil
 import it.diab.core.util.extensions.asTimeFrame
 import it.diab.core.util.extensions.insulin
 import it.diab.core.util.extensions.setPrecomputedText
 import it.diab.glucose.R
+import it.diab.glucose.suggestion.CheckAgainSuggestion
 import it.diab.glucose.suggestion.InsulinSuggestion
 import it.diab.glucose.util.VibrationUtil
 import it.diab.glucose.util.extensions.forEachUntilTrue
@@ -58,7 +60,10 @@ class EditorActivity : AppCompatActivity() {
 
     private lateinit var viewModel: EditorViewModel
 
-    private val supportedSuggestions = arrayOf(this::setupInsulinSuggestion)
+    private val supportedSuggestions = arrayOf(
+        this::setupInsulinSuggestion,
+        this::setupCheckAgainSuggestion
+    )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -164,8 +169,26 @@ class EditorActivity : AppCompatActivity() {
             return false
         }
 
-        suggestionView.setup(insulinSuggestion)
+        suggestionView.config(insulinSuggestion)
         viewModel.getInsulinSuggestion { suggestionView.onSuggestionLoaded(it, insulinSuggestion) }
+        return true
+    }
+
+    private fun setupCheckAgainSuggestion(): Boolean {
+        val checkAgainSuggestion = CheckAgainSuggestion(
+            viewModel.glucose.timeFrame,
+            PreferencesUtil.getGlucoseLowThreshold(this)
+        )
+
+        if (!checkAgainSuggestion.isValid) {
+            return false
+        }
+
+        suggestionView.apply {
+            config(checkAgainSuggestion)
+            onSuggestionLoaded(viewModel.glucose.value, checkAgainSuggestion)
+        }
+
         return true
     }
 
