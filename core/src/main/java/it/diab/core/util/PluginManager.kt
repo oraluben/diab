@@ -43,54 +43,51 @@ class PluginManager(context: Context) {
     private val preferences = PreferenceManager.getDefaultSharedPreferences(context)
 
     private val pluginDir = File(ContextCompat.getDataDir(context), "plugin")
-    private val emptyStream: InputStream
-        get() = ByteArrayInputStream("{\n}".toByteArray(Charsets.UTF_8))
+    private val emptyStream by lazy {
+        ByteArrayInputStream("{\n}".toByteArray(Charsets.UTF_8))
+    }
 
     fun isInstalled() = pluginDir.exists() && pluginDir.list().isNotEmpty()
 
     fun install(iStream: InputStream) {
         scope.launch {
             val buffer = ByteArray(1024)
-            val zipStream = ZipInputStream(iStream)
-            var entry: ZipEntry? = zipStream.nextEntry
-
             val pattern = Pattern.compile("^estimator_[0-6].json")
-
             var wasValid = false
 
-            while (entry != null) {
-                // Filter out unneeded files
-                val matcher = pattern.matcher(entry.name)
-                if (!matcher.find()) {
+            ZipInputStream(iStream).use { zipStream ->
+                var entry: ZipEntry? = zipStream.nextEntry
+
+                while (entry != null) {
+                    // Filter out unneeded files
+                    val matcher = pattern.matcher(entry.name)
+                    if (!matcher.find()) {
+                        entry = zipStream.nextEntry
+                        continue
+                    }
+
+                    if (!pluginDir.exists()) {
+                        pluginDir.mkdir()
+                    }
+
+                    val extractedFile = File(pluginDir, entry.name)
+                    extractedFile.createNewFile()
+                    FileOutputStream(extractedFile).use { oStream ->
+                        var len = zipStream.read(buffer)
+                        while (len > 0) {
+                            oStream.write(buffer, 0, len)
+                            len = zipStream.read(buffer)
+                        }
+                    }
+
+                    if (!wasValid) {
+                        wasValid = true
+                    }
+
                     entry = zipStream.nextEntry
-                    continue
                 }
 
-                if (!pluginDir.exists()) {
-                    pluginDir.mkdir()
-                }
-
-                val extractedFile = File(pluginDir, entry.name)
-                extractedFile.createNewFile()
-                val oStream = FileOutputStream(extractedFile)
-                var len = zipStream.read(buffer)
-                while (len > 0) {
-                    oStream.write(buffer, 0, len)
-                    len = zipStream.read(buffer)
-                }
-
-                oStream.close()
-
-                if (!wasValid) {
-                    wasValid = true
-                }
-
-                entry = zipStream.nextEntry
-            }
-
-            zipStream.run {
-                closeEntry()
-                close()
+                zipStream.closeEntry()
             }
 
             if (wasValid) {
@@ -131,18 +128,20 @@ class PluginManager(context: Context) {
 
     @WorkerThread
     private fun parseInputStream(iStream: InputStream): HashMap<Int, Float> {
-        val content = BufferedReader(InputStreamReader(iStream)).readLines()
-
-        val json = JSONObject(content)
-        val iterator = json.keys()
         val map = HashMap<Int, Float>()
+        iStream.use {
+            val content = BufferedReader(InputStreamReader(iStream)).readLines()
 
-        while (iterator.hasNext()) {
-            val key = iterator.next()
-            val value = json[key]
+            val json = JSONObject(content)
+            val iterator = json.keys()
 
-            if (value is Double) {
-                map[key.toInt()] = value.toFloat()
+            while (iterator.hasNext()) {
+                val key = iterator.next()
+                val value = json[key]
+
+                if (value is Double) {
+                    map[key.toInt()] = value.toFloat()
+                }
             }
         }
 
@@ -162,13 +161,13 @@ class PluginManager(context: Context) {
 
     private fun BufferedReader.readLines(): String {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            return lines().parallel().collect(Collectors.joining("\n"))
+            return lines().collect(Collectors.joining("\n"))
         }
 
         val builder = StringBuilder()
         var line: String? = readLine()
         while (line != null) {
-            builder.append(line).append("\n")
+            builder.append(line).append('\n')
             line = readLine()
         }
         return builder.toString()

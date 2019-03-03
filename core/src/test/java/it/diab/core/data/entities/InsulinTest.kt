@@ -41,4 +41,20 @@ class InsulinTest {
 
         assertEquals(insulin.getDisplayedString(10.54f), "test 10.5")
     }
+
+    @Test
+    fun equals() {
+        val a = insulin {
+            uid = 1
+            name = "test"
+        }
+
+        val b = insulin {
+            uid = 2
+            name = "test"
+        }
+
+        assertEquals(a, b)
+        assertEquals(a.hashCode(), b.hashCode())
+    }
 }

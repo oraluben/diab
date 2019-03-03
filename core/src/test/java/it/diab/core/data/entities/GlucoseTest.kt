@@ -13,6 +13,7 @@ import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
+import java.util.Date
 
 @RunWith(JUnit4::class)
 class GlucoseTest {
@@ -28,5 +29,23 @@ class GlucoseTest {
             assertEquals(eatLevel, Glucose.MEDIUM)
             assertEquals(timeFrame, TimeFrame.EXTRA)
         }
+    }
+
+    @Test
+    fun equals() {
+        val a = glucose {
+            uid = 1
+            value = 100
+            date = Date(0)
+        }
+
+        val b = glucose {
+            uid = 2
+            value = 100
+            date = Date(0)
+        }
+
+        assertEquals(a, b)
+        assertEquals(a.hashCode(), b.hashCode())
     }
 }

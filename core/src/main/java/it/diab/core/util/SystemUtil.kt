@@ -9,7 +9,6 @@
 package it.diab.core.util
 
 import android.content.Context
-import android.text.TextUtils
 import android.util.Log
 import androidx.annotation.StringRes
 import java.io.BufferedReader
@@ -47,7 +46,7 @@ object SystemUtil {
     fun <T> getOverrideObject(clazz: Class<T>, context: Context, @StringRes resId: Int): T {
         val className = context.getString(resId)
 
-        if (!TextUtils.isEmpty(className)) {
+        if (className.isNotEmpty()) {
             try {
                 val cls = Class.forName(className)
                 @Suppress("UNCHECKED_CAST")
