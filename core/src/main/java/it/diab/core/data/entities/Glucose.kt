@@ -92,7 +92,10 @@ class Glucose {
             other.timeFrame == timeFrame
     }
 
-    override fun hashCode() = super.hashCode() + 1
+    override fun hashCode() = value.hashCode() or date.hashCode() or
+        insulinId0.hashCode() or insulinValue0.hashCode() or
+        insulinId1.hashCode() or insulinValue1.hashCode() or
+        eatLevel.hashCode() or timeFrame.hashCode()
 
     companion object {
 
