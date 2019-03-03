@@ -56,19 +56,22 @@ class GlucoseListFragment : MainFragment() {
     ): View {
         val view = inflater.inflate(R.layout.fragment_glucose, container, false)
         recyclerView = view.findViewById(R.id.glucose_recyclerview)
+        return view
+    }
 
-        val context = context ?: return view
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val activity = activity ?: return
 
         viewModel.prepare {
-            adapter = GlucoseListAdapter(context, viewModel)
+            adapter = GlucoseListAdapter(activity, viewModel)
 
             recyclerView.adapter = adapter
 
-            viewModel.pagedList.observe(viewLifecycleOwner, Observer(this::update))
-            adapter.openGlucose.observe(viewLifecycleOwner, EventObserver(this::onItemClick))
+            viewModel.pagedList.observe(activity, Observer(this::update))
+            adapter.openGlucose.observe(activity, EventObserver(this::onItemClick))
         }
-
-        return view
     }
 
     override fun getTitle() = R.string.fragment_glucose

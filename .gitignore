@@ -1,4 +1,7 @@
+# Git
 *.patch
+
+# Studio
 *.iml
 .DS_Store
 .externalNativeBuild
@@ -7,8 +10,9 @@
 /annotations
 /build
 /captures
-/docker
 /local.properties
+
+# ML
 /ml/.Python
 /ml/bin
 /ml/out
@@ -18,7 +22,15 @@
 /ml/out
 /ml/pip-selfcheck.json
 /ml/pyvenv.cfg
+
+# Build
 app/release
 app/oss/release
 app/googleFit/release
+
+# ktlint
 ktlint
+
+# CI
+/docker
+gitlab.keystore

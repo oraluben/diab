@@ -19,11 +19,13 @@ import android.graphics.drawable.Icon
 import android.os.Build
 import android.os.Bundle
 import android.preference.PreferenceManager
+import android.view.View
 import androidx.annotation.DrawableRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import androidx.viewpager.widget.ViewPager
@@ -47,6 +49,15 @@ class MainActivity : AppCompatActivity() {
     private lateinit var glucoseFragment: GlucoseListFragment
     private lateinit var insulinFragment: InsulinFragment
 
+    private val fragmentsLifeCycleCallback = object : FragmentManager.FragmentLifecycleCallbacks() {
+        override fun onFragmentViewCreated(fm: FragmentManager, f: Fragment, v: View, savedInstanceState: Bundle?) {
+            super.onFragmentViewCreated(fm, f, v, savedInstanceState)
+            if (f is GlucoseListFragment) {
+                f.openGlucose.observe(this@MainActivity, EventObserver(this@MainActivity::onGlucoseClick))
+            }
+        }
+    }
+
     public override fun onCreate(savedInstance: Bundle?) {
         super.onCreate(savedInstance)
         setContentView(R.layout.activity_main)
@@ -60,17 +71,23 @@ class MainActivity : AppCompatActivity() {
         viewPager = findViewById(R.id.viewpager)
         fab = findViewById(R.id.fab)
 
+        supportFragmentManager.registerFragmentLifecycleCallbacks(fragmentsLifeCycleCallback, false)
+
         adapter = ViewPagerAdapter(supportFragmentManager)
         viewPager.adapter = adapter
 
         tabLayout.setupWithViewPager(viewPager)
         fab.setOnClickListener { onGlucoseClick(-1) }
 
-        glucoseFragment.openGlucose.observe(this, EventObserver(this::onGlucoseClick))
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             addShortcuts()
         }
+    }
+
+    override fun onDestroy() {
+        supportFragmentManager.unregisterFragmentLifecycleCallbacks(fragmentsLifeCycleCallback)
+
+        super.onDestroy()
     }
 
     private fun onGlucoseClick(uid: Long) {
