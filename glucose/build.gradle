@@ -29,7 +29,7 @@ android {
 dependencies {
     implementation project(':core')
 
-    implementation "android.arch.work:work-runtime-ktx:1.0.0-rc02"
+    implementation "android.arch.work:work-runtime-ktx:1.0.0"
 }
 
 // Testing dependencies
