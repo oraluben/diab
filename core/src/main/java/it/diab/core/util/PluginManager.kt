@@ -51,7 +51,6 @@ class PluginManager(context: Context) {
 
     fun install(iStream: InputStream) {
         scope.launch {
-            val buffer = ByteArray(1024)
             val pattern = Pattern.compile("^estimator_[0-6].json")
             var wasValid = false
 
@@ -66,24 +65,8 @@ class PluginManager(context: Context) {
                         continue
                     }
 
-                    if (!pluginDir.exists()) {
-                        pluginDir.mkdir()
-                    }
-
-                    val extractedFile = File(pluginDir, entry.name)
-                    extractedFile.createNewFile()
-                    FileOutputStream(extractedFile).use { oStream ->
-                        var len = zipStream.read(buffer)
-                        while (len > 0) {
-                            oStream.write(buffer, 0, len)
-                            len = zipStream.read(buffer)
-                        }
-                    }
-
-                    if (!wasValid) {
-                        wasValid = true
-                    }
-
+                    extractZipEntry(zipStream, entry)
+                    wasValid = true
                     entry = zipStream.nextEntry
                 }
 
@@ -157,6 +140,24 @@ class PluginManager(context: Context) {
         }
 
         return FileInputStream(file)
+    }
+
+    @WorkerThread
+    private fun extractZipEntry(zipStream: ZipInputStream, entry: ZipEntry) {
+        if (!pluginDir.exists()) {
+            pluginDir.mkdir()
+        }
+
+        val buffer = ByteArray(1024)
+        val extractedFile = File(pluginDir, entry.name)
+        extractedFile.createNewFile()
+        FileOutputStream(extractedFile).use { oStream ->
+            var len = zipStream.read(buffer)
+            while (len > 0) {
+                oStream.write(buffer, 0, len)
+                len = zipStream.read(buffer)
+            }
+        }
     }
 
     private fun BufferedReader.readLines(): String {

@@ -14,7 +14,6 @@ import androidx.annotation.StringRes
 import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStreamReader
-import java.lang.reflect.InvocationTargetException
 
 object SystemUtil {
     private const val TAG = "SystemUtil"
@@ -51,17 +50,9 @@ object SystemUtil {
                 val cls = Class.forName(className)
                 @Suppress("UNCHECKED_CAST")
                 return cls.getDeclaredConstructor().newInstance() as T
-            } catch (e: ClassNotFoundException) {
-                Log.e(TAG, "Bad overriden class", e)
-            } catch (e: InstantiationException) {
-                Log.e(TAG, "Bad overriden class", e)
-            } catch (e: IllegalAccessException) {
+            } catch (e: ReflectiveOperationException) {
                 Log.e(TAG, "Bad overriden class", e)
             } catch (e: ClassCastException) {
-                Log.e(TAG, "Bad overriden class", e)
-            } catch (e: NoSuchMethodException) {
-                Log.e(TAG, "Bad overriden class", e)
-            } catch (e: InvocationTargetException) {
                 Log.e(TAG, "Bad overriden class", e)
             }
         }
