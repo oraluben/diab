@@ -26,7 +26,7 @@ class InsulinSuggestion(
 
     override val isValid by lazy {
         val allowedTimeFrames = arrayOf(TimeFrame.MORNING, TimeFrame.LUNCH, TimeFrame.DINNER)
-        allowedTimeFrames.contains(glucose.timeFrame) && glucose.insulinValue0 == 0f
+        allowedTimeFrames.contains(glucose.timeFrame) && glucose.insulinId0 == -1L
     }
 
     override fun validate(value: Float) = value >= 0

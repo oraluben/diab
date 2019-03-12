@@ -165,11 +165,10 @@ class EditorActivity : AppCompatActivity() {
             this::onSuggestionApplied
         )
 
-        if (!insulinSuggestion.isValid) {
+        if (!suggestionView.applyConfig(insulinSuggestion)) {
             return false
         }
 
-        suggestionView.config(insulinSuggestion)
         viewModel.getInsulinSuggestion { suggestionView.onSuggestionLoaded(it, insulinSuggestion) }
         return true
     }
@@ -180,14 +179,11 @@ class EditorActivity : AppCompatActivity() {
             PreferencesUtil.getGlucoseLowThreshold(this)
         )
 
-        if (!checkAgainSuggestion.isValid) {
+        if (!suggestionView.applyConfig(checkAgainSuggestion)) {
             return false
         }
 
-        suggestionView.apply {
-            config(checkAgainSuggestion)
-            onSuggestionLoaded(viewModel.glucose.value, checkAgainSuggestion)
-        }
+        suggestionView.onSuggestionLoaded(viewModel.glucose.value, checkAgainSuggestion)
 
         return true
     }

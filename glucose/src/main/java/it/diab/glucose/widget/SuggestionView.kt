@@ -39,15 +39,25 @@ class SuggestionView : LinearLayout {
         textView = findViewById(R.id.insulin_suggestion_text)
     }
 
-    fun config(config: SuggestionConfig) {
+    /**
+     * Try to apply a [SuggestionConfig] to the view.
+     * A config may or may not apply depending on the [SuggestionConfig.isValid]
+     * value.
+     *
+     * @param config the applied configuration
+     * @return whether the config has been enabled
+     */
+    fun applyConfig(config: SuggestionConfig): Boolean {
         if (!config.isValid) {
             visibility = View.GONE
-            return
+            return false
         }
 
         if (config.shouldAnimate) {
             showLoad()
         }
+
+        return true
     }
 
     fun <T> onSuggestionLoaded(value: T, callback: SuggestionCallback<T>) {
@@ -69,6 +79,7 @@ class SuggestionView : LinearLayout {
             return
         }
 
+        visibility = View.VISIBLE
         textView.text = callback.getSuccessMessage(value, resources)
 
         textView.setOnClickListener {
