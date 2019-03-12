@@ -70,10 +70,9 @@ object CsvWriter {
             builder.append("${it.value},${it.eatLevel},${it.insulinValue0}\n")
         }
 
-        writer.run {
-            write(FULL_HEADER)
-            write(builder.toString())
-            close()
+        writer.use {
+            it.write(FULL_HEADER)
+            it.write(builder.toString())
         }
     }
 }

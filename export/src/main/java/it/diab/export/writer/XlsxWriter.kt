@@ -17,9 +17,10 @@ import it.diab.core.data.repositories.InsulinRepository
 import it.diab.core.util.extensions.forEachWithIndex
 import it.diab.core.util.extensions.format
 import it.diab.export.BuildConfig
+import it.diab.export.utils.extensions.setAlternateBackground
+import it.diab.export.utils.extensions.write
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.async
-import org.dhatim.fastexcel.Color
 import org.dhatim.fastexcel.Workbook
 import org.dhatim.fastexcel.Worksheet
 import java.io.File
@@ -31,6 +32,7 @@ import java.util.Locale
 
 object XlsxWriter {
     private const val TAG = "ExportService"
+    private const val DATE_FORMAT = "yyyy-MM-dd HH:mm"
 
     suspend fun exportSheet(
         scope: CoroutineScope,
@@ -85,39 +87,42 @@ object XlsxWriter {
 
         val list = glucoseRepository.getAllItems()
         list.forEachWithIndex { i, glucose ->
-            sheet.run {
+            sheet.apply {
                 val insulin = insulinRepository.getById(glucose.insulinId0)
                 val basal = insulinRepository.getById(glucose.insulinId1)
+                val row = i + 1
 
-                value(i + 1, 0, glucose.value)
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                write(
+                    glucose.value to (row to 0),
                     // Java 8's java.time.LocalDateTime is required for this
-                    value(i + 1, 1, glucose.date)
-                } else {
-                    value(i + 1, 1, glucose.date.format("yyyy-MM-dd HH:mm"))
-                }
-                value(i + 1, 2, glucose.eatLevel)
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) glucose.date to (row to 1)
+                    else glucose.date.format(DATE_FORMAT) to (row to 1),
+                    glucose.eatLevel to (row to 2)
+                )
+
                 if (insulin.name.isNotEmpty()) {
-                    value(i + 1, 3, insulin.name)
-                    value(i + 1, 4, glucose.insulinValue0)
+                    write(
+                        insulin.name to (row to 3),
+                        glucose.insulinValue0 to (row to 4)
+                    )
                 }
+
                 if (basal.name.isNotEmpty()) {
-                    value(i + 1, 5, basal.name)
-                    value(i + 1, 6, glucose.insulinValue1)
+                    write(
+                        basal.name to (row to 5),
+                        glucose.insulinValue1 to (row to 6)
+                    )
                 }
             }
         }
 
-        sheet.range(0, 0, list.size, headers.size - 1)
-            .style()
-            .shadeAlternateRows(Color.GRAY2)
-            .set()
+        sheet.setAlternateBackground(list.size, headers.size - 1)
 
         // Java 8's java.time.LocalDateTime is required for this
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             sheet.range(1, 1, list.size, 1)
                 .style()
-                .format("yyyy-MM-dd HH:mm")
+                .format(DATE_FORMAT)
                 .set()
         }
     }
@@ -133,17 +138,15 @@ object XlsxWriter {
 
         val list = insulinRepository.getInsulins()
         list.forEachWithIndex { i, insulin ->
-            sheet.run {
-                value(i + 1, 0, insulin.name)
-                value(i + 1, 1, insulin.timeFrame.name)
-                value(i + 1, 2, if (insulin.isBasal) "TRUE" else "FALSE")
-                value(i + 1, 3, if (insulin.hasHalfUnits) "TRUE" else "FALSE")
-            }
+            val row = i + 1
+            sheet.write(
+                insulin.name to (row to 0),
+                insulin.timeFrame.name to (row to 1),
+                (if (insulin.isBasal) "TRUE" else "FALSE") to (row to 2),
+                (if (insulin.hasHalfUnits) "TRUE" else "FALSE") to (row to 3)
+            )
         }
 
-        sheet.range(0, 0, list.size, headers.size - 1)
-            .style()
-            .shadeAlternateRows(Color.GRAY2)
-            .set()
+        sheet.setAlternateBackground(list.size, headers.size - 1)
     }
 }
