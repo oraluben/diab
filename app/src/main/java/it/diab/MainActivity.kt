@@ -154,7 +154,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     companion object {
-        private const val SHORTCUTS_VERSION = 0
+        private const val SHORTCUTS_VERSION = 1
         private const val KEY_SHORTCUTS = "pref_home_shortcuts"
     }
 }
