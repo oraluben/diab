@@ -26,6 +26,8 @@ import it.diab.core.data.repositories.InsulinRepository
 import it.diab.core.util.Activities
 import it.diab.core.util.UIUtils
 import it.diab.insulin.R
+import it.diab.insulin.viewmodels.EditorViewModel
+import it.diab.insulin.viewmodels.EditorViewModelFactory
 
 class EditorActivity : AppCompatActivity() {
 
@@ -47,8 +49,8 @@ class EditorActivity : AppCompatActivity() {
 
         setFinishOnTouchOutside(true)
 
-        val factory = it.diab.insulin.viewmodels.EditorViewModelFactory(InsulinRepository.getInstance(this))
-        viewModel = ViewModelProviders.of(this, factory)[it.diab.insulin.viewmodels.EditorViewModel::class.java]
+        val factory = EditorViewModelFactory(InsulinRepository.getInstance(this))
+        viewModel = ViewModelProviders.of(this, factory)[EditorViewModel::class.java]
 
         val layoutInflater = getSystemService(LayoutInflater::class.java)
         @SuppressLint("InflateParams")
