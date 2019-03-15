@@ -10,7 +10,6 @@ package it.diab.fragments
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.preference.PreferenceManager
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -32,10 +31,10 @@ import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
 import it.diab.R
 import it.diab.core.data.entities.Glucose
 import it.diab.core.data.repositories.GlucoseRepository
+import it.diab.core.override.BaseFitHandler
 import it.diab.core.util.Activities
 import it.diab.core.util.SystemUtil
 import it.diab.core.util.intentTo
-import it.diab.core.override.BaseFitHandler
 import it.diab.ui.graph.OverviewGraphView
 import it.diab.util.extensions.isToday
 import it.diab.viewmodels.glucose.OverviewViewModel
@@ -62,7 +61,6 @@ class OverviewFragment : MainFragment() {
         viewModel = ViewModelProviders.of(this, factory)[OverviewViewModel::class.java]
 
         viewModel.prepare(
-            PreferenceManager.getDefaultSharedPreferences(context),
             SystemUtil.getOverrideObject(
                 BaseFitHandler::class.java, context,
                 R.string.config_class_fit_handler

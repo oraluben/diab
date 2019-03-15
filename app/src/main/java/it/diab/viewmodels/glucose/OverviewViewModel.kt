@@ -8,19 +8,18 @@
  */
 package it.diab.viewmodels.glucose
 
-import android.content.SharedPreferences
 import androidx.annotation.VisibleForTesting
 import com.github.mikephil.charting.data.Entry
 import it.diab.core.data.entities.Glucose
+import it.diab.core.data.entities.TimeFrame
 import it.diab.core.data.repositories.GlucoseRepository
 import it.diab.core.override.BaseFitHandler
 import it.diab.core.util.DateUtils
+import it.diab.core.util.extensions.toTimeFrame
+import it.diab.core.viewmodels.ScopedViewModel
 import it.diab.util.extensions.getAsMinutes
 import it.diab.util.extensions.isToday
 import it.diab.util.extensions.isZeroOrNan
-import it.diab.core.util.extensions.toTimeFrame
-import it.diab.core.data.entities.TimeFrame
-import it.diab.core.viewmodels.ScopedViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
@@ -35,10 +34,8 @@ class OverviewViewModel internal constructor(
     val last = glucoseRepository.last
 
     lateinit var fitHandler: BaseFitHandler
-    private lateinit var prefs: SharedPreferences
 
-    fun prepare(sPrefs: SharedPreferences, fHandler: BaseFitHandler) {
-        prefs = sPrefs
+    fun prepare(fHandler: BaseFitHandler) {
         fitHandler = fHandler
     }
 
