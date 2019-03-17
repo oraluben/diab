@@ -74,6 +74,17 @@ class GlucoseListFragment : MainFragment() {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+
+        // Update strings in case Locale changed
+        viewModel.setDateStrings(
+            resources.getString(R.string.time_today),
+            resources.getString(R.string.time_yesterday),
+            resources.getString(R.string.glucose_header_last)
+        )
+    }
+
     override fun getTitle() = R.string.fragment_glucose
 
     private fun update(data: PagedList<Glucose>?) {

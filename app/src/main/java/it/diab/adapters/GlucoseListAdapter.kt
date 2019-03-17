@@ -36,7 +36,7 @@ import java.util.Date
 import java.util.Locale
 
 class GlucoseListAdapter(
-    private val context: Context,
+    val context: Context,
     private val viewModel: GlucoseListViewModel
 ) : PagedListAdapter<Glucose, GlucoseListAdapter.GlucoseHolder>(CALLBACK) {
 
@@ -117,13 +117,11 @@ class GlucoseListAdapter(
         }
 
         private fun bindHeader(glucose: Glucose) {
-            val resources = context.resources ?: return
-
             val shouldShowHeader = shouldInsertHeader(adapterPosition)
             header.visibility = if (shouldShowHeader) View.VISIBLE else View.GONE
 
             if (shouldShowHeader) {
-                viewModel.setHeader(resources, glucose.date, dateFormat) { date ->
+                viewModel.setHeader(glucose.date, dateFormat) { date ->
                     headerTitle.setPrecomputedText(date, viewModel.viewModelScope)
                 }
             }

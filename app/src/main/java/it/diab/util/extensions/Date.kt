@@ -8,11 +8,8 @@
  */
 package it.diab.util.extensions
 
-import android.content.res.Resources
-import it.diab.R
 import it.diab.core.util.extensions.format
 import it.diab.core.util.extensions.getCalendar
-import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
 
@@ -42,14 +39,4 @@ fun Date.diff(other: Date): Int {
     val b = other.getCalendar()
     return (a[Calendar.YEAR] - b[Calendar.YEAR]) * 365 +
         a[Calendar.DAY_OF_YEAR] - b[Calendar.DAY_OF_YEAR]
-}
-
-fun Date.getHeader(res: Resources, comparedTo: Date, format: SimpleDateFormat): String {
-    val diff = diff(comparedTo)
-    return when {
-        diff == 0 -> res.getString(R.string.time_today)
-        diff == -1 -> res.getString(R.string.time_yesterday)
-        diff > -7 -> res.getString(R.string.glucose_header_last, getWeekDay())
-        else -> format.format(this)
-    }
 }

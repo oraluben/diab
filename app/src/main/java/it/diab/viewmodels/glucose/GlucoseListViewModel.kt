@@ -8,14 +8,14 @@
  */
 package it.diab.viewmodels.glucose
 
-import android.content.res.Resources
 import androidx.annotation.VisibleForTesting
 import androidx.paging.LivePagedListBuilder
 import it.diab.core.data.entities.Insulin
 import it.diab.core.data.repositories.GlucoseRepository
 import it.diab.core.data.repositories.InsulinRepository
-import it.diab.util.extensions.getHeader
 import it.diab.core.viewmodels.ScopedViewModel
+import it.diab.util.extensions.diff
+import it.diab.util.extensions.getWeekDay
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -30,6 +30,10 @@ class GlucoseListViewModel internal constructor(
 
     private lateinit var insulins: List<Insulin>
 
+    private var yesterday = ""
+    private var today = ""
+    private var lastX = "%1\$s"
+
     fun prepare(block: () -> Unit) {
         viewModelScope.launch {
             runPrepare()
@@ -40,15 +44,24 @@ class GlucoseListViewModel internal constructor(
     fun getInsulin(uid: Long) = insulins.firstOrNull { it.uid == uid } ?: Insulin()
 
     fun setHeader(
-        res: Resources,
         date: Date,
         format: SimpleDateFormat,
         block: (String) -> Unit
     ) {
         viewModelScope.launch {
-            val text = runSetHeader(res, date, format)
+            val text = runSetHeader(date, format)
             GlobalScope.launch(Dispatchers.Main) { block(text) }
         }
+    }
+
+    fun setDateStrings(
+        today: String,
+        yesterday: String,
+        lastX: String
+    ) {
+        this.yesterday = yesterday
+        this.today = today
+        this.lastX = lastX
     }
 
     @VisibleForTesting
@@ -57,7 +70,13 @@ class GlucoseListViewModel internal constructor(
     }
 
     @VisibleForTesting
-    fun runSetHeader(res: Resources, date: Date, format: SimpleDateFormat): String {
-        return date.getHeader(res, Date(), format)
+    fun runSetHeader(date: Date, format: SimpleDateFormat): String {
+        val diff = date.diff(Date())
+        return when {
+            diff == 0 -> today
+            diff == -1 -> yesterday
+            diff > -7 -> lastX.format(date.getWeekDay())
+            else -> format.format(date)
+        }
     }
 }
