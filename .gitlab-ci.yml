@@ -51,7 +51,7 @@ weekly:
   - schedules
   script:
   - echo $KEYSTORE_FILE | base64 -d > gitlab.keystore
-  - ./gradlew assembleOssRelease -Pandroid.injected.signing.store.file="$(pwd)/gitlab.keystore" -Pandroid.injected.signing.store.password=$KEY_ALIAS -Pandroid.injected.signing.key.alias=$KEY_PASSWORD -Pandroid.injected.signing.key.password=$KEYSTORE_PASSWORD
+  - ./gradlew assembleOssRelease -Pandroid.injected.signing.store.file="$(pwd)/gitlab.keystore" -Pandroid.injected.signing.store.password=$KEY_PASSWORD -Pandroid.injected.signing.key.alias=$KEY_ALIAS -Pandroid.injected.signing.key.password=$KEYSTORE_PASSWORD
   artifacts:
     paths:
     - app/build/outputs/apk/oss/release/app-oss-release.apk
