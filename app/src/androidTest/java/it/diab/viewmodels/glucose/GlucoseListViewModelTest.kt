@@ -43,7 +43,7 @@ class GlucoseListViewModelTest {
             GlucoseRepository.getInstance(context),
             InsulinRepository.getInstance(context)
         ).apply {
-            prepare { }
+            runPrepare()
             setDateStrings(TODAY, YESTERDAY, LAST_X)
         }
     }
