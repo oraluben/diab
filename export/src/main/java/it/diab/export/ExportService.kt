@@ -20,6 +20,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import it.diab.core.data.repositories.GlucoseRepository
 import it.diab.core.data.repositories.InsulinRepository
+import it.diab.core.util.PreferencesUtil
 import it.diab.export.writer.CsvWriter
 import it.diab.export.writer.XlsxWriter
 import kotlinx.coroutines.CoroutineScope
@@ -117,9 +118,18 @@ class ExportService : Service() {
     }
 
     private fun exportCsv(onTaskCompleted: (File?, Boolean) -> Unit) {
+        val lowThreshold = PreferencesUtil.getGlucoseLowThreshold(this)
+        val highThreshold = PreferencesUtil.getGlucoseHighThreshold(this)
+
         serviceScope.launch {
-            val result = CsvWriter.exportCsv(this, glucoseRepository)
-            GlobalScope.launch(Dispatchers.Main) { onTaskCompleted(null, result) }
+            val trainResult = CsvWriter.exportTrain(this, glucoseRepository)
+
+            val testResult = CsvWriter.exportTest(this,
+                glucoseRepository,
+                lowThreshold..highThreshold
+            )
+
+            GlobalScope.launch(Dispatchers.Main) { onTaskCompleted(null, trainResult && testResult) }
         }
     }
 

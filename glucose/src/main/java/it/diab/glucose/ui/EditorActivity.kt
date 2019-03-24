@@ -128,7 +128,7 @@ class EditorActivity : AppCompatActivity() {
 
         if (valueView.text == "0") {
             // Make sure the user sets a value
-            viewModel.setError(it.diab.glucose.viewmodels.EditorViewModel.ERROR_VALUE)
+            viewModel.setError(EditorViewModel.ERROR_VALUE)
         }
     }
 
@@ -319,9 +319,8 @@ class EditorActivity : AppCompatActivity() {
             this,
             viewModel.glucose,
             !viewModel.isEditMode,
-            { finish() },
-            { e -> Log.e(TAG, e.message) }
-        )
+            this::finish
+        ) { e -> Log.e(TAG, e.message) }
     }
 
     companion object {
