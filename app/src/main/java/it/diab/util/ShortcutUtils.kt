@@ -72,6 +72,8 @@ object ShortcutUtils {
 
         return ShortcutInfo.Builder(context, title)
             .setIcon(Icon.createWithAdaptiveBitmap(icon))
+            .setShortLabel(title)
+            .setLongLabel(title)
             .setIntent(intent)
             .build()
     }
