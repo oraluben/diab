@@ -29,13 +29,13 @@ bash import.sh data
 
 #### Import manually
 
-Copy the files from the `Documents` directory inside the device memory
+Copy the files from the `Documents/diab` directory inside the device memory
 to the 'data' directory.
 
 #### Setup the tests
 
-Fill the `data/test_*.csv` files with data with desired results
-(pick some from the train files).
+Fill the `data/test_*.csv` files are automatically filled with known-good
+results, but it's recommended to check and eventually fine tune them.
 
 ## Train the model and get the results
 

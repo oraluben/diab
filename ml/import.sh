@@ -2,7 +2,8 @@
 
 
 readonly REMOTE_PATH="/sdcard/Documents/diab"
-readonly TEST_FILES=("train_1.csv" "train_3.csv" "train_5.csv")
+readonly TRAIN_FILES=("train_1.csv" "train_3.csv" "train_5.csv")
+readonly TEST_FILES=("test_1.csv" "test_3.csv" "test_5.csv")
 
 function has_bin() {
   which $1 &> /dev/null
