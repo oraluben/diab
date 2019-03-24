@@ -9,9 +9,9 @@
 package it.diab.core.util
 
 object DateUtils {
-    private var SECOND: Long = 1000 // Millisecond * 1000
-    private var MINUTE = 60 * SECOND
-    private var HOUR = 60 * MINUTE
-    var DAY = 24 * HOUR
-    var WEEK = 7 * DAY
+    private const val SECOND: Long = 1000 // Millisecond * 1000
+    private const val MINUTE = 60 * SECOND
+    private const val HOUR = 60 * MINUTE
+    const val DAY = 24 * HOUR
+    const val WEEK = 7 * DAY
 }
