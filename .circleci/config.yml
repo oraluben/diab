@@ -1,54 +1,61 @@
-version: 2
+version: 2.1
 
-references:
-    cache_key: &cache_key
-        key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
+executors:
+  diab-android-executor:
+    docker:
+      - image: circleci/android:api-28-alpha
+    environment:
+      JVM_OPTS: "-Xmx1024m"
+      GRADLE_OPTS: "-Dorg.gradle.daemon=false -Dorg.gradle.workers.max=2"
+      TERM: dumb
+    working_directory: ~/diab
 
 jobs:
-    build:
-        working_directory: ~/code
-        docker:
-            - image: circleci/android:api-28-alpha
-        environment:
-            JVM_OPTS: "-Xmx1024m"
-            GRADLE_OPTS: "-Dorg.gradle.daemon=false -Dorg.gradle.workers.max=2"
-            TERM: dumb
-        steps:
-            - checkout
-            - restore_cache:
-                <<: *cache_key
-            - run:
-                name: Download Dependencies
-                command: ./gradlew androidDependencies
-            - save_cache:
-                <<: *cache_key
-                paths:
-                    - ~/.gradle/caches
-                    - ~/.gradle/wrapper
-            - run:
-                name: JVM tests and Lint
-                command: ./gradlew check -PisCiBuild
-            - store_artifacts:
-                path: app/build/reports
-                destination: app-reports
-            - store_artifacts:
-                path: core/build/reports
-                destination: core-reports
-            - store_artifacts:
-                path: export/build/reports
-                destination: export-reports
-            - store_artifacts:
-                path: glucose/build/reports
-                destination: glucose-reports
-            - store_artifacts:
-                path: insulin/build/reports
-                destination: insulin-reports
-            - store_artifacts:
-                path: settings/build/reports
-                destination: settings-reports
-            - store_test_results:
-                path: app/build/test-results
-            - store_test_results:
-                path: core/build/test-results
-            - store_test_results:
-                path: glucose/build/test-results
+  build:
+    executor: diab-android-executor
+    steps:
+      - checkout
+      - run:
+          name: Download deps
+          command: ./gradlew dependencies
+      - run:
+          name: Assemble, lint and unit tests
+          command: ./gradlew check -PisCiBuild
+      # Store results
+      - store_artifacts:
+          path: app/build/reports
+          destination: app-reports
+      - store_artifacts:
+          path: core/build/reports
+          destination: core-reports
+      - store_artifacts:
+          path: export/build/reports
+          destination: export-reports
+      - store_artifacts:
+          path: glucose/build/reports
+          destination: glucose-reports
+      - store_artifacts:
+          path: insulin/build/reports
+          destination: insulin-reports
+      - store_artifacts:
+          path: settings/build/reports
+          destination: settings-reports
+      - store_test_results:
+          path: app/build/test-results
+      - store_test_results:
+          path: core/build/test-results
+      - store_test_results:
+          path: glucose/build/test-results
+      # Save build dir
+      - persist_to_workspace:
+          root: .
+          paths:
+            - build
+            - ./**/build
+
+
+workflows:
+  version: 2
+  build_and_test:
+    jobs:
+      - build
