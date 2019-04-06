@@ -9,5 +9,5 @@
 <resources>
 
     <!-- Class name of the fitness handler -->
-    <string name="config_class_fit_handler" translatable="false">it.diab.core.override.BaseFitHandler</string>
+    <string name="config_class_fit_handler" translatable="false" />
 </resources>
