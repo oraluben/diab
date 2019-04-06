@@ -44,16 +44,16 @@ class GlucoseListAdapter(
     val openGlucose: LiveData<Event<Long>> = _openGlucose
 
     // Store the these for better performance
-    private val lowIndicator = getIndicator(R.color.glucose_indicator_low)
-    private val highIndicator = getIndicator(R.color.glucose_indicator_high)
+    private val lowIndicator by lazy { getIndicator(R.color.glucose_indicator_low) }
+    private val highIndicator by lazy { getIndicator(R.color.glucose_indicator_high) }
+    private val highThreshold by lazy { PreferencesUtil.getGlucoseHighThreshold(context) }
+    private val lowThreshold by lazy { PreferencesUtil.getGlucoseLowThreshold(context) }
+
     private val hourFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
     private val dateFormat = SimpleDateFormat(
-        context.getString(
-            R.string.glucose_header_month
-        ), Locale.getDefault()
+        context.getString(R.string.glucose_header_month),
+        Locale.getDefault()
     )
-    private val highThreshold = PreferencesUtil.getGlucoseHighThreshold(context)
-    private val lowThreshold = PreferencesUtil.getGlucoseLowThreshold(context)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
         GlucoseHolder(

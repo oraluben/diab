@@ -8,6 +8,7 @@
  */
 package it.diab.fragments
 
+import android.content.res.Configuration
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -65,6 +66,8 @@ class GlucoseListFragment : MainFragment() {
         val activity = activity ?: return
 
         viewModel.prepare {
+            setViewModelStrings()
+
             adapter = GlucoseListAdapter(activity, viewModel)
 
             recyclerView.adapter = adapter
@@ -74,15 +77,11 @@ class GlucoseListFragment : MainFragment() {
         }
     }
 
-    override fun onResume() {
-        super.onResume()
+    override fun onConfigurationChanged(newConfig: Configuration?) {
+        super.onConfigurationChanged(newConfig)
 
         // Update strings in case Locale changed
-        viewModel.setDateStrings(
-            resources.getString(R.string.time_today),
-            resources.getString(R.string.time_yesterday),
-            resources.getString(R.string.glucose_header_last)
-        )
+        setViewModelStrings()
     }
 
     override fun getTitle() = R.string.fragment_glucose
@@ -93,5 +92,13 @@ class GlucoseListFragment : MainFragment() {
 
     private fun onItemClick(uid: Long) {
         _openGlucose.value = Event(uid)
+    }
+
+    private fun setViewModelStrings() {
+        viewModel.setDateStrings(
+            resources.getString(R.string.time_today),
+            resources.getString(R.string.time_yesterday),
+            resources.getString(R.string.glucose_header_last)
+        )
     }
 }

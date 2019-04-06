@@ -51,15 +51,17 @@ class InsulinFragment : MainFragment() {
         val adapter = InsulinAdapter()
         recyclerView.adapter = adapter
         viewModel.list.observe(viewLifecycleOwner, Observer<PagedList<Insulin>>(adapter::submitList))
-        adapter.editInsulin.observe(viewLifecycleOwner, EventObserver { uid ->
-            val intent = intentTo(Activities.Insulin.Editor).apply {
-                putExtra(Activities.Insulin.Editor.EXTRA_UID, uid)
-            }
-            startActivity(intent)
-        })
+        adapter.editInsulin.observe(viewLifecycleOwner, EventObserver(this::onItemClick))
 
         return view
     }
 
     override fun getTitle() = R.string.fragment_insulin
+
+    private fun onItemClick(uid: Long) {
+        val intent = intentTo(Activities.Insulin.Editor).apply {
+            putExtra(Activities.Insulin.Editor.EXTRA_UID, uid)
+        }
+        startActivity(intent)
+    }
 }

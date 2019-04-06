@@ -40,10 +40,20 @@ class MainActivity : AppCompatActivity() {
     private lateinit var insulinFragment: InsulinFragment
 
     private val fragmentsLifeCycleCallback = object : FragmentManager.FragmentLifecycleCallbacks() {
-        override fun onFragmentViewCreated(fm: FragmentManager, f: Fragment, v: View, savedInstanceState: Bundle?) {
+        override fun onFragmentViewCreated(
+            fm: FragmentManager,
+            f: Fragment,
+            v: View,
+            savedInstanceState: Bundle?
+        ) {
             super.onFragmentViewCreated(fm, f, v, savedInstanceState)
+
+            // Re-bind click listener when glucose fragment is re-created
             if (f is GlucoseListFragment) {
-                f.openGlucose.observe(this@MainActivity, EventObserver(this@MainActivity::onGlucoseClick))
+                f.openGlucose.observe(
+                    this@MainActivity,
+                    EventObserver(this@MainActivity::onGlucoseClick)
+                )
             }
         }
     }

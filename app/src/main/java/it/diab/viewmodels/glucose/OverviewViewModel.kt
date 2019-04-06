@@ -59,8 +59,8 @@ class OverviewViewModel internal constructor(
                 val tf = i.toTimeFrame()
 
                 val lastWeek = data.filter { it.timeFrame == tf }
-                val avgVal = lastWeek.indices.map { lastWeek[it].value }.sum() /
-                    lastWeek.size.toFloat()
+                val avgVal = lastWeek.indices.map { lastWeek[it].value }
+                    .sum() / lastWeek.size.toFloat()
                 avg[tf.reprHour] = avgVal
             }
 

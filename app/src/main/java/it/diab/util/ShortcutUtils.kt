@@ -33,7 +33,7 @@ object ShortcutUtils {
     private val SHORTCUTS = arrayOf(this::buildAddGlucoseShortcut)
 
     /**
-     * Create or update the shortcuts if neeeded
+     * Create or update the shortcuts if needed
      *
      * @param context used to fetch services and check SharedPreferences
      */
