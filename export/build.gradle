@@ -27,5 +27,5 @@ android {
 dependencies {
     implementation project(':core')
 
-    implementation "org.dhatim:fastexcel:0.10.3"
+    implementation "org.dhatim:fastexcel:0.10.5"
 }
