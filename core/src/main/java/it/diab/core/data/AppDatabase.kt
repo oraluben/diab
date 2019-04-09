@@ -17,18 +17,25 @@ import androidx.room.RoomDatabase
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 import it.diab.core.data.dao.GlucoseDao
+import it.diab.core.data.dao.Hba1cDao
 import it.diab.core.data.dao.InsulinDao
 import it.diab.core.data.entities.Glucose
+import it.diab.core.data.entities.Hba1c
 import it.diab.core.data.entities.Insulin
 import it.diab.core.util.SingletonHolder
 import it.diab.core.util.extensions.asTimeFrame
 import java.util.Date
 
-@Database(entities = [(Glucose::class), (Insulin::class)], version = 4)
+@Database(entities = [
+    Glucose::class,
+    Hba1c::class,
+    Insulin::class
+], version = 5)
 abstract class AppDatabase protected constructor() : RoomDatabase() {
 
     abstract fun glucose(): GlucoseDao
     abstract fun insulin(): InsulinDao
+    abstract fun hba1c(): Hba1cDao
 
     companion object : SingletonHolder<AppDatabase, Context>({
         if (AppDatabase.TEST_MODE)
@@ -40,7 +47,8 @@ abstract class AppDatabase protected constructor() : RoomDatabase() {
                 .addMigrations(
                     AppDatabase.MIGRATION_1_2,
                     AppDatabase.MIGRATION_2_3,
-                    AppDatabase.MIGRATION_3_4
+                    AppDatabase.MIGRATION_3_4,
+                    AppDatabase.MIGRATION_4_5
                 )
                 .build()
     }) {
@@ -125,6 +133,19 @@ abstract class AppDatabase protected constructor() : RoomDatabase() {
                     )
                 } while (cursor.moveToNext())
                 cursor.close()
+            }
+        }
+
+        /*
+         * DB version 5
+         *
+         * Hba1c
+         *     Add new table
+         */
+        private val MIGRATION_4_5 = object : Migration(4, 5) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                /* Hba1c */
+                database.execSQL("CREATE TABLE IF NOT EXISTS `hba1c` (`uid` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `value` REAL NOT NULL, `date` INTEGER NOT NULL)")
             }
         }
     }
