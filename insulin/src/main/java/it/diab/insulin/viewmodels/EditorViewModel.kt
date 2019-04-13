@@ -12,7 +12,7 @@ import androidx.annotation.VisibleForTesting
 import it.diab.core.data.entities.Insulin
 import it.diab.core.data.repositories.InsulinRepository
 import it.diab.core.viewmodels.ScopedViewModel
-import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class EditorViewModel internal constructor(
@@ -25,7 +25,7 @@ class EditorViewModel internal constructor(
         viewModelScope.launch {
             insulin = runSetInsulin(uid)
 
-            GlobalScope.launch { block(insulin) }
+            launch(Dispatchers.Main) { block(insulin) }
         }
     }
 

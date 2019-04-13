@@ -14,6 +14,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.TextView
+import androidx.appcompat.R as Rx
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.appcompat.widget.AppCompatSpinner
@@ -40,8 +41,7 @@ class EditorActivity : AppCompatActivity() {
     private lateinit var saveButton: MaterialButton
     private lateinit var deleteButton: MaterialButton
 
-    private lateinit var viewModel: it.diab.insulin.viewmodels.EditorViewModel
-    private lateinit var timeFrames: Array<String>
+    private lateinit var viewModel: EditorViewModel
     private var editMode = false
 
     public override fun onCreate(savedInstance: Bundle?) {
@@ -64,8 +64,6 @@ class EditorActivity : AppCompatActivity() {
         saveButton = view.findViewById(R.id.insulin_edit_save)
         deleteButton = view.findViewById(R.id.insulin_edit_delete)
 
-        timeFrames = Array(TimeFrame.values().size) { getString(TimeFrame.values()[it].string) }
-
         dialog = BottomSheetDialog(this).apply {
             setContentView(view)
             setOnDismissListener { finish() }
@@ -81,9 +79,11 @@ class EditorActivity : AppCompatActivity() {
         val uid = intent.getLongExtra(Activities.Insulin.Editor.EXTRA_UID, -1)
         editMode = uid >= 0
 
+        val timeFrames = Array(TimeFrame.values().size) { getString(TimeFrame.values()[it].string) }
+
         spinner.adapter = ArrayAdapter(
             this,
-            androidx.appcompat.R.layout.support_simple_spinner_dropdown_item,
+            Rx.layout.support_simple_spinner_dropdown_item,
             timeFrames
         )
 
