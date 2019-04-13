@@ -21,7 +21,7 @@ class SingletonHolderTest {
         val a = TestData.getInstance("abc")
         val b = TestData.getInstance("def")
 
-        assertEquals(a.toString(), b.toString())
+        assertEquals(a, b)
     }
 
     private class TestData private constructor(
@@ -29,6 +29,12 @@ class SingletonHolderTest {
     ) {
 
         override fun toString() = uid
+
+        override fun equals(other: Any?) = other != null &&
+            other is TestData &&
+            other.toString() == toString()
+
+        override fun hashCode() = toString().hashCode()
 
         companion object : SingletonHolder<TestData, String> ({ TestData(it) })
     }

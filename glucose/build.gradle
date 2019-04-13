@@ -29,9 +29,7 @@ android {
 dependencies {
     implementation project(':core')
 
-    implementation("androidx.work:work-runtime-ktx:2.0.1") {
-        exclude group: 'com.google.guava', module: 'listenablefuture'
-    }
+    implementation("androidx.work:work-runtime-ktx:2.0.1")
 }
 
 // Testing dependencies

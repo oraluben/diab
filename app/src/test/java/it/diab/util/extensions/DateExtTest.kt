@@ -10,6 +10,8 @@ package it.diab.util.extensions
 
 import it.diab.core.util.DateUtils
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertTrue
 import org.junit.Test
 import java.util.Calendar
 import java.util.Date
@@ -20,7 +22,7 @@ class DateExtTest {
     fun get() {
         val now = System.currentTimeMillis()
         val diff = 2
-        assertEquals(Date(now)[diff].time, now + (DateUtils.DAY * diff))
+        assertEquals(now + (DateUtils.DAY * diff), Date(now)[diff].time)
     }
 
     @Test
@@ -33,9 +35,9 @@ class DateExtTest {
             this[Calendar.DAY_OF_YEAR] += 3
         }.time
 
-        assertEquals(a.isToday(), true)
-        assertEquals(b.isToday(), false)
-        assertEquals(c.isToday(), false)
+        assertTrue(a.isToday())
+        assertFalse(b.isToday())
+        assertFalse(c.isToday())
     }
 
     @Test
@@ -45,7 +47,7 @@ class DateExtTest {
             set(Calendar.MINUTE, 30)
         }
 
-        assertEquals(calendar.time.getAsMinutes(), 10 * 60f + 30)
+        assertEquals(10 * 60f + 30, calendar.time.getAsMinutes())
     }
 
     @Test
@@ -60,10 +62,10 @@ class DateExtTest {
             set(Calendar.DAY_OF_YEAR, 3)
         }
 
-        assertEquals(a.time.diff(b.time), -2)
+        assertEquals(-2, a.time.diff(b.time))
 
         b[Calendar.YEAR] -= 1
         b[Calendar.DAY_OF_YEAR] -= 8
-        assertEquals(a.time.diff(b.time), 371)
+        assertEquals(371, a.time.diff(b.time))
     }
 }

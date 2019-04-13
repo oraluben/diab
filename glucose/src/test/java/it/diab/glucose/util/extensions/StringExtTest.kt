@@ -15,7 +15,7 @@ class StringExtTest {
 
     @Test
     fun upperCaseFirstChar() {
-        assertEquals("test".upperCaseFirstChar(), "Test")
-        assertEquals("TEST".upperCaseFirstChar(), "TEST")
+        assertEquals("Test", "test".upperCaseFirstChar())
+        assertEquals("TEST", "TEST".upperCaseFirstChar())
     }
 }

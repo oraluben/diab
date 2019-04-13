@@ -24,13 +24,13 @@ class DateExtTest {
         val calendar = Calendar.getInstance()
 
         calendar[Calendar.HOUR_OF_DAY] = 8
-        assertEquals(calendar.time.asTimeFrame(), TimeFrame.MORNING)
+        assertEquals(TimeFrame.MORNING, calendar.time.asTimeFrame())
 
         calendar[Calendar.HOUR_OF_DAY] = 18
-        assertEquals(calendar.time.asTimeFrame(), TimeFrame.AFTERNOON)
+        assertEquals(TimeFrame.AFTERNOON, calendar.time.asTimeFrame())
 
         calendar[Calendar.HOUR_OF_DAY] = 0
-        assertEquals(calendar.time.asTimeFrame(), TimeFrame.NIGHT)
+        assertEquals(TimeFrame.NIGHT, calendar.time.asTimeFrame())
     }
 
     @Test
@@ -42,16 +42,16 @@ class DateExtTest {
             set(Calendar.MINUTE, 30)
         }
 
-        assertEquals(calendar.time.format("yyyy-MM-dd"), "1971-01-01")
+        assertEquals("1971-01-01", calendar.time.format("yyyy-MM-dd"))
 
-        assertEquals(calendar.time.format("HH:mm"), "10:30")
+        assertEquals("10:30", calendar.time.format("HH:mm"))
     }
 
     @Test
     fun getCalendar() {
         val calendar = Calendar.getInstance()
         val date = calendar.time
-        assertEquals(date.getCalendar(), calendar)
+        assertEquals(calendar, date.getCalendar())
     }
 
     @Test
@@ -60,6 +60,6 @@ class DateExtTest {
             set(Calendar.HOUR_OF_DAY, 10)
         }
 
-        assertEquals(calendar.time.getHour(), 10)
+        assertEquals(10, calendar.time.getHour())
     }
 }

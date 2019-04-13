@@ -9,6 +9,7 @@
 package it.diab.core.data.entities
 
 import it.diab.core.util.extensions.glucose
+import org.junit.Assert.assertTrue
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -21,13 +22,13 @@ class GlucoseTest {
     @Test
     fun defaults() {
         glucose { uid = 12 }.run {
-            assertEquals(value, 0)
-            assertEquals(insulinId0, -1)
-            assertEquals(insulinValue0, 0f)
-            assertEquals(insulinId1, -1)
-            assertEquals(insulinValue1, 0f)
-            assertEquals(eatLevel, Glucose.MEDIUM)
-            assertEquals(timeFrame, TimeFrame.EXTRA)
+            assertEquals(0, value)
+            assertEquals(-1, insulinId0)
+            assertEquals(0f, insulinValue0)
+            assertEquals(-1, insulinId1)
+            assertEquals(0f, insulinValue1)
+            assertEquals(Glucose.MEDIUM, eatLevel)
+            assertEquals(TimeFrame.EXTRA, timeFrame)
         }
     }
 
@@ -45,7 +46,7 @@ class GlucoseTest {
             date = Date(0)
         }
 
-        assertEquals(a, b)
-        assertEquals(a.hashCode(), b.hashCode())
+        assertTrue(a == b)
+        assertTrue(a.hashCode() == b.hashCode())
     }
 }

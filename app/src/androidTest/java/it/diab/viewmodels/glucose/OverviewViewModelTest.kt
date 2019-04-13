@@ -11,12 +11,12 @@ package it.diab.viewmodels.glucose
 import android.content.Context
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.test.core.app.ApplicationProvider
-import com.google.common.truth.Truth.assertThat
 import it.diab.core.data.AppDatabase
+import it.diab.core.data.entities.TimeFrame
 import it.diab.core.data.repositories.GlucoseRepository
 import it.diab.core.util.extensions.glucose
-import it.diab.core.data.entities.TimeFrame
 import kotlinx.coroutines.runBlocking
+import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -49,7 +49,6 @@ class OverviewViewModelTest {
     fun getAverageLastWeek() = runBlocking {
         val pair = viewModel.runGetDataSets(glucoseList.asList())
 
-        assertThat(pair.second[testTimeFrame.toInt()].y)
-            .isEqualTo(glucoseValues.average().toFloat())
+        assertEquals(glucoseValues.average().toFloat(), pair.second[testTimeFrame.toInt()].y)
     }
 }

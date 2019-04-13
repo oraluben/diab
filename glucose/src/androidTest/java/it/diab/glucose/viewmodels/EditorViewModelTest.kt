@@ -11,7 +11,6 @@ package it.diab.glucose.viewmodels
 import android.content.Context
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.test.core.app.ApplicationProvider
-import com.google.common.truth.Truth.assertThat
 import it.diab.core.data.AppDatabase
 import it.diab.core.data.entities.Glucose
 import it.diab.core.data.entities.TimeFrame
@@ -22,6 +21,9 @@ import it.diab.core.util.extensions.glucose
 import it.diab.core.util.extensions.insulin
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -60,7 +62,7 @@ class EditorViewModelTest {
 
         val context = ApplicationProvider.getApplicationContext<Context>()
         db = AppDatabase.getInstance(context)
-        viewModel = it.diab.glucose.viewmodels.EditorViewModel(
+        viewModel = EditorViewModel(
             GlucoseRepository.getInstance(context),
             InsulinRepository.getInstance(context)
         )
@@ -74,8 +76,8 @@ class EditorViewModelTest {
     fun setGlucose() = runBlocking {
         viewModel.runSetGlucose(testGlucose.uid)
         viewModel.glucose.run {
-            assertThat(uid).isEqualTo(testGlucose.uid)
-            assertThat(this).isEqualTo(testGlucose)
+            assertEquals(testGlucose.uid, uid)
+            assertEquals(testGlucose, this)
         }
     }
 
@@ -97,15 +99,15 @@ class EditorViewModelTest {
         delay(500)
 
         val finalSize = db.glucose().getInDateRange(0, System.currentTimeMillis()).size
-        assertThat(finalSize).isGreaterThan(initialSize)
+        assertTrue(finalSize > initialSize)
     }
 
     @Test
     fun getInsulin() = runBlocking {
         viewModel.runPrepare(this, pluginManager)
         viewModel.getInsulin(testInsulin.uid).run {
-            assertThat(uid).isEqualTo(testInsulin.uid)
-            assertThat(this).isEqualTo(testInsulin)
+            assertEquals(testInsulin.uid, uid)
+            assertEquals(testInsulin, this)
         }
     }
 
@@ -114,7 +116,7 @@ class EditorViewModelTest {
         viewModel.runPrepare(this, pluginManager)
 
         viewModel.glucose.timeFrame = testBasal.timeFrame
-        assertThat(viewModel.hasPotentialBasal()).isTrue()
+        assertTrue(viewModel.hasPotentialBasal())
     }
 
     @Test
@@ -122,8 +124,7 @@ class EditorViewModelTest {
         viewModel.runPrepare(this, pluginManager)
         viewModel.glucose.timeFrame = testInsulin.timeFrame
 
-        assertThat(viewModel.getInsulinByTimeFrame().timeFrame)
-            .isEqualTo(viewModel.glucose.timeFrame)
+        assertEquals(viewModel.glucose.timeFrame, viewModel.getInsulinByTimeFrame().timeFrame)
     }
 
     @Test
@@ -132,8 +133,8 @@ class EditorViewModelTest {
 
         viewModel.runApplySuggestion(test, testInsulin)
         viewModel.glucose.run {
-            assertThat(insulinValue0).isEqualTo(test)
-            assertThat(insulinId0).isEqualTo(testInsulin.uid)
+            assertEquals(test, insulinValue0)
+            assertEquals(testInsulin.uid, insulinId0)
         }
     }
 
@@ -145,33 +146,33 @@ class EditorViewModelTest {
         val d = 1 shl 2
 
         viewModel.setError(a)
-        assertThat(viewModel.hasError(a)).isFalse()
-        assertThat(viewModel.hasErrors()).isFalse()
+        assertFalse(viewModel.hasError(a))
+        assertFalse(viewModel.hasErrors())
 
         viewModel.setError(b)
-        assertThat(viewModel.hasError(b)).isTrue()
-        assertThat(viewModel.hasError(c)).isFalse()
+        assertTrue(viewModel.hasError(b))
+        assertFalse(viewModel.hasError(c))
 
         viewModel.setError(c)
-        assertThat(viewModel.hasError(b)).isTrue()
-        assertThat(viewModel.hasError(c)).isTrue()
-        assertThat(viewModel.hasError(d)).isFalse()
+        assertTrue(viewModel.hasError(b))
+        assertTrue(viewModel.hasError(c))
+        assertFalse(viewModel.hasError(d))
 
         viewModel.clearError(b)
-        assertThat(viewModel.hasError(b)).isFalse()
-        assertThat(viewModel.hasError(c)).isTrue()
-        assertThat(viewModel.hasError(d)).isFalse()
+        assertFalse(viewModel.hasError(b))
+        assertTrue(viewModel.hasError(c))
+        assertFalse(viewModel.hasError(d))
 
-        assertThat(viewModel.hasErrors()).isTrue()
+        assertTrue(viewModel.hasErrors())
 
         viewModel.setError(d)
-        assertThat(viewModel.hasError(b)).isFalse()
-        assertThat(viewModel.hasError(c)).isTrue()
-        assertThat(viewModel.hasError(d)).isTrue()
+        assertFalse(viewModel.hasError(b))
+        assertTrue(viewModel.hasError(c))
+        assertTrue(viewModel.hasError(d))
 
         viewModel.setError(b)
-        assertThat(viewModel.hasError(b)).isTrue()
-        assertThat(viewModel.hasError(c)).isTrue()
-        assertThat(viewModel.hasError(d)).isTrue()
+        assertTrue(viewModel.hasError(b))
+        assertTrue(viewModel.hasError(c))
+        assertTrue(viewModel.hasError(d))
     }
 }

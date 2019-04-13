@@ -9,8 +9,9 @@
 package it.diab.core.data.entities
 
 import it.diab.core.util.extensions.hba1c
-import junit.framework.TestCase.assertEquals
-import junit.framework.TestCase.assertTrue
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertTrue
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
@@ -45,11 +46,11 @@ class Hba1cTest {
         }
 
         assertTrue(a == b)
-        assertTrue(a != c)
-        assertTrue(b != c)
+        assertFalse(a == c)
+        assertFalse(b == c)
 
         assertTrue(a.hashCode() == b.hashCode())
-        assertTrue(a.hashCode() != c.hashCode())
-        assertTrue(a.hashCode() != c.hashCode())
+        assertFalse(a.hashCode() == c.hashCode())
+        assertFalse(a.hashCode() == c.hashCode())
     }
 }

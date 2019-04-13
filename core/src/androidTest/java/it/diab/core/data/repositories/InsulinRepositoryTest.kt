@@ -9,10 +9,11 @@
 package it.diab.core.data.repositories
 
 import androidx.test.platform.app.InstrumentationRegistry
-import com.google.common.truth.Truth.assertThat
 import it.diab.core.data.AppDatabase
 import it.diab.core.util.extensions.insulin
 import kotlinx.coroutines.runBlocking
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNotEquals
 import org.junit.Before
 import org.junit.Test
 
@@ -42,7 +43,7 @@ class InsulinRepositoryTest {
 
         data.forEach { repository.insert(it) }
 
-        assertThat(repository.getBasals().size).isEqualTo(data.size / 2)
+        assertEquals(data.size / 2, repository.getBasals().size)
     }
 
     @Test
@@ -54,8 +55,8 @@ class InsulinRepositoryTest {
 
         repository.insert(insulin)
         repository.getById(insulin.uid).run {
-            assertThat(uid).isEqualTo(insulin.uid)
-            assertThat(this).isEqualTo(insulin)
+            assertEquals(insulin.uid, uid)
+            assertEquals(insulin, this)
         }
     }
 
@@ -67,9 +68,9 @@ class InsulinRepositoryTest {
         }
 
         repository.insert(insulin)
-        assertThat(repository.getById(insulin.uid).uid).isEqualTo(insulin.uid)
+        assertEquals(insulin.uid, repository.getById(insulin.uid).uid)
 
         repository.delete(insulin)
-        assertThat(repository.getById(insulin.uid).uid).isNotEqualTo(insulin.uid)
+        assertNotEquals(insulin.uid, repository.getById(insulin.uid).uid)
     }
 }

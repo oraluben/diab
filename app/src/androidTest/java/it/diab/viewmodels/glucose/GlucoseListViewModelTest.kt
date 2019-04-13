@@ -11,13 +11,13 @@ package it.diab.viewmodels.glucose
 import android.content.Context
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.test.core.app.ApplicationProvider
-import com.google.common.truth.Truth.assertThat
 import it.diab.core.data.AppDatabase
 import it.diab.core.data.repositories.GlucoseRepository
 import it.diab.core.data.repositories.InsulinRepository
 import it.diab.core.util.extensions.insulin
 import it.diab.util.extensions.get
 import it.diab.util.extensions.getWeekDay
+import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -52,8 +52,7 @@ class GlucoseListViewModelTest {
     fun getInsulin() {
         val test = TEST_DATA[0]
 
-        assertThat(viewModel.getInsulin(test.uid))
-            .isEqualTo(test)
+        assertEquals(test, viewModel.getInsulin(test.uid))
     }
 
     @Test
@@ -65,14 +64,10 @@ class GlucoseListViewModelTest {
 
         val format = SimpleDateFormat("yyyy-MM-dd")
 
-        assertThat(viewModel.runSetHeader(a, format))
-            .isEqualTo(TODAY)
-        assertThat(viewModel.runSetHeader(b, format))
-            .isEqualTo(YESTERDAY)
-        assertThat(viewModel.runSetHeader(c, format))
-            .isEqualTo(LAST_X.format(c.getWeekDay()))
-        assertThat(viewModel.runSetHeader(d, format))
-            .isEqualTo(format.format(d))
+        assertEquals(TODAY, viewModel.runSetHeader(a, format))
+        assertEquals(YESTERDAY, viewModel.runSetHeader(b, format))
+        assertEquals(LAST_X.format(c.getWeekDay()), viewModel.runSetHeader(c, format))
+        assertEquals(format.format(d), viewModel.runSetHeader(d, format))
     }
 
     companion object {

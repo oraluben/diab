@@ -10,6 +10,8 @@ package it.diab.core.data.entities
 
 import it.diab.core.util.extensions.insulin
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertTrue
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
@@ -20,10 +22,10 @@ class InsulinTest {
     @Test
     fun defaults() {
         insulin { uid = 12 }.run {
-            assertEquals(name, "")
-            assertEquals(timeFrame, TimeFrame.EXTRA)
-            assertEquals(isBasal, false)
-            assertEquals(hasHalfUnits, false)
+            assertEquals("", name)
+            assertEquals(TimeFrame.EXTRA, timeFrame)
+            assertFalse(isBasal)
+            assertFalse(hasHalfUnits)
         }
     }
 
@@ -32,14 +34,14 @@ class InsulinTest {
         val insulin = insulin { timeFrame = TimeFrame.MORNING }
         insulin.setTimeFrame(5)
 
-        assertEquals(insulin.timeFrame, TimeFrame.NIGHT)
+        assertEquals(TimeFrame.NIGHT, insulin.timeFrame)
     }
 
     @Test
     fun getDisplayedString() {
         val insulin = insulin { name = "test" }
 
-        assertEquals(insulin.getDisplayedString(10.54f), "test 10.5")
+        assertEquals("test 10.5", insulin.getDisplayedString(10.54f))
     }
 
     @Test
@@ -54,7 +56,7 @@ class InsulinTest {
             name = "test"
         }
 
-        assertEquals(a, b)
-        assertEquals(a.hashCode(), b.hashCode())
+        assertTrue(a == b)
+        assertTrue(a.hashCode() == b.hashCode())
     }
 }

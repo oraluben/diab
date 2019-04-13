@@ -9,10 +9,12 @@
 package it.diab.core.data.repositories
 
 import androidx.test.platform.app.InstrumentationRegistry
-import com.google.common.truth.Truth.assertThat
 import it.diab.core.data.AppDatabase
 import it.diab.core.util.extensions.hba1c
 import kotlinx.coroutines.runBlocking
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNotEquals
+import org.junit.Assert.assertNotNull
 import org.junit.Before
 import org.junit.Test
 
@@ -38,8 +40,8 @@ class Hba1cRepositoryTest {
         repository.insert(item)
         val inRepo = repository.getById(item.uid)
 
-        assertThat(inRepo).isEqualTo(item)
-        assertThat(inRepo?.uid ?: -1).isEqualTo(item.uid)
+        assertEquals(item, inRepo)
+        assertEquals(item.uid, inRepo?.uid ?: -1)
     }
 
     @Test
@@ -50,10 +52,10 @@ class Hba1cRepositoryTest {
         }
 
         repository.insert(item)
-        assertThat(repository.getById(item.uid)).isNotNull()
+        assertNotNull(repository.getById(item.uid))
 
         repository.delete(item)
-        assertThat(repository.getById(item.uid)).isNotEqualTo(item.uid)
+        assertNotEquals(item.uid, repository.getById(item.uid))
     }
 
     private fun Hba1cRepository.getById(uid: Long) = getAllItems().firstOrNull { it.uid == uid }

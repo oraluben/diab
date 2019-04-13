@@ -33,6 +33,6 @@ class ArrayExtTest {
 
         test.forEachUntilTrue { it() }
 
-        assertEquals(sb.toString(), "abc")
+        assertEquals("abc", sb.toString())
     }
 }

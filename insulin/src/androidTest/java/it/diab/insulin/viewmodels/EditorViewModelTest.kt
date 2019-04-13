@@ -11,12 +11,13 @@ package it.diab.insulin.viewmodels
 import android.content.Context
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.test.core.app.ApplicationProvider
-import com.google.common.truth.Truth.assertThat
 import it.diab.core.data.AppDatabase
-import it.diab.core.data.repositories.InsulinRepository
 import it.diab.core.data.entities.TimeFrame
+import it.diab.core.data.repositories.InsulinRepository
 import it.diab.core.util.extensions.insulin
 import kotlinx.coroutines.runBlocking
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNotEquals
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -47,8 +48,8 @@ class EditorViewModelTest {
         repository.insert(insulin)
 
         val result = viewModel.runSetInsulin(insulin.uid)
-        assertThat(result.uid).isEqualTo(insulin.uid)
-        assertThat(result).isEqualTo(insulin)
+        assertEquals(insulin.uid, result.uid)
+        assertEquals(insulin, result)
     }
 
     @Test
@@ -63,7 +64,7 @@ class EditorViewModelTest {
         viewModel.insulin = insulin
         viewModel.runDelete()
 
-        assertThat(repository.getById(insulin.uid).uid).isNotEqualTo(insulin.uid)
+        assertNotEquals(insulin.uid, repository.getById(insulin.uid).uid)
     }
 
     @Test
@@ -71,7 +72,7 @@ class EditorViewModelTest {
         viewModel.runSetInsulin(-1)
 
         val testUid = 12L
-        assertThat(repository.getById(testUid).uid).isNotEqualTo(testUid)
+        assertNotEquals(testUid, repository.getById(testUid).uid)
 
         viewModel.insulin.apply {
             uid = testUid
@@ -82,6 +83,6 @@ class EditorViewModelTest {
 
         viewModel.runSave()
 
-        assertThat(repository.getById(testUid).uid).isEqualTo(testUid)
+        assertEquals(testUid, repository.getById(testUid).uid)
     }
 }

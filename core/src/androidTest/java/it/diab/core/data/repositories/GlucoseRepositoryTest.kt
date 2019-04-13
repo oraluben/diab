@@ -9,11 +9,12 @@
 package it.diab.core.data.repositories
 
 import androidx.test.platform.app.InstrumentationRegistry
-import com.google.common.truth.Truth.assertThat
 import it.diab.core.data.AppDatabase
 import it.diab.core.util.DateUtils
 import it.diab.core.util.extensions.glucose
 import kotlinx.coroutines.runBlocking
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNotEquals
 import org.junit.Before
 import org.junit.Test
 import java.util.Date
@@ -53,8 +54,8 @@ class GlucoseRepositoryTest {
         data.forEach { repository.insert(it) }
 
         val list = repository.getInDateRange(start, end)
-        assertThat(list.size).isEqualTo(daysRange + 1)
-        assertThat(list[1].value).isEqualTo(baseValue * 2)
+        assertEquals(daysRange + 1, list.size)
+        assertEquals(baseValue * 2, list[1].value)
     }
 
     @Test
@@ -66,8 +67,8 @@ class GlucoseRepositoryTest {
 
         repository.insert(glucose)
         repository.getById(glucose.uid).run {
-            assertThat(uid).isEqualTo(glucose.uid)
-            assertThat(this).isEqualTo(glucose)
+            assertEquals(glucose.uid, uid)
+            assertEquals(glucose, this)
         }
     }
 
@@ -79,9 +80,9 @@ class GlucoseRepositoryTest {
         }
 
         repository.insert(glucose)
-        assertThat(repository.getById(glucose.uid).uid).isEqualTo(glucose.uid)
+        assertEquals(glucose.uid, repository.getById(glucose.uid).uid)
 
         repository.delete(glucose)
-        assertThat(repository.getById(glucose.uid)).isNotEqualTo(glucose.uid)
+        assertNotEquals(glucose.uid, repository.getById(glucose.uid).uid)
     }
 }

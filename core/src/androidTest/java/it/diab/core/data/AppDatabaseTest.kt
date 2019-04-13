@@ -10,13 +10,13 @@ package it.diab.core.data
 
 import android.content.Context
 import androidx.test.core.app.ApplicationProvider
-import com.google.common.truth.Truth.assertThat
 import it.diab.core.data.dao.GlucoseDao
 import it.diab.core.data.dao.InsulinDao
 import it.diab.core.data.entities.Glucose
 import it.diab.core.data.entities.TimeFrame
 import it.diab.core.util.extensions.glucose
 import it.diab.core.util.extensions.insulin
+import junit.framework.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 
@@ -44,7 +44,7 @@ class AppDatabaseTest {
 
         glucoseDao.insert(item)
         val test = glucoseDao.getById(1)[0]
-        assertThat(item).isEqualTo(test)
+        assertEquals(test, item)
     }
 
     @Test
@@ -57,7 +57,7 @@ class AppDatabaseTest {
         }.also { insulinDao.insert(it) }
 
         val test = insulinDao.getById(1)[0]
-        assertThat(item).isEqualTo(test)
+        assertEquals(test, item)
     }
 
     @Test
@@ -91,8 +91,8 @@ class AppDatabaseTest {
             val test1 = insulinDao.getById(insulinId0)[0]
             val test2 = insulinDao.getById(insulinId1)[0]
 
-            assertThat(insulin.uid).isEqualTo(test1.uid)
-            assertThat(basal.uid).isEqualTo(test2.uid)
+            assertEquals(test1.uid, insulin.uid)
+            assertEquals(test2.uid, basal.uid)
         }
     }
 }
