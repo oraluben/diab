@@ -18,63 +18,53 @@ import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.widget.Toast
-import androidx.annotation.StringRes
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
-import androidx.preference.ListPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceCategory
 import androidx.preference.PreferenceFragmentCompat
-import it.diab.core.util.Activities.Settings.PREF_UI_STYLE
 import it.diab.core.util.PluginManager
-import it.diab.core.util.UIUtils
 import it.diab.core.util.extensions.format
 import it.diab.core.util.extensions.get
 import it.diab.export.ExportService
 import it.diab.settings.R
+import it.diab.settings.widgets.ExportPreference
 import java.util.Date
 
 class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedPreferenceChangeListener {
     private lateinit var prefs: SharedPreferences
+    private lateinit var pluginManager: PluginManager
 
-    private lateinit var pluginManager: Preference
-    private lateinit var pluginRemover: Preference
+    private lateinit var pluginManagerPref: Preference
+    private lateinit var pluginRemoverPref: Preference
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.settings, rootKey)
 
         prefs = preferenceManager.sharedPreferences
+        pluginManager = PluginManager(requireContext())
 
-        val exportPluginData = findPreference("pref_export_ml_data")
-        exportPluginData?.onPreferenceClickListener = Preference.OnPreferenceClickListener {
-            showExportDialog(
-                R.string.export_ask_ml_title,
-                R.string.export_ask_ml_message,
-                REQUEST_ML_EXPORT
-            )
-        }
+        val exportPluginData = findPreference("pref_export_ml_data") as ExportPreference
+        exportPluginData.bind(object : ExportPreference.ExportPreferenceCallbacks {
+            override fun getActivity() = activity
+            override fun requestExport() { requestExport(REQUEST_ML_EXPORT) }
+        })
 
-        val exportXlsx = findPreference("pref_export_xlsx")
-        exportXlsx?.onPreferenceClickListener = Preference.OnPreferenceClickListener {
-            showExportDialog(
-                R.string.export_ask_xlsx_title,
-                R.string.export_ask_xlsx_message,
-                REQUEST_XLSX_EXPORT
-            )
-        }
+        val exportXlsx = findPreference("pref_export_xlsx") as ExportPreference
+        exportXlsx.bind(object : ExportPreference.ExportPreferenceCallbacks {
+            override fun getActivity() = activity
+            override fun requestExport() { requestExport(REQUEST_XLSX_EXPORT) }
+        })
 
         val pluginCategory = findPreference("plugin_category") as PreferenceCategory
-        pluginManager = pluginCategory.findPreference("pref_plugin_manager")
-        pluginRemover = pluginCategory.findPreference("pref_plugin_remover")
+        pluginManagerPref = pluginCategory.findPreference("pref_plugin_manager")
+        pluginRemoverPref = pluginCategory.findPreference("pref_plugin_remover")
 
-        pluginManager.setOnPreferenceClickListener { fetchPluginFile() }
-        pluginRemover.setOnPreferenceClickListener { askPluginRemoval() }
+        pluginManagerPref.setOnPreferenceClickListener { fetchPluginFile() }
+        pluginRemoverPref.setOnPreferenceClickListener { askPluginRemoval() }
 
         prefs.registerOnSharedPreferenceChangeListener(this)
         updatePluginPrefs()
-
-        val style = findPreference(PREF_UI_STYLE) as ListPreference
-        setupStylePref(style)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -96,25 +86,7 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
         when (key) {
             PluginManager.LAST_UPDATE -> updatePluginPrefs()
-            PREF_UI_STYLE -> UIUtils.setStyleMode(prefs[PREF_UI_STYLE, "1"])
         }
-    }
-
-    private fun showExportDialog(
-        @StringRes title: Int,
-        @StringRes message: Int,
-        requestCode: Int
-    ): Boolean {
-        val activity = activity ?: return false
-
-        AlertDialog.Builder(activity)
-            .setTitle(title)
-            .setMessage(message)
-            .setPositiveButton(R.string.export_ask_positive) { _, _ -> requestExport(requestCode) }
-            .setNegativeButton(android.R.string.cancel, null)
-            .show()
-
-        return true
     }
 
     private fun requestExport(requestCode: Int) {
@@ -198,11 +170,11 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
         val lastUpdated = prefs[PluginManager.LAST_UPDATE, 0L]
 
         if (lastUpdated == 0L) {
-            pluginRemover.isVisible = false
-            pluginManager.setSummary(R.string.settings_plugin_manage_summary_new)
+            pluginRemoverPref.isVisible = false
+            pluginManagerPref.setSummary(R.string.settings_plugin_manage_summary_new)
         } else {
-            pluginRemover.isVisible = true
-            pluginManager.summary = getString(
+            pluginRemoverPref.isVisible = true
+            pluginManagerPref.summary = getString(
                 R.string.settings_plugin_manage_summary_installed,
                 Date(lastUpdated).format("yyyy-MM-dd HH:mm")
             )
@@ -210,11 +182,7 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
     }
 
     private fun fetchPluginFile(): Boolean {
-        val intent = Intent(Intent.ACTION_GET_CONTENT).apply {
-            type = "application/zip"
-        }
-
-        startActivityForResult(intent, REQUEST_SELECT_PLUGIN)
+        startActivityForResult(pluginManager.getPickerIntent(), REQUEST_SELECT_PLUGIN)
         return true
     }
 
@@ -227,9 +195,7 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
         val uri = data.data ?: return
         val iStream = context.contentResolver.openInputStream(uri) ?: return
 
-        val manager = PluginManager(context)
-        manager.install(iStream)
-
+        pluginManager.install(iStream)
         Toast.makeText(context, R.string.settings_plugin_installing, Toast.LENGTH_SHORT)
             .show()
     }
@@ -240,35 +206,11 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
         AlertDialog.Builder(activity)
             .setTitle(R.string.settings_plugin_remove)
             .setMessage(R.string.settings_plugin_remove_confirmation)
-            .setPositiveButton(R.string.settings_plugin_remove_confirmation_positive) { _, _ -> removePlugin() }
+            .setPositiveButton(R.string.settings_plugin_remove_confirmation_positive) { _, _ -> pluginManager.uninstall() }
             .setNegativeButton(android.R.string.no, null)
             .show()
 
         return true
-    }
-
-    private fun removePlugin() {
-        val context = context ?: return
-        val manager = PluginManager(context)
-        manager.uninstall()
-    }
-
-    private fun setupStylePref(preference: ListPreference) {
-        val supportsAuto = UIUtils.supportsAutoStyleMode()
-        val entries = if (supportsAuto) arrayOf(
-            getString(R.string.settings_ui_theme_system),
-            getString(R.string.settings_ui_theme_light),
-            getString(R.string.settings_ui_theme_dark)
-        )
-        else arrayOf(
-            getString(R.string.settings_ui_theme_light),
-            getString(R.string.settings_ui_theme_dark)
-        )
-
-        val values = if (supportsAuto) arrayOf("0", "1", "2") else arrayOf("1", "2")
-
-        preference.entries = entries
-        preference.entryValues = values
     }
 
     private fun requestStorageAccess(requestCode: Int) {

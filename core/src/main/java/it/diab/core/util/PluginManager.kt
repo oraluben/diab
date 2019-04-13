@@ -9,6 +9,7 @@
 package it.diab.core.util
 
 import android.content.Context
+import android.content.Intent
 import android.os.Build
 import android.preference.PreferenceManager
 import androidx.annotation.WorkerThread
@@ -83,6 +84,12 @@ class PluginManager(context: Context) {
         scope.launch {
             pluginDir.deleteRecursively()
             preferences[LAST_UPDATE] = 0L
+        }
+    }
+
+    fun getPickerIntent(): Intent {
+        return Intent(Intent.ACTION_GET_CONTENT).apply {
+            type = "application/zip"
         }
     }
 
