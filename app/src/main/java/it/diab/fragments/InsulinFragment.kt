@@ -26,7 +26,9 @@ import it.diab.core.util.intentTo
 import it.diab.viewmodels.insulin.InsulinViewModel
 import it.diab.viewmodels.insulin.InsulinViewModelFactory
 
-class InsulinFragment : MainFragment() {
+class InsulinFragment : BaseFragment() {
+    override val titleRes = R.string.fragment_insulin
+
     private lateinit var recyclerView: RecyclerView
 
     private lateinit var viewModel: InsulinViewModel
@@ -55,8 +57,6 @@ class InsulinFragment : MainFragment() {
 
         return view
     }
-
-    override fun getTitle() = R.string.fragment_insulin
 
     private fun onItemClick(uid: Long) {
         val intent = intentTo(Activities.Insulin.Editor).apply {

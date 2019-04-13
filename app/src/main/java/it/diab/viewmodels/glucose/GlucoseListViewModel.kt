@@ -16,8 +16,8 @@ import it.diab.core.data.repositories.InsulinRepository
 import it.diab.core.viewmodels.ScopedViewModel
 import it.diab.util.extensions.diff
 import it.diab.util.extensions.getWeekDay
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -37,7 +37,7 @@ class GlucoseListViewModel internal constructor(
     fun prepare(block: () -> Unit) {
         viewModelScope.launch {
             runPrepare()
-            GlobalScope.launch(Dispatchers.Main) { block() }
+            launch(Dispatchers.Main) { block() }
         }
     }
 
@@ -46,11 +46,11 @@ class GlucoseListViewModel internal constructor(
     fun setHeader(
         date: Date,
         format: SimpleDateFormat,
-        block: (String) -> Unit
+        block: (String, CoroutineScope) -> Unit
     ) {
         viewModelScope.launch {
             val text = runSetHeader(date, format)
-            GlobalScope.launch(Dispatchers.Main) { block(text) }
+            block(text, viewModelScope)
         }
     }
 

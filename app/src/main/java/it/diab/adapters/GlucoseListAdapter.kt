@@ -11,26 +11,23 @@ package it.diab.adapters
 import android.content.Context
 import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.annotation.ColorRes
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.RecyclerView
 import it.diab.R
 import it.diab.core.data.entities.Glucose
 import it.diab.core.util.PreferencesUtil
 import it.diab.core.util.event.Event
-import it.diab.core.util.extensions.setPrecomputedText
+import it.diab.holders.GlucoseHolder
+import it.diab.holders.GlucoseHolderCallbacks
 import it.diab.util.UIUtils
 import it.diab.util.extensions.diff
 import it.diab.viewmodels.glucose.GlucoseListViewModel
+import kotlinx.coroutines.CoroutineScope
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -38,14 +35,14 @@ import java.util.Locale
 class GlucoseListAdapter(
     val context: Context,
     private val viewModel: GlucoseListViewModel
-) : PagedListAdapter<Glucose, GlucoseListAdapter.GlucoseHolder>(CALLBACK) {
+) : PagedListAdapter<Glucose, GlucoseHolder>(CALLBACK), GlucoseHolderCallbacks {
 
     private val _openGlucose = MutableLiveData<Event<Long>>()
     val openGlucose: LiveData<Event<Long>> = _openGlucose
 
     // Store the these for better performance
-    private val lowIndicator by lazy { getIndicator(R.color.glucose_indicator_low) }
-    private val highIndicator by lazy { getIndicator(R.color.glucose_indicator_high) }
+    private val lowIndicator by lazy { buildIndicator(R.color.glucose_indicator_low) }
+    private val highIndicator by lazy { buildIndicator(R.color.glucose_indicator_high) }
     private val highThreshold by lazy { PreferencesUtil.getGlucoseHighThreshold(context) }
     private val lowThreshold by lazy { PreferencesUtil.getGlucoseLowThreshold(context) }
 
@@ -57,20 +54,42 @@ class GlucoseListAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
         GlucoseHolder(
-            LayoutInflater.from(parent.context)
-                .inflate(R.layout.item_glucose, parent, false)
+            LayoutInflater.from(parent.context).inflate(R.layout.item_glucose, parent, false),
+            this
         )
 
     override fun onBindViewHolder(holder: GlucoseHolder, position: Int) {
         val item = getItem(position)
         if (item == null) {
-            holder.clear()
+            holder.onLoading()
         } else {
             holder.onBind(item)
         }
     }
 
-    private fun shouldInsertHeader(position: Int): Boolean {
+    override fun fetchHeaderText(date: Date, onFetch: (String, CoroutineScope) -> Unit) {
+        viewModel.setHeader(date, dateFormat, onFetch)
+    }
+
+    override fun fetchHourText(date: Date, onFetch: (String, CoroutineScope) -> Unit) {
+        val text = hourFormat.format(date)
+        onFetch(text, viewModel.viewModelScope)
+    }
+
+    override fun getIndicator(value: Int) = when {
+        value < lowThreshold -> lowIndicator
+        value > highThreshold -> highIndicator
+        else -> null
+    }
+
+    override fun getInsulinName(uid: Long) =
+        viewModel.getInsulin(uid).name
+
+    override fun onClick(uid: Long) {
+        _openGlucose.value = Event(uid)
+    }
+
+    override fun shouldInsertHeader(position: Int): Boolean {
         if (position == 0) {
             return true
         }
@@ -83,101 +102,11 @@ class GlucoseListAdapter(
         return b.diff(Date()) != 0 && a.diff(b) > 0
     }
 
-    private fun getIndicator(@ColorRes colorId: Int): Drawable? {
+    private fun buildIndicator(@ColorRes colorId: Int): Drawable? {
         val resources = context.resources
         val color = ContextCompat.getColor(context, colorId)
         val size = resources.getDimensionPixelSize(R.dimen.item_glucose_indicator)
         return UIUtils.createRoundDrawable(resources, size, color)
-    }
-
-    inner class GlucoseHolder(view: View) : RecyclerView.ViewHolder(view) {
-        private val icon = view.findViewById<ImageView>(R.id.item_glucose_timezone)
-        private val title = view.findViewById<TextView>(R.id.item_glucose_value)
-        private val summary = view.findViewById<TextView>(R.id.item_glucose_insulin)
-        private val indicator = view.findViewById<ImageView>(R.id.item_glucose_status)
-
-        private val header = view.findViewById<ConstraintLayout>(R.id.item_glucose_header)
-        private val headerTitle = view.findViewById<TextView>(R.id.item_glucose_header_title)
-
-        fun onBind(glucose: Glucose) {
-            itemView.visibility = View.VISIBLE
-
-            bindHeader(glucose)
-            bindValue(glucose)
-
-            icon.setImageResource(glucose.timeFrame.icon)
-
-            itemView.setOnClickListener { _openGlucose.value = Event(glucose.uid) }
-
-            bindInsulins(glucose)
-        }
-
-        fun clear() {
-            itemView.visibility = View.INVISIBLE
-        }
-
-        private fun bindHeader(glucose: Glucose) {
-            val shouldShowHeader = shouldInsertHeader(adapterPosition)
-            header.visibility = if (shouldShowHeader) View.VISIBLE else View.GONE
-
-            if (shouldShowHeader) {
-                viewModel.setHeader(glucose.date, dateFormat) { date ->
-                    headerTitle.setPrecomputedText(date, viewModel.viewModelScope)
-                }
-            }
-        }
-
-        private fun bindValue(glucose: Glucose) {
-            title.setPrecomputedText(
-                "%1\$d (%2\$s)".format(glucose.value, hourFormat.format(glucose.date)),
-                viewModel.viewModelScope
-            )
-
-            // High / low indicator
-            val indicatorDrawable = when {
-                glucose.value > highThreshold -> highIndicator
-                glucose.value < lowThreshold -> lowIndicator
-                else -> null
-            }
-
-            if (indicatorDrawable == null) {
-                indicator.visibility = View.GONE
-            } else {
-                indicator.setImageDrawable(indicatorDrawable)
-                indicator.visibility = View.VISIBLE
-            }
-        }
-
-        private fun bindInsulins(glucose: Glucose) {
-            val builder = StringBuilder()
-
-            val insulinId = glucose.insulinId0
-            val basalId = glucose.insulinId1
-
-            if (insulinId >= 0) {
-                builder.append(glucose.insulinValue0)
-                    .append(" ")
-                    .append(viewModel.getInsulin(insulinId).name)
-
-                if (basalId >= 0) {
-                    builder.append(", ")
-                }
-            }
-
-            if (basalId >= 0) {
-                builder.append(glucose.insulinValue1)
-                    .append(" ")
-                    .append(viewModel.getInsulin(basalId).name)
-            }
-
-            if (builder.isEmpty()) {
-                summary.visibility = View.GONE
-                return
-            }
-
-            summary.setPrecomputedText(builder.toString(), viewModel.viewModelScope)
-            summary.visibility = View.VISIBLE
-        }
     }
 
     companion object {

@@ -37,12 +37,14 @@ import it.diab.core.util.SystemUtil
 import it.diab.core.util.intentTo
 import it.diab.ui.graph.OverviewGraphView
 import it.diab.util.extensions.isToday
-import it.diab.viewmodels.glucose.OverviewViewModel
-import it.diab.viewmodels.glucose.OverviewViewModelFactory
+import it.diab.viewmodels.overview.OverviewViewModel
+import it.diab.viewmodels.overview.OverviewViewModelFactory
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-class OverviewFragment : MainFragment() {
+class OverviewFragment : BaseFragment() {
+    override val titleRes = R.string.fragment_overview
+
     private lateinit var lastValueView: TextView
     private lateinit var lastDescView: TextView
     private lateinit var chart: OverviewGraphView
@@ -90,8 +92,6 @@ class OverviewFragment : MainFragment() {
 
         setupMenu()
     }
-
-    override fun getTitle() = R.string.fragment_overview
 
     private fun updateChart(data: List<Glucose>?) {
         if (data == null || data.isEmpty()) {

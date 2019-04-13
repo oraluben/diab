@@ -8,10 +8,11 @@
  */
 package it.diab.fragments
 
-import androidx.annotation.StringRes
+import android.content.res.Resources
 import androidx.fragment.app.Fragment
 
-abstract class MainFragment : Fragment() {
-    @StringRes
-    abstract fun getTitle(): Int
+abstract class BaseFragment : Fragment() {
+    protected abstract val titleRes: Int
+
+    fun getTitle(resources: Resources): String = resources.getString(titleRes)
 }

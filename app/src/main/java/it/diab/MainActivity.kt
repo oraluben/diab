@@ -12,14 +12,13 @@ import android.os.Build
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.app.ActivityOptionsCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentPagerAdapter
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.tabs.TabLayout
+import it.diab.adapters.FragmentsPagerAdapter
 import it.diab.core.util.Activities
 import it.diab.core.util.event.EventObserver
 import it.diab.core.util.intentTo
@@ -29,15 +28,7 @@ import it.diab.fragments.OverviewFragment
 import it.diab.util.ShortcutUtils
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var coordinator: CoordinatorLayout
-    private lateinit var tabLayout: TabLayout
-    private lateinit var viewPager: ViewPager
-    private lateinit var adapter: ViewPagerAdapter
     private lateinit var fab: FloatingActionButton
-
-    private lateinit var overviewFragment: OverviewFragment
-    private lateinit var glucoseFragment: GlucoseListFragment
-    private lateinit var insulinFragment: InsulinFragment
 
     private val fragmentsLifeCycleCallback = object : FragmentManager.FragmentLifecycleCallbacks() {
         override fun onFragmentViewCreated(
@@ -62,19 +53,18 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstance)
         setContentView(R.layout.activity_main)
 
-        overviewFragment = OverviewFragment()
-        glucoseFragment = GlucoseListFragment()
-        insulinFragment = InsulinFragment()
-
-        coordinator = findViewById(R.id.coordinator)
-        tabLayout = findViewById(R.id.tabs)
-        viewPager = findViewById(R.id.viewpager)
+        val tabLayout = findViewById<TabLayout>(R.id.tabs)
+        val viewPager = findViewById<ViewPager>(R.id.viewpager)
         fab = findViewById(R.id.fab)
 
         supportFragmentManager.registerFragmentLifecycleCallbacks(fragmentsLifeCycleCallback, false)
-
-        adapter = ViewPagerAdapter(supportFragmentManager)
-        viewPager.adapter = adapter
+        viewPager.adapter = FragmentsPagerAdapter(
+            supportFragmentManager,
+            resources,
+            OverviewFragment(),
+            GlucoseListFragment(),
+            InsulinFragment()
+        )
 
         tabLayout.setupWithViewPager(viewPager)
         fab.setOnClickListener { onGlucoseClick(-1) }
@@ -101,13 +91,5 @@ class MainActivity : AppCompatActivity() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             ShortcutUtils.setupShortcuts(this)
         }
-    }
-
-    inner class ViewPagerAdapter(manager: FragmentManager) : FragmentPagerAdapter(manager) {
-        private val fragments = arrayOf(overviewFragment, glucoseFragment, insulinFragment)
-
-        override fun getCount() = fragments.size
-        override fun getItem(position: Int) = fragments[position]
-        override fun getPageTitle(position: Int): String = getString(fragments[position].getTitle())
     }
 }

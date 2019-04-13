@@ -15,6 +15,7 @@ import it.diab.core.data.AppDatabase
 import it.diab.core.data.entities.TimeFrame
 import it.diab.core.data.repositories.GlucoseRepository
 import it.diab.core.util.extensions.glucose
+import it.diab.viewmodels.overview.OverviewViewModel
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
 import org.junit.Before

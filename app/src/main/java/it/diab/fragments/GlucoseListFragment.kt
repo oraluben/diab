@@ -29,7 +29,9 @@ import it.diab.core.util.event.EventObserver
 import it.diab.viewmodels.glucose.GlucoseListViewModel
 import it.diab.viewmodels.glucose.GlucoseListViewModelFactory
 
-class GlucoseListFragment : MainFragment() {
+class GlucoseListFragment : BaseFragment() {
+    override val titleRes = R.string.fragment_glucose
+
     private lateinit var recyclerView: RecyclerView
 
     private lateinit var viewModel: GlucoseListViewModel
@@ -83,8 +85,6 @@ class GlucoseListFragment : MainFragment() {
         // Update strings in case Locale changed
         setViewModelStrings()
     }
-
-    override fun getTitle() = R.string.fragment_glucose
 
     private fun update(data: PagedList<Glucose>?) {
         adapter.submitList(data)

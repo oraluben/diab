@@ -6,8 +6,9 @@
  * The text of the license can be found in the LICENSE file
  * or at https://www.gnu.org/licenses/gpl.txt
  */
-package it.diab.viewmodels.glucose
+package it.diab.viewmodels.overview
 
+import android.annotation.SuppressLint
 import androidx.annotation.VisibleForTesting
 import com.github.mikephil.charting.data.Entry
 import it.diab.core.data.entities.Glucose
@@ -21,7 +22,6 @@ import it.diab.util.extensions.getAsMinutes
 import it.diab.util.extensions.isToday
 import it.diab.util.extensions.isZeroOrNan
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import kotlin.collections.set
@@ -44,17 +44,22 @@ class OverviewViewModel internal constructor(
             val end = System.currentTimeMillis()
             val start = end - DateUtils.WEEK
             val data = glucoseRepository.getInDateRange(start, end)
-            val pair = runGetDataSets(data)
-            GlobalScope.launch(Dispatchers.Main) { block(pair.first, pair.second) }
+            val result = runGetDataSets(data)
+
+            launch(Dispatchers.Main) {
+                block(result.first, result.second)
+            }
         }
     }
 
+    @SuppressLint("UseSparseArrays")
     @VisibleForTesting
     suspend fun runGetDataSets(data: List<Glucose>): Pair<List<Entry>, List<Entry>> {
         val averageDef = async {
             val avg = HashMap<Int, Float>()
 
-            val size = TimeFrame.values().size - 2 // -1 for the iterator and -1 for "EXTRA"
+            val size = TimeFrame.values().size - 2 // -1 because we start at 0 and -1 for "EXTRA"
+
             for (i in 0..size) {
                 val tf = i.toTimeFrame()
 
