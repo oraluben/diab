@@ -63,8 +63,7 @@ class ExportService : Service() {
 
         startForeground(RUNNING_NOTIFICATION_ID, notification)
 
-        val targetAction = intent?.getIntExtra(EXPORT_TARGET, -1) ?: -1
-        when (targetAction) {
+        when (intent?.getIntExtra(EXPORT_TARGET, -1)) {
             TARGET_CSV -> exportCsv(this::onTaskCompleted)
             TARGET_XLSX -> exportXlxs(this::onTaskCompleted)
         }

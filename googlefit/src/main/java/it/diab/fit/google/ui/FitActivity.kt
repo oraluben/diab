@@ -27,7 +27,7 @@ import it.diab.fit.google.viewmodels.FitViewModelFactory
 
 class FitActivity : AppCompatActivity() {
 
-    private lateinit var viewModel: it.diab.fit.google.viewmodels.FitViewModel
+    private lateinit var viewModel: FitViewModel
 
     private lateinit var coordinator: CoordinatorLayout
     private lateinit var headerText: TextView
@@ -56,10 +56,7 @@ class FitActivity : AppCompatActivity() {
         deleteAllButton = findViewById(R.id.fit_delete_all_button)
 
         connectButton.setOnClickListener {
-            viewModel.connect(
-                this,
-                FitActivity.GOOGLE_FIT_REQUEST_CODE
-            )
+            viewModel.connect(this, GOOGLE_FIT_REQUEST_CODE)
         }
         disconnectButton.setOnClickListener { confirmDisconnect() }
         deleteAllButton.setOnClickListener { confirmDelete() }

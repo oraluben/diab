@@ -8,6 +8,7 @@
  */
 package it.diab.core.util
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.os.Build
@@ -116,6 +117,7 @@ class PluginManager(context: Context) {
         }
     }
 
+    @SuppressLint("UseSparseArrays")
     @WorkerThread
     private fun parseInputStream(iStream: InputStream): HashMap<Int, Float> {
         val map = HashMap<Int, Float>()

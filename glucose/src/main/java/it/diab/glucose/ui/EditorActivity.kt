@@ -225,13 +225,13 @@ class EditorActivity : AppCompatActivity() {
 
     private fun onDateSelected(timeInMillis: Long) {
         if (timeInMillis > System.currentTimeMillis()) {
-            if (!viewModel.hasError(it.diab.glucose.viewmodels.EditorViewModel.ERROR_DATE)) {
+            if (!viewModel.hasError(EditorViewModel.ERROR_DATE)) {
                 timeView.setErrorStatus(this, true)
             }
 
-            viewModel.setError(it.diab.glucose.viewmodels.EditorViewModel.ERROR_DATE)
+            viewModel.setError(EditorViewModel.ERROR_DATE)
         } else {
-            viewModel.clearError(it.diab.glucose.viewmodels.EditorViewModel.ERROR_DATE)
+            viewModel.clearError(EditorViewModel.ERROR_DATE)
         }
 
         viewModel.glucose.date.time = timeInMillis
@@ -248,7 +248,7 @@ class EditorActivity : AppCompatActivity() {
     }
 
     private fun checkForError(value: Int) {
-        val hadError = viewModel.hasError(it.diab.glucose.viewmodels.EditorViewModel.ERROR_VALUE)
+        val hadError = viewModel.hasError(EditorViewModel.ERROR_VALUE)
         val hasError = value == 0
 
         if (hadError != hasError) {
@@ -256,9 +256,9 @@ class EditorActivity : AppCompatActivity() {
         }
 
         if (hasError) {
-            viewModel.setError(it.diab.glucose.viewmodels.EditorViewModel.ERROR_VALUE)
+            viewModel.setError(EditorViewModel.ERROR_VALUE)
         } else {
-            viewModel.clearError(it.diab.glucose.viewmodels.EditorViewModel.ERROR_VALUE)
+            viewModel.clearError(EditorViewModel.ERROR_VALUE)
         }
     }
 
