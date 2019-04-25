@@ -27,6 +27,7 @@ class GlucoseListViewModel internal constructor(
     private val insulinRepository: InsulinRepository
 ) : ScopedViewModel() {
     val pagedList = LivePagedListBuilder(glucoseRepository.pagedList, 5).build()
+    val liveList = glucoseRepository.all
 
     private lateinit var insulins: List<Insulin>
 

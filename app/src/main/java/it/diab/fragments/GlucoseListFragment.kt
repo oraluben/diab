@@ -26,6 +26,9 @@ import it.diab.core.data.repositories.GlucoseRepository
 import it.diab.core.data.repositories.InsulinRepository
 import it.diab.core.util.event.Event
 import it.diab.core.util.event.EventObserver
+import it.diab.ui.TimeHeaderDecoration
+import it.diab.util.extensions.doOnNextLayout
+import it.diab.util.extensions.removeAllItemDecorators
 import it.diab.viewmodels.glucose.GlucoseListViewModel
 import it.diab.viewmodels.glucose.GlucoseListViewModelFactory
 
@@ -75,6 +78,7 @@ class GlucoseListFragment : BaseFragment() {
             recyclerView.adapter = adapter
 
             viewModel.pagedList.observe(activity, Observer(this::update))
+            viewModel.liveList.observe(activity, Observer(this::updateHeaders))
             adapter.openGlucose.observe(activity, EventObserver(this::onItemClick))
         }
     }
@@ -100,5 +104,16 @@ class GlucoseListFragment : BaseFragment() {
             resources.getString(R.string.time_yesterday),
             resources.getString(R.string.glucose_header_last)
         )
+    }
+
+    private fun updateHeaders(list: List<Glucose>) {
+        if (list.isEmpty()) {
+            return
+        }
+
+        recyclerView.doOnNextLayout {
+            recyclerView.removeAllItemDecorators()
+            recyclerView.addItemDecoration(TimeHeaderDecoration(requireContext(), list))
+        }
     }
 }

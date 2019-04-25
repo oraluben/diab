@@ -25,7 +25,6 @@ import it.diab.core.util.event.Event
 import it.diab.holders.GlucoseHolder
 import it.diab.holders.GlucoseHolderCallbacks
 import it.diab.util.UIUtils
-import it.diab.util.extensions.diff
 import it.diab.viewmodels.glucose.GlucoseListViewModel
 import kotlinx.coroutines.CoroutineScope
 import java.text.SimpleDateFormat
@@ -87,19 +86,6 @@ class GlucoseListAdapter(
 
     override fun onClick(uid: Long) {
         _openGlucose.value = Event(uid)
-    }
-
-    override fun shouldInsertHeader(position: Int): Boolean {
-        if (position == 0) {
-            return true
-        }
-
-        val item = getItem(position) ?: return false
-        val previous = getItem(position - 1) ?: return false
-
-        val a = previous.date
-        val b = item.date
-        return b.diff(Date()) != 0 && a.diff(b) > 0
     }
 
     private fun buildIndicator(@ColorRes colorId: Int): Drawable? {

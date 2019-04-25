@@ -53,11 +53,4 @@ interface GlucoseHolderCallbacks {
      * OnClick event callback
      */
     fun onClick(uid: Long)
-
-    /**
-     * Whether the header should be shown
-     *
-     * @param position position of the glucose in the list
-     */
-    fun shouldInsertHeader(position: Int): Boolean
 }

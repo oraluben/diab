@@ -20,8 +20,6 @@ class GlucoseHolder(
     view: View,
     private val callbacks: GlucoseHolderCallbacks
 ) : RecyclerView.ViewHolder(view) {
-    private val headerView = view.findViewById<View>(R.id.item_glucose_header)
-    private val headerTitleView = view.findViewById<TextView>(R.id.item_glucose_header_title)
     private val iconView = view.findViewById<ImageView>(R.id.item_glucose_timezone)
     private val titleView = view.findViewById<TextView>(R.id.item_glucose_value)
     private val summaryView = view.findViewById<TextView>(R.id.item_glucose_insulin)
@@ -30,7 +28,6 @@ class GlucoseHolder(
     fun onBind(glucose: Glucose) {
         itemView.visibility = View.VISIBLE
 
-        bindHeader(glucose)
         bindValue(glucose)
         bindInsulin(glucose)
 
@@ -40,15 +37,6 @@ class GlucoseHolder(
 
     fun onLoading() {
         itemView.visibility = View.INVISIBLE
-    }
-
-    private fun bindHeader(glucose: Glucose) {
-        val shouldShowHeader = callbacks.shouldInsertHeader(adapterPosition)
-        headerView.visibility = if (shouldShowHeader) View.VISIBLE else View.GONE
-
-        if (shouldShowHeader) {
-            callbacks.fetchHeaderText(glucose.date, headerTitleView::setPrecomputedText)
-        }
     }
 
     private fun bindValue(glucose: Glucose) {
