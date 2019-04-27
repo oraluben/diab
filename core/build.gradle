@@ -53,7 +53,7 @@ dependencies {
 
     // UI
     api "com.google.android.material:material:1.0.0"
-    api "androidx.constraintlayout:constraintlayout:2.0.0-alpha4"
+    api "androidx.constraintlayout:constraintlayout:2.0.0-alpha5"
 }
 
 // Testing dependencies
