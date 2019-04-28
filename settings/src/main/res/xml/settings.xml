@@ -17,8 +17,8 @@
 
     <it.diab.settings.widgets.ExportPreference
         app:key="pref_export_xlsx"
-        app:promptDialogMessage="@string/export_ask_xlsx_message"
-        app:promptDialogTitle="@string/export_ask_xlsx_title"
+        app:dialogMessage="@string/export_ask_xlsx_message"
+        app:dialogTitle="@string/export_ask_xlsx_title"
         app:summary="@string/export_ask_xlsx_summary"
         app:title="@string/export_ask_xlsx_title" />
 
@@ -59,8 +59,8 @@
         <it.diab.settings.widgets.ExportPreference
             app:key="pref_export_ml_data"
             app:persistent="false"
-            app:promptDialogMessage="@string/export_ask_ml_message"
-            app:promptDialogTitle="@string/export_ask_ml_title"
+            app:dialogMessage="@string/export_ask_ml_message"
+            app:dialogTitle="@string/export_ask_ml_title"
             app:title="@string/export_ask_ml_title" />
     </androidx.preference.PreferenceCategory>
 </androidx.preference.PreferenceScreen>

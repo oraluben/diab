@@ -12,57 +12,37 @@ import android.app.Activity
 import android.content.Context
 import android.util.AttributeSet
 import androidx.appcompat.app.AlertDialog
-import androidx.preference.Preference
+import androidx.preference.DialogPreference
 import it.diab.settings.R
-import it.diab.settings.util.extensions.getResource
 
-class ExportPreference : Preference {
+class ExportPreference : DialogPreference {
     private lateinit var callbacks: ExportPreferenceCallbacks
 
     @Suppress("unused")
-    constructor(context: Context, attrs: AttributeSet) :
-        super(context, attrs) {
-        init(attrs)
-    }
+    constructor(context: Context, attrs: AttributeSet) : super(context, attrs)
 
     @Suppress("unused")
     constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) :
-        super(context, attrs, defStyleAttr) {
-        init(attrs)
-    }
+        super(context, attrs, defStyleAttr)
 
     @Suppress("unused")
     constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int, defStyleRes: Int) :
-        super(context, attrs, defStyleAttr, defStyleRes) {
-        init(attrs)
+        super(context, attrs, defStyleAttr, defStyleRes)
+
+    override fun onClick() {
+        showPromptDialog()
     }
 
     fun bind(callbacks: ExportPreferenceCallbacks) {
         this.callbacks = callbacks
     }
 
-    private fun init(attrs: AttributeSet) {
-        onPreferenceClickListener = OnPreferenceClickListener {
-            showPromptDialog(attrs)
-        }
-    }
-
-    private fun showPromptDialog(attrs: AttributeSet): Boolean {
+    private fun showPromptDialog(): Boolean {
         val activity = callbacks.getActivity() ?: return false
-        val title = attrs.getResource(
-            R.styleable.ExportPreference_promptDialogTitle,
-            R.styleable.ExportPreference,
-            context
-        )
-        val message = attrs.getResource(
-            R.styleable.ExportPreference_promptDialogMessage,
-            R.styleable.ExportPreference,
-            context
-        )
 
         AlertDialog.Builder(activity)
-            .setTitle(title)
-            .setMessage(message)
+            .setTitle(dialogTitle)
+            .setMessage(dialogMessage)
             .setPositiveButton(R.string.export_ask_positive) { _, _ ->
                 callbacks.requestExport()
             }

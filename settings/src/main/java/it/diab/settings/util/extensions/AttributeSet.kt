@@ -10,11 +10,13 @@ package it.diab.settings.util.extensions
 
 import android.content.Context
 import android.util.AttributeSet
+import android.util.TypedValue
 import androidx.annotation.StyleableRes
 
 fun AttributeSet.getResource(resource: Int, @StyleableRes styleable: IntArray, context: Context): Int {
     val attrArray = context.obtainStyledAttributes(this, styleable)
-    val required = attrArray.getResourceId(resource, 0)
+    val value = TypedValue()
+    attrArray.getValue(resource, value)
     attrArray.recycle()
-    return required
+    return value.resourceId
 }
