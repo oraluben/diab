@@ -33,4 +33,8 @@
     <string name="check_again_notification_title">Check glucose again</string>
     <string name="check_again_notification_content">Glucose value was low not so long ago, would you mind checking it again?</string>
     <string name="check_again_notification_channel">Reminders</string>
+
+    <!-- Time -->
+    <string name="time_today">आज</string>
+    <string name="time_yesterday">कल</string>
 </resources>

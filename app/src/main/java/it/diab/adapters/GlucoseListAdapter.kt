@@ -19,9 +19,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import it.diab.R
-import it.diab.data.entities.Glucose
 import it.diab.core.util.PreferencesUtil
 import it.diab.core.util.event.Event
+import it.diab.data.entities.Glucose
 import it.diab.holders.GlucoseHolder
 import it.diab.holders.GlucoseHolderCallbacks
 import it.diab.util.UIUtils
@@ -46,10 +46,6 @@ class GlucoseListAdapter(
     private val lowThreshold by lazy { PreferencesUtil.getGlucoseLowThreshold(context) }
 
     private val hourFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
-    private val dateFormat = SimpleDateFormat(
-        context.getString(R.string.glucose_header_month),
-        Locale.getDefault()
-    )
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
         GlucoseHolder(
@@ -64,10 +60,6 @@ class GlucoseListAdapter(
         } else {
             holder.onBind(item)
         }
-    }
-
-    override fun fetchHeaderText(date: Date, onFetch: (String, CoroutineScope) -> Unit) {
-        viewModel.setHeader(date, dateFormat, onFetch)
     }
 
     override fun fetchHourText(date: Date, onFetch: (String, CoroutineScope) -> Unit) {

@@ -11,8 +11,4 @@
 
     <string name="fit_name">Integrazione Fit</string>
     <string name="settings_name">Impostazioni</string>
-
-    <!-- Time -->
-    <string name="time_today">Oggi</string>
-    <string name="time_yesterday">Ieri</string>
 </resources>

@@ -33,4 +33,8 @@
     <string name="check_again_notification_title">Controlla glicemia</string>
     <string name="check_again_notification_content">I valori glicemici erano bassi poco fa, desideri controllarli nuovamente?</string>
     <string name="check_again_notification_channel">Promemoria</string>
+
+    <!-- Time -->
+    <string name="time_today">Oggi</string>
+    <string name="time_yesterday">Ieri</string>
 </resources>

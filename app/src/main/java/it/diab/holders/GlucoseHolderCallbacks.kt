@@ -15,17 +15,6 @@ import java.util.Date
 interface GlucoseHolderCallbacks {
 
     /**
-     * Fetch a String that for the header
-     *
-     * @param date date to be put in the string
-     * @param onFetch callback for fetch completion
-     */
-    fun fetchHeaderText(
-        date: Date,
-        onFetch: (String, CoroutineScope) -> Unit
-    )
-
-    /**
      * Fetch a String that represents hours of a given [Date]
      *
      * @param date date to be put in the string

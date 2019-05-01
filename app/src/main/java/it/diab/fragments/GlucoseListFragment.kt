@@ -8,7 +8,6 @@
  */
 package it.diab.fragments
 
-import android.content.res.Configuration
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -21,11 +20,11 @@ import androidx.paging.PagedList
 import androidx.recyclerview.widget.RecyclerView
 import it.diab.R
 import it.diab.adapters.GlucoseListAdapter
+import it.diab.core.util.event.Event
+import it.diab.core.util.event.EventObserver
 import it.diab.data.entities.Glucose
 import it.diab.data.repositories.GlucoseRepository
 import it.diab.data.repositories.InsulinRepository
-import it.diab.core.util.event.Event
-import it.diab.core.util.event.EventObserver
 import it.diab.ui.TimeHeaderDecoration
 import it.diab.util.extensions.doOnNextLayout
 import it.diab.util.extensions.removeAllItemDecorators
@@ -71,8 +70,6 @@ class GlucoseListFragment : BaseFragment() {
         val activity = activity ?: return
 
         viewModel.prepare {
-            setViewModelStrings()
-
             adapter = GlucoseListAdapter(activity, viewModel)
 
             recyclerView.adapter = adapter
@@ -83,27 +80,12 @@ class GlucoseListFragment : BaseFragment() {
         }
     }
 
-    override fun onConfigurationChanged(newConfig: Configuration?) {
-        super.onConfigurationChanged(newConfig)
-
-        // Update strings in case Locale changed
-        setViewModelStrings()
-    }
-
     private fun update(data: PagedList<Glucose>?) {
         adapter.submitList(data)
     }
 
     private fun onItemClick(uid: Long) {
         _openGlucose.value = Event(uid)
-    }
-
-    private fun setViewModelStrings() {
-        viewModel.setDateStrings(
-            resources.getString(R.string.time_today),
-            resources.getString(R.string.time_yesterday),
-            resources.getString(R.string.glucose_header_last)
-        )
     }
 
     private fun updateHeaders(list: List<Glucose>) {
