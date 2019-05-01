@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Bevilacqua Joey
+ * Copyright (c) 2019 Bevilacqua Joey
  *
  * Licensed under the GNU GPLv3 license
  *
@@ -11,12 +11,12 @@ package it.diab.viewmodels.overview
 import android.annotation.SuppressLint
 import androidx.annotation.VisibleForTesting
 import com.github.mikephil.charting.data.Entry
-import it.diab.core.data.entities.Glucose
-import it.diab.core.data.entities.TimeFrame
-import it.diab.core.data.repositories.GlucoseRepository
+import it.diab.data.entities.Glucose
+import it.diab.data.entities.TimeFrame
+import it.diab.data.repositories.GlucoseRepository
 import it.diab.core.override.BaseFitHandler
 import it.diab.core.util.DateUtils
-import it.diab.core.util.extensions.toTimeFrame
+import it.diab.data.extensions.toTimeFrame
 import it.diab.core.viewmodels.ScopedViewModel
 import it.diab.util.extensions.getAsMinutes
 import it.diab.util.extensions.isToday

@@ -28,6 +28,8 @@ android {
 
 dependencies {
     implementation project(':core')
+    implementation project(':data')
+    implementation project(':ui')
 
     implementation("androidx.work:work-runtime-ktx:2.0.1")
 }

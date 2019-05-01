@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Bevilacqua Joey
+ * Copyright (c) 2019 Bevilacqua Joey
  *
  * Licensed under the GNU GPLv3 license
  *
@@ -18,8 +18,8 @@ import androidx.paging.PagedList
 import androidx.recyclerview.widget.RecyclerView
 import it.diab.R
 import it.diab.adapters.InsulinAdapter
-import it.diab.core.data.entities.Insulin
-import it.diab.core.data.repositories.InsulinRepository
+import it.diab.data.entities.Insulin
+import it.diab.data.repositories.InsulinRepository
 import it.diab.core.util.Activities
 import it.diab.core.util.event.EventObserver
 import it.diab.core.util.intentTo

@@ -10,9 +10,9 @@ package it.diab.export.writer
 
 import android.os.Environment
 import androidx.annotation.WorkerThread
-import it.diab.core.data.entities.Glucose
-import it.diab.core.data.entities.TimeFrame
-import it.diab.core.data.repositories.GlucoseRepository
+import it.diab.data.entities.Glucose
+import it.diab.data.entities.TimeFrame
+import it.diab.data.repositories.GlucoseRepository
 import it.diab.core.util.DateUtils
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.async

@@ -11,7 +11,7 @@ package it.diab.settings.widgets
 import android.content.Context
 import android.util.AttributeSet
 import androidx.preference.ListPreference
-import it.diab.core.util.UIUtils
+import it.diab.ui.util.UIUtils
 import it.diab.settings.R
 
 class StylePreference : ListPreference {

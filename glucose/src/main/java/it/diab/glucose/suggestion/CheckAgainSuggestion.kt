@@ -11,7 +11,7 @@ package it.diab.glucose.suggestion
 import android.content.res.Resources
 import androidx.work.OneTimeWorkRequest
 import androidx.work.WorkManager
-import it.diab.core.data.entities.TimeFrame
+import it.diab.data.entities.TimeFrame
 import it.diab.glucose.R
 import it.diab.glucose.workers.CheckAgainWorker
 import java.util.concurrent.TimeUnit

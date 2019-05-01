@@ -13,7 +13,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import it.diab.R
-import it.diab.core.data.entities.Glucose
+import it.diab.data.entities.Glucose
 import it.diab.core.util.extensions.setPrecomputedText
 
 class GlucoseHolder(

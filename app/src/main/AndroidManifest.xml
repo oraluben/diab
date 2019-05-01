@@ -1,5 +1,5 @@
 <!--
-  Copyright (c) 2018 Bevilacqua Joey
+  Copyright (c) 2019 Bevilacqua Joey
 
   Licensed under the GNU GPLv3 license
 
@@ -11,7 +11,7 @@
     package="it.diab">
 
     <application
-        android:name=".core.DiabApplication"
+        android:name=".DiabApplication"
         android:allowBackup="true"
         android:fullBackupContent="@xml/backup_descriptor"
         android:icon="@mipmap/ic_launcher"

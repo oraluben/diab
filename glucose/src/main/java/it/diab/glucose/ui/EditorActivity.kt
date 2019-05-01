@@ -21,17 +21,17 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.transition.TransitionManager
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
-import it.diab.core.data.entities.Insulin
-import it.diab.core.data.repositories.GlucoseRepository
-import it.diab.core.data.repositories.InsulinRepository
+import it.diab.data.entities.Insulin
+import it.diab.data.repositories.GlucoseRepository
+import it.diab.data.repositories.InsulinRepository
 import it.diab.core.override.BaseFitHandler
 import it.diab.core.util.Activities
-import it.diab.core.util.PluginManager
+import it.diab.data.plugin.PluginManager
 import it.diab.core.util.PreferencesUtil
 import it.diab.core.util.SystemUtil
-import it.diab.core.util.extensions.asTimeFrame
-import it.diab.core.util.extensions.insulin
+import it.diab.data.extensions.insulin
 import it.diab.core.util.extensions.setPrecomputedText
+import it.diab.data.extensions.asTimeFrame
 import it.diab.glucose.R
 import it.diab.glucose.suggestion.CheckAgainSuggestion
 import it.diab.glucose.suggestion.InsulinSuggestion
@@ -74,7 +74,7 @@ class EditorActivity : AppCompatActivity() {
             GlucoseRepository.getInstance(this),
             InsulinRepository.getInstance(this)
         )
-        viewModel = ViewModelProviders.of(this, factory)[it.diab.glucose.viewmodels.EditorViewModel::class.java]
+        viewModel = ViewModelProviders.of(this, factory)[EditorViewModel::class.java]
 
         constraintView = findViewById(R.id.editor_root)
         closeView = findViewById(R.id.editor_close)

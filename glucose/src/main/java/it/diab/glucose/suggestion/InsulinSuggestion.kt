@@ -9,10 +9,10 @@
 package it.diab.glucose.suggestion
 
 import android.content.res.Resources
-import it.diab.core.data.entities.Glucose
-import it.diab.core.data.entities.Insulin
-import it.diab.core.data.entities.TimeFrame
-import it.diab.core.util.PluginManager
+import it.diab.data.entities.Glucose
+import it.diab.data.entities.Insulin
+import it.diab.data.entities.TimeFrame
+import it.diab.data.plugin.PluginManager
 import it.diab.glucose.R
 import kotlin.math.roundToInt
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Bevilacqua Joey
+ * Copyright (c) 2019 Bevilacqua Joey
  *
  * Licensed under the GNU GPLv3 license
  *
@@ -10,7 +10,7 @@ package it.diab.viewmodels.insulin
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import it.diab.core.data.repositories.InsulinRepository
+import it.diab.data.repositories.InsulinRepository
 
 class InsulinViewModelFactory(
     private val insulinRepository: InsulinRepository

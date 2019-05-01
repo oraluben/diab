@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Bevilacqua Joey
+ * Copyright (c) 2019 Bevilacqua Joey
  *
  * Licensed under the GNU GPLv3 license
  *
@@ -22,10 +22,10 @@ import androidx.appcompat.widget.SwitchCompat
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.button.MaterialButton
-import it.diab.core.data.entities.TimeFrame
-import it.diab.core.data.repositories.InsulinRepository
+import it.diab.data.entities.TimeFrame
+import it.diab.data.repositories.InsulinRepository
 import it.diab.core.util.Activities
-import it.diab.core.util.UIUtils
+import it.diab.ui.util.UIUtils
 import it.diab.insulin.R
 import it.diab.insulin.viewmodels.EditorViewModel
 import it.diab.insulin.viewmodels.EditorViewModelFactory

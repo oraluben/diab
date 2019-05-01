@@ -11,10 +11,10 @@ package it.diab.viewmodels.glucose
 import android.content.Context
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.test.core.app.ApplicationProvider
-import it.diab.core.data.AppDatabase
-import it.diab.core.data.repositories.GlucoseRepository
-import it.diab.core.data.repositories.InsulinRepository
-import it.diab.core.util.extensions.insulin
+import it.diab.data.AppDatabase
+import it.diab.data.repositories.GlucoseRepository
+import it.diab.data.repositories.InsulinRepository
+import it.diab.data.extensions.insulin
 import it.diab.util.extensions.get
 import it.diab.util.extensions.getWeekDay
 import org.junit.Assert.assertEquals

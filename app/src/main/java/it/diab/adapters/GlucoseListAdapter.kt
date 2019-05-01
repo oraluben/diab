@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Bevilacqua Joey
+ * Copyright (c) 2019 Bevilacqua Joey
  *
  * Licensed under the GNU GPLv3 license
  *
@@ -19,7 +19,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import it.diab.R
-import it.diab.core.data.entities.Glucose
+import it.diab.data.entities.Glucose
 import it.diab.core.util.PreferencesUtil
 import it.diab.core.util.event.Event
 import it.diab.holders.GlucoseHolder

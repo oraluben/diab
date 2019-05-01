@@ -13,7 +13,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import it.diab.R
-import it.diab.core.data.entities.Insulin
+import it.diab.data.entities.Insulin
 
 class InsulinHolder(
     view: View,

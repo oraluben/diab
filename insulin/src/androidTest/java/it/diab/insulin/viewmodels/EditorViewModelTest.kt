@@ -11,10 +11,10 @@ package it.diab.insulin.viewmodels
 import android.content.Context
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.test.core.app.ApplicationProvider
-import it.diab.core.data.AppDatabase
-import it.diab.core.data.entities.TimeFrame
-import it.diab.core.data.repositories.InsulinRepository
-import it.diab.core.util.extensions.insulin
+import it.diab.data.AppDatabase
+import it.diab.data.entities.TimeFrame
+import it.diab.data.repositories.InsulinRepository
+import it.diab.data.extensions.insulin
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotEquals

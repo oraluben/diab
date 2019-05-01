@@ -1,0 +1,18 @@
+<!--
+  Copyright (c) 2019 Bevilacqua Joey
+
+  Licensed under the GNU GPLv3 license
+
+  The text of the license can be found in the LICENSE file
+  or at https://www.gnu.org/licenses/gpl.txt
+  -->
+<resources>
+
+    <string name="time_extra">Extra</string>
+    <string name="time_morning">Morning</string>
+    <string name="time_late_morning">Late morning</string>
+    <string name="time_lunch">Lunch</string>
+    <string name="time_afternoon">Afternoon</string>
+    <string name="time_dinner">Dinner</string>
+    <string name="time_night">Night</string>
+</resources>

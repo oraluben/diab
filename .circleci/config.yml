@@ -21,13 +21,16 @@ jobs:
       - run:
           name: Assemble, lint and unit tests
           command: ./gradlew check -PisCiBuild
-      # Store results
+      # Store report results
       - store_artifacts:
           path: app/build/reports
           destination: app-reports
       - store_artifacts:
           path: core/build/reports
           destination: core-reports
+      - store_artifacts:
+          path: data/build/reports
+          destination: data-reports
       - store_artifacts:
           path: export/build/reports
           destination: export-reports
@@ -40,10 +43,16 @@ jobs:
       - store_artifacts:
           path: settings/build/reports
           destination: settings-reports
+      - store_artifacts:
+          path: ui/build/reports
+          destination: ui-reports
+      # Store test results
       - store_test_results:
           path: app/build/test-results
       - store_test_results:
           path: core/build/test-results
+      - store_test_results:
+          path: data/build/test-results
       - store_test_results:
           path: glucose/build/test-results
       # Save build dir

@@ -26,6 +26,8 @@ android {
 
 dependencies {
     implementation project(':core')
+    implementation project(':data')
+    implementation project(':ui')
     implementation project(':export')
 
     implementation "androidx.preference:preference:1.0.0"

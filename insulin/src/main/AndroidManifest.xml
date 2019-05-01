@@ -9,7 +9,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="it.diab.insulin">
 
-    <application android:name="it.diab.core.DiabApplication">
+    <application>
 
         <activity
             android:name=".ui.EditorActivity"

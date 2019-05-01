@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Bevilacqua Joey
+ * Copyright (c) 2019 Bevilacqua Joey
  *
  * Licensed under the GNU GPLv3 license
  *
@@ -11,10 +11,10 @@ package it.diab.viewmodels.glucose
 import android.content.Context
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.test.core.app.ApplicationProvider
-import it.diab.core.data.AppDatabase
-import it.diab.core.data.entities.TimeFrame
-import it.diab.core.data.repositories.GlucoseRepository
-import it.diab.core.util.extensions.glucose
+import it.diab.data.AppDatabase
+import it.diab.data.entities.TimeFrame
+import it.diab.data.repositories.GlucoseRepository
+import it.diab.data.extensions.glucose
 import it.diab.viewmodels.overview.OverviewViewModel
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals

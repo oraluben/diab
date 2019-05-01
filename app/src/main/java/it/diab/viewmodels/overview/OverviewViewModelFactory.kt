@@ -10,7 +10,7 @@ package it.diab.viewmodels.overview
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import it.diab.core.data.repositories.GlucoseRepository
+import it.diab.data.repositories.GlucoseRepository
 
 class OverviewViewModelFactory(
     private val glucoseRepository: GlucoseRepository

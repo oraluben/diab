@@ -8,20 +8,10 @@
  */
 package it.diab.core.util.extensions
 
-import it.diab.core.data.entities.TimeFrame
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
 import java.util.Locale
-
-fun Date.asTimeFrame() = when (getHour()) {
-    in 6..9 -> TimeFrame.MORNING
-    in 10..11 -> TimeFrame.LATE_MORNING
-    in 12..13 -> TimeFrame.LUNCH
-    in 14..18 -> TimeFrame.AFTERNOON
-    in 19..20 -> TimeFrame.DINNER
-    else -> TimeFrame.NIGHT
-}
 
 fun Date.format(format: String): String =
     SimpleDateFormat(format, Locale.getDefault()).format(this)

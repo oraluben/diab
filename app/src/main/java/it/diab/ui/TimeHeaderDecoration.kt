@@ -29,8 +29,8 @@ import android.text.style.AbsoluteSizeSpan
 import android.text.style.StyleSpan
 import androidx.recyclerview.widget.RecyclerView
 import it.diab.R
-import it.diab.core.data.entities.Glucose
 import it.diab.core.util.extensions.getCalendar
+import it.diab.data.entities.Glucose
 import it.diab.util.extensions.inSpans
 import it.diab.util.extensions.withTranslation
 import java.text.SimpleDateFormat

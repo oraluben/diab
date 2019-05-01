@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Bevilacqua Joey
+ * Copyright (c) 2019 Bevilacqua Joey
  *
  * Licensed under the GNU GPLv3 license
  *
@@ -17,10 +17,10 @@ import android.widget.Toast
 import androidx.appcompat.widget.AppCompatSpinner
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.button.MaterialButton
-import it.diab.core.data.entities.Glucose
-import it.diab.core.data.entities.Insulin
-import it.diab.core.util.UIUtils
-import it.diab.core.util.extensions.asTimeFrame
+import it.diab.data.entities.Glucose
+import it.diab.data.entities.Insulin
+import it.diab.data.extensions.asTimeFrame
+import it.diab.ui.util.UIUtils
 import it.diab.glucose.R
 import it.diab.glucose.util.VibrationUtil
 

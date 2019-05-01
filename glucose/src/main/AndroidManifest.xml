@@ -11,7 +11,7 @@
 
     <uses-permission android:name="android.permission.VIBRATE" />
 
-    <application android:name="it.diab.core.DiabApplication">
+    <application>
 
         <activity
             android:name=".ui.EditorActivity"

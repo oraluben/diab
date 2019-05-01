@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Bevilacqua Joey
+ * Copyright (c) 2019 Bevilacqua Joey
  *
  * Licensed under the GNU GPLv3 license
  *
@@ -10,9 +10,9 @@ package it.diab.viewmodels.glucose
 
 import androidx.annotation.VisibleForTesting
 import androidx.paging.LivePagedListBuilder
-import it.diab.core.data.entities.Insulin
-import it.diab.core.data.repositories.GlucoseRepository
-import it.diab.core.data.repositories.InsulinRepository
+import it.diab.data.entities.Insulin
+import it.diab.data.repositories.GlucoseRepository
+import it.diab.data.repositories.InsulinRepository
 import it.diab.core.viewmodels.ScopedViewModel
 import it.diab.util.extensions.diff
 import it.diab.util.extensions.getWeekDay

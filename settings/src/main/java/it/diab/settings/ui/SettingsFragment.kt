@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Bevilacqua Joey
+ * Copyright (c) 2019 Bevilacqua Joey
  *
  * Licensed under the GNU GPLv3 license
  *
@@ -23,7 +23,7 @@ import androidx.core.content.ContextCompat
 import androidx.preference.Preference
 import androidx.preference.PreferenceCategory
 import androidx.preference.PreferenceFragmentCompat
-import it.diab.core.util.PluginManager
+import it.diab.data.plugin.PluginManager
 import it.diab.core.util.extensions.format
 import it.diab.core.util.extensions.get
 import it.diab.export.ExportService

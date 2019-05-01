@@ -12,8 +12,8 @@ import android.os.Build
 import android.os.Environment
 import android.util.Log
 import androidx.annotation.WorkerThread
-import it.diab.core.data.repositories.GlucoseRepository
-import it.diab.core.data.repositories.InsulinRepository
+import it.diab.data.repositories.GlucoseRepository
+import it.diab.data.repositories.InsulinRepository
 import it.diab.core.util.extensions.forEachWithIndex
 import it.diab.core.util.extensions.format
 import it.diab.export.BuildConfig

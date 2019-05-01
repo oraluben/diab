@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Bevilacqua Joey
+ * Copyright (c) 2019 Bevilacqua Joey
  *
  * Licensed under the GNU GPLv3 license
  *
@@ -29,8 +29,8 @@ import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.formatter.IValueFormatter
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
 import it.diab.R
-import it.diab.core.data.entities.Glucose
-import it.diab.core.data.repositories.GlucoseRepository
+import it.diab.data.entities.Glucose
+import it.diab.data.repositories.GlucoseRepository
 import it.diab.core.override.BaseFitHandler
 import it.diab.core.util.Activities
 import it.diab.core.util.SystemUtil

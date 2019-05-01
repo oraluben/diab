@@ -15,13 +15,4 @@
     <!-- Time -->
     <string name="time_today">Today</string>
     <string name="time_yesterday">Yesterday</string>
-
-    <!-- Time frame -->
-    <string name="time_extra">Extra</string>
-    <string name="time_morning">Morning</string>
-    <string name="time_late_morning">Late morning</string>
-    <string name="time_lunch">Lunch</string>
-    <string name="time_afternoon">Afternoon</string>
-    <string name="time_dinner">Dinner</string>
-    <string name="time_night">Night</string>
 </resources>

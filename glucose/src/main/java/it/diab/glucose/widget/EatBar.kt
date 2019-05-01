@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Bevilacqua Joey
+ * Copyright (c) 2019 Bevilacqua Joey
  *
  * Licensed under the GNU GPLv3 license
  *
@@ -19,7 +19,7 @@ import androidx.annotation.AttrRes
 import androidx.annotation.ColorRes
 import androidx.appcompat.widget.AppCompatSeekBar
 import androidx.core.content.ContextCompat
-import it.diab.core.data.entities.Glucose
+import it.diab.data.entities.Glucose
 import it.diab.glucose.R
 
 class EatBar : AppCompatSeekBar {

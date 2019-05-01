@@ -8,8 +8,6 @@
  */
 package it.diab.core.util
 
-import it.diab.core.data.entities.TimeFrame
-import it.diab.core.util.extensions.asTimeFrame
 import it.diab.core.util.extensions.format
 import it.diab.core.util.extensions.getCalendar
 import it.diab.core.util.extensions.getHour
@@ -18,20 +16,6 @@ import org.junit.Test
 import java.util.Calendar
 
 class DateExtTest {
-
-    @Test
-    fun asTimeFrame() {
-        val calendar = Calendar.getInstance()
-
-        calendar[Calendar.HOUR_OF_DAY] = 8
-        assertEquals(TimeFrame.MORNING, calendar.time.asTimeFrame())
-
-        calendar[Calendar.HOUR_OF_DAY] = 18
-        assertEquals(TimeFrame.AFTERNOON, calendar.time.asTimeFrame())
-
-        calendar[Calendar.HOUR_OF_DAY] = 0
-        assertEquals(TimeFrame.NIGHT, calendar.time.asTimeFrame())
-    }
 
     @Test
     fun format() {

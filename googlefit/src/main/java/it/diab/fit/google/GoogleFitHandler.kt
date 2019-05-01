@@ -22,9 +22,9 @@ import com.google.android.gms.fitness.data.Device
 import com.google.android.gms.fitness.data.HealthDataTypes
 import com.google.android.gms.fitness.data.HealthFields
 import com.google.android.gms.fitness.request.DataUpdateRequest
-import it.diab.core.data.entities.Glucose
-import it.diab.core.data.entities.TimeFrame
+import it.diab.data.entities.Glucose
 import it.diab.core.override.BaseFitHandler
+import it.diab.data.entities.TimeFrame
 import it.diab.fit.google.ui.FitActivity
 import java.util.concurrent.TimeUnit
 
@@ -55,12 +55,17 @@ class GoogleFitHandler : BaseFitHandler() {
 
     override fun upload(
         context: Context,
-        glucose: Glucose,
+        item: Any,
         isNew: Boolean,
         onSuccess: () -> Unit,
         onFailure: (Exception) -> Unit
     ) {
-        val timeStamp = glucose.date.time
+        if (item !is Glucose) {
+            onFailure(IllegalArgumentException("Parameter item is not of type Glucose"))
+            return
+        }
+
+        val timeStamp = item.date.time
         val source = DataSource.Builder()
             .setType(DataSource.TYPE_RAW)
             .setDataType(HealthDataTypes.TYPE_BLOOD_GLUCOSE)
@@ -70,15 +75,15 @@ class GoogleFitHandler : BaseFitHandler() {
         val data = DataPoint.create(source).apply {
             setTimestamp(timeStamp, TimeUnit.MILLISECONDS)
 
-            getValue(HealthFields.FIELD_BLOOD_GLUCOSE_LEVEL).setFloat(glucose.value / 18f)
+            getValue(HealthFields.FIELD_BLOOD_GLUCOSE_LEVEL).setFloat(item.value / 18f)
 
             getValue(HealthFields.FIELD_BLOOD_GLUCOSE_SPECIMEN_SOURCE).setInt(
                 HealthFields.BLOOD_GLUCOSE_SPECIMEN_SOURCE_CAPILLARY_BLOOD
             )
 
-            getValue(HealthFields.FIELD_TEMPORAL_RELATION_TO_MEAL).setInt(glucose.timeFrame.toFitMealRelation())
+            getValue(HealthFields.FIELD_TEMPORAL_RELATION_TO_MEAL).setInt(item.timeFrame.toFitMealRelation())
 
-            getValue(HealthFields.FIELD_TEMPORAL_RELATION_TO_SLEEP).setInt(glucose.timeFrame.toFitSleepRelation())
+            getValue(HealthFields.FIELD_TEMPORAL_RELATION_TO_SLEEP).setInt(item.timeFrame.toFitSleepRelation())
         }
 
         val set = DataSet.create(source).apply { add(data) }
