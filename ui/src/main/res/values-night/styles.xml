@@ -11,12 +11,12 @@
     <style name="DiabTheme" parent="Theme.MaterialComponents">
         <item name="diab_actionBarBackground">@color/colorPrimary</item>
         <item name="diab_actionIconDefault">?android:attr/colorControlNormal</item>
-        <item name="diab_dividerColor">@color/item_header_divider</item>
+        <item name="diab_dividerColor">@color/contentDivider</item>
         <item name="diab_editorBackground">@color/colorPrimaryDark</item>
         <item name="diab_editorFormIcon">@color/colorAccent</item>
         <item name="diab_importantBackground">@color/colorAccentDark</item>
         <item name="diab_importantForeground">@android:color/white</item>
-        <item name="diab_itemBackground">@color/item_circle_bg</item>
+        <item name="diab_itemBackground">@color/listItem_bg</item>
         <item name="diab_itemForeground">?android:textColorSecondary</item>
         <item name="diab_rippleColor">@color/colorAccentLight</item>
         <item name="diab_titleContrastColor">@color/colorAccent</item>

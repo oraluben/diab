@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <!--
   Copyright (c) 2019 Bevilacqua Joey
 
@@ -9,5 +8,6 @@
   -->
 <resources>
 
-    <color name="item_card_bg">#1F1F1F</color>
+    <color name="glucoseIndicator_high">#ffb84d</color>
+    <color name="glucoseIndicator_low">#fc6599</color>
 </resources>

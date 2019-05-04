@@ -26,10 +26,10 @@
         android:background="@drawable/bg_circle"
         android:contentDescription="@null"
         android:padding="8dp"
+        android:src="@drawable/ic_time_dinner"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_time_dinner" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
         android:layout_width="0dp"
@@ -69,5 +69,5 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:background="@color/glucose_indicator_high" />
+        tools:background="@color/glucoseIndicator_high" />
 </androidx.constraintlayout.widget.ConstraintLayout>

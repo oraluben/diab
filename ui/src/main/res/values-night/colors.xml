@@ -6,19 +6,23 @@
   The text of the license can be found in the LICENSE file
   or at https://www.gnu.org/licenses/gpl.txt
   -->
-<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingDefaultResource">
+<resources>
 
-    <color name="colorPrimary">#212121</color>
-    <color name="colorPrimaryDark">#000000</color>
+    <color name="colorPrimary">#121212</color>
+    <color name="colorPrimaryDark">#121212</color>
+    <color name="colorAccent">#32aaff</color>
+    <color name="colorAccentDark">#008cff</color>
 
     <color name="textPrimary">#deFFFFFF</color>
     <color name="textSecondary">#99FFFFFF</color>
 
-    <color name="background_activity">@android:color/black</color>
-
     <color name="navigationBar_color">@android:color/black</color>
     <color name="navigationBar_divider">@android:color/black</color>
 
-    <color name="item_circle_bg">#333333</color>
-    <color name="item_header_divider">#22FFFFFF</color>
+    <color name="elevatedSurface">#232323</color>
+
+    <color name="contentDivider">#22FFFFFF</color>
+
+    <color name="listItem_fg">?android:textColorPrimary</color>
+    <color name="listItem_bg">#1cffffff</color>
 </resources>

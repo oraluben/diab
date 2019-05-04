@@ -17,7 +17,7 @@
     android:focusable="true"
     android:foreground="?android:attr/selectableItemBackground"
     android:stateListAnimator="@animator/lift_on_touch"
-    app:cardBackgroundColor="@color/item_card_bg"
+    app:cardBackgroundColor="@color/elevatedSurface"
     app:cardCornerRadius="@dimen/app_radius"
     app:cardElevation="2dp"
     app:contentPadding="8dp">

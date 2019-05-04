@@ -186,7 +186,7 @@ class OverviewFragment : BaseFragment() {
             return null
         }
 
-        val color = ContextCompat.getColor(context, R.color.graph_overview_today)
+        val color = ContextCompat.getColor(context, R.color.overviewGraph_today)
         val textColor = ContextCompat.getColor(context, R.color.textPrimary)
 
         return LineDataSet(entries, "").apply {
@@ -208,7 +208,7 @@ class OverviewFragment : BaseFragment() {
             return null
         }
 
-        val color = ContextCompat.getColor(context, R.color.graph_overview_average)
+        val color = ContextCompat.getColor(context, R.color.overviewGraph_average)
 
         return LineDataSet(entries, "").apply {
             this.color = color

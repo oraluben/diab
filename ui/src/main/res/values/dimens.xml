@@ -7,5 +7,5 @@
   or at https://www.gnu.org/licenses/gpl.txt
   -->
 <resources>
-    <dimen name="app_radius">4dp</dimen>
+    <dimen name="app_radius">8dp</dimen>
 </resources>

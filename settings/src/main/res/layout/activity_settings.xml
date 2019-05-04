@@ -13,8 +13,7 @@
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="?actionBarSize"
-        android:elevation="0dp" />
+        android:layout_height="?actionBarSize" />
 
     <fragment
         android:name="it.diab.settings.ui.SettingsFragment"

@@ -35,7 +35,7 @@
         android:layout_height="1dp"
         android:layout_gravity="bottom"
         android:layout_marginBottom="@dimen/main_bottom_nav_height"
-        android:foreground="@color/item_header_divider" />
+        android:foreground="@color/contentDivider" />
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabs"

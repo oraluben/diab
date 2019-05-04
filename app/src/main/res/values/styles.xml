@@ -6,10 +6,12 @@
   The text of the license can be found in the LICENSE file
   or at https://www.gnu.org/licenses/gpl.txt
   -->
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Main -->
-    <style name="AppTheme.Main" parent="AppTheme.NoActionBar" />
+    <style name="AppTheme.Main" parent="AppTheme.NoActionBar">
+        <item name="android:navigationBarDividerColor" tools:targetApi="27">@color/navigationBar_color</item>
+    </style>
 
     <style name="AppTheme.Main.TabText" parent="@style/TextAppearance.AppCompat.Button">
         <item name="android:textAllCaps">false</item>

@@ -40,8 +40,8 @@ class GlucoseListAdapter(
     val openGlucose: LiveData<Event<Long>> = _openGlucose
 
     // Store the these for better performance
-    private val lowIndicator by lazy { buildIndicator(R.color.glucose_indicator_low) }
-    private val highIndicator by lazy { buildIndicator(R.color.glucose_indicator_high) }
+    private val lowIndicator by lazy { buildIndicator(R.color.glucoseIndicator_low) }
+    private val highIndicator by lazy { buildIndicator(R.color.glucoseIndicator_high) }
     private val highThreshold by lazy { PreferencesUtil.getGlucoseHighThreshold(context) }
     private val lowThreshold by lazy { PreferencesUtil.getGlucoseLowThreshold(context) }
 
