@@ -10,7 +10,6 @@
     package="it.diab.export">
 
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <permission
         android:name="it.diab.export.ALLOW_EXPORT"

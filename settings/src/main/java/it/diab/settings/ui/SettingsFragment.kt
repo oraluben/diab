@@ -8,32 +8,29 @@
  */
 package it.diab.settings.ui
 
-import android.Manifest
 import android.app.Activity
-import android.app.KeyguardManager
-import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
-import android.content.pm.PackageManager
-import android.os.Build
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
-import androidx.core.content.ContextCompat
 import androidx.preference.Preference
 import androidx.preference.PreferenceCategory
 import androidx.preference.PreferenceFragmentCompat
-import it.diab.data.plugin.PluginManager
 import it.diab.core.util.extensions.format
 import it.diab.core.util.extensions.get
-import it.diab.export.ExportService
+import it.diab.data.plugin.PluginManager
+import it.diab.export.utils.SecureFilePickerHelper
 import it.diab.settings.R
 import it.diab.settings.widgets.ExportPreference
 import java.util.Date
 
-class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedPreferenceChangeListener {
+class SettingsFragment : PreferenceFragmentCompat(),
+    SharedPreferences.OnSharedPreferenceChangeListener,
+    SecureFilePickerHelper.Callbacks {
     private lateinit var prefs: SharedPreferences
     private lateinit var pluginManager: PluginManager
+    private lateinit var secureFilePicker: SecureFilePickerHelper
 
     private lateinit var pluginManagerPref: Preference
     private lateinit var pluginRemoverPref: Preference
@@ -43,17 +40,18 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
 
         prefs = preferenceManager.sharedPreferences
         pluginManager = PluginManager(requireContext())
+        secureFilePicker = SecureFilePickerHelper(this, this)
 
         val exportPluginData = findPreference("pref_export_ml_data") as ExportPreference
-        exportPluginData.bind(object : ExportPreference.ExportPreferenceCallbacks {
+        exportPluginData.bind(object : ExportPreference.Callbacks {
             override fun getActivity() = activity
-            override fun requestExport() { requestExport(REQUEST_ML_EXPORT) }
+            override fun startExport() { secureFilePicker.authenticate(SecureFilePickerHelper.ML) }
         })
 
         val exportXlsx = findPreference("pref_export_xlsx") as ExportPreference
-        exportXlsx.bind(object : ExportPreference.ExportPreferenceCallbacks {
+        exportXlsx.bind(object : ExportPreference.Callbacks {
             override fun getActivity() = activity
-            override fun requestExport() { requestExport(REQUEST_XLSX_EXPORT) }
+            override fun startExport() { secureFilePicker.authenticate(SecureFilePickerHelper.XLSX) }
         })
 
         val pluginCategory = findPreference("plugin_category") as PreferenceCategory
@@ -68,13 +66,12 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        when (requestCode) {
-            REQUEST_ML_EXPORT -> handleExportResult(REQUEST_ML_EXPORT)
-            REQUEST_ML_AUTH -> handleUserAuthResult(REQUEST_ML_EXPORT, resultCode)
-            REQUEST_XLSX_EXPORT -> handleExportResult(REQUEST_XLSX_EXPORT)
-            REQUEST_XLSX_AUTH -> handleUserAuthResult(REQUEST_XLSX_EXPORT, resultCode)
-            REQUEST_SELECT_PLUGIN -> onPluginSelected(resultCode, data)
+        if (requestCode == REQUEST_SELECT_PLUGIN) {
+            onPluginSelected(resultCode, data)
+            return
         }
+
+        secureFilePicker.onResult(requestCode, resultCode, data)
     }
 
     override fun onDestroy() {
@@ -89,81 +86,13 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
         }
     }
 
-    private fun requestExport(requestCode: Int) {
-        val activity = activity ?: return
-
-        if (!hasStorageAccess(activity)) {
-            requestStorageAccess(requestCode)
+    override fun onAuthentication(category: Int, result: SecureFilePickerHelper.AuthResult) {
+        if (result == SecureFilePickerHelper.AuthResult.FAILURE) {
+            Toast.makeText(context, R.string.export_failed_auth, Toast.LENGTH_LONG).show()
             return
         }
 
-        val keyguardManager = activity.getSystemService(KeyguardManager::class.java)
-        val title = getString(R.string.export_ask_auth_title)
-        val message = getString(R.string.export_ask_auth_message)
-        val requestIntent = keyguardManager.createConfirmDeviceCredentialIntent(title, message)
-
-        val authCode = when (requestCode) {
-            REQUEST_ML_EXPORT -> REQUEST_ML_AUTH
-            REQUEST_XLSX_EXPORT -> REQUEST_XLSX_AUTH
-            else -> -1
-        }
-
-        if (requestIntent != null) {
-            startActivityForResult(requestIntent, authCode)
-            return
-        }
-
-        // No secure lock screen is set
-        startExport(requestCode)
-    }
-
-    private fun startExport(requestCode: Int) {
-        val activity = activity ?: return
-
-        val action = when (requestCode) {
-            REQUEST_ML_EXPORT -> ExportService.TARGET_CSV
-            REQUEST_XLSX_EXPORT -> ExportService.TARGET_XLSX
-            else -> -1
-        }
-
-        val intent = Intent(activity, ExportService::class.java)
-        intent.putExtra(ExportService.EXPORT_TARGET, action)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            activity.startForegroundService(intent)
-        } else {
-            activity.startService(intent)
-        }
-    }
-
-    private fun handleExportResult(requestCode: Int) {
-        val activity = activity ?: return
-
-        if (hasStorageAccess(activity)) {
-            requestExport(requestCode)
-            return
-        }
-
-        val title = when (requestCode) {
-            REQUEST_ML_AUTH -> R.string.export_ask_ml_title
-            REQUEST_XLSX_AUTH -> R.string.export_ask_xlsx_title
-            else -> 0
-        }
-
-        AlertDialog.Builder(activity)
-            .setTitle(title)
-            .setMessage(R.string.export_ask_permission_message)
-            .setPositiveButton(R.string.export_ask_permission_positive) { _, _ -> startExport(requestCode) }
-            .setNegativeButton(android.R.string.cancel, null)
-            .show()
-    }
-
-    private fun handleUserAuthResult(requestCode: Int, resultCode: Int) {
-        if (resultCode == Activity.RESULT_OK) {
-            startExport(requestCode)
-            return
-        }
-
-        Toast.makeText(context, R.string.export_failed_auth, Toast.LENGTH_LONG).show()
+        secureFilePicker.pickDestination(category)
     }
 
     private fun updatePluginPrefs() {
@@ -213,20 +142,7 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
         return true
     }
 
-    private fun requestStorageAccess(requestCode: Int) {
-        requestPermissions(arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), requestCode)
-    }
-
-    private fun hasStorageAccess(context: Context) = ContextCompat.checkSelfPermission(
-        context,
-        Manifest.permission.WRITE_EXTERNAL_STORAGE
-    ) == PackageManager.PERMISSION_GRANTED
-
     companion object {
-        private const val REQUEST_ML_EXPORT = 391
-        private const val REQUEST_ML_AUTH = 392
         private const val REQUEST_SELECT_PLUGIN = 393
-        private const val REQUEST_XLSX_EXPORT = 394
-        private const val REQUEST_XLSX_AUTH = 395
     }
 }

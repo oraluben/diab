@@ -16,7 +16,7 @@ import androidx.preference.DialogPreference
 import it.diab.settings.R
 
 class ExportPreference : DialogPreference {
-    private lateinit var callbacks: ExportPreferenceCallbacks
+    private lateinit var callbacks: Callbacks
 
     @Suppress("unused")
     constructor(context: Context, attrs: AttributeSet) : super(context, attrs)
@@ -33,7 +33,7 @@ class ExportPreference : DialogPreference {
         showPromptDialog()
     }
 
-    fun bind(callbacks: ExportPreferenceCallbacks) {
+    fun bind(callbacks: Callbacks) {
         this.callbacks = callbacks
     }
 
@@ -44,14 +44,14 @@ class ExportPreference : DialogPreference {
             .setTitle(dialogTitle)
             .setMessage(dialogMessage)
             .setPositiveButton(R.string.export_ask_positive) { _, _ ->
-                callbacks.requestExport()
+                callbacks.startExport()
             }
             .setNegativeButton(android.R.string.cancel, null)
             .show()
         return true
     }
 
-    interface ExportPreferenceCallbacks {
+    interface Callbacks {
 
         /**
          * Get an activity in which display dialogs
@@ -61,6 +61,6 @@ class ExportPreference : DialogPreference {
         /**
          * Export has been confirmed, proceed
          */
-        fun requestExport()
+        fun startExport()
     }
 }
