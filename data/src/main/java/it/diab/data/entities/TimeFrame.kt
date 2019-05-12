@@ -75,6 +75,15 @@ enum class TimeFrame {
         override val string = R.string.time_night
         override val reprHour = 22
         override fun toInt() = 5
+    },
+
+    UNUSED {
+        @DrawableRes
+        override val icon = R.drawable.ic_time_extra
+        @StringRes
+        override val string = R.string.time_unused
+        override val reprHour = -1
+        override fun toInt() = 6
     };
 
     abstract val icon: Int

@@ -15,4 +15,5 @@
     <string name="time_afternoon">Pomeriggio</string>
     <string name="time_dinner">Cena</string>
     <string name="time_night">Notte</string>
+    <string name="time_unused">Non in uso</string>
 </resources>

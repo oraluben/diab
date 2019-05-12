@@ -17,5 +17,6 @@ fun Int.toTimeFrame() = when (this) {
     3 -> TimeFrame.AFTERNOON
     4 -> TimeFrame.DINNER
     5 -> TimeFrame.NIGHT
+    6 -> TimeFrame.UNUSED
     else -> TimeFrame.EXTRA
 }
