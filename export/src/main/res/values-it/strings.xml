@@ -15,8 +15,6 @@
     <string name="export_ask_xlsx_summary">Crea un foglio di calcolo elettronico per consultare facilmente i tuoi dati sul PC</string>
     <string name="export_ask_xlsx_message">Stai per esportare i dati glicemici in un foglio di calcolo elettronico.\nQuesti dati potrebbero essere letti da chiunque abbia accesso alla memoria interna di questo dispositivo.\nDesiderate procedere?</string>
     <string name="export_ask_positive">Esporta</string>
-    <string name="export_ask_permission_message">L\'accesso alla memoria interna \u00E8 necessario per esportare i dati. Per favore concedilo.</string>
-    <string name="export_ask_permission_positive">Chiedi di nuovo</string>
     <string name="export_ask_auth_title">Diab ∙ Esportazione</string>
     <string name="export_ask_auth_message">Autenticati per poter esportare i tuoi dati</string>
     <string name="export_failed_auth">Autenticazione fallita, esportazione dati annullata</string>

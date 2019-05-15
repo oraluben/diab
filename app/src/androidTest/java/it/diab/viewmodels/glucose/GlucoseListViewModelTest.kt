@@ -12,17 +12,13 @@ import android.content.Context
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.test.core.app.ApplicationProvider
 import it.diab.data.AppDatabase
+import it.diab.data.extensions.insulin
 import it.diab.data.repositories.GlucoseRepository
 import it.diab.data.repositories.InsulinRepository
-import it.diab.data.extensions.insulin
-import it.diab.util.extensions.get
-import it.diab.util.extensions.getWeekDay
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import java.text.SimpleDateFormat
-import java.util.Date
 
 class GlucoseListViewModelTest {
     private lateinit var viewModel: GlucoseListViewModel
@@ -44,7 +40,6 @@ class GlucoseListViewModelTest {
             InsulinRepository.getInstance(context)
         ).apply {
             runPrepare()
-            setDateStrings(TODAY, YESTERDAY, LAST_X)
         }
     }
 
@@ -53,21 +48,6 @@ class GlucoseListViewModelTest {
         val test = TEST_DATA[0]
 
         assertEquals(test, viewModel.getInsulin(test.uid))
-    }
-
-    @Test
-    fun setHeader() {
-        val a = Date()
-        val b = Date()[-1]
-        val c = Date()[-5]
-        val d = Date()[-10]
-
-        val format = SimpleDateFormat("yyyy-MM-dd")
-
-        assertEquals(TODAY, viewModel.runSetHeader(a, format))
-        assertEquals(YESTERDAY, viewModel.runSetHeader(b, format))
-        assertEquals(LAST_X.format(c.getWeekDay()), viewModel.runSetHeader(c, format))
-        assertEquals(format.format(d), viewModel.runSetHeader(d, format))
     }
 
     companion object {
@@ -81,9 +61,5 @@ class GlucoseListViewModelTest {
                 name = "Oof"
             }
         )
-
-        private const val TODAY = "today"
-        private const val YESTERDAY = "yesterday"
-        private const val LAST_X = "last %1\$s"
     }
 }

@@ -15,8 +15,6 @@
     <string name="export_ask_xlsx_summary">Create an electronic sheet file to easily read your data on a PC</string>
     <string name="export_ask_xlsx_message">You\'re about to export the glucose data as an electronic sheet file.\nThis data may become readable by anyone who has access to the internal memory of this device.\nDo you want to proceed?</string>
     <string name="export_ask_positive">Export</string>
-    <string name="export_ask_permission_message">Storage access is needed to export the data to the internal memory. Please grant it.</string>
-    <string name="export_ask_permission_positive">Ask again</string>
     <string name="export_ask_auth_title">Diab ∙ Export</string>
     <string name="export_ask_auth_message">Authenticate to export your data</string>
     <string name="export_failed_auth">Auth failed, data export has been canceled</string>

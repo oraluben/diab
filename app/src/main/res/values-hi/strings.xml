@@ -19,10 +19,6 @@
     <string name="overview_last_fallback">नमस्ते</string>
     <string name="overview_last_desc_fallback">नीले बटन को दबाकर एक मान जोड़ें</string>
 
-    <!-- Glucose -->
-    <string name="glucose_header_last">अंतिम %1$s</string>
-    <string name="glucose_header_month">dd MMM</string>
-
     <!-- Insulin -->
     <string name="insulin_add_item">जोड़े</string>
 

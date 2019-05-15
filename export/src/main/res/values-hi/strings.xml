@@ -15,8 +15,6 @@
     <string name="export_ask_xlsx_summary">PC पर आसानी से अपने डेटा को पढ़ने के लिए एक इलेक्ट्रॉनिक शीट फ़ाइल बनाएं</string>
     <string name="export_ask_xlsx_message">आप इलेक्ट्रॉनिक शीट फ़ाइल के रूप में ग्लूकोज डेटा निर्यात करने वाले हैं। यह डेटा किसी के द्वारा पठनीय हो सकता है, जिसके पास इस फोन की आंतरिक मेमोरी तक पहुँच हो। क्या आप आगे बढ़ना चाहते हैं?</string>
     <string name="export_ask_positive">निर्यात</string>
-    <string name="export_ask_permission_message">डाटा को इंटरनल मेमोरी में एक्सपोर्ट करने के लिए स्टोरेज एक्सेस की जरूरत होती है। कृपया इसे अनुदान दें।</string>
-    <string name="export_ask_permission_positive">फिर से पुछो</string>
     <string name="export_ask_auth_title">Diab ∙ निर्यात</string>
     <string name="export_ask_auth_message">अपने डेटा को निर्यात करने के लिए प्रमाणीकरण</string>
     <string name="export_failed_auth">प्रामाणिक विफल रहा, डेटा निर्यात रद्द कर दिया गया है</string>

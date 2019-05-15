@@ -19,10 +19,6 @@
     <string name="overview_last_fallback">Hello</string>
     <string name="overview_last_desc_fallback">Add a value by touching the blue button</string>
 
-    <!-- Glucose -->
-    <string name="glucose_header_last">Last %1$s</string>
-    <string name="glucose_header_month">dd MMM</string>
-
     <!-- Insulin -->
     <string name="insulin_add_item">Add</string>
 

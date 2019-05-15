@@ -8,7 +8,6 @@
  */
 package it.diab.util.extensions
 
-import it.diab.core.util.extensions.format
 import it.diab.core.util.extensions.getCalendar
 import java.util.Calendar
 import java.util.Date
@@ -31,8 +30,6 @@ fun Date.getAsMinutes(): Float {
         get(Calendar.HOUR_OF_DAY) * 60f + get(Calendar.MINUTE)
     }
 }
-
-fun Date.getWeekDay(): String = format("EEEE")
 
 fun Date.diff(other: Date): Int {
     val a = getCalendar()
