@@ -26,17 +26,17 @@ interface InsulinDao {
     val all: DataSource.Factory<Int, Insulin>
 
     @Query("SELECT * FROM insulin")
-    fun getInsulins(): List<Insulin>
+    suspend fun getInsulins(): List<Insulin>
 
     @Query("SELECT * FROM insulin WHERE isBasal = 1")
-    fun getBasals(): List<Insulin>
+    suspend fun getBasals(): List<Insulin>
 
     @Query("SELECT * FROM insulin WHERE uid IN (:uids)")
-    fun getById(vararg uids: Long): List<Insulin>
+    suspend fun getById(vararg uids: Long): List<Insulin>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(vararg insulins: Insulin): Array<Long>
+    suspend fun insert(vararg insulins: Insulin): Array<Long>
 
     @Delete
-    fun delete(insulin: Insulin)
+    suspend fun delete(insulin: Insulin)
 }

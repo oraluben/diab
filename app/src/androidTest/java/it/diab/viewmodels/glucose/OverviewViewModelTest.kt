@@ -11,7 +11,6 @@ package it.diab.viewmodels.glucose
 import android.content.Context
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.test.core.app.ApplicationProvider
-import it.diab.data.AppDatabase
 import it.diab.data.entities.TimeFrame
 import it.diab.data.repositories.GlucoseRepository
 import it.diab.data.extensions.glucose
@@ -40,10 +39,12 @@ class OverviewViewModelTest {
 
     @Before
     fun setup() {
-        AppDatabase.TEST_MODE = true
-
         val context = ApplicationProvider.getApplicationContext<Context>()
-        viewModel = OverviewViewModel(GlucoseRepository.getInstance(context))
+
+        val repo = GlucoseRepository.getInstance(context).apply {
+            setDebugMode()
+        }
+        viewModel = OverviewViewModel(repo)
     }
 
     @Test

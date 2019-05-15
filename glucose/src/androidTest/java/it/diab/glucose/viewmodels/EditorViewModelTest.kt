@@ -11,7 +11,6 @@ package it.diab.glucose.viewmodels
 import android.content.Context
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.test.core.app.ApplicationProvider
-import it.diab.data.AppDatabase
 import it.diab.data.entities.Glucose
 import it.diab.data.entities.TimeFrame
 import it.diab.data.repositories.GlucoseRepository
@@ -30,7 +29,7 @@ import org.junit.Test
 
 class EditorViewModelTest {
 
-    private lateinit var db: AppDatabase
+    private lateinit var glucoseRepo: GlucoseRepository
     private lateinit var viewModel: EditorViewModel
     private lateinit var pluginManager: PluginManager
 
@@ -57,19 +56,27 @@ class EditorViewModelTest {
     }
 
     @Before
-    fun setup() {
-        AppDatabase.TEST_MODE = true
-
+    fun setup() = runBlocking {
         val context = ApplicationProvider.getApplicationContext<Context>()
-        db = AppDatabase.getInstance(context)
         viewModel = EditorViewModel(
             GlucoseRepository.getInstance(context),
             InsulinRepository.getInstance(context)
         )
         pluginManager = PluginManager(context)
 
-        db.glucose().insert(testGlucose)
-        db.insulin().insert(testInsulin, testBasal)
+        glucoseRepo = GlucoseRepository.getInstance(context).apply {
+            setDebugMode()
+            insert(testGlucose)
+        }
+
+        InsulinRepository.getInstance(context).apply {
+            setDebugMode()
+            insert(testInsulin)
+            insert(testBasal)
+        }
+
+        // setup is required to be "void"
+        Unit
     }
 
     @Test
@@ -85,7 +92,7 @@ class EditorViewModelTest {
     fun save() = runBlocking {
         viewModel.runSetGlucose(-1)
 
-        val initialSize = db.glucose().getInDateRange(0, System.currentTimeMillis()).size
+        val initialSize = glucoseRepo.getInDateRange(0, System.currentTimeMillis()).size
 
         viewModel.glucose.apply {
             value = 81
@@ -98,7 +105,7 @@ class EditorViewModelTest {
 
         delay(500)
 
-        val finalSize = db.glucose().getInDateRange(0, System.currentTimeMillis()).size
+        val finalSize = glucoseRepo.getInDateRange(0, System.currentTimeMillis()).size
         assertTrue(finalSize > initialSize)
     }
 

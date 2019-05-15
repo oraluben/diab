@@ -26,11 +26,11 @@ interface Hba1cDao {
     val all: LiveData<List<Hba1c>>
 
     @Query("SELECT * FROM hba1c ORDER BY date DESC")
-    fun getAllItems(): List<Hba1c>
+    suspend fun getAllItems(): List<Hba1c>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(vararg items: Hba1c)
+    suspend fun insert(vararg items: Hba1c)
 
     @Delete
-    fun delete(item: Hba1c)
+    suspend fun delete(item: Hba1c)
 }

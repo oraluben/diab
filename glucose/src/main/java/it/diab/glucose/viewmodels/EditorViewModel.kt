@@ -9,12 +9,12 @@
 package it.diab.glucose.viewmodels
 
 import androidx.annotation.VisibleForTesting
+import it.diab.core.viewmodels.ScopedViewModel
 import it.diab.data.entities.Glucose
 import it.diab.data.entities.Insulin
+import it.diab.data.plugin.PluginManager
 import it.diab.data.repositories.GlucoseRepository
 import it.diab.data.repositories.InsulinRepository
-import it.diab.data.plugin.PluginManager
-import it.diab.core.viewmodels.ScopedViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -99,7 +99,7 @@ class EditorViewModel internal constructor(
     }
 
     @VisibleForTesting
-    fun runSetGlucose(uid: Long) {
+    suspend fun runSetGlucose(uid: Long) {
         glucose = glucoseRepository.getById(uid)
     }
 

@@ -9,7 +9,6 @@
 package it.diab.data.repositories
 
 import android.content.Context
-import androidx.annotation.WorkerThread
 import it.diab.core.util.SingletonHolder
 import it.diab.data.AppDatabase
 import it.diab.data.dao.GlucoseDao
@@ -17,7 +16,7 @@ import it.diab.data.entities.Glucose
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.withContext
 
-class GlucoseRepository private constructor(private val dao: GlucoseDao) {
+class GlucoseRepository private constructor(private val dao: GlucoseDao) : BaseRepository() {
 
     val all = dao.all
 
@@ -25,19 +24,25 @@ class GlucoseRepository private constructor(private val dao: GlucoseDao) {
 
     val last = dao.last
 
-    @WorkerThread
-    fun getById(uid: Long) = dao.getById(uid).firstOrNull() ?: Glucose()
+    suspend fun getById(uid: Long) = withContext(IO) {
+        dao.getById(uid).firstOrNull() ?: Glucose()
+    }
 
-    @WorkerThread
-    fun getAllItems() = dao.getAllItems()
+    suspend fun getAllItems() = withContext(IO) {
+        dao.getAllItems()
+    }
 
-    @WorkerThread
-    fun getInDateRange(minTime: Long, maxTime: Long) =
+    suspend fun getInDateRange(minTime: Long, maxTime: Long) = withContext(IO) {
         dao.getInDateRange(minTime, maxTime)
+    }
 
-    suspend fun insert(glucose: Glucose) = withContext(IO) { dao.insert(glucose) }
+    suspend fun insert(glucose: Glucose) = withContext(IO) {
+        dao.insert(glucose)
+    }
 
-    suspend fun delete(glucose: Glucose) = withContext(IO) { dao.delete(glucose) }
+    suspend fun delete(glucose: Glucose) = withContext(IO) {
+        dao.delete(glucose)
+    }
 
     companion object : SingletonHolder<GlucoseRepository, Context>({
         GlucoseRepository(AppDatabase.getInstance(it).glucose())

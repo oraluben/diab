@@ -11,9 +11,9 @@ package it.diab.export.writer
 import android.os.Build
 import android.os.ParcelFileDescriptor
 import android.util.Log
-import androidx.annotation.WorkerThread
 import it.diab.core.util.extensions.forEachWithIndex
 import it.diab.core.util.extensions.format
+import it.diab.data.entities.Glucose
 import it.diab.data.repositories.GlucoseRepository
 import it.diab.data.repositories.InsulinRepository
 import it.diab.export.BuildConfig
@@ -65,8 +65,7 @@ class XlsxWriter(
         }
     }
 
-    @WorkerThread
-    private fun buildGlucoseSheet(
+    private suspend fun buildGlucoseSheet(
         sheet: Worksheet,
         glucoseRepository: GlucoseRepository,
         insulinRepository: InsulinRepository,
@@ -76,34 +75,13 @@ class XlsxWriter(
         sheet.style(0, headers.size - 1).bold()
 
         val list = glucoseRepository.getAllItems()
-        list.forEachWithIndex { i, glucose ->
-            sheet.apply {
-                val insulin = insulinRepository.getById(glucose.insulinId0)
-                val basal = insulinRepository.getById(glucose.insulinId1)
-                val row = i + 1
 
-                write(
-                    glucose.value to (row to 0),
-                    // Java 8's java.time.LocalDateTime is required for this
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) glucose.date to (row to 1)
-                    else glucose.date.format(DATE_FORMAT) to (row to 1),
-                    glucose.eatLevel to (row to 2)
-                )
-
-                if (insulin.name.isNotEmpty()) {
-                    write(
-                        insulin.name to (row to 3),
-                        glucose.insulinValue0 to (row to 4)
-                    )
-                }
-
-                if (basal.name.isNotEmpty()) {
-                    write(
-                        basal.name to (row to 5),
-                        glucose.insulinValue1 to (row to 6)
-                    )
-                }
-            }
+        // Kotlin goes mad if we write a suspend function inside a forEachIndexed code block
+        var i = 0
+        while (i < list.size) {
+            val glucose = list[i]
+            writeGlucoseRow(sheet, insulinRepository, glucose, i)
+            i++
         }
 
         sheet.setAlternateBackground(list.size, headers.size - 1)
@@ -117,8 +95,43 @@ class XlsxWriter(
         }
     }
 
-    @WorkerThread
-    private fun buildInsulinSheet(
+    private suspend fun writeGlucoseRow(
+        sheet: Worksheet,
+        insulinRepository: InsulinRepository,
+        glucose: Glucose,
+        position: Int
+    ) {
+        val insulin = insulinRepository.getById(glucose.insulinId0)
+        val basal = insulinRepository.getById(glucose.insulinId1)
+
+        sheet.apply {
+            val row = position + 1
+
+            write(
+                glucose.value to (row to 0),
+                // Java 8's java.time.LocalDateTime is required for this
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) glucose.date to (row to 1)
+                else glucose.date.format(DATE_FORMAT) to (row to 1),
+                glucose.eatLevel to (row to 2)
+            )
+
+            if (insulin.name.isNotEmpty()) {
+                write(
+                    insulin.name to (row to 3),
+                    glucose.insulinValue0 to (row to 4)
+                )
+            }
+
+            if (basal.name.isNotEmpty()) {
+                write(
+                    basal.name to (row to 5),
+                    glucose.insulinValue1 to (row to 6)
+                )
+            }
+        }
+    }
+
+    private suspend fun buildInsulinSheet(
         sheet: Worksheet,
         insulinRepository: InsulinRepository,
         headers: List<String>

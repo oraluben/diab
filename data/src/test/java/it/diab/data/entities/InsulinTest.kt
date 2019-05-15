@@ -45,7 +45,7 @@ class InsulinTest {
     }
 
     @Test
-    fun equals() {
+    fun comparison() {
         val a = insulin {
             uid = 1
             name = "test"

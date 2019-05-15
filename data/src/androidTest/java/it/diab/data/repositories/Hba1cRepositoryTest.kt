@@ -58,5 +58,5 @@ class Hba1cRepositoryTest {
         assertNotEquals(item.uid, repository.getById(item.uid))
     }
 
-    private fun Hba1cRepository.getById(uid: Long) = getAllItems().firstOrNull { it.uid == uid }
+    private suspend fun Hba1cRepository.getById(uid: Long) = getAllItems().firstOrNull { it.uid == uid }
 }

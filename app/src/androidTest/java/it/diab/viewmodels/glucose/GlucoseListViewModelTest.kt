@@ -11,10 +11,10 @@ package it.diab.viewmodels.glucose
 import android.content.Context
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.test.core.app.ApplicationProvider
-import it.diab.data.AppDatabase
 import it.diab.data.extensions.insulin
 import it.diab.data.repositories.GlucoseRepository
 import it.diab.data.repositories.InsulinRepository
+import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
@@ -27,13 +27,15 @@ class GlucoseListViewModelTest {
     val rule = InstantTaskExecutorRule()
 
     @Before
-    fun setup() {
-        AppDatabase.TEST_MODE = true
+    fun setup() = runBlocking {
         val context = ApplicationProvider.getApplicationContext<Context>()
 
         // Insert test data
-        AppDatabase.getInstance(context).insulin()
-            .insert(*TEST_DATA)
+        InsulinRepository.getInstance(context).apply {
+            setDebugMode()
+            insert(TEST_DATA[0])
+            insert(TEST_DATA[1])
+        }
 
         viewModel = GlucoseListViewModel(
             GlucoseRepository.getInstance(context),

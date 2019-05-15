@@ -26,7 +26,7 @@ class Hba1cTest {
     }
 
     @Test
-    fun equals() {
+    fun comparison() {
         val a = hba1c {
             uid = 1
             value = 10f

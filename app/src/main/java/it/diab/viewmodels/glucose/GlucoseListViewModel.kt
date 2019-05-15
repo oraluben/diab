@@ -36,7 +36,7 @@ class GlucoseListViewModel internal constructor(
     fun getInsulin(uid: Long) = insulins.firstOrNull { it.uid == uid } ?: Insulin()
 
     @VisibleForTesting
-    fun runPrepare() {
+    suspend fun runPrepare() {
         insulins = insulinRepository.getInsulins()
     }
 }

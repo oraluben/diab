@@ -25,7 +25,7 @@ class MlWriter(
     private val filterRange: IntRange
 ) {
 
-    fun export(): Boolean {
+    suspend fun export(): Boolean {
         val end = System.currentTimeMillis()
         val start = end - DAYS_TO_EXPORT
 
@@ -45,7 +45,7 @@ class MlWriter(
         }
     }
 
-    private fun exportTrain(
+    private suspend fun exportTrain(
         zipStream: ZipOutputStream,
         timeFrame: TimeFrame,
         start: Long,
@@ -68,7 +68,7 @@ class MlWriter(
         // DON'T CLOSE THE STREAM HERE
     }
 
-    private fun exportTest(
+    private suspend fun exportTest(
         zipStream: ZipOutputStream,
         targetTimeFrame: TimeFrame,
         nextTimeFrame: TimeFrame,

@@ -33,17 +33,17 @@ interface GlucoseDao {
     val last: LiveData<List<Glucose>>
 
     @Query("SELECT * FROM glucose WHERE uid IN (:uids)")
-    fun getById(vararg uids: Long): List<Glucose>
+    suspend fun getById(vararg uids: Long): List<Glucose>
 
     @Query("SELECT * FROM glucose ORDER BY date DESC")
-    fun getAllItems(): List<Glucose>
+    suspend fun getAllItems(): List<Glucose>
 
     @Query("SELECT * FROM glucose WHERE date >= :minTime AND date <= :maxTime ORDER BY date DESC")
-    fun getInDateRange(minTime: Long, maxTime: Long): List<Glucose>
+    suspend fun getInDateRange(minTime: Long, maxTime: Long): List<Glucose>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(vararg glucose: Glucose)
+    suspend fun insert(vararg glucose: Glucose)
 
     @Delete
-    fun delete(glucose: Glucose)
+    suspend fun delete(glucose: Glucose)
 }

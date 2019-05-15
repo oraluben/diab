@@ -36,7 +36,7 @@ class ExportService : Service() {
     private lateinit var outUri: Uri
 
     private val job = Job()
-    private val serviceScope = CoroutineScope(Dispatchers.IO + job)
+    private val serviceScope = CoroutineScope(Dispatchers.Default + job)
 
     override fun onCreate() {
         super.onCreate()

@@ -38,7 +38,7 @@ class EditorViewModel internal constructor(
     }
 
     @VisibleForTesting
-    fun runSetInsulin(uid: Long): Insulin {
+    suspend fun runSetInsulin(uid: Long): Insulin {
         return insulinRepository.getById(uid)
     }
 
