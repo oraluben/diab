@@ -9,18 +9,20 @@
 package it.diab.viewmodels.glucose
 
 import androidx.annotation.VisibleForTesting
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import androidx.paging.LivePagedListBuilder
-import it.diab.core.viewmodels.ScopedViewModel
 import it.diab.data.entities.Insulin
 import it.diab.data.repositories.GlucoseRepository
 import it.diab.data.repositories.InsulinRepository
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class GlucoseListViewModel internal constructor(
     glucoseRepository: GlucoseRepository,
     private val insulinRepository: InsulinRepository
-) : ScopedViewModel() {
+) : ViewModel() {
     val pagedList = LivePagedListBuilder(glucoseRepository.pagedList, 5).build()
     val liveList = glucoseRepository.all
 
@@ -29,14 +31,14 @@ class GlucoseListViewModel internal constructor(
     fun prepare(block: () -> Unit) {
         viewModelScope.launch {
             runPrepare()
-            launch(Dispatchers.Main) { block() }
+            block()
         }
     }
 
     fun getInsulin(uid: Long) = insulins.firstOrNull { it.uid == uid } ?: Insulin()
 
     @VisibleForTesting
-    suspend fun runPrepare() {
+    suspend fun runPrepare() = withContext(IO) {
         insulins = insulinRepository.getInsulins()
     }
 }

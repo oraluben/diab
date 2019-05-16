@@ -21,17 +21,17 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.transition.TransitionManager
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
-import it.diab.data.entities.Insulin
-import it.diab.data.repositories.GlucoseRepository
-import it.diab.data.repositories.InsulinRepository
 import it.diab.core.override.BaseFitHandler
 import it.diab.core.util.Activities
-import it.diab.data.plugin.PluginManager
 import it.diab.core.util.PreferencesUtil
 import it.diab.core.util.SystemUtil
-import it.diab.data.extensions.insulin
 import it.diab.core.util.extensions.setPrecomputedText
+import it.diab.data.entities.Insulin
 import it.diab.data.extensions.asTimeFrame
+import it.diab.data.extensions.insulin
+import it.diab.data.plugin.PluginManager
+import it.diab.data.repositories.GlucoseRepository
+import it.diab.data.repositories.InsulinRepository
 import it.diab.glucose.R
 import it.diab.glucose.suggestion.CheckAgainSuggestion
 import it.diab.glucose.suggestion.InsulinSuggestion
@@ -107,7 +107,7 @@ class EditorActivity : AppCompatActivity() {
     private fun setupCommon() {
         closeView.setOnClickListener { finish() }
         valueView.text = viewModel.glucose.value.toString()
-        timeView.setPrecomputedText(viewModel.glucose.date.getDetailedString(), viewModel.viewModelScope)
+        timeView.setPrecomputedText(viewModel.glucose.date.getDetailedString())
         fabView.setOnClickListener { onFabClick() }
         eatView.progress = viewModel.glucose.eatLevel
     }

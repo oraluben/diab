@@ -26,7 +26,6 @@ import it.diab.holders.GlucoseHolder
 import it.diab.holders.GlucoseHolderCallbacks
 import it.diab.util.UIUtils
 import it.diab.viewmodels.glucose.GlucoseListViewModel
-import kotlinx.coroutines.CoroutineScope
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -62,9 +61,8 @@ class GlucoseListAdapter(
         }
     }
 
-    override fun fetchHourText(date: Date, onFetch: (String, CoroutineScope) -> Unit) {
-        val text = hourFormat.format(date)
-        onFetch(text, viewModel.viewModelScope)
+    override fun fetchHourText(date: Date, onFetch: (String) -> Unit) {
+        onFetch(hourFormat.format(date))
     }
 
     override fun getIndicator(value: Int) = when {

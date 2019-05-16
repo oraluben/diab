@@ -42,8 +42,8 @@ class GlucoseHolder(
     private fun bindValue(glucose: Glucose) {
         val title = "${glucose.value} (%1\$s)"
 
-        callbacks.fetchHourText(glucose.date) { text, scope ->
-            titleView.setPrecomputedText(title.format(text), scope)
+        callbacks.fetchHourText(glucose.date) { text ->
+            titleView.setPrecomputedText(title.format(text))
         }
 
         val indicatorDrawable = callbacks.getIndicator(glucose.value)

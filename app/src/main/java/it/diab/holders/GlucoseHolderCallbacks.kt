@@ -9,7 +9,6 @@
 package it.diab.holders
 
 import android.graphics.drawable.Drawable
-import kotlinx.coroutines.CoroutineScope
 import java.util.Date
 
 interface GlucoseHolderCallbacks {
@@ -22,7 +21,7 @@ interface GlucoseHolderCallbacks {
      */
     fun fetchHourText(
         date: Date,
-        onFetch: (String, CoroutineScope) -> Unit
+        onFetch: (String) -> Unit
     )
 
     /**

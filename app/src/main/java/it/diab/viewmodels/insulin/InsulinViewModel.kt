@@ -8,13 +8,13 @@
  */
 package it.diab.viewmodels.insulin
 
+import androidx.lifecycle.ViewModel
 import androidx.paging.LivePagedListBuilder
 import it.diab.data.repositories.InsulinRepository
-import it.diab.core.viewmodels.ScopedViewModel
 
 class InsulinViewModel internal constructor(
     insulinRepository: InsulinRepository
-) : ScopedViewModel() {
+) : ViewModel() {
 
     val list = LivePagedListBuilder(insulinRepository.all, 5).build()
 }

@@ -10,25 +10,27 @@ package it.diab.viewmodels.overview
 
 import android.annotation.SuppressLint
 import androidx.annotation.VisibleForTesting
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.github.mikephil.charting.data.Entry
-import it.diab.data.entities.Glucose
-import it.diab.data.entities.TimeFrame
-import it.diab.data.repositories.GlucoseRepository
 import it.diab.core.override.BaseFitHandler
 import it.diab.core.util.DateUtils
+import it.diab.data.entities.Glucose
+import it.diab.data.entities.TimeFrame
 import it.diab.data.extensions.toTimeFrame
-import it.diab.core.viewmodels.ScopedViewModel
+import it.diab.data.repositories.GlucoseRepository
 import it.diab.util.extensions.getAsMinutes
 import it.diab.util.extensions.isToday
 import it.diab.util.extensions.isZeroOrNan
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Dispatchers.Default
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import kotlin.collections.set
 
 class OverviewViewModel internal constructor(
     private val glucoseRepository: GlucoseRepository
-) : ScopedViewModel() {
+) : ViewModel() {
 
     val list = glucoseRepository.all
     val last = glucoseRepository.last
@@ -46,15 +48,13 @@ class OverviewViewModel internal constructor(
             val data = glucoseRepository.getInDateRange(start, end)
             val result = runGetDataSets(data)
 
-            launch(Dispatchers.Main) {
-                block(result.first, result.second)
-            }
+            block(result.first, result.second)
         }
     }
 
     @SuppressLint("UseSparseArrays")
     @VisibleForTesting
-    suspend fun runGetDataSets(data: List<Glucose>): Pair<List<Entry>, List<Entry>> {
+    suspend fun runGetDataSets(data: List<Glucose>) = withContext(Default) {
         val averageDef = async {
             val avg = HashMap<Int, Float>()
 
@@ -84,6 +84,6 @@ class OverviewViewModel internal constructor(
         val today = todayDef.await()
         val average = averageDef.await()
 
-        return Pair(today, average)
+        Pair(today, average)
     }
 }

@@ -9,23 +9,24 @@
 package it.diab.insulin.viewmodels
 
 import androidx.annotation.VisibleForTesting
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import it.diab.data.entities.Insulin
 import it.diab.data.repositories.InsulinRepository
-import it.diab.core.viewmodels.ScopedViewModel
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class EditorViewModel internal constructor(
     private val insulinRepository: InsulinRepository
-) : ScopedViewModel() {
+) : ViewModel() {
 
     var insulin = Insulin()
 
     fun setInsulin(uid: Long, block: (Insulin) -> Unit) {
         viewModelScope.launch {
             insulin = runSetInsulin(uid)
-
-            launch(Dispatchers.Main) { block(insulin) }
+            block(insulin)
         }
     }
 
@@ -38,17 +39,17 @@ class EditorViewModel internal constructor(
     }
 
     @VisibleForTesting
-    suspend fun runSetInsulin(uid: Long): Insulin {
-        return insulinRepository.getById(uid)
+    suspend fun runSetInsulin(uid: Long) = withContext(IO) {
+        insulinRepository.getById(uid)
     }
 
     @VisibleForTesting
-    suspend fun runDelete() {
+    suspend fun runDelete() = withContext(IO) {
         insulinRepository.delete(insulin)
     }
 
     @VisibleForTesting
-    suspend fun runSave() {
+    suspend fun runSave() = withContext(IO) {
         insulinRepository.insert(insulin)
     }
 }

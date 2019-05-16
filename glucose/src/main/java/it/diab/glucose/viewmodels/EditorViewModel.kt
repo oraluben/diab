@@ -9,7 +9,8 @@
 package it.diab.glucose.viewmodels
 
 import androidx.annotation.VisibleForTesting
-import it.diab.core.viewmodels.ScopedViewModel
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import it.diab.data.entities.Glucose
 import it.diab.data.entities.Insulin
 import it.diab.data.plugin.PluginManager
@@ -17,14 +18,16 @@ import it.diab.data.repositories.GlucoseRepository
 import it.diab.data.repositories.InsulinRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class EditorViewModel internal constructor(
     private val glucoseRepository: GlucoseRepository,
     private val insulinRepository: InsulinRepository
-) : ScopedViewModel() {
+) : ViewModel() {
     var glucose = Glucose()
         private set
 
@@ -39,14 +42,14 @@ class EditorViewModel internal constructor(
     fun prepare(pManager: PluginManager, block: () -> Unit) {
         viewModelScope.launch {
             runPrepare(this, pManager)
-            GlobalScope.launch(Dispatchers.Main) { block() }
+            block()
         }
     }
 
     fun setGlucose(uid: Long, block: () -> Unit) {
         viewModelScope.launch {
             runSetGlucose(uid)
-            GlobalScope.launch(Dispatchers.Main) { block() }
+            block()
         }
     }
 
@@ -90,8 +93,8 @@ class EditorViewModel internal constructor(
 
     @VisibleForTesting
     suspend fun runPrepare(scope: CoroutineScope, pManager: PluginManager) {
-        val defAll = scope.async { insulinRepository.getInsulins() }
-        val defBasal = scope.async { insulinRepository.getBasals() }
+        val defAll = scope.async(IO) { insulinRepository.getInsulins() }
+        val defBasal = scope.async(IO) { insulinRepository.getBasals() }
 
         pluginManager = pManager
         insulins = defAll.await()
@@ -99,17 +102,17 @@ class EditorViewModel internal constructor(
     }
 
     @VisibleForTesting
-    suspend fun runSetGlucose(uid: Long) {
+    suspend fun runSetGlucose(uid: Long) = withContext(IO) {
         glucose = glucoseRepository.getById(uid)
     }
 
     @VisibleForTesting
-    suspend fun runSave() {
+    suspend fun runSave() = withContext(IO) {
         glucoseRepository.insert(glucose)
     }
 
     @VisibleForTesting
-    suspend fun runApplySuggestion(value: Float, insulin: Insulin) {
+    suspend fun runApplySuggestion(value: Float, insulin: Insulin) = withContext(IO) {
         glucose.insulinId0 = insulin.uid
         glucose.insulinValue0 = value
         glucoseRepository.insert(glucose)
