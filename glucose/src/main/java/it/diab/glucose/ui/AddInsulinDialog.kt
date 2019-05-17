@@ -19,10 +19,10 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.button.MaterialButton
 import it.diab.data.entities.Glucose
 import it.diab.data.entities.Insulin
-import it.diab.data.extensions.asTimeFrame
-import it.diab.ui.util.UIUtils
 import it.diab.glucose.R
+import it.diab.glucose.util.InsulinSelector
 import it.diab.glucose.util.VibrationUtil
+import it.diab.ui.util.UIUtils
 
 class AddInsulinDialog(
     private val activity: Activity,
@@ -53,32 +53,28 @@ class AddInsulinDialog(
 
     fun setInsulins(list: List<Insulin>) {
         insulins = list.toTypedArray()
-        val names = Array(list.size) { "" }
 
-        val now = glucose.date.asTimeFrame()
-
-        var spinnerPosition = -1
-        val currentId = if (isBasal) glucose.insulinId1 else glucose.insulinId0
         val currentValue = if (isBasal) glucose.insulinValue1 else glucose.insulinValue0
-
         if (currentValue != 0f) {
             valueEditText.setText(currentValue.toString())
         }
 
-        for (i in insulins.indices) {
-            names[i] = "${insulins[i].name} (${activity.getString(insulins[i].timeFrame.string)})"
-
-            if (spinnerPosition == -1 && (insulins[i].uid == currentId ||
-                    insulins[i].timeFrame === now)
-            ) {
-                spinnerPosition = i
-            }
+        val names = Array(list.size) { i ->
+            "${insulins[i].name} (${activity.getString(insulins[i].timeFrame.string)})"
         }
 
         nameSpinner.adapter = ArrayAdapter<String>(
             activity,
             androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, names
         )
+
+        val spinnerPosition = InsulinSelector(glucose.timeFrame).run {
+            if (isBasal) {
+                suggestBasal(insulins, glucose.insulinId1)
+            } else {
+                suggestInsulin(insulins, glucose.insulinId0)
+            }
+        }
 
         nameSpinner.setSelection(if (spinnerPosition == -1) 0 else spinnerPosition)
     }

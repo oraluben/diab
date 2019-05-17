@@ -240,7 +240,7 @@ class EditorActivity : AppCompatActivity() {
 
     private fun onInsulinClick(isBasal: Boolean) {
         AddInsulinDialog(this, viewModel.glucose, isBasal).apply {
-            setInsulins(viewModel.insulins.filter { it.isBasal == isBasal })
+            setInsulins(viewModel.insulins)
         }.show(
             { insulin, value -> onInsulinApply(insulin, value, isBasal) },
             { onInsulinApply(insulin { uid = -1 }, 0f, isBasal) }
