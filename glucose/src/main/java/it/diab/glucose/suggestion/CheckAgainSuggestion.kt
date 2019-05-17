@@ -28,6 +28,8 @@ class CheckAgainSuggestion(
         !suggestionsTimeFrames.contains(targetTimeFrame)
     }
 
+    override val icon = R.drawable.ic_suggestion_remind
+
     override fun validate(value: Int) = value <= lowThreshold
 
     override fun getFailMessage(value: Int, res: Resources?): String? = null

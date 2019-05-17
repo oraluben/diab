@@ -29,6 +29,8 @@ class InsulinSuggestion(
         allowedTimeFrames.contains(glucose.timeFrame) && glucose.insulinId0 == -1L
     }
 
+    override val icon = R.drawable.ic_suggestion_ml
+
     override fun validate(value: Float) = value >= 0
 
     override fun getFailMessage(value: Float, res: Resources?): String? {

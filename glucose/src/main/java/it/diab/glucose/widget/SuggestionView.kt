@@ -53,6 +53,7 @@ class SuggestionView : LinearLayout {
             return false
         }
 
+        textView.setCompoundDrawablesWithIntrinsicBounds(config.icon, 0, 0, 0)
         if (config.shouldAnimate) {
             showLoad()
         }

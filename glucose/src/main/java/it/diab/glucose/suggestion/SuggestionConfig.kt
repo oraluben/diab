@@ -13,4 +13,6 @@ interface SuggestionConfig {
     val shouldAnimate: Boolean
 
     val isValid: Boolean
+
+    val icon: Int
 }
