@@ -8,6 +8,7 @@
   -->
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:minWidth="288dp"
@@ -43,10 +44,12 @@
         android:layout_height="48dp"
         android:layout_marginStart="16dp"
         android:hint="@string/insulin_editor_name"
-        android:maxLines="1"
+        android:importantForAutofill="no"
+        android:singleLine="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/insulin_edit_icon_name"
-        app:layout_constraintTop_toTopOf="@id/insulin_edit_icon_name" />
+        app:layout_constraintTop_toTopOf="@id/insulin_edit_icon_name"
+        tools:targetApi="26" />
 
     <ImageView
         android:id="@+id/insulin_edit_icon_time"
