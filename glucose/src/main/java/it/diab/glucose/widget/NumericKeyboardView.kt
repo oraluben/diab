@@ -9,7 +9,10 @@
 package it.diab.glucose.widget
 
 import android.content.Context
+import android.text.Spannable
+import android.text.SpannableStringBuilder
 import android.text.TextUtils
+import android.text.style.ImageSpan
 import android.util.AttributeSet
 import android.view.View
 import android.widget.LinearLayout
@@ -30,7 +33,7 @@ class NumericKeyboardView : LinearLayout {
     private val btn7: View
     private val btn8: View
     private val btn9: View
-    private val btnDel: View
+    private val btnDel: TextView
 
     private lateinit var inputView: TextView
     private var onTextChanged: (Int) -> Unit = {}
@@ -80,11 +83,20 @@ class NumericKeyboardView : LinearLayout {
         btn8.setOnClickListener { input(8) }
         btn9.setOnClickListener { input(9) }
 
-        btnDel.setOnClickListener { del() }
-        btnDel.setOnLongClickListener {
-            inputView.text = "0"
-            VibrationUtil.vibrateForImportantClick(it)
-            true
+        val delSpan = SpannableStringBuilder().apply {
+            append(" ")
+            setSpan(ImageSpan(context, R.drawable.ic_backspace), 0, 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+        }
+
+        btnDel.apply {
+            setText(delSpan, TextView.BufferType.SPANNABLE)
+
+            setOnClickListener { del() }
+            setOnLongClickListener {
+                inputView.text = "0"
+                VibrationUtil.vibrateForImportantClick(it)
+                true
+            }
         }
     }
 
