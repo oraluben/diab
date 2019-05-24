@@ -1,0 +1,17 @@
+<b>Diab</b> is a smart opensource application that helps you managing your diabetes by
+keeping track of your glucose values and insulin injections.
+
+<ul>
+  <li>Save records of glucose and insulin dosages</li>
+  <li>Smart insulin suggestions through plugins</li>
+  <li>Export records as Excel file</li>
+  <li>Reminders to check in case of hypoglycemia</li>
+  <li>Dark mode</li>
+</ul>
+
+<b>Insulin plugin</b>: using the data registered inside the app it's possible to generate a
+customized plugin that once applied to the app will provide smart insights
+for insulin dosages based on real-time context.
+
+Information on how to use this feature can be found on the 
+<a href="https://github.com/bvlj/diab">project's repository</a>.

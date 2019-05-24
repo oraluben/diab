@@ -1,15 +1,20 @@
-[![Gitlab Pipeline](https://gitlab.com/bvlj/diab/badges/staging/build.svg)](https://gitlab.com/bvlj/diab/pipelines)
-[![CircleCI](https://circleci.com/gh/bvlj/diab/tree/staging.svg?style=svg)](https://circleci.com/gh/bvlj/diab/tree/staging)
-[![Maintainability](https://api.codeclimate.com/v1/badges/017008168f8e5910c7c2/maintainability)](https://codeclimate.com/github/bvlj/diab/maintainability)
-[![ktlint](https://img.shields.io/badge/code%20style-%E2%9D%A4-FF4081.svg)](https://ktlint.github.io/)
+<h1 align="center">
+<a href="https://bvlj.github.io/projects/diab.html">
+  <img src="fastlane/metadata/android/en-US/images/featureGraphic.png"/>
+</a>
+</h1>
 
-Diab
-=====
+<p align="center">
+<a href="https://gitlab.com/bvlj/diab/pipelines"><img src="https://gitlab.com/bvlj/diab/badges/staging/build.svg" alt="Gitlab Pipeline"></a>
+<a href="https://circleci.com/gh/bvlj/diab/tree/staging"><img src="https://circleci.com/gh/bvlj/diab/tree/staging.svg?style=svg" alt="CircleCI"></a>
+<a href="https://codeclimate.com/github/bvlj/diab/maintainability"><img src="https://api.codeclimate.com/v1/badges/017008168f8e5910c7c2/maintainability" alt="Maintainability"></a>
+<a href="https://ktlint.github.io/"><img src="https://img.shields.io/badge/code%20style-%E2%9D%A4-FF4081.svg" alt="ktlint"></a>
+</p>
 
-![hero](docs/assets/hero.png)
-
+<p align="center">
 **Diab** is a smart opensource application that helps you managing your diabetes by
 keeping track of your glucose values and insulin injections.
+</p>
 
 [<img src="https://f-droid.org/badge/get-it-on.png" alt="Get it on F-Droid" height="80">](https://f-droid.org/app/it.diab)
 
@@ -25,6 +30,7 @@ the data.
 * Save records of glucose and insulin dosages
 * Insulin suggestions plugin
 * Export records as Excel file
+* Reminder for checking again in case of hypoglycemia
 * [optional] Google Fit integration
 
 For upcoming features, see the [bug tracker](https://github.com/bvlj/diab/issues).
