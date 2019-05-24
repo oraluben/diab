@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Bevilacqua Joey
+ * Copyright (c) 2019 Bevilacqua Joey
  *
  * Licensed under the GNU GPLv3 license
  *
@@ -9,20 +9,18 @@
 package it.diab.adapters
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import it.diab.R
-import it.diab.db.entities.Insulin
-import it.diab.ui.recyclerview.ViewHolderExt
-import it.diab.util.event.Event
+import it.diab.data.entities.Insulin
+import it.diab.core.util.event.Event
+import it.diab.holders.InsulinHolderCallbacks
+import it.diab.holders.InsulinHolder
 
-class InsulinAdapter : PagedListAdapter<Insulin, InsulinAdapter.InsulinHolder>(CALLBACK) {
+class InsulinAdapter : PagedListAdapter<Insulin, InsulinHolder>(CALLBACK), InsulinHolderCallbacks {
 
     private val _editInsulin = MutableLiveData<Event<Long>>()
     internal val editInsulin: LiveData<Event<Long>> = _editInsulin
@@ -30,7 +28,8 @@ class InsulinAdapter : PagedListAdapter<Insulin, InsulinAdapter.InsulinHolder>(C
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): InsulinHolder {
         return InsulinHolder(
             LayoutInflater.from(parent.context)
-                .inflate(R.layout.item_insulin, parent, false)
+                .inflate(R.layout.item_insulin, parent, false),
+            this
         )
     }
 
@@ -45,38 +44,14 @@ class InsulinAdapter : PagedListAdapter<Insulin, InsulinAdapter.InsulinHolder>(C
 
         val item = getItem(position)
         if (item == null) {
-            holder.clear()
+            holder.onLoading()
         } else {
             holder.onBind(item)
         }
     }
 
-    inner class InsulinHolder(view: View) : ViewHolderExt(view) {
-        private val title: TextView = view.findViewById(R.id.item_insulin_name)
-        private val icon: ImageView = view.findViewById(R.id.item_insulin_icon)
-
-        fun onBind(insulin: Insulin) {
-            id = insulin.uid
-
-            title.text = insulin.name
-            icon.setImageResource(insulin.timeFrame.icon)
-
-            itemView.setOnClickListener { _editInsulin.value = Event(id) }
-        }
-
-        fun onBind() {
-            id = -1
-
-            val res = itemView.resources
-            title.text = res.getString(R.string.add)
-            icon.setImageResource(R.drawable.ic_add)
-
-            itemView.setOnClickListener { _editInsulin.value = Event(id) }
-        }
-
-        fun clear() {
-            itemView.visibility = View.GONE
-        }
+    override fun onClick(uid: Long) {
+        _editInsulin.value = Event(uid)
     }
 
     companion object {

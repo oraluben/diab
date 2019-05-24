@@ -19,26 +19,26 @@ import it.diab.R
 
 @SuppressLint("ViewConstructor")
 class OverviewMarker(context: Context) : MarkerView(context, R.layout.item_overview_graph_marker) {
-    private val mTextView = findViewById<TextView>(R.id.item_overview_graph_marker_text)
-    private var mOffset: MPPointF? = null
+    private val textView = findViewById<TextView>(R.id.item_overview_graph_marker_text)
+    private lateinit var markerOffset: MPPointF
 
     override fun refreshContent(e: Entry?, highlight: Highlight?) {
         if (e != null) {
             val h = Math.floor(e.x / 60.toDouble())
             val m = e.x % 60
             val text = BASE.format(h, m)
-            mTextView.text = text
+            textView.text = text
         }
 
         super.refreshContent(e, highlight)
     }
 
-    override fun getOffset(): MPPointF? {
-        if (mOffset == null) {
-            mOffset = MPPointF((width / -2f), height * -1f)
+    override fun getOffset(): MPPointF {
+        if (!::markerOffset.isInitialized) {
+            markerOffset = MPPointF((width / -2f), height * -1f)
         }
 
-        return mOffset
+        return markerOffset
     }
 
     companion object {

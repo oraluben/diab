@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Bevilacqua Joey
+ * Copyright (c) 2019 Bevilacqua Joey
  *
  * Licensed under the GNU GPLv3 license
  *
@@ -9,10 +9,10 @@
 package it.diab
 
 import android.app.Application
-import androidx.preference.PreferenceManager
-import it.diab.settings.SettingsFragment
-import it.diab.util.UIUtils
-import it.diab.util.extensions.get
+import android.preference.PreferenceManager
+import it.diab.core.util.Activities.Settings.PREF_UI_STYLE
+import it.diab.core.util.extensions.get
+import it.diab.ui.util.UIUtils
 
 @Suppress("unused")
 class DiabApplication : Application() {
@@ -25,6 +25,6 @@ class DiabApplication : Application() {
 
     private fun setStyle() {
         val prefs = PreferenceManager.getDefaultSharedPreferences(this)
-        UIUtils.setStyleMode(prefs[SettingsFragment.PREF_UI_STYLE, "1"])
+        UIUtils.setStyleMode(prefs[PREF_UI_STYLE, "1"])
     }
 }

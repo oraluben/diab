@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Bevilacqua Joey
+ * Copyright (c) 2019 Bevilacqua Joey
  *
  * Licensed under the GNU GPLv3 license
  *
@@ -8,8 +8,10 @@
  */
 package it.diab.util.extensions
 
-import it.diab.util.DateUtils
+import it.diab.core.util.DateUtils
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertTrue
 import org.junit.Test
 import java.util.Calendar
 import java.util.Date
@@ -20,14 +22,7 @@ class DateExtTest {
     fun get() {
         val now = System.currentTimeMillis()
         val diff = 2
-        assertEquals(Date(now)[diff].time, now + (DateUtils.DAY * diff))
-    }
-
-    @Test
-    fun getCalendar() {
-        val calendar = Calendar.getInstance()
-        val date = calendar.time
-        assertEquals(date.getCalendar(), calendar)
+        assertEquals(now + (DateUtils.DAY * diff), Date(now)[diff].time)
     }
 
     @Test
@@ -40,8 +35,37 @@ class DateExtTest {
             this[Calendar.DAY_OF_YEAR] += 3
         }.time
 
-        assertEquals(a.isToday(), true)
-        assertEquals(b.isToday(), false)
-        assertEquals(c.isToday(), false)
+        assertTrue(a.isToday())
+        assertFalse(b.isToday())
+        assertFalse(c.isToday())
+    }
+
+    @Test
+    fun getAsMinutes() {
+        val calendar = Calendar.getInstance().apply {
+            set(Calendar.HOUR_OF_DAY, 10)
+            set(Calendar.MINUTE, 30)
+        }
+
+        assertEquals(10 * 60f + 30, calendar.time.getAsMinutes())
+    }
+
+    @Test
+    fun diff() {
+        val a = Calendar.getInstance().apply {
+            set(Calendar.YEAR, 2000)
+            set(Calendar.DAY_OF_YEAR, 1)
+        }
+
+        val b = Calendar.getInstance().apply {
+            set(Calendar.YEAR, 2000)
+            set(Calendar.DAY_OF_YEAR, 3)
+        }
+
+        assertEquals(-2, a.time.diff(b.time))
+
+        b[Calendar.YEAR] -= 1
+        b[Calendar.DAY_OF_YEAR] -= 8
+        assertEquals(371, a.time.diff(b.time))
     }
 }

@@ -10,110 +10,17 @@
     <string name="app_name">Diab</string>
     <string name="app_shortcut_add_glucose">Aggiungi glicemia</string>
 
-    <string name="save">Salva</string>
-    <string name="saved">Salvato</string>
-    <string name="add">Aggiungi</string>
-    <string name="remove">Rimuovi</string>
-    <string name="apply">Applica</string>
-    <string name="share">Condividi</string>
-
     <string name="fragment_overview">Panoramica</string>
     <string name="fragment_glucose">Glicemia</string>
     <string name="fragment_insulin">Insulina</string>
-
-    <!-- Time -->
-    <string name="time_today">Oggi</string>
-    <string name="time_yesterday">Ieri</string>
-    <string name="time_last_x">%1$s scorso</string>
-    <string name="time_day_month_short_format">dd MMM</string>
-    <string name="time_pick">Seleziona un\'altra data\u2026</string>
-
-    <!-- Time zone -->
-    <string name="time_extra">Extra</string>
-    <string name="time_morning">Mattina</string>
-    <string name="time_late_morning">Tarda mattinata</string>
-    <string name="time_lunch">Pranzo</string>
-    <string name="time_afternoon">Pomeriggio</string>
-    <string name="time_dinner">Cena</string>
-    <string name="time_night">Notte</string>
 
     <!-- Overview -->
     <string name="overview_last_desc">Ultimo valore%1$s</string>
     <string name="overview_last_fallback">Ciao</string>
     <string name="overview_last_desc_fallback">Aggiungi un valore toccando il pulsante blu</string>
 
-    <!-- Insulin Editor -->
-    <string name="insulin_editor_add">Aggungi insulina</string>
-    <string name="insulin_editor_edit">Modifica insulina</string>
-    <string name="insulin_editor_name">Nome</string>
-    <string name="insulin_item_basal">Basale</string>
-    <string name="insulin_item_half_units">Mezze unit\u00E0</string>
-
-    <!-- Glcuose Editor -->
-    <string name="glucose_editor_time_dialog">Seleziona la data</string>
-    <string name="glucose_editor_insulin_add">Aggiungi insulina</string>
-    <string name="glucose_editor_basal_add">Aggiungi basale</string>
-    <string name="glucose_editor_insulin_value">Quantit\u00E0</string>
-    <string name="glucose_editor_save_error">Controlla di nuovo i valori</string>
-    <string name="glucose_editor_no_insulin">Nessuna insulina trovata</string>
-
-    <!-- Glucose suggestions -->
-    <string name="insulin_suggestion_loading">Calcolo</string>
-    <string name="insulin_suggestion_warning_low">Troppo bassa</string>
-    <string name="insulin_suggestion_warning_high">Troppo alta</string>
-    <string name="insulin_suggestion_value">Dose suggerita: %1$.1f</string>
-    <string name="insulin_suggestion_error">Impossibile determinare dose</string>
-    <string name="insulin_suggestion_applied">Suggerimento salvato</string>
-
-    <!-- Export database -->
-    <string name="export_ask_ml_title">Prepara dati per la creazione di un plugin</string>
-    <string name="export_ask_ml_message">Stai per esportare i dati glicemici in modo da poter produrre un plugin di suggerimenti per l\'insulina.\nQuesti dati potrebbero essere letti da chiunque abbia accesso alla memoria interna di questo dispositivo.\nDesiderate procedere?</string>
-    <string name="export_ask_xlsx_title">Esporta</string>
-    <string name="export_ask_xlsx_summary">Crea un foglio di calcolo elettronico per consultare facilmente i tuoi dati sul PC</string>
-    <string name="export_ask_xlsx_message">Stai per esportare i dati glicemici in un foglio di calcolo elettronico.\nQuesti dati potrebbero essere letti da chiunque abbia accesso alla memoria interna di questo dispositivo.\nDesiderate procedere?</string>
-    <string name="export_ask_positive">Esporta</string>
-    <string name="export_ask_permission_message">L\'accesso alla memoria interna \u00E8 necessario per esportare i dati. Per favore concedilo.</string>
-    <string name="export_ask_permission_positive">Chiedi di nuovo</string>
-    <string name="export_ask_auth_title">Diab ∙ Esportazione</string>
-    <string name="export_ask_auth_message">Autenticati per poter esportare i tuoi dati</string>
-    <string name="export_failed_auth">Autenticazione fallita, esportazione dati annullata</string>
-    <string name="export_notification_title">Esportazione dati glicemie</string>
-    <string name="export_notification_channel">Operazioni di esportazione</string>
-    <string name="export_completed_success">I dati sono stati esportati nella memoria interna</string>
-    <string name="export_completed_failure">Impossibile esportare i dati nella memoria interna</string>
-
-    <!-- Export sheet -->
-    <string name="export_sheet_glucose_value">Valore</string>
-    <string name="export_sheet_glucose_date">Data</string>
-    <string name="export_sheet_glucose_eat">Quantit\u00E0 cibo</string>
-    <string name="export_sheet_glucose_insulin">Insulina</string>
-    <string name="export_sheet_glucose_insulin_value">Unit\u00E0</string>
-    <string name="export_sheet_glucose_basal">Basale</string>
-    <string name="export_sheet_insulin_name">Nome</string>
-    <string name="export_sheet_insulin_time_frame">Periodo</string>
-    <string name="export_sheet_insulin_basal">Basale</string>
-    <string name="export_sheet_insulin_half_units">Mezze unit\u00E0</string>
-
-    <!-- Fitness integration -->
-    <string name="fit_name">Integrazione Fit</string>
-
-    <!-- Settings -->
-    <string name="settings_name">Impostazioni</string>
-    <string name="settings_glucose_thresholds_category">Soglie glicemiche</string>
-    <string name="settings_glucose_thresholds_high">Soglia iper</string>
-    <string name="settings_glucose_thresholds_low">Soglia ipo</string>
-    <string name="settings_plugin_category_title">Suggerimenti insulina</string>
-    <string name="settings_plugin_manage_title">Plugin suggerimenti</string>
-    <string name="settings_plugin_manage_summary_new">Installa un plugin\u2026</string>
-    <string name="settings_plugin_installing">Installazione\u2026</string>
-    <string name="settings_plugin_manage_summary_installed">Plugin installato.\nAggiornato il: %1$s</string>
-    <string name="settings_plugin_remove">Rimuovi plugin</string>
-    <string name="settings_plugin_remove_confirmation">I suggerimenti per l\'insulina saranno disattivati fino all\'installazione di un nuovo plugin.\nQuest\'azione non pu\u00F2 essere annullata, procedere?</string>
-    <string name="settings_plugin_remove_confirmation_positive">Rimuovi</string>
-    <string name="settings_ui_theme_title">Stile</string>
-    <string name="settings_ui_theme_system">Automatico (sistema)</string>
-    <string name="settings_ui_theme_light">Chiaro</string>
-    <string name="settings_ui_theme_dark">Scuro</string>
+    <!-- Insulin -->
+    <string name="insulin_add_item">Aggiungi</string>
 
     <!-- Accessibility -->
     <string name="a11y_overview_menu">Opzioni</string>

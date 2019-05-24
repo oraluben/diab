@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Bevilacqua Joey
+ * Copyright (c) 2019 Bevilacqua Joey
  *
  * Licensed under the GNU GPLv3 license
  *
@@ -8,7 +8,6 @@
  */
 package it.diab.fragments
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -16,19 +15,21 @@ import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.paging.PagedList
+import androidx.recyclerview.widget.RecyclerView
 import it.diab.R
 import it.diab.adapters.InsulinAdapter
-import it.diab.db.entities.Insulin
-import it.diab.db.repositories.InsulinRepository
-import it.diab.insulin.editor.EditorActivity
-import it.diab.ui.recyclerview.RecyclerViewExt
-import it.diab.util.event.EventObserver
+import it.diab.data.entities.Insulin
+import it.diab.data.repositories.InsulinRepository
+import it.diab.core.util.Activities
+import it.diab.core.util.event.EventObserver
+import it.diab.core.util.intentTo
 import it.diab.viewmodels.insulin.InsulinViewModel
 import it.diab.viewmodels.insulin.InsulinViewModelFactory
 
-class InsulinFragment : MainFragment() {
+class InsulinFragment : BaseFragment() {
+    override val titleRes = R.string.fragment_insulin
 
-    private lateinit var recyclerView: RecyclerViewExt
+    private lateinit var recyclerView: RecyclerView
 
     private lateinit var viewModel: InsulinViewModel
 
@@ -49,20 +50,18 @@ class InsulinFragment : MainFragment() {
         val view = inflater.inflate(R.layout.fragment_insulin, container, false)
         recyclerView = view.findViewById(R.id.insulin_list)
 
-        val context = context ?: return view
-
         val adapter = InsulinAdapter()
         recyclerView.adapter = adapter
         viewModel.list.observe(viewLifecycleOwner, Observer<PagedList<Insulin>>(adapter::submitList))
-        adapter.editInsulin.observe(viewLifecycleOwner, EventObserver { uid ->
-            val intent = Intent(context, EditorActivity::class.java).apply {
-                putExtra(EditorActivity.EXTRA_UID, uid)
-            }
-            startActivity(intent)
-        })
+        adapter.editInsulin.observe(viewLifecycleOwner, EventObserver(this::onItemClick))
 
         return view
     }
 
-    override fun getTitle() = R.string.fragment_insulin
+    private fun onItemClick(uid: Long) {
+        val intent = intentTo(Activities.Insulin.Editor).apply {
+            putExtra(Activities.Insulin.Editor.EXTRA_UID, uid)
+        }
+        startActivity(intent)
+    }
 }

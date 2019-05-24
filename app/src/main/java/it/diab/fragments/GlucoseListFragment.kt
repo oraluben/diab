@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Bevilacqua Joey
+ * Copyright (c) 2019 Bevilacqua Joey
  *
  * Licensed under the GNU GPLv3 license
  *
@@ -17,19 +17,24 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.paging.PagedList
+import androidx.recyclerview.widget.RecyclerView
 import it.diab.R
 import it.diab.adapters.GlucoseListAdapter
-import it.diab.db.entities.Glucose
-import it.diab.db.repositories.GlucoseRepository
-import it.diab.db.repositories.InsulinRepository
-import it.diab.ui.recyclerview.RecyclerViewExt
-import it.diab.util.event.Event
-import it.diab.util.event.EventObserver
+import it.diab.core.util.event.Event
+import it.diab.core.util.event.EventObserver
+import it.diab.data.entities.Glucose
+import it.diab.data.repositories.GlucoseRepository
+import it.diab.data.repositories.InsulinRepository
+import it.diab.ui.TimeHeaderDecoration
+import it.diab.util.extensions.doOnNextLayout
+import it.diab.util.extensions.removeAllItemDecorators
 import it.diab.viewmodels.glucose.GlucoseListViewModel
 import it.diab.viewmodels.glucose.GlucoseListViewModelFactory
 
-class GlucoseListFragment : MainFragment() {
-    private lateinit var recyclerView: RecyclerViewExt
+class GlucoseListFragment : BaseFragment() {
+    override val titleRes = R.string.fragment_glucose
+
+    private lateinit var recyclerView: RecyclerView
 
     private lateinit var viewModel: GlucoseListViewModel
     private lateinit var adapter: GlucoseListAdapter
@@ -56,22 +61,24 @@ class GlucoseListFragment : MainFragment() {
     ): View {
         val view = inflater.inflate(R.layout.fragment_glucose, container, false)
         recyclerView = view.findViewById(R.id.glucose_recyclerview)
-
-        val context = context ?: return view
-
-        viewModel.prepare {
-            adapter = GlucoseListAdapter(context, viewModel)
-
-            recyclerView.adapter = adapter
-
-            viewModel.pagedList.observe(viewLifecycleOwner, Observer(this::update))
-            adapter.openGlucose.observe(viewLifecycleOwner, EventObserver(this::onItemClick))
-        }
-
         return view
     }
 
-    override fun getTitle() = R.string.fragment_glucose
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val activity = activity ?: return
+
+        viewModel.prepare {
+            adapter = GlucoseListAdapter(activity, viewModel)
+
+            recyclerView.adapter = adapter
+
+            viewModel.pagedList.observe(activity, Observer(this::update))
+            viewModel.liveList.observe(activity, Observer(this::updateHeaders))
+            adapter.openGlucose.observe(activity, EventObserver(this::onItemClick))
+        }
+    }
 
     private fun update(data: PagedList<Glucose>?) {
         adapter.submitList(data)
@@ -79,5 +86,16 @@ class GlucoseListFragment : MainFragment() {
 
     private fun onItemClick(uid: Long) {
         _openGlucose.value = Event(uid)
+    }
+
+    private fun updateHeaders(list: List<Glucose>) {
+        if (list.isEmpty()) {
+            return
+        }
+
+        recyclerView.doOnNextLayout {
+            recyclerView.removeAllItemDecorators()
+            recyclerView.addItemDecoration(TimeHeaderDecoration(requireContext(), list))
+        }
     }
 }

@@ -1,5 +1,5 @@
 <!--
-  Copyright (c) 2018 Bevilacqua Joey
+  Copyright (c) 2019 Bevilacqua Joey
 
   Licensed under the GNU GPLv3 license
 
@@ -8,19 +8,6 @@
   -->
 <resources>
 
-    <color name="colorPrimary">#212121</color>
-    <color name="colorPrimaryDark">#000000</color>
-
-    <color name="textPrimary">#deFFFFFF</color>
-    <color name="textSecondary">#99FFFFFF</color>
-
-    <color name="background_activity">@android:color/black</color>
-
-    <color name="navigationBar_color">@android:color/black</color>
-    <color name="navigationBar_divider">@android:color/black</color>
-
-    <color name="item_circle_bg">#333333</color>
-    <color name="item_header_divider">#22FFFFFF</color>
-    <color name="item_card_bg">#1F1F1F</color>
-
+    <color name="glucoseIndicator_high">#ffb84d</color>
+    <color name="glucoseIndicator_low">#fc6599</color>
 </resources>

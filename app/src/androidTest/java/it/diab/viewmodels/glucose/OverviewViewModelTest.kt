@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Bevilacqua Joey
+ * Copyright (c) 2019 Bevilacqua Joey
  *
  * Licensed under the GNU GPLv3 license
  *
@@ -11,12 +11,12 @@ package it.diab.viewmodels.glucose
 import android.content.Context
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.test.core.app.ApplicationProvider
-import com.google.common.truth.Truth.assertThat
-import it.diab.db.AppDatabase
-import it.diab.db.repositories.GlucoseRepository
-import it.diab.util.extensions.glucose
-import it.diab.util.timeFrame.TimeFrame
+import it.diab.data.entities.TimeFrame
+import it.diab.data.repositories.GlucoseRepository
+import it.diab.data.extensions.glucose
+import it.diab.viewmodels.overview.OverviewViewModel
 import kotlinx.coroutines.runBlocking
+import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -27,27 +27,30 @@ class OverviewViewModelTest {
 
     private val testTimeFrame = TimeFrame.MORNING
     private val glucoseValues = arrayOf(69, 99, 301, 132)
-    private val glucoseList = Array(4) { i -> glucose {
-        value = glucoseValues[i]
-        timeFrame = testTimeFrame
-    } }
+    private val glucoseList = Array(4) { i ->
+        glucose {
+            value = glucoseValues[i]
+            timeFrame = testTimeFrame
+        }
+    }
 
     @get:Rule
     val rule = InstantTaskExecutorRule()
 
     @Before
     fun setup() {
-        AppDatabase.TEST_MODE = true
-
         val context = ApplicationProvider.getApplicationContext<Context>()
-        viewModel = OverviewViewModel(GlucoseRepository.getInstance(context))
+
+        val repo = GlucoseRepository.getInstance(context).apply {
+            setDebugMode()
+        }
+        viewModel = OverviewViewModel(repo)
     }
 
     @Test
     fun getAverageLastWeek() = runBlocking {
         val pair = viewModel.runGetDataSets(glucoseList.asList())
 
-        assertThat(pair.second[testTimeFrame.toInt()].y)
-            .isEqualTo(glucoseValues.average().toFloat())
+        assertEquals(glucoseValues.average().toFloat(), pair.second[testTimeFrame.toInt()].y)
     }
 }

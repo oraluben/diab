@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Bevilacqua Joey
+ * Copyright (c) 2019 Bevilacqua Joey
  *
  * Licensed under the GNU GPLv3 license
  *
@@ -9,9 +9,7 @@
 package it.diab.fragments
 
 import android.annotation.SuppressLint
-import android.content.Intent
 import android.os.Bundle
-import android.preference.PreferenceManager
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -31,19 +29,22 @@ import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.formatter.IValueFormatter
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
 import it.diab.R
-import it.diab.db.entities.Glucose
-import it.diab.db.repositories.GlucoseRepository
-import it.diab.fit.BaseFitHandler
-import it.diab.settings.SettingsActivity
+import it.diab.data.entities.Glucose
+import it.diab.data.repositories.GlucoseRepository
+import it.diab.core.override.BaseFitHandler
+import it.diab.core.util.Activities
+import it.diab.core.util.SystemUtil
+import it.diab.core.util.intentTo
 import it.diab.ui.graph.OverviewGraphView
-import it.diab.util.SystemUtil
 import it.diab.util.extensions.isToday
-import it.diab.viewmodels.glucose.OverviewViewModel
-import it.diab.viewmodels.glucose.OverviewViewModelFactory
+import it.diab.viewmodels.overview.OverviewViewModel
+import it.diab.viewmodels.overview.OverviewViewModelFactory
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-class OverviewFragment : MainFragment() {
+class OverviewFragment : BaseFragment() {
+    override val titleRes = R.string.fragment_overview
+
     private lateinit var lastValueView: TextView
     private lateinit var lastDescView: TextView
     private lateinit var chart: OverviewGraphView
@@ -62,7 +63,6 @@ class OverviewFragment : MainFragment() {
         viewModel = ViewModelProviders.of(this, factory)[OverviewViewModel::class.java]
 
         viewModel.prepare(
-            PreferenceManager.getDefaultSharedPreferences(context),
             SystemUtil.getOverrideObject(
                 BaseFitHandler::class.java, context,
                 R.string.config_class_fit_handler
@@ -92,8 +92,6 @@ class OverviewFragment : MainFragment() {
 
         setupMenu()
     }
-
-    override fun getTitle() = R.string.fragment_overview
 
     private fun updateChart(data: List<Glucose>?) {
         if (data == null || data.isEmpty()) {
@@ -159,8 +157,7 @@ class OverviewFragment : MainFragment() {
     }
 
     private fun onMenuSettings(): Boolean {
-        val context = context ?: return false
-        val intent = Intent(context, SettingsActivity::class.java)
+        val intent = intentTo(Activities.Settings)
         startActivity(intent)
         return true
     }
@@ -189,7 +186,7 @@ class OverviewFragment : MainFragment() {
             return null
         }
 
-        val color = ContextCompat.getColor(context, R.color.graph_overview_today)
+        val color = ContextCompat.getColor(context, R.color.overviewGraph_today)
         val textColor = ContextCompat.getColor(context, R.color.textPrimary)
 
         return LineDataSet(entries, "").apply {
@@ -211,7 +208,7 @@ class OverviewFragment : MainFragment() {
             return null
         }
 
-        val color = ContextCompat.getColor(context, R.color.graph_overview_average)
+        val color = ContextCompat.getColor(context, R.color.overviewGraph_average)
 
         return LineDataSet(entries, "").apply {
             this.color = color
