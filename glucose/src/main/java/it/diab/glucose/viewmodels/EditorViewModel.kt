@@ -19,7 +19,6 @@ import it.diab.data.repositories.InsulinRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Dispatchers.IO
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -68,14 +67,14 @@ class EditorViewModel internal constructor(
         if (pluginManager.isInstalled()) {
             viewModelScope.launch { pluginManager.fetchSuggestion(glucose, block) }
         } else {
-            GlobalScope.launch(Dispatchers.Main) { block(PluginManager.NO_MODEL) }
+            block(PluginManager.NO_MODEL)
         }
     }
 
     fun applyInsulinSuggestion(value: Float, insulin: Insulin, block: () -> Unit) {
         viewModelScope.launch {
             runApplySuggestion(value, insulin)
-            GlobalScope.launch(Dispatchers.Main) { block() }
+            withContext(Dispatchers.Main) { block() }
         }
     }
 

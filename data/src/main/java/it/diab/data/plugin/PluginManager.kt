@@ -21,10 +21,10 @@ import it.diab.data.entities.TimeFrame
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Dispatchers.IO
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.json.JSONObject
 import java.io.BufferedReader
 import java.io.ByteArrayInputStream
@@ -40,7 +40,7 @@ import java.util.zip.ZipInputStream
 
 class PluginManager(context: Context) {
     private val job = Job()
-    private val scope = CoroutineScope(IO + job)
+    private val scope = CoroutineScope(Dispatchers.Default + job)
 
     private val preferences = PreferenceManager.getDefaultSharedPreferences(context)
 
@@ -52,7 +52,7 @@ class PluginManager(context: Context) {
     fun isInstalled() = pluginDir.exists() && pluginDir.list().isNotEmpty()
 
     fun install(iStream: InputStream) {
-        scope.launch {
+        scope.launch(IO) {
             val pattern = Pattern.compile("^estimator_[0-6].json")
             var wasValid = false
 
@@ -82,7 +82,7 @@ class PluginManager(context: Context) {
     }
 
     fun uninstall() {
-        scope.launch {
+        scope.launch(IO) {
             pluginDir.deleteRecursively()
             preferences[LAST_UPDATE] = 0L
         }
@@ -99,11 +99,11 @@ class PluginManager(context: Context) {
 
         val value = glucose.value / 10 * 10
         if (value <= LOWEST_SUGGESTION) {
-            GlobalScope.launch(Dispatchers.Main) { onExecuted(TOO_LOW) }
+            withContext(Dispatchers.Main) { onExecuted(TOO_LOW) }
             return
         }
         if (value >= HIGHEST_SUGGESTION) {
-            GlobalScope.launch(Dispatchers.Main) { onExecuted(TOO_HIGH) }
+            withContext(Dispatchers.Main) { onExecuted(TOO_HIGH) }
             return
         }
 
@@ -112,7 +112,7 @@ class PluginManager(context: Context) {
 
         val result = map[value] ?: PARSE_ERROR
 
-        GlobalScope.launch(Dispatchers.Main) {
+        withContext(Dispatchers.Main) {
             onExecuted(if (result == PARSE_ERROR) PARSE_ERROR else result + glucose.eatLevel - 1)
         }
     }

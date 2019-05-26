@@ -28,6 +28,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class ExportService : Service() {
     private lateinit var glucoseRepository: GlucoseRepository
@@ -132,7 +133,7 @@ class ExportService : Service() {
         serviceScope.launch {
             val writer = MlWriter(descriptor, glucoseRepository, lowThreshold..highThreshold)
             val result = writer.export()
-            GlobalScope.launch(Dispatchers.Main) { onTaskCompleted(result) }
+            withContext(Dispatchers.Main) { onTaskCompleted(result) }
         }
     }
 
