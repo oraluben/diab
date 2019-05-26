@@ -13,15 +13,14 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.test.core.app.ApplicationProvider
 import it.diab.data.entities.Glucose
 import it.diab.data.entities.TimeFrame
-import it.diab.data.repositories.GlucoseRepository
-import it.diab.data.repositories.InsulinRepository
-import it.diab.data.plugin.PluginManager
 import it.diab.data.extensions.glucose
 import it.diab.data.extensions.insulin
+import it.diab.data.plugin.PluginManager
+import it.diab.data.repositories.GlucoseRepository
+import it.diab.data.repositories.InsulinRepository
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
-import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Rule
@@ -143,43 +142,5 @@ class EditorViewModelTest {
             assertEquals(test, insulinValue0)
             assertEquals(testInsulin.uid, insulinId0)
         }
-    }
-
-    @Test
-    fun errors() {
-        val a = 0
-        val b = 1
-        val c = 1 shl 1
-        val d = 1 shl 2
-
-        viewModel.setError(a)
-        assertFalse(viewModel.hasError(a))
-        assertFalse(viewModel.hasErrors())
-
-        viewModel.setError(b)
-        assertTrue(viewModel.hasError(b))
-        assertFalse(viewModel.hasError(c))
-
-        viewModel.setError(c)
-        assertTrue(viewModel.hasError(b))
-        assertTrue(viewModel.hasError(c))
-        assertFalse(viewModel.hasError(d))
-
-        viewModel.clearError(b)
-        assertFalse(viewModel.hasError(b))
-        assertTrue(viewModel.hasError(c))
-        assertFalse(viewModel.hasError(d))
-
-        assertTrue(viewModel.hasErrors())
-
-        viewModel.setError(d)
-        assertFalse(viewModel.hasError(b))
-        assertTrue(viewModel.hasError(c))
-        assertTrue(viewModel.hasError(d))
-
-        viewModel.setError(b)
-        assertTrue(viewModel.hasError(b))
-        assertTrue(viewModel.hasError(c))
-        assertTrue(viewModel.hasError(d))
     }
 }

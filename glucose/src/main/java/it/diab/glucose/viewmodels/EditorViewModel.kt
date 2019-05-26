@@ -36,7 +36,6 @@ class EditorViewModel internal constructor(
 
     private lateinit var basalInsulins: List<Insulin>
     private lateinit var pluginManager: PluginManager
-    private var errorStatus = 0
 
     fun prepare(pManager: PluginManager, block: () -> Unit) {
         viewModelScope.launch {
@@ -78,18 +77,6 @@ class EditorViewModel internal constructor(
         }
     }
 
-    fun setError(value: Int) {
-        errorStatus = errorStatus or value
-    }
-
-    fun clearError(value: Int) {
-        errorStatus = errorStatus and value.inv()
-    }
-
-    fun hasError(value: Int) = errorStatus and value != 0
-
-    fun hasErrors() = errorStatus != 0
-
     @VisibleForTesting
     suspend fun runPrepare(scope: CoroutineScope, pManager: PluginManager) {
         val defAll = scope.async(IO) { insulinRepository.getInsulins() }
@@ -115,10 +102,5 @@ class EditorViewModel internal constructor(
         glucose.insulinId0 = insulin.uid
         glucose.insulinValue0 = value
         glucoseRepository.insert(glucose)
-    }
-
-    companion object {
-        const val ERROR_VALUE = 1
-        const val ERROR_DATE = 1 shl 1
     }
 }

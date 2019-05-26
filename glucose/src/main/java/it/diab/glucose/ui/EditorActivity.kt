@@ -23,6 +23,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import it.diab.core.override.BaseFitHandler
 import it.diab.core.util.Activities
+import it.diab.core.util.ComposableError
 import it.diab.core.util.PreferencesUtil
 import it.diab.core.util.SystemUtil
 import it.diab.core.util.extensions.setPrecomputedText
@@ -59,6 +60,8 @@ class EditorActivity : AppCompatActivity() {
     private lateinit var keyboardView: NumericKeyboardView
 
     private lateinit var viewModel: EditorViewModel
+
+    private val error = ComposableError()
 
     private val supportedSuggestions = arrayOf(
         this::setupInsulinSuggestion,
@@ -128,7 +131,7 @@ class EditorActivity : AppCompatActivity() {
 
         if (valueView.text == "0") {
             // Make sure the user sets a value
-            viewModel.setError(EditorViewModel.ERROR_VALUE)
+            error += ERROR_VALUE
         }
     }
 
@@ -225,13 +228,11 @@ class EditorActivity : AppCompatActivity() {
 
     private fun onDateSelected(timeInMillis: Long) {
         if (timeInMillis > System.currentTimeMillis()) {
-            if (!viewModel.hasError(EditorViewModel.ERROR_DATE)) {
-                timeView.setErrorStatus(this, true)
-            }
-
-            viewModel.setError(EditorViewModel.ERROR_DATE)
+            error += ERROR_DATE
+            timeView.setErrorStatus(this, true)
         } else {
-            viewModel.clearError(EditorViewModel.ERROR_DATE)
+            error -= ERROR_DATE
+            timeView.setErrorStatus(this, false)
         }
 
         viewModel.glucose.date.time = timeInMillis
@@ -248,7 +249,7 @@ class EditorActivity : AppCompatActivity() {
     }
 
     private fun checkForError(value: Int) {
-        val hadError = viewModel.hasError(EditorViewModel.ERROR_VALUE)
+        val hadError = ERROR_VALUE in error
         val hasError = value == 0
 
         if (hadError != hasError) {
@@ -256,9 +257,9 @@ class EditorActivity : AppCompatActivity() {
         }
 
         if (hasError) {
-            viewModel.setError(EditorViewModel.ERROR_VALUE)
+            error += ERROR_VALUE
         } else {
-            viewModel.clearError(EditorViewModel.ERROR_VALUE)
+            error -= ERROR_VALUE
         }
     }
 
@@ -286,7 +287,7 @@ class EditorActivity : AppCompatActivity() {
     }
 
     private fun save() {
-        if (viewModel.hasErrors()) {
+        if (error.hasAny()) {
             VibrationUtil.vibrateForError(this)
             Snackbar.make(constraintView, R.string.glucose_editor_save_error, Snackbar.LENGTH_LONG).show()
             return
@@ -325,5 +326,8 @@ class EditorActivity : AppCompatActivity() {
 
     companion object {
         private const val TAG = "EditorActivity"
+
+        private const val ERROR_VALUE = 1
+        private const val ERROR_DATE = 1 shl 1
     }
 }
