@@ -12,7 +12,7 @@
 </p>
 
 <p align="center">
-**Diab** is a smart opensource application that helps you managing your diabetes by
+<b>Diab</b> is a smart opensource application that helps you managing your diabetes by
 keeping track of your glucose values and insulin injections.
 </p>
 
