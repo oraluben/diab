@@ -26,16 +26,16 @@ import androidx.lifecycle.ViewModelProviders
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
-import com.github.mikephil.charting.formatter.IValueFormatter
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
 import it.diab.R
-import it.diab.data.entities.Glucose
-import it.diab.data.repositories.GlucoseRepository
 import it.diab.core.override.BaseFitHandler
 import it.diab.core.util.Activities
 import it.diab.core.util.SystemUtil
 import it.diab.core.util.intentTo
+import it.diab.data.entities.Glucose
+import it.diab.data.repositories.GlucoseRepository
 import it.diab.ui.graph.OverviewGraphView
+import it.diab.ui.graph.OverviewValueFormatter
 import it.diab.util.extensions.isToday
 import it.diab.viewmodels.overview.OverviewViewModel
 import it.diab.viewmodels.overview.OverviewViewModelFactory
@@ -196,7 +196,7 @@ class OverviewFragment : BaseFragment() {
             lineWidth = resources.getDimension(R.dimen.overview_graph_line_thickness)
             valueTextSize = resources.getDimension(R.dimen.overview_graph_text)
             valueTextColor = textColor
-            valueFormatter = IValueFormatter { value, _, _, _ -> "%.0f".format(value) }
+            valueFormatter = OverviewValueFormatter()
             mode = LineDataSet.Mode.CUBIC_BEZIER
         }
     }
