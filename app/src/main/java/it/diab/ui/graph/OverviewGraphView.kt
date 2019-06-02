@@ -10,6 +10,7 @@ package it.diab.ui.graph
 
 import android.content.Context
 import android.util.AttributeSet
+import androidx.annotation.StringRes
 import androidx.core.content.ContextCompat
 import com.github.mikephil.charting.charts.LineChart
 import it.diab.R
@@ -48,11 +49,13 @@ class OverviewGraphView : LineChart {
         axisRight.apply {
             setDrawAxisLine(false)
             setDrawLabels(false)
+            isEnabled = false
         }
 
         axisLeft.apply {
             setDrawAxisLine(false)
             setDrawLabels(false)
+            isEnabled = false
         }
 
         // Marker
@@ -67,5 +70,10 @@ class OverviewGraphView : LineChart {
 
         // No Data text
         setNoDataTextColor(ContextCompat.getColor(context, R.color.textPrimary))
+        setNoDataText(R.string.overview_graph_empty)
+    }
+
+    fun setNoDataText(@StringRes stringId: Int) {
+        setNoDataText(context.getString(stringId))
     }
 }

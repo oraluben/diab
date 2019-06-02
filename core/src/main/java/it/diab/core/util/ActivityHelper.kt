@@ -47,10 +47,6 @@ interface AddressableActivity {
 
 object Activities {
 
-    object Main : AddressableActivity {
-        override val className = "$PACKAGE_NAME.MainActivity"
-    }
-
     object Glucose {
         object Editor : AddressableActivity {
             override val className = "$PACKAGE_NAME.glucose.ui.EditorActivity"

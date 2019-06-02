@@ -22,18 +22,22 @@ import it.diab.R
 import it.diab.core.util.PreferencesUtil
 import it.diab.core.util.event.Event
 import it.diab.data.entities.Glucose
+import it.diab.data.entities.Insulin
 import it.diab.holders.GlucoseHolder
 import it.diab.holders.GlucoseHolderCallbacks
+import it.diab.holders.HeaderHolder
+import it.diab.holders.MainHolder
+import it.diab.ui.models.DataSetsModel
+import it.diab.ui.models.LastGlucoseModel
 import it.diab.util.UIUtils
-import it.diab.viewmodels.glucose.GlucoseListViewModel
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
-class GlucoseListAdapter(
-    val context: Context,
-    private val viewModel: GlucoseListViewModel
-) : PagedListAdapter<Glucose, GlucoseHolder>(CALLBACK), GlucoseHolderCallbacks {
+class MainAdapter(
+    private val context: Context,
+    private val callbacks: Callbacks
+) : PagedListAdapter<Glucose, MainHolder>(CALLBACK), GlucoseHolderCallbacks {
 
     private val _openGlucose = MutableLiveData<Event<Long>>()
     val openGlucose: LiveData<Event<Long>> = _openGlucose
@@ -47,12 +51,33 @@ class GlucoseListAdapter(
     private val hourFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
-        GlucoseHolder(
-            LayoutInflater.from(parent.context).inflate(R.layout.item_glucose, parent, false),
-            this
-        )
+        if (viewType == VIEW_HEADER) {
+            HeaderHolder(
+                LayoutInflater.from(parent.context).inflate(R.layout.item_header, parent, false)
+            )
+        } else {
+            GlucoseHolder(
+                LayoutInflater.from(parent.context).inflate(R.layout.item_glucose, parent, false),
+                this
+            )
+        }
 
-    override fun onBindViewHolder(holder: GlucoseHolder, position: Int) {
+    override fun onBindViewHolder(holder: MainHolder, position: Int) {
+        if (holder is HeaderHolder) {
+            bindHeader(holder)
+        } else if (holder is GlucoseHolder) {
+            bindGlucose(holder, position - 1)
+        }
+    }
+
+    private fun bindHeader(holder: HeaderHolder) {
+        holder.bind(
+            callbacks.getLastGlucose(),
+            callbacks.getDataSets()
+        )
+    }
+
+    private fun bindGlucose(holder: GlucoseHolder, position: Int) {
         val item = getItem(position)
         if (item == null) {
             holder.onLoading()
@@ -71,11 +96,17 @@ class GlucoseListAdapter(
         else -> null
     }
 
-    override fun getInsulinName(uid: Long) =
-        viewModel.getInsulin(uid).name
+    override fun getInsulinName(uid: Long) = callbacks.getInsulin(uid).name
 
     override fun onClick(uid: Long) {
         _openGlucose.value = Event(uid)
+    }
+
+    override fun getItemViewType(position: Int) = if (position == 0) VIEW_HEADER else VIEW_GLUCOSE
+
+    override fun getItemCount(): Int {
+        // First item is for the header
+        return super.getItemCount() + 1
     }
 
     private fun buildIndicator(@ColorRes colorId: Int): Drawable? {
@@ -83,6 +114,12 @@ class GlucoseListAdapter(
         val color = ContextCompat.getColor(context, colorId)
         val size = resources.getDimensionPixelSize(R.dimen.item_glucose_indicator)
         return UIUtils.createRoundDrawable(resources, size, color)
+    }
+
+    interface Callbacks {
+        fun getInsulin(uid: Long): Insulin
+        fun getLastGlucose(): LastGlucoseModel
+        fun getDataSets(): DataSetsModel
     }
 
     companion object {
@@ -93,5 +130,8 @@ class GlucoseListAdapter(
             override fun areItemsTheSame(oldItem: Glucose, newItem: Glucose) =
                 oldItem.uid == newItem.uid
         }
+
+        private const val VIEW_HEADER = 0
+        private const val VIEW_GLUCOSE = 1
     }
 }

@@ -43,7 +43,8 @@ import java.util.Locale
  */
 class TimeHeaderDecoration(
     context: Context,
-    data: List<Glucose>
+    data: List<Glucose>,
+    private val shiftList: Int = 0
 ) : RecyclerView.ItemDecoration() {
 
     private val paint: TextPaint
@@ -73,7 +74,7 @@ class TimeHeaderDecoration(
 
     private val daySlots: Map<Int, StaticLayout> =
         data.mapIndexed { index, glucose ->
-            index to glucose.date
+            index + shiftList to glucose.date
         }.distinctBy {
             val cal = it.second.getCalendar()
             (cal[Calendar.YEAR] shl 3) + cal[Calendar.DAY_OF_YEAR]

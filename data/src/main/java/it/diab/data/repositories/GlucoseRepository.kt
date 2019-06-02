@@ -32,8 +32,8 @@ class GlucoseRepository private constructor(private val dao: GlucoseDao) : BaseR
         dao.getAllItems()
     }
 
-    suspend fun getInDateRange(minTime: Long, maxTime: Long) = withContext(IO) {
-        dao.getInDateRange(minTime, maxTime)
+    suspend fun getInDateRange(start: Long, end: Long) = withContext(IO) {
+        dao.getInDateRange(start, end)
     }
 
     suspend fun insert(glucose: Glucose) = withContext(IO) {

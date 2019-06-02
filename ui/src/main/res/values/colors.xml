@@ -24,6 +24,9 @@
 
     <color name="elevatedSurface">@android:color/white</color>
 
+    <color name="headerShadow">@color/colorAccentLight</color>
+    <color name="importantShadow">@color/colorAccent</color>
+
     <color name="contentDivider">#0c000000</color>
 
     <color name="listItem_fg">?android:textColorSecondary</color>

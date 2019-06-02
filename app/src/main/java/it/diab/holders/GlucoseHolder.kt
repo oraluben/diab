@@ -11,16 +11,14 @@ package it.diab.holders
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.recyclerview.widget.RecyclerView
 import it.diab.R
-import it.diab.data.entities.Glucose
 import it.diab.core.util.extensions.setPrecomputedText
+import it.diab.data.entities.Glucose
 
 class GlucoseHolder(
     view: View,
     private val callbacks: GlucoseHolderCallbacks
-) : RecyclerView.ViewHolder(view) {
-    private val iconView = view.findViewById<ImageView>(R.id.item_glucose_timezone)
+) : MainHolder(view) {
     private val titleView = view.findViewById<TextView>(R.id.item_glucose_value)
     private val summaryView = view.findViewById<TextView>(R.id.item_glucose_insulin)
     private val indicatorView = view.findViewById<ImageView>(R.id.item_glucose_status)
@@ -31,7 +29,6 @@ class GlucoseHolder(
         bindValue(glucose)
         bindInsulin(glucose)
 
-        iconView.setImageResource(glucose.timeFrame.icon)
         itemView.setOnClickListener { callbacks.onClick(glucose.uid) }
     }
 
