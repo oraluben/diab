@@ -8,6 +8,9 @@
   -->
 <resources>
 
+    <!-- Insulin -->
+    <string name="insulin_add_item">Add</string>
+
     <!-- Insulin Editor -->
     <string name="insulin_editor_add">Add insulin</string>
     <string name="insulin_editor_edit">Edit insulin</string>

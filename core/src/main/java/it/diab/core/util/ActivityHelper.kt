@@ -55,12 +55,10 @@ object Activities {
         }
     }
 
-    object Insulin {
-        object Editor : AddressableActivity {
-            override val className = "$PACKAGE_NAME.insulin.ui.EditorActivity"
+    object Insulin : AddressableActivity {
+        override val className = "$PACKAGE_NAME.insulin.ui.InsulinActivity"
 
-            const val EXTRA_UID = "insulin_uid"
-        }
+        const val EXTRA_EDITOR_UID = "insulin_uid"
     }
 
     object Settings : AddressableActivity {

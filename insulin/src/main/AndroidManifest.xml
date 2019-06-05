@@ -12,9 +12,9 @@
     <application>
 
         <activity
-            android:name=".ui.EditorActivity"
+            android:name=".ui.InsulinActivity"
             android:excludeFromRecents="true"
-            android:theme="@style/AppTheme.DialogActivity">
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
             </intent-filter>

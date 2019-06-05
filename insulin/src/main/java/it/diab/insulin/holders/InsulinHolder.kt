@@ -6,14 +6,14 @@
  * The text of the license can be found in the LICENSE file
  * or at https://www.gnu.org/licenses/gpl.txt
  */
-package it.diab.holders
+package it.diab.insulin.holders
 
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import it.diab.R
 import it.diab.data.entities.Insulin
+import it.diab.insulin.R
 
 class InsulinHolder(
     view: View,

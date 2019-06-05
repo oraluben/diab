@@ -6,13 +6,13 @@
  * The text of the license can be found in the LICENSE file
  * or at https://www.gnu.org/licenses/gpl.txt
  */
-package it.diab.viewmodels.insulin
+package it.diab.insulin.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.paging.LivePagedListBuilder
 import it.diab.data.repositories.InsulinRepository
 
-class InsulinViewModel internal constructor(
+class ListViewModel internal constructor(
     insulinRepository: InsulinRepository
 ) : ViewModel() {
 

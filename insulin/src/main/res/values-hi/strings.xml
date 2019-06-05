@@ -8,6 +8,9 @@
   -->
 <resources>
 
+    <!-- Insulin -->
+    <string name="insulin_add_item">जोड़े</string>
+
     <!-- Insulin Editor -->
     <string name="insulin_editor_add">इंसुलिन जोड़े</string>
     <string name="insulin_editor_edit">इंसुलिन संपादित करें</string>

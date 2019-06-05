@@ -6,7 +6,7 @@
  * The text of the license can be found in the LICENSE file
  * or at https://www.gnu.org/licenses/gpl.txt
  */
-package it.diab.adapters
+package it.diab.insulin.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -14,11 +14,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
-import it.diab.R
-import it.diab.data.entities.Insulin
 import it.diab.core.util.event.Event
-import it.diab.holders.InsulinHolderCallbacks
-import it.diab.holders.InsulinHolder
+import it.diab.data.entities.Insulin
+import it.diab.insulin.R
+import it.diab.insulin.holders.InsulinHolder
+import it.diab.insulin.holders.InsulinHolderCallbacks
 
 class InsulinAdapter : PagedListAdapter<Insulin, InsulinHolder>(CALLBACK), InsulinHolderCallbacks {
 
@@ -28,7 +28,7 @@ class InsulinAdapter : PagedListAdapter<Insulin, InsulinHolder>(CALLBACK), Insul
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): InsulinHolder {
         return InsulinHolder(
             LayoutInflater.from(parent.context)
-                .inflate(R.layout.item_insulin, parent, false),
+                .inflate(R.layout.item_list_insulin, parent, false),
             this
         )
     }

@@ -17,4 +17,4 @@
     android:paddingEnd="4dp"
     app:gridColumns="2"
     app:gridLayout="true"
-    tools:listitem="@layout/item_insulin" />
+    tools:listitem="@layout/item_list_insulin" />

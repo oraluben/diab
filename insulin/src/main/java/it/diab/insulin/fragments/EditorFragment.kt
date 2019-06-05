@@ -6,33 +6,31 @@
  * The text of the license can be found in the LICENSE file
  * or at https://www.gnu.org/licenses/gpl.txt
  */
-package it.diab.insulin.ui
+package it.diab.insulin.fragments
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.TextView
-import androidx.appcompat.R as Rx
-import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.appcompat.widget.AppCompatSpinner
 import androidx.appcompat.widget.SwitchCompat
 import androidx.lifecycle.ViewModelProviders
-import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.button.MaterialButton
+import it.diab.core.util.Activities
+import it.diab.data.entities.Insulin
 import it.diab.data.entities.TimeFrame
 import it.diab.data.repositories.InsulinRepository
-import it.diab.core.util.Activities
-import it.diab.ui.util.UIUtils
 import it.diab.insulin.R
 import it.diab.insulin.viewmodels.EditorViewModel
 import it.diab.insulin.viewmodels.EditorViewModelFactory
+import it.diab.ui.util.UIUtils
+import it.diab.ui.widgets.BottomSheetDialogFragmentExt
 
-class EditorActivity : AppCompatActivity() {
+class EditorFragment : BottomSheetDialogFragmentExt() {
 
-    private lateinit var dialog: BottomSheetDialog
     private lateinit var titleView: TextView
     private lateinit var editText: AppCompatEditText
     private lateinit var spinner: AppCompatSpinner
@@ -42,19 +40,23 @@ class EditorActivity : AppCompatActivity() {
     private lateinit var deleteButton: MaterialButton
 
     private lateinit var viewModel: EditorViewModel
+
     private var editMode = false
 
-    public override fun onCreate(savedInstance: Bundle?) {
-        super.onCreate(savedInstance)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
 
-        setFinishOnTouchOutside(true)
-
-        val factory = EditorViewModelFactory(InsulinRepository.getInstance(this))
+        val context = context ?: return
+        val factory = EditorViewModelFactory(InsulinRepository.getInstance(context))
         viewModel = ViewModelProviders.of(this, factory)[EditorViewModel::class.java]
+    }
 
-        val layoutInflater = getSystemService(LayoutInflater::class.java)
-        @SuppressLint("InflateParams")
-        val view = layoutInflater.inflate(R.layout.dialog_insulin_edit, null)
+    override fun onCreateDialogView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        val view = inflater.inflate(R.layout.fragment_insulin_edit, container, false)
 
         titleView = view.findViewById(R.id.insulin_edit_dialog_title)
         editText = view.findViewById(R.id.insulin_edit_name)
@@ -64,50 +66,54 @@ class EditorActivity : AppCompatActivity() {
         saveButton = view.findViewById(R.id.insulin_edit_save)
         deleteButton = view.findViewById(R.id.insulin_edit_delete)
 
-        dialog = BottomSheetDialog(this).apply {
-            setContentView(view)
-            setOnDismissListener { finish() }
-        }
+        UIUtils.setWhiteNavBarIfNeeded(requireContext(), dialog)
 
-        setupUI()
-
-        UIUtils.setWhiteNavBarIfNeeded(this, dialog)
-        dialog.show()
+        return view
     }
 
-    private fun setupUI() {
-        val uid = intent.getLongExtra(Activities.Insulin.Editor.EXTRA_UID, -1)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val uid = arguments?.getLong(Activities.Insulin.EXTRA_EDITOR_UID, -1L) ?: -1L
         editMode = uid >= 0
+        viewModel.setInsulin(uid, this::setup)
+    }
 
-        val timeFrames = Array(TimeFrame.values().size) { getString(TimeFrame.values()[it].string) }
+    private fun setup(insulin: Insulin) {
 
-        spinner.adapter = ArrayAdapter(
-            this,
-            Rx.layout.support_simple_spinner_dropdown_item,
-            timeFrames
-        )
+        titleView.text = getString(if (editMode) R.string.insulin_editor_edit else R.string.insulin_editor_add)
 
-        saveButton.setOnClickListener { onSaveInsulin() }
+        editText.setText(insulin.name)
+        basalSwitch.isChecked = insulin.isBasal
+        halfUnitsSwitch.isChecked = insulin.hasHalfUnits
+
+        setupSpinner(insulin)
+
+        saveButton.setOnClickListener { saveInsulin() }
+        deleteButton.setOnClickListener { deleteInsulin() }
 
         if (!editMode) {
-            titleView.text = getString(R.string.insulin_editor_add)
             deleteButton.visibility = View.GONE
-            return
-        }
-
-        titleView.text = getString(R.string.insulin_editor_edit)
-        deleteButton.setOnClickListener { onDeleteInsulin() }
-
-        viewModel.setInsulin(uid) {
-            editText.setText(it.name)
-            spinner.setSelection(if (editMode) it.timeFrame.toInt() + 1 else 0)
-            basalSwitch.isChecked = it.isBasal
-            halfUnitsSwitch.isChecked = it.hasHalfUnits
         }
     }
 
-    private fun onSaveInsulin() {
-        viewModel.insulin.run {
+    private fun setupSpinner(insulin: Insulin) {
+        val context = context ?: return
+
+        val timeFrames = TimeFrame.values()
+        spinner.apply {
+            adapter = ArrayAdapter(
+                context,
+                androidx.appcompat.R.layout.support_simple_spinner_dropdown_item,
+                timeFrames.map { timeFrame -> getString(timeFrame.string) }
+            )
+
+            setSelection(insulin.timeFrame.toInt() + 1)
+        }
+    }
+
+    private fun saveInsulin() {
+        viewModel.insulin.apply {
             name = editText.text.toString()
             isBasal = basalSwitch.isChecked
             hasHalfUnits = halfUnitsSwitch.isChecked
@@ -115,11 +121,11 @@ class EditorActivity : AppCompatActivity() {
         }
 
         viewModel.save()
-        dialog.dismiss()
+        dismiss()
     }
 
-    private fun onDeleteInsulin() {
+    private fun deleteInsulin() {
         viewModel.delete()
-        dialog.dismiss()
+        dismiss()
     }
 }

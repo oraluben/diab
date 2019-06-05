@@ -13,10 +13,13 @@ import android.app.Activity
 import android.view.LayoutInflater
 import android.widget.ArrayAdapter
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.widget.AppCompatSpinner
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.button.MaterialButton
+import it.diab.core.util.Activities
+import it.diab.core.util.intentTo
 import it.diab.data.entities.Glucose
 import it.diab.data.entities.Insulin
 import it.diab.glucose.R
@@ -36,6 +39,8 @@ class AddInsulinDialog(
     private val addButton: MaterialButton
     private val removeButton: MaterialButton
 
+    private val editorIcon: ImageView
+
     private lateinit var insulins: Array<Insulin>
 
     init {
@@ -47,6 +52,7 @@ class AddInsulinDialog(
         valueEditText = view.findViewById(R.id.glucose_editor_insulin_value)
         addButton = view.findViewById(R.id.glucose_editor_insulin_add)
         removeButton = view.findViewById(R.id.glucose_editor_insulin_remove)
+        editorIcon = view.findViewById(R.id.glucose_editor_insulin_editor)
 
         dialog.setContentView(view)
     }
@@ -77,11 +83,16 @@ class AddInsulinDialog(
         }
 
         nameSpinner.setSelection(if (spinnerPosition == -1) 0 else spinnerPosition)
+
+        editorIcon.setOnClickListener {
+            activity.startActivity(intentTo(Activities.Insulin))
+        }
     }
 
     fun show(onAdd: (Insulin, Float) -> Unit, onRemove: () -> Unit) {
         if (nameSpinner.adapter.isEmpty) {
             VibrationUtil.vibrateForError(activity)
+            activity.startActivity(intentTo(Activities.Insulin))
             Toast.makeText(activity, R.string.glucose_editor_no_insulin, Toast.LENGTH_LONG).show()
             return
         }
