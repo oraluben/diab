@@ -32,8 +32,11 @@ interface GlucoseDao {
     @get:Query("SELECT * FROM glucose ORDER BY date DESC LIMIT 1")
     val last: LiveData<List<Glucose>>
 
-    @Query("SELECT * FROM glucose WHERE uid IN (:uids)")
-    suspend fun getById(vararg uids: Long): List<Glucose>
+    @Query("SELECT * FROM glucose WHERE uid IN (:uid) LIMIT 1")
+    fun getByIdLive(uid: Long): LiveData<List<Glucose>>
+
+    @Query("SELECT * FROM glucose WHERE uid IN (:uid) LIMIT 1")
+    suspend fun getById(uid: Long): List<Glucose>
 
     @Query("SELECT * FROM glucose ORDER BY date DESC")
     suspend fun getAllItems(): List<Glucose>

@@ -24,6 +24,8 @@ class GlucoseRepository private constructor(private val dao: GlucoseDao) : BaseR
 
     val last = dao.last
 
+    fun getByIdLive(uid: Long) = dao.getByIdLive(uid)
+
     suspend fun getById(uid: Long) = withContext(IO) {
         dao.getById(uid).firstOrNull() ?: Glucose()
     }
