@@ -14,6 +14,7 @@
     <item type="id" name="editor_close" />
     <item type="id" name="editor_value" />
     <item type="id" name="editor_time" />
+    <item type="id" name="editor_eat_level" />
     <item type="id" name="editor_eat_icon" />
     <item type="id" name="editor_eat_bar" />
     <item type="id" name="editor_insulin" />

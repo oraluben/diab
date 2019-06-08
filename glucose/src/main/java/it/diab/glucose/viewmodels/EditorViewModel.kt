@@ -9,44 +9,47 @@
 package it.diab.glucose.viewmodels
 
 import androidx.annotation.VisibleForTesting
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import it.diab.data.entities.Glucose
 import it.diab.data.entities.Insulin
+import it.diab.data.entities.TimeFrame
+import it.diab.data.extensions.asTimeFrame
 import it.diab.data.plugin.PluginManager
 import it.diab.data.repositories.GlucoseRepository
 import it.diab.data.repositories.InsulinRepository
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import java.util.Date
 
 class EditorViewModel internal constructor(
     private val glucoseRepository: GlucoseRepository,
     private val insulinRepository: InsulinRepository
 ) : ViewModel() {
-    var glucose = Glucose()
-        private set
+
+    private val _uid = MutableLiveData<Long>()
+    private var _glucose = Transformations.switchMap(_uid) { uid ->
+        glucoseRepository.getByIdLive(uid)
+    }
+    val glucose = Transformations.map(_glucose) { glucose ->
+        glucose?.firstOrNull() ?: Glucose()
+    }
 
     var isEditMode = false
+    var date = Date()
+    var value = 0
+    var eatLevel = 1
 
-    lateinit var insulins: List<Insulin>
-
+    private lateinit var insulins: List<Insulin>
     private lateinit var basalInsulins: List<Insulin>
     private lateinit var pluginManager: PluginManager
 
-    fun prepare(pManager: PluginManager, block: () -> Unit) {
+    fun prepare(uid: Long, pManager: PluginManager, block: () -> Unit) {
         viewModelScope.launch {
-            runPrepare(this, pManager)
-            block()
-        }
-    }
-
-    fun setGlucose(uid: Long, block: () -> Unit) {
-        viewModelScope.launch {
-            runSetGlucose(uid)
+            runPrepare(uid, pManager)
             block()
         }
     }
@@ -57,14 +60,20 @@ class EditorViewModel internal constructor(
 
     fun getInsulin(uid: Long) = insulins.firstOrNull { it.uid == uid } ?: Insulin()
 
-    fun hasPotentialBasal() = basalInsulins.any { it.timeFrame == glucose.timeFrame }
+    fun hasPotentialBasal(): Boolean {
+        val targetTimeFrame = glucose.value?.timeFrame ?: TimeFrame.EXTRA
+        return basalInsulins.any { it.timeFrame == targetTimeFrame }
+    }
 
-    fun getInsulinByTimeFrame() =
-        insulins.firstOrNull { it.timeFrame == glucose.timeFrame } ?: Insulin()
+    fun getInsulinByTimeFrame(): Insulin {
+        val targetTimeFrame = glucose.value?.timeFrame ?: TimeFrame.EXTRA
+        return insulins.firstOrNull { it.timeFrame == targetTimeFrame } ?: Insulin()
+    }
 
     fun getInsulinSuggestion(block: (Float) -> Unit) {
+        val target = glucose.value ?: Glucose()
         if (pluginManager.isInstalled()) {
-            viewModelScope.launch { pluginManager.fetchSuggestion(glucose, block) }
+            viewModelScope.launch { pluginManager.fetchSuggestion(target, block) }
         } else {
             block(PluginManager.NO_MODEL)
         }
@@ -73,14 +82,22 @@ class EditorViewModel internal constructor(
     fun applyInsulinSuggestion(value: Float, insulin: Insulin, block: () -> Unit) {
         viewModelScope.launch {
             runApplySuggestion(value, insulin)
-            withContext(Dispatchers.Main) { block() }
+            block()
         }
     }
 
     @VisibleForTesting
-    suspend fun runPrepare(scope: CoroutineScope, pManager: PluginManager) {
-        val defAll = scope.async(IO) { insulinRepository.getInsulins() }
-        val defBasal = scope.async(IO) { insulinRepository.getBasals() }
+    suspend fun runPrepare(uid: Long, pManager: PluginManager) {
+        val defAll = viewModelScope.async(IO) { insulinRepository.getInsulins() }
+        val defBasal = viewModelScope.async(IO) { insulinRepository.getBasals() }
+
+        _uid.value = uid
+
+        val staticGlucose = glucoseRepository.getById(uid)
+        isEditMode = uid <= 0L
+        value = staticGlucose.value
+        date = staticGlucose.date
+        eatLevel = staticGlucose.eatLevel
 
         pluginManager = pManager
         insulins = defAll.await()
@@ -88,19 +105,21 @@ class EditorViewModel internal constructor(
     }
 
     @VisibleForTesting
-    suspend fun runSetGlucose(uid: Long) = withContext(IO) {
-        glucose = glucoseRepository.getById(uid)
+    suspend fun runSave() {
+        val toSave = glucose.value ?: return
+        toSave.value = value
+        toSave.date = date
+        toSave.timeFrame = date.asTimeFrame()
+        toSave.eatLevel = eatLevel
+        glucoseRepository.insert(toSave)
     }
 
     @VisibleForTesting
-    suspend fun runSave() = withContext(IO) {
-        glucoseRepository.insert(glucose)
-    }
+    suspend fun runApplySuggestion(value: Float, insulin: Insulin) {
+        val toSave = glucose.value ?: return
 
-    @VisibleForTesting
-    suspend fun runApplySuggestion(value: Float, insulin: Insulin) = withContext(IO) {
-        glucose.insulinId0 = insulin.uid
-        glucose.insulinValue0 = value
-        glucoseRepository.insert(glucose)
+        toSave.insulinId0 = insulin.uid
+        toSave.insulinValue0 = value
+        glucoseRepository.insert(toSave)
     }
 }

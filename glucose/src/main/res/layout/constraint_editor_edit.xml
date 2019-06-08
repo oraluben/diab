@@ -14,21 +14,19 @@
 
     <View
         android:id="@id/editor_close"
-        android:layout_width="36dp"
-        android:layout_height="36dp"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
         android:layout_margin="8dp"
-        android:padding="4dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <View
         android:id="@id/editor_value"
         android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:paddingTop="16dp"
+        android:layout_height="wrap_content"
+        android:paddingTop="24dp"
+        android:paddingBottom="24dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHeight_default="percent"
-        app:layout_constraintHeight_percent="0.3"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -44,22 +42,14 @@
         app:layout_constraintTop_toBottomOf="@id/editor_value" />
 
     <View
-        android:id="@id/editor_eat_icon"
-        android:layout_width="56dp"
+        android:id="@id/editor_eat_level"
+        android:layout_width="0dp"
         android:layout_height="56dp"
         android:paddingStart="16dp"
         android:paddingEnd="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/editor_time" />
-
-    <View
-        android:id="@id/editor_eat_bar"
-        android:layout_width="0dp"
-        android:layout_height="56dp"
-        android:layout_marginEnd="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/editor_eat_icon"
-        app:layout_constraintTop_toTopOf="@id/editor_eat_icon" />
 
     <View
         android:id="@id/editor_insulin"
@@ -70,7 +60,7 @@
         android:paddingEnd="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/editor_eat_icon" />
+        app:layout_constraintTop_toBottomOf="@id/editor_eat_level" />
 
     <View
         android:id="@id/editor_basal"

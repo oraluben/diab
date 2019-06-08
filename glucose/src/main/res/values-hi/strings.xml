@@ -20,6 +20,7 @@
     <string name="glucose_editor_saved">संरक्षित किया</string>
     <string name="glucose_editor_close">Close</string>
     <string name="glucose_editor_suggestion_loading">लोड हो रहा है</string>
+    <string name="glucose_editor_eat_level">Food intake</string>
 
     <!-- Glucose suggestions -->
     <string name="insulin_suggestion_warning_low">बहुत कम</string>

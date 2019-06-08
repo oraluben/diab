@@ -14,6 +14,8 @@ import android.graphics.PorterDuff
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.LayerDrawable
 import android.util.AttributeSet
+import android.view.View
+import android.widget.LinearLayout
 import android.widget.SeekBar
 import androidx.annotation.AttrRes
 import androidx.annotation.ColorRes
@@ -22,7 +24,10 @@ import androidx.core.content.ContextCompat
 import it.diab.data.entities.Glucose
 import it.diab.glucose.R
 
-class EatBar : AppCompatSeekBar {
+class EatBar : LinearLayout {
+
+    private val bar: AppCompatSeekBar
+
     private var currentColor: Int
     private var editable = false
     private lateinit var coloredProgressDrawable: Drawable
@@ -35,64 +40,48 @@ class EatBar : AppCompatSeekBar {
         super(context, attrs, defStyleAttr)
 
     init {
-        max = BAR_COLORS.size - 1
-        progress = 1
+        View.inflate(context, R.layout.component_eat_bar, this)
+        bar = findViewById(R.id.eat_bar_bar)
 
         currentColor = ContextCompat.getColor(context, R.color.eat_bar_medium)
 
-        setOnSeekBarChangeListener(object : OnSeekBarChangeListener {
-            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
-                recolor(BAR_COLORS[progress])
-            }
+        bar.apply {
+            max = BAR_COLORS.size - 1
+            progress = 1
 
-            override fun onStartTrackingTouch(seekBar: SeekBar?) = Unit
-            override fun onStopTrackingTouch(seekBar: SeekBar?) = Unit
-        })
+            setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+                override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+                    recolor(BAR_COLORS[progress])
+                }
 
-        setOnTouchListener { _, _ -> !editable }
-        thumb.alpha = 0x00
+                override fun onStartTrackingTouch(seekBar: SeekBar?) = Unit
+                override fun onStopTrackingTouch(seekBar: SeekBar?) = Unit
+            })
+
+            setOnTouchListener { _, _ -> !editable }
+        }
     }
 
     @Glucose.Companion.EatLevel
-    override fun getProgress(): Int {
-        return super.getProgress()
+    fun getProgress(): Int {
+        return bar.progress
+    }
+
+    fun setProgress(progress: Int) {
+        bar.progress = progress
     }
 
     fun lock() {
-        if (!editable) {
-            return
-        }
-
-        ValueAnimator.ofInt(0xff, 0x00).apply {
-            addUpdateListener {
-                val value = it.animatedValue
-                if (value is Int) {
-                    thumb.alpha = value
-                }
-            }
-        }.start()
         editable = false
     }
 
     fun unlock() {
-        if (editable) {
-            return
-        }
-
-        ValueAnimator.ofInt(0x00, 0xff).apply {
-            addUpdateListener {
-                val value = it.animatedValue
-                if (value is Int) {
-                    thumb.alpha = value
-                }
-            }
-        }.start()
         editable = true
     }
 
     private fun recolor(@ColorRes color: Int) {
-        if (!::coloredProgressDrawable.isInitialized && progressDrawable is LayerDrawable) {
-            coloredProgressDrawable = (progressDrawable as LayerDrawable)
+        if (!::coloredProgressDrawable.isInitialized && bar.progressDrawable is LayerDrawable) {
+            coloredProgressDrawable = (bar.progressDrawable as LayerDrawable)
                 .findDrawableByLayerId(android.R.id.progress)
         }
 
@@ -102,7 +91,7 @@ class EatBar : AppCompatSeekBar {
             val animColor = value.animatedValue as Int
 
             coloredProgressDrawable.setColorFilter(animColor, PorterDuff.Mode.SRC_IN)
-            thumb?.setColorFilter(animColor, PorterDuff.Mode.SRC_IN)
+            bar.thumb?.setColorFilter(animColor, PorterDuff.Mode.SRC_IN)
         }
         animator.start()
 

@@ -20,6 +20,7 @@
     <string name="glucose_editor_saved">Salvato</string>
     <string name="glucose_editor_close">Chiudi</string>
     <string name="glucose_editor_suggestion_loading">Calcolo</string>
+    <string name="glucose_editor_eat_level">Cibo assunto</string>
 
     <!-- Glucose suggestions -->
     <string name="insulin_suggestion_warning_low">Troppo bassa</string>
