@@ -8,24 +8,18 @@
  */
 package it.diab.glucose.widget
 
-import android.animation.Animator
 import android.content.Context
-import android.os.Handler
 import android.util.AttributeSet
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.annotation.AttrRes
 import it.diab.glucose.R
-import it.diab.glucose.suggestion.SuggestionCallback
-import it.diab.glucose.suggestion.SuggestionConfig
+import it.diab.glucose.suggestion.SuggestionModel
 import it.diab.glucose.util.VibrationUtil
-import it.diab.glucose.util.extensions.animateThreeDots
 
 class SuggestionView : LinearLayout {
     private val textView: TextView
-
-    private lateinit var animator: Animator
 
     constructor(context: Context) : super(context)
 
@@ -37,67 +31,68 @@ class SuggestionView : LinearLayout {
     init {
         View.inflate(context, R.layout.component_suggestion, this)
         textView = findViewById(R.id.insulin_suggestion_text)
+
+        textView.visibility = View.GONE
     }
 
     /**
-     * Try to apply a [SuggestionConfig] to the view.
-     * A config may or may not apply depending on the [SuggestionConfig.isValid]
+     * Try to apply a [SuggestionModel] to the view.
+     * A config may or may not apply depending on the [SuggestionModel.isValid]
      * value.
      *
-     * @param config the applied configuration
-     * @return whether the config has been enabled
+     * @param model the applied model
+     * @return whether the model has been enabled
      */
-    fun applyConfig(config: SuggestionConfig): Boolean {
-        if (!config.isValid) {
-            visibility = View.GONE
-            return false
+    fun <T> applyConfig(model: SuggestionModel<T>): Boolean {
+        if (model.isValid()) {
+            textView.setCompoundDrawablesWithIntrinsicBounds(model.icon, 0, 0, 0)
+            return true
         }
 
-        textView.setCompoundDrawablesWithIntrinsicBounds(config.icon, 0, 0, 0)
-        if (config.shouldAnimate) {
-            showLoad()
-        }
-
-        return true
+        textView.visibility = View.GONE
+        return false
     }
 
-    fun <T> onSuggestionLoaded(value: T, callback: SuggestionCallback<T>) {
-        if (::animator.isInitialized) {
-            animator.cancel()
-        }
+    fun <T> onSuggestionLoaded(value: T, model: SuggestionModel<T>) {
+        val isValid = model.validate(value)
+        textView.text = if (isValid) model.getSuccessMessage(value, resources)
+        else model.getFailMessage(value, resources)
 
-        if (!callback.validate(value)) {
-            val message = callback.getFailMessage(value, resources)
-            if (message == null) {
-                visibility = View.GONE
-                return
-            }
-
-            textView.apply {
-                text = message
-                isEnabled = false
-            }
+        if (textView.text.isEmpty()) {
             return
         }
 
-        visibility = View.VISIBLE
-        textView.text = callback.getSuccessMessage(value, resources)
+        textView.isEnabled = isValid
+
+        animateIn()
+
+        if (!isValid) {
+            return
+        }
 
         textView.setOnClickListener {
             VibrationUtil.vibrateForImportantClick(it)
-            callback.onSuggestionApply(value)
-            Handler().postDelayed(this::onSuggestionApplied, 350)
+
+            animate()
+                .alpha(0f)
+                .translationYBy(10f)
+                .withEndAction {
+                    visibility = View.GONE
+                    model.onSuggestionApply(value)
+                }
+                .start()
         }
     }
 
-    private fun showLoad() {
-        textView.text = resources.getString(R.string.glucose_editor_suggestion_loading)
-        animator = textView.animateThreeDots()
-    }
+    private fun animateIn() {
+        textView.apply {
+            translationY = 10f
+            alpha = 0f
+            visibility = View.VISIBLE
 
-    private fun onSuggestionApplied() {
-        animate().alpha(0f)
-            .withEndAction { visibility = View.GONE }
-            .start()
+            animate().alpha(1f)
+                .translationY(0f)
+                .start()
+        }
     }
 }

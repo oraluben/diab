@@ -20,13 +20,16 @@ class InsulinSuggestion(
     private val glucose: Glucose,
     private val proposedInsulin: Insulin,
     private val onSuggestionApplied: (value: Float, insulin: Insulin) -> Unit
-) : SuggestionCallback<Float>, SuggestionConfig {
+) : SuggestionModel<Float> {
 
-    override val shouldAnimate = true
-
-    override val isValid by lazy {
-        val allowedTimeFrames = arrayOf(TimeFrame.MORNING, TimeFrame.LUNCH, TimeFrame.DINNER)
-        allowedTimeFrames.contains(glucose.timeFrame) && glucose.insulinId0 == -1L
+    override fun isValid(): Boolean {
+        val validTF = when (glucose.timeFrame) {
+            TimeFrame.MORNING,
+            TimeFrame.DINNER,
+            TimeFrame.LUNCH -> true
+            else -> false
+        }
+        return validTF && glucose.insulinId0 == -1L
     }
 
     override val icon = R.drawable.ic_suggestion_ml

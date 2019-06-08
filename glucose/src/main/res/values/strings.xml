@@ -19,7 +19,6 @@
     <string name="glucose_editor_date_pick">Select another date\u2026</string>
     <string name="glucose_editor_saved">Saved</string>
     <string name="glucose_editor_close">Close</string>
-    <string name="glucose_editor_suggestion_loading">Loading</string>
     <string name="glucose_editor_eat_level">Food intake</string>
 
     <!-- Glucose suggestions -->

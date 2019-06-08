@@ -17,15 +17,15 @@ import it.diab.glucose.workers.CheckAgainWorker
 import java.util.concurrent.TimeUnit
 
 class CheckAgainSuggestion(
-    targetTimeFrame: TimeFrame,
+    private val targetTimeFrame: TimeFrame,
     private val lowThreshold: Int
-) : SuggestionConfig, SuggestionCallback<Int> {
+) : SuggestionModel<Int> {
 
-    override val shouldAnimate = false
-
-    override val isValid by lazy {
-        val suggestionsTimeFrames = arrayOf(TimeFrame.MORNING, TimeFrame.LUNCH, TimeFrame.DINNER)
-        !suggestionsTimeFrames.contains(targetTimeFrame)
+    override fun isValid() = when (targetTimeFrame) {
+        TimeFrame.MORNING,
+        TimeFrame.DINNER,
+        TimeFrame.LUNCH -> false
+        else -> true
     }
 
     override val icon = R.drawable.ic_suggestion_remind

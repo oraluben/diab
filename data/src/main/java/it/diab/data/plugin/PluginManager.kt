@@ -95,7 +95,7 @@ class PluginManager(context: Context) {
     }
 
     suspend fun fetchSuggestion(glucose: Glucose, onExecuted: (Float) -> Unit) {
-        delay(1000)
+        delay(300)
 
         val value = glucose.value / 10 * 10
         if (value <= LOWEST_SUGGESTION) {

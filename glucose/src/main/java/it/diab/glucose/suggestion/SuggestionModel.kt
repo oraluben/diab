@@ -9,8 +9,9 @@
 package it.diab.glucose.suggestion
 
 import android.content.res.Resources
+import androidx.annotation.DrawableRes
 
-interface SuggestionCallback <T> {
+interface SuggestionModel <T> {
 
     /**
      * Check whether the suggestion has errors.
@@ -48,4 +49,16 @@ interface SuggestionCallback <T> {
      * @param value the suggestion
      */
     fun onSuggestionApply(value: T)
+
+    /**
+     * Whether this suggestion is valid.
+     * If it's not valid the suggestion won't appear in the UI
+     */
+    fun isValid(): Boolean
+
+    /**
+     * Get an icon that represents the suggestion
+     */
+    @get:DrawableRes
+    val icon: Int
 }

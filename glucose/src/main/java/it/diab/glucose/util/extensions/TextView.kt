@@ -8,48 +8,12 @@
  */
 package it.diab.glucose.util.extensions
 
-import android.animation.Animator
 import android.animation.ValueAnimator
 import android.content.Context
-import android.graphics.Color
 import android.graphics.PorterDuff
-import android.text.Spannable
-import android.text.SpannableString
-import android.text.style.ForegroundColorSpan
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import it.diab.glucose.R
-
-fun TextView.animateThreeDots(): Animator {
-    val textLength = text.length
-    val spannable = SpannableString("$text...")
-
-    val animator = ValueAnimator.ofInt(0, 4).apply {
-        repeatCount = ValueAnimator.INFINITE
-        duration = 1000
-        addUpdateListener {
-            val count = it.animatedValue as Int
-            if (count < 4) {
-                spannable.run {
-                    getSpans(
-                        textLength,
-                        textLength + 3,
-                        ForegroundColorSpan::class.java
-                    ).forEach(this::removeSpan)
-                    setSpan(
-                        ForegroundColorSpan(Color.TRANSPARENT),
-                        textLength + count,
-                        textLength + 3,
-                        Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-                    )
-                }
-                setText(spannable, TextView.BufferType.SPANNABLE)
-            }
-        }
-    }
-    animator.start()
-    return animator
-}
 
 fun TextView.setErrorStatus(context: Context, toError: Boolean) {
     val originalColor = ContextCompat.getColor(context, R.color.colorAccent)

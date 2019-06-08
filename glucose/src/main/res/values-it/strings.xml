@@ -19,7 +19,6 @@
     <string name="glucose_editor_date_pick">Seleziona un\'altra data\u2026</string>
     <string name="glucose_editor_saved">Salvato</string>
     <string name="glucose_editor_close">Chiudi</string>
-    <string name="glucose_editor_suggestion_loading">Calcolo</string>
     <string name="glucose_editor_eat_level">Cibo assunto</string>
 
     <!-- Glucose suggestions -->
