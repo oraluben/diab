@@ -10,26 +10,21 @@ package it.diab.insulin.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
-import it.diab.core.util.event.Event
+import it.diab.core.arch.EventBusFactory
 import it.diab.data.entities.Insulin
 import it.diab.insulin.R
+import it.diab.insulin.components.status.ListItemStatus
 import it.diab.insulin.holders.InsulinHolder
-import it.diab.insulin.holders.InsulinHolderCallbacks
 
-class InsulinAdapter : PagedListAdapter<Insulin, InsulinHolder>(CALLBACK), InsulinHolderCallbacks {
-
-    private val _editInsulin = MutableLiveData<Event<Long>>()
-    internal val editInsulin: LiveData<Event<Long>> = _editInsulin
+class InsulinAdapter(private val bus: EventBusFactory) : PagedListAdapter<Insulin, InsulinHolder>(CALLBACK) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): InsulinHolder {
         return InsulinHolder(
             LayoutInflater.from(parent.context)
                 .inflate(R.layout.item_list_insulin, parent, false),
-            this
+            bus
         )
     }
 
@@ -46,12 +41,14 @@ class InsulinAdapter : PagedListAdapter<Insulin, InsulinHolder>(CALLBACK), Insul
         if (item == null) {
             holder.onLoading()
         } else {
-            holder.onBind(item)
+            holder.onBind(
+                ListItemStatus(
+                    item.uid,
+                    item.name,
+                    item.timeFrame.icon
+                )
+            )
         }
-    }
-
-    override fun onClick(uid: Long) {
-        _editInsulin.value = Event(uid)
     }
 
     companion object {

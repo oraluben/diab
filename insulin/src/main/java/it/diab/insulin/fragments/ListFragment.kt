@@ -15,20 +15,24 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import androidx.recyclerview.widget.RecyclerView
 import it.diab.core.util.Activities
-import it.diab.core.util.event.EventObserver
+import it.diab.core.util.extensions.bus
 import it.diab.data.repositories.InsulinRepository
 import it.diab.insulin.R
-import it.diab.insulin.adapters.InsulinAdapter
+import it.diab.insulin.components.ListComponent
+import it.diab.insulin.events.ListEvent
 import it.diab.insulin.viewmodels.ListViewModel
 import it.diab.insulin.viewmodels.ListViewModelFactory
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 
 class ListFragment : Fragment() {
 
-    private lateinit var recyclerView: RecyclerView
+    private lateinit var list: ListComponent
 
     private lateinit var viewModel: ListViewModel
+
+    private val uiScope = CoroutineScope(Dispatchers.Main)
 
     override fun onCreate(savedInstance: Bundle?) {
         super.onCreate(savedInstance)
@@ -43,16 +47,22 @@ class ListFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        val view = inflater.inflate(R.layout.fragment_insulin_list, container, false)
-        recyclerView = view.findViewById(R.id.insulin_list)
+    ): View = inflater.inflate(R.layout.fragment_insulin_list, container, false)
 
-        val adapter = InsulinAdapter()
-        recyclerView.adapter = adapter
-        viewModel.list.observe(viewLifecycleOwner, Observer(adapter::submitList))
-        adapter.editInsulin.observe(viewLifecycleOwner, EventObserver(this::onItemClick))
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-        return view
+        list = ListComponent(view, uiScope, bus)
+
+        bus.subscribe(ListEvent::class, uiScope) {
+            if (it is ListEvent.ClickEvent) {
+                onItemClick(it.uid)
+            }
+        }
+
+        viewModel.list.observe(this, Observer { list ->
+            bus.emit(ListEvent::class, ListEvent.UpdateEvent(list))
+        })
     }
 
     private fun onItemClick(uid: Long) {

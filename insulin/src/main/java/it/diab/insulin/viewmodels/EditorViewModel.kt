@@ -12,44 +12,55 @@ import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import it.diab.data.entities.Insulin
+import it.diab.data.extensions.toTimeFrame
 import it.diab.data.repositories.InsulinRepository
-import kotlinx.coroutines.Dispatchers.IO
+import it.diab.insulin.components.status.EditableOutStatus
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class EditorViewModel internal constructor(
-    private val insulinRepository: InsulinRepository
+    private val repo: InsulinRepository
 ) : ViewModel() {
 
-    var insulin = Insulin()
+    private lateinit var insulin: Insulin
 
     fun setInsulin(uid: Long, block: (Insulin) -> Unit) {
         viewModelScope.launch {
-            insulin = runSetInsulin(uid)
+            runSetInsulin(uid)
             block(insulin)
         }
     }
 
     fun delete() {
-        viewModelScope.launch { runDelete() }
+        viewModelScope.launch {
+            runDelete()
+        }
     }
 
-    fun save() {
-        viewModelScope.launch { runSave() }
-    }
-
-    @VisibleForTesting
-    suspend fun runSetInsulin(uid: Long) = withContext(IO) {
-        insulinRepository.getById(uid)
-    }
-
-    @VisibleForTesting
-    suspend fun runDelete() = withContext(IO) {
-        insulinRepository.delete(insulin)
+    fun save(status: EditableOutStatus) {
+        viewModelScope.launch {
+            runSave(status)
+        }
     }
 
     @VisibleForTesting
-    suspend fun runSave() = withContext(IO) {
-        insulinRepository.insert(insulin)
+    suspend fun runSetInsulin(uid: Long) {
+        insulin = repo.getById(uid)
+    }
+
+    @VisibleForTesting
+    suspend fun runDelete() {
+        repo.delete(insulin)
+    }
+
+    @VisibleForTesting
+    suspend fun runSave(status: EditableOutStatus) {
+        insulin.apply {
+            name = status.name
+            timeFrame = (status.timeFrameIndex - 1).toTimeFrame()
+            hasHalfUnits = status.hasHalfUnits
+            isBasal = status.isBasal
+        }
+
+        repo.insert(insulin)
     }
 }

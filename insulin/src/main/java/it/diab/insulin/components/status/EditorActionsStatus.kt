@@ -6,14 +6,10 @@
  * The text of the license can be found in the LICENSE file
  * or at https://www.gnu.org/licenses/gpl.txt
  */
-package it.diab.insulin.holders
+package it.diab.insulin.components.status
 
-interface InsulinHolderCallbacks {
+import it.diab.core.arch.ViewStatus
 
-    /**
-     * On item click callback
-     *
-     * @param uid insulin uid
-     */
-    fun onClick(uid: Long)
-}
+data class EditorActionsStatus(
+    val isEdit: Boolean = false
+) : ViewStatus

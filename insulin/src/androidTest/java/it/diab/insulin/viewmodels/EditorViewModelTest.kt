@@ -13,8 +13,9 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.test.core.app.ApplicationProvider
 import it.diab.data.AppDatabase
 import it.diab.data.entities.TimeFrame
-import it.diab.data.repositories.InsulinRepository
 import it.diab.data.extensions.insulin
+import it.diab.data.repositories.InsulinRepository
+import it.diab.insulin.components.status.EditableOutStatus
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotEquals
@@ -47,9 +48,10 @@ class EditorViewModelTest {
 
         repository.insert(insulin)
 
-        val result = viewModel.runSetInsulin(insulin.uid)
-        assertEquals(insulin.uid, result.uid)
-        assertEquals(insulin, result)
+        viewModel.setInsulin(insulin.uid) { result ->
+            assertEquals(insulin.uid, result.uid)
+            assertEquals(insulin, result)
+        }
     }
 
     @Test
@@ -61,7 +63,7 @@ class EditorViewModelTest {
 
         repository.insert(insulin)
 
-        viewModel.insulin = insulin
+        viewModel.runSetInsulin(insulin.uid)
         viewModel.runDelete()
 
         assertNotEquals(insulin.uid, repository.getById(insulin.uid).uid)
@@ -69,20 +71,18 @@ class EditorViewModelTest {
 
     @Test
     fun save() = runBlocking {
+        val origSize = repository.getInsulins().size
+
         viewModel.runSetInsulin(-1)
+        viewModel.runSave(
+            EditableOutStatus(
+                name = "BarFoo",
+                timeFrameIndex = TimeFrame.LATE_MORNING.ordinal,
+                hasHalfUnits = true,
+                isBasal = false
+            )
+        )
 
-        val testUid = 12L
-        assertNotEquals(testUid, repository.getById(testUid).uid)
-
-        viewModel.insulin.apply {
-            uid = testUid
-            name = "BarFoo"
-            timeFrame = TimeFrame.LATE_MORNING
-            isBasal = true
-        }
-
-        viewModel.runSave()
-
-        assertEquals(testUid, repository.getById(testUid).uid)
+        assertEquals(origSize + 1, repository.getInsulins().size)
     }
 }

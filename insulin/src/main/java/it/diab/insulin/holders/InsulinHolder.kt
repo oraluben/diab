@@ -12,21 +12,25 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import it.diab.data.entities.Insulin
+import it.diab.core.arch.EventBusFactory
 import it.diab.insulin.R
+import it.diab.insulin.components.status.ListItemStatus
+import it.diab.insulin.events.ListEvent
 
 class InsulinHolder(
     view: View,
-    private val callbacks: InsulinHolderCallbacks
+    private val bus: EventBusFactory
 ) : RecyclerView.ViewHolder(view) {
     private val titleView = view.findViewById<TextView>(R.id.item_insulin_name)
     private val iconView = view.findViewById<ImageView>(R.id.item_insulin_icon)
 
-    fun onBind(insulin: Insulin) {
-        titleView.text = insulin.name
-        iconView.setImageResource(insulin.timeFrame.icon)
+    fun onBind(status: ListItemStatus) {
+        titleView.text = status.name
+        iconView.setImageResource(status.icon)
 
-        itemView.setOnClickListener { callbacks.onClick(insulin.uid) }
+        itemView.setOnClickListener {
+            bus.emit(ListEvent::class, ListEvent.ClickEvent(status.uid))
+        }
     }
 
     fun onBind() {
@@ -34,7 +38,9 @@ class InsulinHolder(
         titleView.text = res.getString(R.string.insulin_add_item)
         iconView.setImageResource(R.drawable.ic_add)
 
-        itemView.setOnClickListener { callbacks.onClick(-1) }
+        itemView.setOnClickListener {
+            bus.emit(ListEvent::class, ListEvent.ClickEvent(-1))
+        }
     }
 
     fun onLoading() {
