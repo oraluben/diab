@@ -64,6 +64,8 @@ class InsulinDialogViewModel internal constructor(
         }
     }
 
+    fun hasNothing() = insulins.isEmpty()
+
     @VisibleForTesting
     suspend fun runPrepare(uid: Long, wantBasal: Boolean) {
         glucose = glucoseRepository.getById(uid)

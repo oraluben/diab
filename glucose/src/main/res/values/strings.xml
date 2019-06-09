@@ -11,7 +11,6 @@
     <!-- Glucose Editor -->
     <string name="glucose_editor_time_dialog">Select the time</string>
     <string name="glucose_editor_insulin_add">Add insulin</string>
-    <string name="glucose_editor_insulin_apply">Apply</string>
     <string name="glucose_editor_basal_add">Add basal</string>
     <string name="glucose_editor_insulin_value">Quantity</string>
     <string name="glucose_editor_save_error">Check the values again</string>
@@ -37,4 +36,10 @@
     <!-- Time -->
     <string name="time_today">Today</string>
     <string name="time_yesterday">Yesterday</string>
+
+    <!-- Insulin dialog -->
+    <string name="glucose_editor_insulin_apply">Apply</string>
+    <string name="glucose_editor_insulin_none">No insulin found</string>
+    <string name="glucose_editor_insulin_none_btn">Register a new insulin</string>
+    <string name="glucose_editor_insulin_edit">Edit insulins</string>
 </resources>

@@ -11,7 +11,6 @@
     <!-- Glucose Editor -->
     <string name="glucose_editor_time_dialog">समय चुने</string>
     <string name="glucose_editor_insulin_add">इंसुलिन जोड़ें</string>
-    <string name="glucose_editor_insulin_apply">लागू करें</string>
     <string name="glucose_editor_basal_add">बेसल जोड़ें</string>
     <string name="glucose_editor_insulin_value">मात्रा</string>
     <string name="glucose_editor_save_error">मूल्यों को फिर से जांचें</string>
@@ -37,4 +36,10 @@
     <!-- Time -->
     <string name="time_today">आज</string>
     <string name="time_yesterday">कल</string>
+
+    <!-- Insulin dialog -->
+    <string name="glucose_editor_insulin_apply">लागू करें</string>
+    <string name="glucose_editor_insulin_none">No insulin found</string>
+    <string name="glucose_editor_insulin_none_btn">Register a new insulin</string>
+    <string name="glucose_editor_insulin_edit">Edit insulins</string>
 </resources>

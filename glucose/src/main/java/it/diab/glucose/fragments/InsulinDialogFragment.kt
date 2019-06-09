@@ -16,7 +16,10 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.appcompat.widget.AppCompatSpinner
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.constraintlayout.widget.ConstraintSet
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.button.MaterialButton
 import it.diab.core.util.Activities
@@ -28,14 +31,17 @@ import it.diab.glucose.ui.models.InsulinDialogUiModel
 import it.diab.glucose.util.InsulinSelector
 import it.diab.glucose.viewmodels.InsulinDialogViewModel
 import it.diab.glucose.viewmodels.InsulinDialogViewModelFactory
+import it.diab.ui.util.UIUtils
 import it.diab.ui.widgets.BottomSheetDialogFragmentExt
 
 class InsulinDialogFragment : BottomSheetDialogFragmentExt() {
 
+    private lateinit var constraint: ConstraintLayout
     private lateinit var nameSpinner: AppCompatSpinner
     private lateinit var valueEditText: EditText
-    private lateinit var addButton: MaterialButton
-    private lateinit var removeButton: MaterialButton
+    private lateinit var emptyText: TextView
+    private lateinit var positiveButton: MaterialButton
+    private lateinit var negativeButton: MaterialButton
 
     private lateinit var editorIcon: ImageView
 
@@ -62,11 +68,15 @@ class InsulinDialogFragment : BottomSheetDialogFragmentExt() {
     ): View {
         val view = inflater.inflate(R.layout.fragment_add_insulin, container, false)
 
+        constraint = view.findViewById(R.id.glucose_editor_insulin_root)
         nameSpinner = view.findViewById(R.id.glucose_editor_insulin_spinner)
         valueEditText = view.findViewById(R.id.glucose_editor_insulin_value)
-        addButton = view.findViewById(R.id.glucose_editor_insulin_add)
-        removeButton = view.findViewById(R.id.glucose_editor_insulin_remove)
+        emptyText = view.findViewById(R.id.glucose_editor_insulin_empty)
+        positiveButton = view.findViewById(R.id.glucose_editor_insulin_positive)
+        negativeButton = view.findViewById(R.id.glucose_editor_insulin_negative)
         editorIcon = view.findViewById(R.id.glucose_editor_insulin_editor)
+
+        UIUtils.setWhiteNavBarIfNeeded(requireContext(), dialog)
 
         return view
     }
@@ -81,6 +91,53 @@ class InsulinDialogFragment : BottomSheetDialogFragmentExt() {
     }
 
     private fun setup(model: InsulinDialogUiModel) {
+        if (viewModel.hasNothing()) {
+            setupEmpty()
+        } else {
+            setupWithContent(model)
+        }
+    }
+
+    private fun setupEmpty() {
+        ConstraintSet().apply {
+            clone(constraint)
+            connect(
+                R.id.glucose_editor_insulin_positive,
+                ConstraintSet.TOP,
+                R.id.glucose_editor_insulin_empty,
+                ConstraintSet.BOTTOM
+            )
+            connect(
+                R.id.glucose_editor_insulin_positive,
+                ConstraintSet.START,
+                ConstraintSet.PARENT_ID,
+                ConstraintSet.START
+            )
+            connect(
+                R.id.glucose_editor_insulin_positive,
+                ConstraintSet.END,
+                ConstraintSet.PARENT_ID,
+                ConstraintSet.END
+            )
+            constrainPercentWidth(
+                R.id.glucose_editor_insulin_positive,
+                0.8f
+            )
+
+            applyTo(constraint)
+        }
+
+        emptyText.visibility = View.VISIBLE
+        valueEditText.visibility = View.GONE
+        nameSpinner.visibility = View.GONE
+        negativeButton.visibility = View.GONE
+
+        editorIcon.setOnClickListener { startActivity(intentTo(Activities.Insulin)) }
+        positiveButton.setOnClickListener { startActivity(intentTo(Activities.Insulin)) }
+        positiveButton.setText(R.string.glucose_editor_insulin_none_btn)
+    }
+
+    private fun setupWithContent(model: InsulinDialogUiModel) {
         val context = context ?: return
 
         if (model.insulinValue > 0f) {
@@ -101,11 +158,12 @@ class InsulinDialogFragment : BottomSheetDialogFragmentExt() {
         nameSpinner.setSelection(spinnerIndex)
 
         editorIcon.setOnClickListener { startActivity(intentTo(Activities.Insulin)) }
-        addButton.setOnClickListener { onSave() }
-        removeButton.setOnClickListener { onRemove() }
+        positiveButton.setOnClickListener { onSave() }
+        positiveButton.setText(R.string.glucose_editor_insulin_apply)
+        negativeButton.setOnClickListener { onRemove() }
 
         if (model.currentInsulinId < 1L) {
-            removeButton.visibility = View.GONE
+            negativeButton.visibility = View.GONE
         }
     }
 

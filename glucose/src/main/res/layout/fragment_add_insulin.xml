@@ -9,10 +9,10 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/glucose_editor_insulin_root"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:fitsSystemWindows="true"
-    android:orientation="horizontal"
     android:padding="16dp"
     app:layout_behavior="android.support.design.widget.BottomSheetBehavior">
 
@@ -22,7 +22,8 @@
         android:layout_height="24dp"
         android:layout_margin="8dp"
         android:background="?selectableItemBackgroundBorderless"
-        android:src="@drawable/ic_editor_insulin"
+        android:src="@drawable/ic_insulin_settings"
+        android:contentDescription="@string/glucose_editor_insulin_edit"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -61,26 +62,39 @@
         app:layout_constraintWidth_percent="0.3"
         tools:targetApi="O" />
 
+    <TextView
+        android:id="@+id/glucose_editor_insulin_empty"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:textSize="18sp"
+        android:text="@string/glucose_editor_no_insulin"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/glucose_editor_insulin_title" />
+
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/glucose_editor_insulin_add"
+        android:id="@+id/glucose_editor_insulin_positive"
         style="@style/Widget.MaterialComponents.Button.TextButton.Dialog"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="@string/glucose_editor_insulin_apply"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/glucose_editor_insulin_spinner"
         app:layout_constraintWidth_default="percent"
-        app:layout_constraintWidth_percent="0.3" />
+        app:layout_constraintWidth_percent="0.3"
+        tools:text="@string/glucose_editor_insulin_apply" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/glucose_editor_insulin_remove"
+        android:id="@+id/glucose_editor_insulin_negative"
         style="@style/Widget.MaterialComponents.Button.TextButton.Dialog"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="@string/remove"
-        app:layout_constraintEnd_toStartOf="@id/glucose_editor_insulin_add"
-        app:layout_constraintTop_toTopOf="@id/glucose_editor_insulin_add"
+        app:layout_constraintEnd_toStartOf="@id/glucose_editor_insulin_positive"
+        app:layout_constraintTop_toTopOf="@id/glucose_editor_insulin_positive"
         app:layout_constraintWidth_default="percent"
         app:layout_constraintWidth_percent="0.3" />
 </androidx.constraintlayout.widget.ConstraintLayout>

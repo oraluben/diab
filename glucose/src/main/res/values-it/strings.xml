@@ -11,7 +11,6 @@
     <!-- Glcuose Editor -->
     <string name="glucose_editor_time_dialog">Seleziona la data</string>
     <string name="glucose_editor_insulin_add">Aggiungi insulina</string>
-    <string name="glucose_editor_insulin_apply">Applica</string>
     <string name="glucose_editor_basal_add">Aggiungi basale</string>
     <string name="glucose_editor_insulin_value">Quantit\u00E0</string>
     <string name="glucose_editor_save_error">Controlla di nuovo i valori</string>
@@ -37,4 +36,10 @@
     <!-- Time -->
     <string name="time_today">Oggi</string>
     <string name="time_yesterday">Ieri</string>
+
+    <!-- Insulin dialog -->
+    <string name="glucose_editor_insulin_apply">Applica</string>
+    <string name="glucose_editor_insulin_none">Nessuna insulina registrata</string>
+    <string name="glucose_editor_insulin_none_btn">Registra insuline</string>
+    <string name="glucose_editor_insulin_edit">Modifica insuline</string>
 </resources>
