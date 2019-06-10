@@ -291,7 +291,9 @@ class EditorFragment : Fragment() {
             timeView.setErrorStatus(context, false)
         }
 
-        timeView.text = Date(timeInMillis).getDetailedString()
+        val date = Date(timeInMillis)
+        timeView.text = date.getDetailedString()
+        viewModel.date = date
     }
 
     private fun checkForValueError(value: Int) {
