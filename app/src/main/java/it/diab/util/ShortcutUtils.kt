@@ -28,7 +28,7 @@ import it.diab.core.util.intentTo
 
 @RequiresApi(26)
 object ShortcutUtils {
-    private const val SHORTCUTS_VERSION = 1
+    private const val SHORTCUTS_VERSION = 2
     private const val KEY_SHORTCUTS = "pref_home_shortcuts"
     private val SHORTCUTS = arrayOf(this::buildAddGlucoseShortcut)
 
