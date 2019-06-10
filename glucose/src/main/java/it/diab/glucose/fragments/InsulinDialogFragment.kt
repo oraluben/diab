@@ -99,33 +99,7 @@ class InsulinDialogFragment : BottomSheetDialogFragmentExt() {
     }
 
     private fun setupEmpty() {
-        ConstraintSet().apply {
-            clone(constraint)
-            connect(
-                R.id.glucose_editor_insulin_positive,
-                ConstraintSet.TOP,
-                R.id.glucose_editor_insulin_empty,
-                ConstraintSet.BOTTOM
-            )
-            connect(
-                R.id.glucose_editor_insulin_positive,
-                ConstraintSet.START,
-                ConstraintSet.PARENT_ID,
-                ConstraintSet.START
-            )
-            connect(
-                R.id.glucose_editor_insulin_positive,
-                ConstraintSet.END,
-                ConstraintSet.PARENT_ID,
-                ConstraintSet.END
-            )
-            constrainPercentWidth(
-                R.id.glucose_editor_insulin_positive,
-                0.8f
-            )
-
-            applyTo(constraint)
-        }
+        applyEmptyLayout()
 
         emptyText.visibility = View.VISIBLE
         valueEditText.visibility = View.GONE
@@ -164,6 +138,29 @@ class InsulinDialogFragment : BottomSheetDialogFragmentExt() {
 
         if (model.currentInsulinId < 1L) {
             negativeButton.visibility = View.GONE
+        }
+    }
+
+    private fun applyEmptyLayout() {
+        ConstraintSet().apply {
+            clone(constraint)
+            connect(
+                R.id.glucose_editor_insulin_positive, ConstraintSet.TOP,
+                R.id.glucose_editor_insulin_empty, ConstraintSet.BOTTOM
+            )
+            connect(
+                R.id.glucose_editor_insulin_positive, ConstraintSet.START,
+                ConstraintSet.PARENT_ID, ConstraintSet.START
+            )
+            connect(
+                R.id.glucose_editor_insulin_positive, ConstraintSet.END,
+                ConstraintSet.PARENT_ID, ConstraintSet.END
+            )
+            constrainPercentWidth(
+                R.id.glucose_editor_insulin_positive,
+                0.8f
+            )
+            applyTo(constraint)
         }
     }
 
