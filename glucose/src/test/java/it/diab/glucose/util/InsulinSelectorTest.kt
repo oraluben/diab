@@ -17,7 +17,7 @@ class InsulinSelectorTest {
 
     @Test
     fun suggestInsulin() {
-        val list = arrayOf(
+        val list = listOf(
             insulin {
                 timeFrame = TimeFrame.NIGHT
                 isBasal = true
@@ -38,7 +38,7 @@ class InsulinSelectorTest {
 
     @Test
     fun suggestBasal() {
-        val list = arrayOf(
+        val list = listOf(
             insulin {
                 timeFrame = TimeFrame.NIGHT
                 isBasal = false

@@ -1,12 +1,12 @@
 /*
- * Copyright (c) 2018 Bevilacqua Joey
+ * Copyright (c) 2019 Bevilacqua Joey
  *
  * Licensed under the GNU GPLv3 license
  *
  * The text of the license can be found in the LICENSE file
  * or at https://www.gnu.org/licenses/gpl.txt
  */
-package it.diab.glucose.widget
+package it.diab.glucose.suggestion.ui
 
 import android.content.Context
 import android.util.AttributeSet
@@ -15,10 +15,11 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.annotation.AttrRes
 import it.diab.glucose.R
-import it.diab.glucose.suggestion.SuggestionModel
+import it.diab.glucose.suggestion.models.SuggestionModel
+import it.diab.glucose.suggestion.status.SuggestionStatus
 import it.diab.glucose.util.VibrationUtil
 
-class SuggestionView : LinearLayout {
+class SuggestionView : LinearLayout, SuggestionUiInterface {
     private val textView: TextView
 
     constructor(context: Context) : super(context)
@@ -40,10 +41,10 @@ class SuggestionView : LinearLayout {
      * A config may or may not apply depending on the [SuggestionModel.isValid]
      * value.
      *
-     * @param model the applied model
-     * @return whether the model has been enabled
+     * @param model the applied status
+     * @return whether the status has been enabled
      */
-    fun <T> applyConfig(model: SuggestionModel<T>): Boolean {
+    override fun <T, S : SuggestionStatus> applyConfig(model: SuggestionModel<T, S>): Boolean {
         if (model.isValid()) {
             textView.setCompoundDrawablesWithIntrinsicBounds(model.icon, 0, 0, 0)
             return true
@@ -53,7 +54,7 @@ class SuggestionView : LinearLayout {
         return false
     }
 
-    fun <T> onSuggestionLoaded(value: T, model: SuggestionModel<T>) {
+    override fun <T, S : SuggestionStatus> onSuggestionLoaded(value: T, model: SuggestionModel<T, S>) {
         val isValid = model.validate(value)
         textView.text = if (isValid) model.getSuccessMessage(value, resources)
         else model.getFailMessage(value, resources)

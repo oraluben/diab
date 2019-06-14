@@ -20,6 +20,8 @@ import it.diab.data.extensions.asTimeFrame
 import it.diab.data.plugin.PluginManager
 import it.diab.data.repositories.GlucoseRepository
 import it.diab.data.repositories.InsulinRepository
+import it.diab.glucose.components.status.EditableInStatus
+import it.diab.glucose.components.status.EditableOutStatus
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
@@ -31,11 +33,25 @@ class EditorViewModel internal constructor(
 ) : ViewModel() {
 
     private val _uid = MutableLiveData<Long>()
-    private var _glucose = Transformations.switchMap(_uid) { uid ->
+    private var _glucoseQuery = Transformations.switchMap(_uid) { uid ->
         glucoseRepository.getByIdLive(uid)
     }
-    val glucose = Transformations.map(_glucose) { glucose ->
+    val glucose = Transformations.map(_glucoseQuery) { glucose ->
         glucose?.firstOrNull() ?: Glucose()
+    }
+    val model = Transformations.map(glucose) { glucose ->
+        EditableInStatus(
+            glucose.uid,
+            glucose.value,
+            glucose.date,
+            glucose.eatLevel,
+            glucose.insulinId0,
+            getInsulin(glucose.insulinId0).getDisplayedString(glucose.insulinValue0),
+            glucose.insulinId1,
+            getInsulin(glucose.insulinId1).getDisplayedString(glucose.insulinValue1),
+            glucose.uid < 1L,
+            hasPotentialBasal(glucose)
+        )
     }
 
     var isEditMode = false
@@ -58,12 +74,14 @@ class EditorViewModel internal constructor(
         viewModelScope.launch { runSave() }
     }
 
+    fun save(status: EditableOutStatus) {
+        viewModelScope.launch { runSave(status) }
+    }
+
     fun getInsulin(uid: Long) = insulins.firstOrNull { it.uid == uid } ?: Insulin()
 
-    fun hasPotentialBasal(): Boolean {
-        val targetTimeFrame = glucose.value?.timeFrame ?: TimeFrame.EXTRA
-        return basalInsulins.any { it.timeFrame == targetTimeFrame }
-    }
+    fun hasPotentialBasal(glucose: Glucose) =
+        basalInsulins.any { it.timeFrame == glucose.timeFrame }
 
     fun getInsulinByTimeFrame(): Insulin {
         val targetTimeFrame = glucose.value?.timeFrame ?: TimeFrame.EXTRA
@@ -79,9 +97,9 @@ class EditorViewModel internal constructor(
         }
     }
 
-    fun applyInsulinSuggestion(value: Float, insulin: Insulin, block: () -> Unit) {
+    fun applyInsulinSuggestion(value: Float, insulinUid: Long, block: () -> Unit) {
         viewModelScope.launch {
-            runApplySuggestion(value, insulin)
+            runApplySuggestion(value, insulinUid)
             block()
         }
     }
@@ -115,10 +133,21 @@ class EditorViewModel internal constructor(
     }
 
     @VisibleForTesting
-    suspend fun runApplySuggestion(value: Float, insulin: Insulin) {
+    suspend fun runSave(status: EditableOutStatus) {
         val toSave = glucose.value ?: return
 
-        toSave.insulinId0 = insulin.uid
+        toSave.value = status.value
+        toSave.date = date
+        toSave.timeFrame = date.asTimeFrame()
+        toSave.eatLevel = status.foodIntake
+        glucoseRepository.insert(toSave)
+    }
+
+    @VisibleForTesting
+    suspend fun runApplySuggestion(value: Float, insulinUid: Long) {
+        val toSave = glucose.value ?: return
+
+        toSave.insulinId0 = insulinUid
         toSave.insulinValue0 = value
         glucoseRepository.insert(toSave)
     }

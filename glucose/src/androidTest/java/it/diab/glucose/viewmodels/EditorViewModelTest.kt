@@ -143,7 +143,7 @@ class EditorViewModelTest {
         glucoseRepo.insert(glucose)
         viewModel.runPrepare(glucose.uid, pluginManager)
         viewModel.glucose.observe(lifecycle, Observer {
-            assertTrue(viewModel.hasPotentialBasal())
+            assertTrue(viewModel.hasPotentialBasal(it))
         })
     }
 
@@ -170,7 +170,7 @@ class EditorViewModelTest {
         viewModel.runPrepare(glucose.uid, pluginManager)
 
         viewModel.glucose.observe(lifecycle, blockingObserver {
-            viewModel.runApplySuggestion(test, testInsulin)
+            viewModel.runApplySuggestion(test, testInsulin.uid)
 
             val fromDb = glucoseRepo.getById(glucose.uid)
             assertEquals(test, fromDb.insulinValue0)

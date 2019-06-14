@@ -31,7 +31,7 @@ class ArrayExtTest {
             false
         })
 
-        test.forEachUntilTrue { it() }
+        test.forEachUntilTrueIndexed { _, func -> func() }
 
         assertEquals("abc", sb.toString())
     }

@@ -13,13 +13,13 @@ import it.diab.data.entities.TimeFrame
 
 class InsulinSelector(private val timeFrame: TimeFrame) {
 
-    fun suggestInsulin(list: Array<Insulin>, currentId: Long) =
+    fun suggestInsulin(list: Collection<Insulin>, currentId: Long) =
         suggest(list, currentId, false)
 
-    fun suggestBasal(list: Array<Insulin>, currentId: Long) =
+    fun suggestBasal(list: Collection<Insulin>, currentId: Long) =
         suggest(list, currentId, true)
 
-    private fun suggest(list: Array<Insulin>, currentId: Long, isBasal: Boolean): Int {
+    private fun suggest(list: Collection<Insulin>, currentId: Long, isBasal: Boolean): Int {
         var suggested = -1
         list.forEachIndexed { i, insulin ->
             if (insulin.isBasal == isBasal) {

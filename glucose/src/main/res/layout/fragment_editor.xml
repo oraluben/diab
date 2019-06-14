@@ -80,7 +80,7 @@
         tools:text="Basal 20"
         tools:visibility="visible" />
 
-    <it.diab.glucose.widget.SuggestionView
+    <it.diab.glucose.suggestion.ui.SuggestionView
         android:id="@id/editor_suggestion"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

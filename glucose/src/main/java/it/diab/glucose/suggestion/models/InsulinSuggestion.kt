@@ -6,30 +6,25 @@
  * The text of the license can be found in the LICENSE file
  * or at https://www.gnu.org/licenses/gpl.txt
  */
-package it.diab.glucose.suggestion
+package it.diab.glucose.suggestion.models
 
 import android.content.res.Resources
-import it.diab.data.entities.Glucose
-import it.diab.data.entities.Insulin
 import it.diab.data.entities.TimeFrame
 import it.diab.data.plugin.PluginManager
 import it.diab.glucose.R
+import it.diab.glucose.suggestion.status.InsulinStatus
 import kotlin.math.roundToInt
 
-class InsulinSuggestion(
-    private val glucose: Glucose,
-    private val proposedInsulin: Insulin,
-    private val onSuggestionApplied: (value: Float, insulin: Insulin) -> Unit
-) : SuggestionModel<Float> {
+class InsulinSuggestion(status: InsulinStatus) : SuggestionModel<Float, InsulinStatus>(status) {
 
     override fun isValid(): Boolean {
-        val validTF = when (glucose.timeFrame) {
+        val validTF = when (status.timeFrame) {
             TimeFrame.MORNING,
             TimeFrame.DINNER,
             TimeFrame.LUNCH -> true
             else -> false
         }
-        return validTF && glucose.insulinId0 == -1L
+        return validTF && !status.hasInsulin
     }
 
     override val icon = R.drawable.ic_suggestion_ml
@@ -54,10 +49,10 @@ class InsulinSuggestion(
     }
 
     override fun onSuggestionApply(value: Float) {
-        onSuggestionApplied(value.roundToInsulin(), proposedInsulin)
+        status.onSuggestionApplied(value.roundToInsulin(), status.proposedInsulinUid)
     }
 
-    private fun Float.roundToInsulin() = if (proposedInsulin.hasHalfUnits)
+    private fun Float.roundToInsulin() = if (status.increaseByHalf)
         (this * 2).roundToInt() / 2f
     else
         roundToInt().toFloat()

@@ -8,9 +8,9 @@
  */
 package it.diab.glucose.util.extensions
 
-fun <T> Array<T>.forEachUntilTrue(checker: (T) -> Boolean) {
-    for (item in this) {
-        if (checker(item)) {
+fun <T> Array<T>.forEachUntilTrueIndexed(checker: (Int, T) -> Boolean) {
+    for ((index, item) in withIndex()) {
+        if (checker(index, item)) {
             break
         }
     }

@@ -9,13 +9,12 @@
 package it.diab.glucose.util.extensions
 
 import android.animation.ValueAnimator
-import android.content.Context
 import android.graphics.PorterDuff
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import it.diab.glucose.R
 
-fun TextView.setErrorStatus(context: Context, toError: Boolean) {
+fun TextView.setIconErrorStatus(toError: Boolean) {
     val originalColor = ContextCompat.getColor(context, R.color.colorAccent)
     val errorColor = ContextCompat.getColor(context, R.color.action_dangerous)
 
@@ -33,7 +32,7 @@ fun TextView.setErrorStatus(context: Context, toError: Boolean) {
     animator.start()
 }
 
-fun TextView.setTextErrorStatus(context: Context, toError: Boolean) {
+fun TextView.setTextErrorStatus(toError: Boolean) {
     val originalColor = context.getColorAttr(R.style.DiabTheme, android.R.attr.textColorPrimary)
     val errorColor = ContextCompat.getColor(context, R.color.action_dangerous)
 

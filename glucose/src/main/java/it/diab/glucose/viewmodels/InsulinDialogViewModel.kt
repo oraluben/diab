@@ -15,7 +15,9 @@ import it.diab.data.entities.Glucose
 import it.diab.data.entities.Insulin
 import it.diab.data.repositories.GlucoseRepository
 import it.diab.data.repositories.InsulinRepository
-import it.diab.glucose.ui.models.InsulinDialogUiModel
+import it.diab.glucose.components.status.InsulinDialogInStatus
+import it.diab.glucose.components.status.InsulinDialogOutStatus
+import it.diab.glucose.util.InsulinSelector
 import kotlinx.coroutines.launch
 
 class InsulinDialogViewModel internal constructor(
@@ -25,66 +27,84 @@ class InsulinDialogViewModel internal constructor(
 
     private lateinit var insulins: List<Insulin>
     private lateinit var glucose: Glucose
+    private var wantsBasal = false
 
-    fun prepare(uid: Long, wantBasal: Boolean, block: (InsulinDialogUiModel) -> Unit) {
+    fun prepare(uid: Long, wantsBasal: Boolean, block: (InsulinDialogInStatus) -> Unit) {
         viewModelScope.launch {
-            runPrepare(uid, wantBasal)
-            block(
-                InsulinDialogUiModel(
-                    glucose.timeFrame,
-                    if (wantBasal) glucose.insulinValue1 else glucose.insulinValue0,
-                    if (wantBasal) glucose.insulinId1 else glucose.insulinId0,
-                    insulins
-                )
-            )
+            val status = runPrepare(uid, wantsBasal)
+            block(status)
         }
     }
 
-    fun setInsulin(index: Int, value: Float) {
+    fun setInsulin(status: InsulinDialogOutStatus) {
         viewModelScope.launch {
-            runSetInsulin(index, value)
-        }
-    }
-
-    fun setBasal(index: Int, value: Float) {
-        viewModelScope.launch {
-            runSetBasal(index, value)
+            if (wantsBasal) {
+                runSetBasal(status)
+            } else {
+                runSetInsulin(status)
+            }
         }
     }
 
     fun removeInsulin() {
         viewModelScope.launch {
-            runRemoveInsulin()
-        }
-    }
-
-    fun removeBasal() {
-        viewModelScope.launch {
-            runRemoveBasal()
+            if (wantsBasal) {
+                runRemoveBasal()
+            } else {
+                runRemoveInsulin()
+            }
         }
     }
 
     fun hasNothing() = insulins.isEmpty()
 
     @VisibleForTesting
-    suspend fun runPrepare(uid: Long, wantBasal: Boolean) {
+    suspend fun runPrepare(uid: Long, wantsBasal: Boolean): InsulinDialogInStatus {
+        this.wantsBasal = wantsBasal
         glucose = glucoseRepository.getById(uid)
-        insulins = insulinRepository.getInsulins().filter { it.isBasal == wantBasal }
+        insulins = insulinRepository.getInsulins().filter { it.isBasal == wantsBasal }
+
+        if (insulins.isEmpty()) {
+            return InsulinDialogInStatus.Empty
+        }
+
+        val selector = InsulinSelector(glucose.timeFrame)
+        val suggested =
+            if (wantsBasal) selector.suggestBasal(insulins, glucose.insulinId1)
+            else selector.suggestInsulin(insulins, glucose.insulinId0)
+        val currentValue =
+            if (wantsBasal) glucose.insulinValue1
+            else glucose.insulinValue0
+
+        return InsulinDialogInStatus.Edit(
+            uid > 0L,
+            suggested,
+            insulins.map(Insulin::name),
+            currentValue
+        )
     }
 
     @VisibleForTesting
-    suspend fun runSetInsulin(index: Int, value: Float) {
+    suspend fun runSetInsulin(status: InsulinDialogOutStatus) {
+        if (status.value <= 0f) {
+            return
+        }
+
         glucoseRepository.insert(glucose.apply {
-            insulinId0 = insulins[index].uid
-            insulinValue0 = value
+            insulinId0 = insulins[status.selectedInsulin].uid
+            insulinValue0 = status.value
         })
     }
 
     @VisibleForTesting
-    suspend fun runSetBasal(index: Int, value: Float) {
+    suspend fun runSetBasal(status: InsulinDialogOutStatus) {
+        if (status.value <= 0f) {
+            return
+        }
+
         glucoseRepository.insert(glucose.apply {
-            insulinId1 = insulins[index].uid
-            insulinValue1 = value
+            insulinId1 = insulins[status.selectedInsulin].uid
+            insulinValue1 = status.value
         })
     }
 

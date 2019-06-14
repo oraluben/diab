@@ -43,6 +43,8 @@ class DateTimeDialog(
         when (which) {
             0 -> {
                 dialog?.dismiss()
+                val now = Calendar.getInstance()
+                calendar[Calendar.DAY_OF_YEAR] = now[Calendar.DAY_OF_YEAR]
                 showTimePicker()
             }
             1 -> {
