@@ -10,17 +10,17 @@ package it.diab.holders
 
 import android.view.View
 import android.widget.ImageView
-import android.widget.TextView
+import androidx.appcompat.widget.AppCompatTextView
 import it.diab.R
-import it.diab.core.util.extensions.setPrecomputedText
 import it.diab.data.entities.Glucose
+import it.diab.ui.util.extensions.setPreText
 
 class GlucoseHolder(
     view: View,
     private val callbacks: GlucoseHolderCallbacks
 ) : MainHolder(view) {
-    private val titleView = view.findViewById<TextView>(R.id.item_glucose_value)
-    private val summaryView = view.findViewById<TextView>(R.id.item_glucose_insulin)
+    private val titleView = view.findViewById<AppCompatTextView>(R.id.item_glucose_value)
+    private val summaryView = view.findViewById<AppCompatTextView>(R.id.item_glucose_insulin)
     private val indicatorView = view.findViewById<ImageView>(R.id.item_glucose_status)
 
     fun onBind(glucose: Glucose) {
@@ -40,7 +40,7 @@ class GlucoseHolder(
         val title = "${glucose.value} (%1\$s)"
 
         callbacks.fetchHourText(glucose.date) { text ->
-            titleView.setPrecomputedText(title.format(text))
+            titleView.setPreText(title.format(text))
         }
 
         val indicatorDrawable = callbacks.getIndicator(glucose.value)
@@ -79,7 +79,7 @@ class GlucoseHolder(
             summaryView.visibility = View.GONE
         } else {
             summaryView.visibility = View.VISIBLE
-            summaryView.text = builder.toString()
+            summaryView.setPreText(builder.toString())
         }
     }
 }

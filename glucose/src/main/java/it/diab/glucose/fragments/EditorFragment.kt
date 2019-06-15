@@ -29,7 +29,6 @@ import it.diab.core.util.Activities
 import it.diab.core.util.ComposableError
 import it.diab.core.util.PreferencesUtil
 import it.diab.core.util.SystemUtil
-import it.diab.core.util.extensions.setPrecomputedText
 import it.diab.data.entities.Glucose
 import it.diab.data.entities.Insulin
 import it.diab.data.plugin.PluginManager
@@ -127,7 +126,7 @@ class EditorFragment : Fragment() {
         eatView.setProgress(glucose.eatLevel)
         eatView.lock()
         valueView.text = glucose.value.toString()
-        timeView.setPrecomputedText(glucose.date.getDetailedString())
+        timeView.text = glucose.date.getDetailedString()
         fabView.setOnClickListener { onFabClick() }
 
         if (viewModel.isEditMode) {
