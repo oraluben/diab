@@ -66,6 +66,6 @@ Sensitive file changes tracking should be disabled by running the
 by updating the git index manually:
 
 ```shell
- git update-index --skip-worktree ml/data/*
- git update-index --skip-worktree ml/export/*
+ git update-index --skip-worktree _ml/data/*
+ git update-index --skip-worktree _ml/export/*
 ```
