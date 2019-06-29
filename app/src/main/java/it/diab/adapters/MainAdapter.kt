@@ -16,7 +16,7 @@ import androidx.annotation.ColorRes
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.paging.PagedListAdapter
+import androidx.recyclerview.widget.AsyncDifferConfig
 import androidx.recyclerview.widget.DiffUtil
 import it.diab.R
 import it.diab.core.util.PreferencesUtil
@@ -27,6 +27,7 @@ import it.diab.holders.GlucoseHolder
 import it.diab.holders.GlucoseHolderCallbacks
 import it.diab.holders.HeaderHolder
 import it.diab.holders.MainHolder
+import it.diab.ui.ShiftedAdapter
 import it.diab.ui.models.DataSetsModel
 import it.diab.ui.models.LastGlucoseModel
 import it.diab.util.UIUtils
@@ -37,7 +38,7 @@ import java.util.Locale
 class MainAdapter(
     private val context: Context,
     private val callbacks: Callbacks
-) : PagedListAdapter<Glucose, MainHolder>(CALLBACK), GlucoseHolderCallbacks {
+) : ShiftedAdapter<Glucose, MainHolder>(CONFIG, 1), GlucoseHolderCallbacks {
 
     private val _openGlucose = MutableLiveData<Event<Long>>()
     val openGlucose: LiveData<Event<Long>> = _openGlucose
@@ -66,7 +67,7 @@ class MainAdapter(
         if (holder is HeaderHolder) {
             bindHeader(holder)
         } else if (holder is GlucoseHolder) {
-            bindGlucose(holder, position - 1)
+            bindGlucose(holder, position)
         }
     }
 
@@ -104,11 +105,6 @@ class MainAdapter(
 
     override fun getItemViewType(position: Int) = if (position == 0) VIEW_HEADER else VIEW_GLUCOSE
 
-    override fun getItemCount(): Int {
-        // First item is for the header
-        return super.getItemCount() + 1
-    }
-
     private fun buildIndicator(@ColorRes colorId: Int): Drawable? {
         val resources = context.resources
         val color = ContextCompat.getColor(context, colorId)
@@ -123,13 +119,13 @@ class MainAdapter(
     }
 
     companion object {
-        private val CALLBACK = object : DiffUtil.ItemCallback<Glucose>() {
+        private val CONFIG = AsyncDifferConfig.Builder(object : DiffUtil.ItemCallback<Glucose>() {
             override fun areContentsTheSame(oldItem: Glucose, newItem: Glucose) =
                 oldItem == newItem
 
             override fun areItemsTheSame(oldItem: Glucose, newItem: Glucose) =
                 oldItem.uid == newItem.uid
-        }
+        }).build()
 
         private const val VIEW_HEADER = 0
         private const val VIEW_GLUCOSE = 1
