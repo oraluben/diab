@@ -39,9 +39,9 @@ class InsulinTest {
 
     @Test
     fun getDisplayedString() {
-        val insulin = insulin { name = "test" }
-
-        assertEquals("test 10.5", insulin.getDisplayedString(10.54f))
+        val a = insulin { name = "test" }
+        assertEquals("10.5 test", a.getDisplayedString(10.5f))
+        assertEquals("2 test", a.getDisplayedString(2.0f))
     }
 
     @Test
