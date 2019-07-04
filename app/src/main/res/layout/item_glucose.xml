@@ -12,40 +12,22 @@
     android:layout_width="match_parent"
     android:layout_height="64dp"
     android:foreground="?attr/selectableItemBackground"
-    android:orientation="vertical"
     android:paddingStart="72dp"
-    android:paddingTop="8dp"
-    android:paddingEnd="16dp"
-    android:paddingBottom="8dp">
+    android:paddingEnd="16dp">
 
-    <LinearLayout
+    <TextView
+        android:id="@+id/item_glucose_info"
         android:layout_width="0dp"
-        android:layout_height="64dp"
-        android:gravity="center_vertical"
-        android:orientation="vertical"
+        android:layout_height="wrap_content"
+        android:maxLines="2"
+        android:drawableTint="@color/headerShadow"
+        android:textColor="?android:attr/textColorPrimary"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/item_glucose_status"
+        android:textSize="15sp"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/item_glucose_status"
         app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="RtlSymmetry">
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/item_glucose_value"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:maxLines="1"
-            android:textColor="?android:attr/textColorPrimary"
-            android:textSize="18sp"
-            tools:text="123 (19:02)" />
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/item_glucose_insulin"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:maxLines="1"
-            android:textSize="15sp"
-            tools:text="6.5 Novorapid, 20 Lantus" />
-    </LinearLayout>
+        tools:text="123 (19:02)\n6.5 Novorapid, 20 Lantus" />
 
     <ImageView
         android:id="@+id/item_glucose_status"

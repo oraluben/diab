@@ -17,12 +17,8 @@ interface GlucoseHolderCallbacks {
      * Fetch a String that represents hours of a given [Date]
      *
      * @param date date to be put in the string
-     * @param onFetch callback for fetch completion
      */
-    fun fetchHourText(
-        date: Date,
-        onFetch: (String) -> Unit
-    )
+    fun fetchHourText(date: Date): String
 
     /**
      * Get the indicator drawable for

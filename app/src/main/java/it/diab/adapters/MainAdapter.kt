@@ -87,8 +87,8 @@ class MainAdapter(
         }
     }
 
-    override fun fetchHourText(date: Date, onFetch: (String) -> Unit) {
-        onFetch(hourFormat.format(date))
+    override fun fetchHourText(date: Date): String {
+        return hourFormat.format(date)
     }
 
     override fun getIndicator(value: Int) = when {

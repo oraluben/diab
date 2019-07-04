@@ -36,7 +36,7 @@ abstract class ShiftedAdapter<T, VH : RecyclerView.ViewHolder>(
      * in advance and behave accordingly
      */
     fun getItem(position: Int): T? =
-        if (position < shift) null // We expect the Adapter to handle this case by using the
+        if (position < shift) null // We expect the Adapter to handle this case
         else differ.getItem(position - shift)
 
     private inner class ShiftedListUpdateCallback : ListUpdateCallback {
