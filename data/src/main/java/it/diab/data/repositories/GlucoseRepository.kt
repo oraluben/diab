@@ -22,8 +22,6 @@ class GlucoseRepository private constructor(private val dao: GlucoseDao) : BaseR
 
     val pagedList = dao.pagedList
 
-    val last = dao.last
-
     fun getByIdLive(uid: Long) = dao.getByIdLive(uid)
 
     suspend fun getById(uid: Long) = withContext(IO) {

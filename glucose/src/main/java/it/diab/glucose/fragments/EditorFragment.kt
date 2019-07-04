@@ -39,6 +39,7 @@ import it.diab.glucose.suggestion.status.CheckAgainStatus
 import it.diab.glucose.suggestion.status.InsulinStatus
 import it.diab.glucose.suggestion.ui.SuggestionUiInterface
 import it.diab.glucose.ui.DateTimeDialog
+import it.diab.glucose.util.VibrationUtil
 import it.diab.glucose.util.extensions.forEachUntilTrueIndexed
 import it.diab.glucose.viewmodels.EditorViewModel
 import it.diab.glucose.viewmodels.EditorViewModelFactory
@@ -239,7 +240,7 @@ class EditorFragment : Fragment() {
         val view = view ?: return
 
         if (error.hasAny()) {
-            Snackbar.make(view, R.string.glucose_editor_save_error, Snackbar.LENGTH_LONG).show()
+            onError(view)
             return
         }
 
@@ -247,6 +248,11 @@ class EditorFragment : Fragment() {
 
         Handler().postDelayed(this::addToFit, 300)
         Snackbar.make(view, R.string.glucose_editor_saved, 800).show()
+    }
+
+    private fun onError(view: View) {
+        Snackbar.make(view, R.string.glucose_editor_save_error, Snackbar.LENGTH_LONG).show()
+        VibrationUtil.vibrateForError(view.context)
     }
 
     private fun addToFit() {

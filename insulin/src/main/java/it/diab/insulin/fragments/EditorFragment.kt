@@ -13,6 +13,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.viewModelScope
 import it.diab.core.util.Activities
 import it.diab.core.util.extensions.bus
 import it.diab.data.entities.Insulin
@@ -20,20 +21,15 @@ import it.diab.data.entities.TimeFrame
 import it.diab.data.repositories.InsulinRepository
 import it.diab.insulin.R
 import it.diab.insulin.components.EditableComponent
-import it.diab.insulin.components.EditorActionsComponent
 import it.diab.insulin.components.status.EditableInStatus
 import it.diab.insulin.events.EditEvent
 import it.diab.insulin.viewmodels.EditorViewModel
 import it.diab.insulin.viewmodels.EditorViewModelFactory
 import it.diab.ui.widgets.BottomSheetDialogFragmentExt
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 
 class EditorFragment : BottomSheetDialogFragmentExt() {
 
     private lateinit var viewModel: EditorViewModel
-
-    private val uiScope = CoroutineScope(Dispatchers.Main)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,15 +47,14 @@ class EditorFragment : BottomSheetDialogFragmentExt() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        EditableComponent(view, uiScope, bus)
-        EditorActionsComponent(view, bus)
+        EditableComponent(view, viewModel.viewModelScope, bus)
 
         val uid = arguments?.getLong(Activities.Insulin.EXTRA_EDITOR_UID, -1L) ?: -1L
         viewModel.setInsulin(uid, this::setup)
     }
 
     private fun setup(insulin: Insulin) {
-        bus.subscribe(EditEvent::class, uiScope) {
+        bus.subscribe(EditEvent::class, viewModel.viewModelScope) {
             when (it) {
                 is EditEvent.IntentSave -> {
                     viewModel.save(it.status)

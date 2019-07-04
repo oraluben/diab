@@ -22,6 +22,7 @@ import it.diab.data.extensions.insulin
 import it.diab.data.plugin.PluginManager
 import it.diab.data.repositories.GlucoseRepository
 import it.diab.data.repositories.InsulinRepository
+import it.diab.glucose.components.status.EditableOutStatus
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
@@ -108,13 +109,15 @@ class EditorViewModelTest {
     fun save() = runBlocking {
         val initialSize = glucoseRepo.getInDateRange(0, System.currentTimeMillis()).size
 
-        val glucose = glucose { value = 71 }
-        glucoseRepo.insert(glucose)
-
-        viewModel.runPrepare(glucose.uid, pluginManager)
+        viewModel.runPrepare(-1, pluginManager)
 
         viewModel.glucose.observe(lifecycle, blockingObserver {
-            viewModel.runSave()
+            viewModel.runSave(
+                EditableOutStatus(
+                    71,
+                    Glucose.MEDIUM
+                )
+            )
 
             val finalSize = glucoseRepo.getInDateRange(0, System.currentTimeMillis()).size
             assertTrue(finalSize > initialSize)

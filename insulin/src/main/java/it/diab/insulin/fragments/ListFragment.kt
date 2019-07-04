@@ -15,6 +15,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.viewModelScope
 import it.diab.core.util.Activities
 import it.diab.core.util.extensions.bus
 import it.diab.data.repositories.InsulinRepository
@@ -23,16 +24,10 @@ import it.diab.insulin.components.ListComponent
 import it.diab.insulin.events.ListEvent
 import it.diab.insulin.viewmodels.ListViewModel
 import it.diab.insulin.viewmodels.ListViewModelFactory
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 
 class ListFragment : Fragment() {
 
-    private lateinit var list: ListComponent
-
     private lateinit var viewModel: ListViewModel
-
-    private val uiScope = CoroutineScope(Dispatchers.Main)
 
     override fun onCreate(savedInstance: Bundle?) {
         super.onCreate(savedInstance)
@@ -52,9 +47,9 @@ class ListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        list = ListComponent(view, uiScope, bus)
+        ListComponent(view, viewModel.viewModelScope, bus)
 
-        bus.subscribe(ListEvent::class, uiScope) {
+        bus.subscribe(ListEvent::class, viewModel.viewModelScope) {
             if (it is ListEvent.ClickEvent) {
                 onItemClick(it.uid)
             }

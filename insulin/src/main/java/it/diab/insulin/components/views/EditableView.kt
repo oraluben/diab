@@ -15,12 +15,17 @@ import androidx.appcompat.widget.AppCompatEditText
 import androidx.appcompat.widget.AppCompatSpinner
 import androidx.appcompat.widget.SwitchCompat
 import com.google.android.material.button.MaterialButton
+import it.diab.core.arch.EventBusFactory
 import it.diab.core.arch.UiView
 import it.diab.insulin.R
 import it.diab.insulin.components.status.EditableInStatus
 import it.diab.insulin.components.status.EditableOutStatus
+import it.diab.insulin.events.EditEvent
 
-class EditableView(container: View) : UiView<EditableInStatus, EditableOutStatus>(container) {
+class EditableView(
+    container: View,
+    bus: EventBusFactory
+) : UiView<EditableInStatus, EditableOutStatus>(container) {
 
     private val title: TextView =
         container.findViewById(R.id.insulin_edit_dialog_title)
@@ -37,8 +42,21 @@ class EditableView(container: View) : UiView<EditableInStatus, EditableOutStatus
     private val isBasal: SwitchCompat =
         container.findViewById(R.id.insulin_edit_basal)
 
+    private val save: MaterialButton =
+        container.findViewById(R.id.insulin_edit_save)
+
     private val delete: MaterialButton =
         container.findViewById(R.id.insulin_edit_delete)
+
+    init {
+        save.setOnClickListener {
+            bus.emit(EditEvent::class, EditEvent.IntentRequestSave)
+        }
+
+        delete.setOnClickListener {
+            bus.emit(EditEvent::class, EditEvent.IntentRequestDelete)
+        }
+    }
 
     override fun setStatus(status: EditableInStatus) {
         title.setText(if (status.isEdit) R.string.insulin_editor_edit else R.string.insulin_editor_add)

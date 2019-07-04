@@ -56,8 +56,6 @@ class InsulinDialogViewModel internal constructor(
         }
     }
 
-    fun hasNothing() = insulins.isEmpty()
-
     @VisibleForTesting
     suspend fun runPrepare(uid: Long, wantsBasal: Boolean): InsulinDialogInStatus {
         this.wantsBasal = wantsBasal

@@ -57,7 +57,6 @@ class EditorViewModel internal constructor(
     var isEditMode = false
     var date = Date()
     var value = 0
-    var eatLevel = 1
 
     private lateinit var insulins: List<Insulin>
     private lateinit var basalInsulins: List<Insulin>
@@ -68,10 +67,6 @@ class EditorViewModel internal constructor(
             runPrepare(uid, pManager)
             block()
         }
-    }
-
-    fun save() {
-        viewModelScope.launch { runSave() }
     }
 
     fun save(status: EditableOutStatus) {
@@ -115,21 +110,10 @@ class EditorViewModel internal constructor(
         isEditMode = uid <= 0L
         value = staticGlucose.value
         date = staticGlucose.date
-        eatLevel = staticGlucose.eatLevel
 
         pluginManager = pManager
         insulins = defAll.await()
         basalInsulins = defBasal.await()
-    }
-
-    @VisibleForTesting
-    suspend fun runSave() {
-        val toSave = glucose.value ?: return
-        toSave.value = value
-        toSave.date = date
-        toSave.timeFrame = date.asTimeFrame()
-        toSave.eatLevel = eatLevel
-        glucoseRepository.insert(toSave)
     }
 
     @VisibleForTesting

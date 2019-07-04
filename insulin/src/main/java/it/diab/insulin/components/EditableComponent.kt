@@ -21,7 +21,7 @@ class EditableComponent(
     bus: EventBusFactory
 ) : UiComponent {
 
-    private val uiView = EditableView(container)
+    private val uiView = EditableView(container, bus)
 
     init {
         bus.subscribe(EditEvent::class, scope) {
