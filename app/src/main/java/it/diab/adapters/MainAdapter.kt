@@ -21,8 +21,7 @@ import androidx.recyclerview.widget.DiffUtil
 import it.diab.R
 import it.diab.core.util.PreferencesUtil
 import it.diab.core.util.event.Event
-import it.diab.data.entities.Glucose
-import it.diab.data.entities.Insulin
+import it.diab.data.entities.GlucoseWithInsulin
 import it.diab.holders.GlucoseHolder
 import it.diab.holders.GlucoseHolderCallbacks
 import it.diab.holders.HeaderHolder
@@ -38,7 +37,7 @@ import java.util.Locale
 class MainAdapter(
     private val context: Context,
     private val callbacks: Callbacks
-) : ShiftedAdapter<Glucose, MainHolder>(CONFIG, 1), GlucoseHolderCallbacks {
+) : ShiftedAdapter<GlucoseWithInsulin, MainHolder>(CONFIG, 1), GlucoseHolderCallbacks {
 
     private val _openGlucose = MutableLiveData<Event<Long>>()
     val openGlucose: LiveData<Event<Long>> = _openGlucose
@@ -97,8 +96,6 @@ class MainAdapter(
         else -> null
     }
 
-    override fun getInsulinName(uid: Long) = callbacks.getInsulin(uid).name
-
     override fun onClick(uid: Long) {
         _openGlucose.value = Event(uid)
     }
@@ -113,18 +110,18 @@ class MainAdapter(
     }
 
     interface Callbacks {
-        fun getInsulin(uid: Long): Insulin
         fun getLastGlucose(): LastGlucoseModel
         fun getDataSets(): DataSetsModel
     }
 
     companion object {
-        private val CONFIG = AsyncDifferConfig.Builder(object : DiffUtil.ItemCallback<Glucose>() {
-            override fun areContentsTheSame(oldItem: Glucose, newItem: Glucose) =
-                oldItem == newItem
+        private val CONFIG =
+            AsyncDifferConfig.Builder(object : DiffUtil.ItemCallback<GlucoseWithInsulin>() {
+                override fun areContentsTheSame(oldItem: GlucoseWithInsulin, newItem: GlucoseWithInsulin) =
+                    oldItem.glucose == newItem.glucose
 
-            override fun areItemsTheSame(oldItem: Glucose, newItem: Glucose) =
-                oldItem.uid == newItem.uid
+                override fun areItemsTheSame(oldItem: GlucoseWithInsulin, newItem: GlucoseWithInsulin) =
+                    oldItem.glucose.uid == newItem.glucose.uid
         }).build()
 
         private const val VIEW_HEADER = 0

@@ -11,14 +11,12 @@ package it.diab.viewmodels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import it.diab.data.repositories.GlucoseRepository
-import it.diab.data.repositories.InsulinRepository
 
 class MainViewModelFactory(
-    private val glucoseRepository: GlucoseRepository,
-    private val insulinRepository: InsulinRepository
+    private val glucoseRepository: GlucoseRepository
 ) : ViewModelProvider.NewInstanceFactory() {
 
     @Suppress("unchecked_cast")
     override fun <T : ViewModel?> create(modelClass: Class<T>) =
-        MainViewModel(glucoseRepository, insulinRepository) as T
+        MainViewModel(glucoseRepository) as T
 }

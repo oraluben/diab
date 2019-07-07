@@ -16,6 +16,7 @@ import android.widget.ImageView
 import androidx.appcompat.widget.AppCompatTextView
 import it.diab.R
 import it.diab.data.entities.Glucose
+import it.diab.data.entities.GlucoseWithInsulin
 import it.diab.glucose.util.extensions.getColorAttr
 import it.diab.ui.util.extensions.setPreText
 import it.diab.util.extensions.inSpans
@@ -27,13 +28,13 @@ class GlucoseHolder(
     private val titleView = view.findViewById<AppCompatTextView>(R.id.item_glucose_info)
     private val indicatorView = view.findViewById<ImageView>(R.id.item_glucose_status)
 
-    fun onBind(glucose: Glucose) {
+    fun onBind(item: GlucoseWithInsulin) {
         itemView.visibility = View.VISIBLE
 
-        titleView.setPreText(buildText(glucose))
+        titleView.setPreText(buildText(item))
 
-        setupValueIndicator(glucose)
-        itemView.setOnClickListener { callbacks.onClick(glucose.uid) }
+        setupValueIndicator(item.glucose)
+        itemView.setOnClickListener { callbacks.onClick(item.glucose.uid) }
     }
 
     fun onLoading() {
@@ -41,14 +42,14 @@ class GlucoseHolder(
         itemView.setOnClickListener { }
     }
 
-    private fun buildText(glucose: Glucose) = SpannableStringBuilder().apply {
+    private fun buildText(item: GlucoseWithInsulin) = SpannableStringBuilder().apply {
 
-        val glucoseInfo = buildGlucoseInfo(glucose)
+        val glucoseInfo = buildGlucoseInfo(item.glucose)
         inSpans(RelativeSizeSpan(1.2f)) {
             append(glucoseInfo)
         }
 
-        val insulinInfo = buildInsulinInfo(glucose) ?: return@apply
+        val insulinInfo = buildInsulinInfo(item) ?: return@apply
         val insulinColor = itemView.context.getColorAttr(R.style.AppTheme, android.R.attr.textColorSecondary)
         inSpans(ForegroundColorSpan(insulinColor)) {
             append(insulinInfo)
@@ -69,31 +70,27 @@ class GlucoseHolder(
         return "${glucose.value} (${callbacks.fetchHourText(glucose.date)})"
     }
 
-    private fun buildInsulinInfo(glucose: Glucose): String? {
+    private fun buildInsulinInfo(item: GlucoseWithInsulin): String? {
         val builder = StringBuilder()
-        val insulinId = glucose.insulinId0
-        val basalId = glucose.insulinId1
+        val insulin = item.insulin
+        val basal = item.basal
 
-        if (insulinId < 0 && basalId < 0) {
+        if (item.insulin == null && basal == null) {
             return null
         }
 
         builder.apply {
             append('\n')
-            if (insulinId >= 0) {
-                append(glucose.insulinValue0)
-                append(' ')
-                append(callbacks.getInsulinName(insulinId))
+            if (insulin != null) {
+                append(insulin.getDisplayedString(item.glucose.insulinValue0))
             }
 
-            if (basalId >= 0) {
-                if (insulinId >= 0) {
+            if (basal != null) {
+                if (insulin != null) {
                     append(", ")
                 }
 
-                append(glucose.insulinValue1)
-                append(' ')
-                append(callbacks.getInsulinName(basalId))
+                append(basal.getDisplayedString(item.glucose.insulinValue1))
             }
         }
 

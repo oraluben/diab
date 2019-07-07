@@ -16,11 +16,9 @@ import androidx.paging.LivePagedListBuilder
 import com.github.mikephil.charting.data.Entry
 import it.diab.core.util.DateUtils
 import it.diab.data.entities.Glucose
-import it.diab.data.entities.Insulin
 import it.diab.data.entities.TimeFrame
 import it.diab.data.extensions.toTimeFrame
 import it.diab.data.repositories.GlucoseRepository
-import it.diab.data.repositories.InsulinRepository
 import it.diab.ui.models.DataSetsModel
 import it.diab.util.extensions.getAsMinutes
 import it.diab.util.extensions.isToday
@@ -31,23 +29,11 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class MainViewModel internal constructor(
-    private val glucoseRepository: GlucoseRepository,
-    private val insulinRepository: InsulinRepository
+    private val glucoseRepository: GlucoseRepository
 ) : ViewModel() {
 
     val pagedList = LivePagedListBuilder(glucoseRepository.pagedList, 5).build()
     val liveList = glucoseRepository.all
-
-    private lateinit var insulins: List<Insulin>
-
-    fun prepare(block: () -> Unit) {
-        viewModelScope.launch {
-            runPrepare()
-            block()
-        }
-    }
-
-    fun getInsulin(uid: Long) = insulins.firstOrNull { it.uid == uid } ?: Insulin()
 
     fun getDataSets(block: (DataSetsModel) -> Unit) {
         viewModelScope.launch {
@@ -57,11 +43,6 @@ class MainViewModel internal constructor(
             val result = runGetDataSets(data)
             block(result)
         }
-    }
-
-    @VisibleForTesting
-    suspend fun runPrepare() {
-        insulins = insulinRepository.getInsulins()
     }
 
     @VisibleForTesting

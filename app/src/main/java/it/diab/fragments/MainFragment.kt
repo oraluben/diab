@@ -24,8 +24,8 @@ import it.diab.core.util.Activities
 import it.diab.core.util.event.EventObserver
 import it.diab.core.util.intentTo
 import it.diab.data.entities.Glucose
+import it.diab.data.entities.GlucoseWithInsulin
 import it.diab.data.repositories.GlucoseRepository
-import it.diab.data.repositories.InsulinRepository
 import it.diab.ui.TimeHeaderDecoration
 import it.diab.ui.models.DataSetsModel
 import it.diab.ui.models.LastGlucoseModel
@@ -51,8 +51,7 @@ class MainFragment : Fragment(), MainAdapter.Callbacks {
 
         val context = context ?: return
         val factory = MainViewModelFactory(
-            GlucoseRepository.getInstance(context),
-            InsulinRepository.getInstance(context)
+            GlucoseRepository.getInstance(context)
         )
 
         viewModel = ViewModelProviders.of(this, factory)[MainViewModel::class.java]
@@ -79,15 +78,10 @@ class MainFragment : Fragment(), MainAdapter.Callbacks {
 
         fab.setOnClickListener { onFabClick() }
 
-        viewModel.prepare {
-            val activity = activity ?: return@prepare
-            viewModel.pagedList.observe(activity, Observer(this::onPagedListChanged))
-            viewModel.liveList.observe(activity, Observer(this::onLiveListChanged))
-            listAdapter.openGlucose.observe(activity, EventObserver(this::onItemClick))
-        }
+        viewModel.pagedList.observe(this, Observer(this::onPagedListChanged))
+        viewModel.liveList.observe(this, Observer(this::onLiveListChanged))
+        listAdapter.openGlucose.observe(this, EventObserver(this::onItemClick))
     }
-
-    override fun getInsulin(uid: Long) = viewModel.getInsulin(uid)
 
     private fun onItemClick(uid: Long) {
         val activity = activity ?: return
@@ -107,7 +101,7 @@ class MainFragment : Fragment(), MainAdapter.Callbacks {
         onItemClick(-1)
     }
 
-    private fun onPagedListChanged(data: PagedList<Glucose>?) {
+    private fun onPagedListChanged(data: PagedList<GlucoseWithInsulin>?) {
         listAdapter.submitList(data)
 
         if (glucoseList.adapter == null) {

@@ -27,13 +27,6 @@ interface GlucoseHolderCallbacks {
     fun getIndicator(value: Int): Drawable?
 
     /**
-     * Get the name of an insulin
-     *
-     * @param uid uid of the insulin
-     */
-    fun getInsulinName(uid: Long): String
-
-    /**
      * OnClick event callback
      */
     fun onClick(uid: Long)
