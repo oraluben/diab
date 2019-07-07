@@ -12,7 +12,6 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.constraintlayout.widget.ConstraintSet
 import androidx.transition.TransitionManager
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import it.diab.core.arch.EventBusFactory
@@ -67,10 +66,8 @@ class EditableView(
     private var hasValueError = false
     private var hasDateError = false
 
-    override fun setStatus(status: EditableInStatus) {
-        valueView.text = status.value.toString()
-        dateView.text = status.date.getDetailedString()
-        eatView.setProgress(status.foodIntake)
+    init {
+        constraint.loadLayoutDescription(R.xml.constraint_editor_status)
 
         closeView.setOnClickListener {
             bus.emit(EditorEvents.Requests::class, EditorEvents.Requests.IntentRequestClose)
@@ -79,6 +76,12 @@ class EditableView(
         fabView.setOnClickListener {
             bus.emit(EditorEvents.Requests::class, EditorEvents.Requests.IntentRequestMainAction)
         }
+    }
+
+    override fun setStatus(status: EditableInStatus) {
+        valueView.text = status.value.toString()
+        dateView.text = status.date.getDetailedString()
+        eatView.setProgress(status.foodIntake)
 
         if (status.isEditing) {
             setupEdit(false)
@@ -117,10 +120,7 @@ class EditableView(
     }
 
     private fun setupView(status: EditableInStatus) {
-        ConstraintSet().apply {
-            clone(constraint.context, R.layout.constraint_editor_view)
-            applyTo(constraint)
-        }
+        constraint.setState(R.id.editor_state_view, 0, 0)
 
         eatView.lock()
         dateView.setOnClickListener {}
@@ -170,12 +170,9 @@ class EditableView(
         }
         fabView.setImageResource(R.drawable.ic_done)
 
-        ConstraintSet().apply {
-            clone(constraint.context, R.layout.constraint_editor_edit)
-            if (animate) {
-                TransitionManager.beginDelayedTransition(constraint)
-            }
-            applyTo(constraint)
+        constraint.setState(R.id.editor_state_edit, 0, 0)
+        if (animate) {
+            TransitionManager.beginDelayedTransition(constraint)
         }
     }
 

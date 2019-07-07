@@ -60,8 +60,8 @@
 
     <TextView
         android:id="@id/editor_insulin"
-        style="@style/AppTheme.GlucoseEditor_Value"
-        android:drawableStart="@drawable/ic_editor_insulin"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -71,8 +71,8 @@
 
     <TextView
         android:id="@id/editor_basal"
-        style="@style/AppTheme.GlucoseEditor_Value"
-        android:drawableStart="@drawable/ic_editor_basal"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -82,9 +82,9 @@
 
     <it.diab.glucose.suggestion.ui.SuggestionView
         android:id="@id/editor_suggestion"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingTop="16dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:paddingTop="0dp"
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -107,7 +107,7 @@
     <it.diab.glucose.widget.NumericKeyboardView
         android:id="@id/editor_keyboard"
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent" />
