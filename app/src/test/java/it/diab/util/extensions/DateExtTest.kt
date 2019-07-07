@@ -8,7 +8,6 @@
  */
 package it.diab.util.extensions
 
-import it.diab.core.util.DateUtils
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
@@ -17,13 +16,6 @@ import java.util.Calendar
 import java.util.Date
 
 class DateExtTest {
-
-    @Test
-    fun get() {
-        val now = System.currentTimeMillis()
-        val diff = 2
-        assertEquals(now + (DateUtils.DAY * diff), Date(now)[diff].time)
-    }
 
     @Test
     fun isToday() {
@@ -48,24 +40,5 @@ class DateExtTest {
         }
 
         assertEquals(10 * 60f + 30, calendar.time.getAsMinutes())
-    }
-
-    @Test
-    fun diff() {
-        val a = Calendar.getInstance().apply {
-            set(Calendar.YEAR, 2000)
-            set(Calendar.DAY_OF_YEAR, 1)
-        }
-
-        val b = Calendar.getInstance().apply {
-            set(Calendar.YEAR, 2000)
-            set(Calendar.DAY_OF_YEAR, 3)
-        }
-
-        assertEquals(-2, a.time.diff(b.time))
-
-        b[Calendar.YEAR] -= 1
-        b[Calendar.DAY_OF_YEAR] -= 8
-        assertEquals(371, a.time.diff(b.time))
     }
 }

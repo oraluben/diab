@@ -30,7 +30,6 @@ import android.text.style.StyleSpan
 import androidx.recyclerview.widget.RecyclerView
 import it.diab.R
 import it.diab.core.util.extensions.getCalendar
-import it.diab.data.entities.Glucose
 import it.diab.util.extensions.inSpans
 import it.diab.util.extensions.withTranslation
 import java.text.SimpleDateFormat
@@ -43,7 +42,7 @@ import java.util.Locale
  */
 class TimeHeaderDecoration(
     context: Context,
-    data: List<Glucose>,
+    data: List<Date>,
     private val shiftList: Int = 0
 ) : RecyclerView.ItemDecoration() {
 
@@ -73,8 +72,8 @@ class TimeHeaderDecoration(
     }
 
     private val daySlots: Map<Int, StaticLayout> =
-        data.mapIndexed { index, glucose ->
-            index + shiftList to glucose.date
+        data.mapIndexed { index, date ->
+            index + shiftList to date
         }.distinctBy {
             val cal = it.second.getCalendar()
             (cal[Calendar.YEAR] shl 3) + cal[Calendar.DAY_OF_YEAR]

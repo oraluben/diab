@@ -11,7 +11,7 @@
     <string name="app_shortcut_add_glucose">Aggiungi glicemia</string>
 
     <!-- Overview -->
-    <string name="overview_last_desc">Ultimo valore%1$s</string>
+    <string name="overview_last_desc">Ultimo valore</string>
     <string name="overview_last_fallback">Ciao</string>
     <string name="overview_last_desc_fallback">Aggiungi un valore toccando il pulsante blu</string>
 

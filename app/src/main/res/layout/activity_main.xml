@@ -7,8 +7,8 @@
   or at https://www.gnu.org/licenses/gpl.txt
   -->
 <fragment xmlns:android="http://schemas.android.com/apk/res/android"
-    android:name="it.diab.fragments.MainFragment"
+    android:name="it.diab.overview.fragments.OverviewFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    android:tag="it.diab.fragments.MainFragment" />
+    android:tag="it.diab.overview.fragments.OverviewFragment" />

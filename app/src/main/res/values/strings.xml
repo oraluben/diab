@@ -11,7 +11,7 @@
     <string name="app_shortcut_add_glucose">Add glucose</string>
 
     <!-- Overview -->
-    <string name="overview_last_desc">Last value%1$s</string>
+    <string name="overview_last_desc">Last value</string>
     <string name="overview_last_fallback">Hello</string>
     <string name="overview_last_desc_fallback">Add a value by touching the blue button</string>
 

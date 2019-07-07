@@ -11,7 +11,7 @@
     <string name="app_shortcut_add_glucose">ग्लूकोज जोड़ें</string>
 
     <!-- Overview -->
-    <string name="overview_last_desc">अंतिम मान %1$s</string>
+    <string name="overview_last_desc">अंतिम मान</string>
     <string name="overview_last_fallback">नमस्ते</string>
     <string name="overview_last_desc_fallback">नीले बटन को दबाकर एक मान जोड़ें</string>
 

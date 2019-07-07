@@ -6,20 +6,24 @@
  * The text of the license can be found in the LICENSE file
  * or at https://www.gnu.org/licenses/gpl.txt
  */
-package it.diab.viewmodels
+package it.diab.overview.viewmodels
 
 import android.util.SparseArray
-import androidx.annotation.VisibleForTesting
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.LivePagedListBuilder
 import com.github.mikephil.charting.data.Entry
 import it.diab.core.util.DateUtils
+import it.diab.core.util.event.Event
 import it.diab.data.entities.Glucose
 import it.diab.data.entities.TimeFrame
 import it.diab.data.extensions.toTimeFrame
 import it.diab.data.repositories.GlucoseRepository
-import it.diab.ui.models.DataSetsModel
+import it.diab.overview.components.status.GraphData
+import it.diab.overview.components.status.HeaderStatus
+import it.diab.overview.components.status.LastGlucose
 import it.diab.util.extensions.getAsMinutes
 import it.diab.util.extensions.isToday
 import it.diab.util.extensions.isZeroOrNan
@@ -28,32 +32,42 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class MainViewModel internal constructor(
+class OverviewViewModel internal constructor(
     private val glucoseRepository: GlucoseRepository
 ) : ViewModel() {
 
     val pagedList = LivePagedListBuilder(glucoseRepository.pagedList, 5).build()
-    val liveList = glucoseRepository.all
 
-    fun getDataSets(block: (DataSetsModel) -> Unit) {
+    private val _headerData = MutableLiveData<Event<HeaderStatus>>()
+    val headerData: LiveData<Event<HeaderStatus>> = _headerData
+
+    fun requestUpdateHeaderData() {
         viewModelScope.launch {
-            val end = System.currentTimeMillis()
-            val start = end - DateUtils.WEEK
-            val data = glucoseRepository.getInDateRange(start, end)
-            val result = runGetDataSets(data)
-            block(result)
+            _headerData.value = Event(runUpdateHeaderData())
         }
     }
 
-    @VisibleForTesting
-    suspend fun runGetDataSets(data: List<Glucose>): DataSetsModel = withContext(Default) {
+    private suspend fun runUpdateHeaderData(): HeaderStatus = withContext(Default) {
+        val end = System.currentTimeMillis()
+        val start = end - DateUtils.WEEK
+        val data = glucoseRepository.getInDateRange(start, end)
+
         val todayDeferred = async { updateToday(data) }
         val avgDeferred = async { updateAverage(data) }
 
-        DataSetsModel.Available(
+        val last = if (data.isEmpty())
+            LastGlucose.Empty
+        else
+            LastGlucose.Available(data[0].value)
+
+        val dateList = glucoseRepository.getAllDates()
+
+        val graphData = GraphData.Available(
             todayDeferred.await(),
             avgDeferred.await()
         )
+
+        HeaderStatus(dateList, last, graphData)
     }
 
     private fun updateToday(list: List<Glucose>) =
@@ -64,9 +78,10 @@ class MainViewModel internal constructor(
 
     private fun updateAverage(list: List<Glucose>): List<Entry> {
         val average = SparseArray<Float>()
-        val size = TimeFrame.values().size - 2 // -1 because we start at 0 and -1 for "EXTRA"
+        // -1 for "DEPRECATED" and -1 for "EXTRA"
+        val numTimeFrames = TimeFrame.values().size - 2
 
-        for (i in 0..size) {
+        for (i in 0..numTimeFrames) {
             val timeFrame = i.toTimeFrame()
             val lastWeek = list.filter { it.timeFrame == timeFrame }
             val averageValue = lastWeek.sumBy { it.value } / lastWeek.size.toFloat()
@@ -74,7 +89,7 @@ class MainViewModel internal constructor(
         }
 
         val result = arrayListOf<Entry>()
-        for (i in 0..size) {
+        for (i in 0..numTimeFrames) {
             val index = i.toTimeFrame().reprHour
             val value = average.get(index)
             if (value.isZeroOrNan()) {
