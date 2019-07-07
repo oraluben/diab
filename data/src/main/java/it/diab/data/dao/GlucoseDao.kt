@@ -15,22 +15,23 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Transaction
 import androidx.room.TypeConverters
 import it.diab.data.converters.DateConverter
+import it.diab.data.converters.TimeFrameConverter
 import it.diab.data.entities.Glucose
+import it.diab.data.entities.GlucoseWithInsulin
 
 @Dao
-@TypeConverters(DateConverter::class)
+@TypeConverters(DateConverter::class, TimeFrameConverter::class)
 interface GlucoseDao {
 
     @get:Query("SELECT * FROM glucose ORDER BY date DESC")
     val all: LiveData<List<Glucose>>
 
     @get:Query("SELECT * FROM glucose ORDER BY date DESC")
-    val pagedList: DataSource.Factory<Int, Glucose>
-
-    @get:Query("SELECT * FROM glucose ORDER BY date DESC LIMIT 1")
-    val last: LiveData<List<Glucose>>
+    @get:Transaction
+    val pagedList: DataSource.Factory<Int, GlucoseWithInsulin>
 
     @Query("SELECT * FROM glucose WHERE uid IN (:uid) LIMIT 1")
     fun getByIdLive(uid: Long): LiveData<List<Glucose>>
