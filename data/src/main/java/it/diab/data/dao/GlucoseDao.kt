@@ -21,6 +21,7 @@ import it.diab.data.converters.DateConverter
 import it.diab.data.converters.TimeFrameConverter
 import it.diab.data.entities.Glucose
 import it.diab.data.entities.GlucoseWithInsulin
+import java.util.Date
 
 @Dao
 @TypeConverters(DateConverter::class, TimeFrameConverter::class)
@@ -41,6 +42,9 @@ interface GlucoseDao {
 
     @Query("SELECT * FROM glucose ORDER BY date DESC")
     suspend fun getAllItems(): List<Glucose>
+
+    @Query("SELECT date FROM glucose ORDER BY date DESC")
+    suspend fun getAllDates(): List<Date>
 
     @Query("SELECT * FROM glucose WHERE date >= :minTime AND date <= :maxTime ORDER BY date DESC")
     suspend fun getInDateRange(minTime: Long, maxTime: Long): List<Glucose>
