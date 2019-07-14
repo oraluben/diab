@@ -14,31 +14,18 @@ import android.util.AttributeSet
 import androidx.appcompat.app.AlertDialog
 import androidx.preference.DialogPreference
 import it.diab.settings.R
+import it.diab.ui.util.extensions.getAttr
 
-class ExportPreference : DialogPreference {
+class ExportPreference @JvmOverloads constructor(
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyleAttr: Int = context.getAttr(R.attr.dialogPreferenceStyle, android.R.attr.dialogPreferenceStyle),
+    defStyleRes: Int = 0
+) : DialogPreference(context, attrs, defStyleAttr, defStyleRes) {
     private lateinit var callbacks: Callbacks
 
-    @Suppress("unused")
-    constructor(context: Context, attrs: AttributeSet) : super(context, attrs)
-
-    @Suppress("unused")
-    constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) :
-        super(context, attrs, defStyleAttr)
-
-    @Suppress("unused")
-    constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int, defStyleRes: Int) :
-        super(context, attrs, defStyleAttr, defStyleRes)
-
     override fun onClick() {
-        showPromptDialog()
-    }
-
-    fun bind(callbacks: Callbacks) {
-        this.callbacks = callbacks
-    }
-
-    private fun showPromptDialog(): Boolean {
-        val activity = callbacks.getActivity() ?: return false
+        val activity = callbacks.getActivity() ?: return
 
         AlertDialog.Builder(activity)
             .setTitle(dialogTitle)
@@ -48,7 +35,10 @@ class ExportPreference : DialogPreference {
             }
             .setNegativeButton(android.R.string.cancel, null)
             .show()
-        return true
+    }
+
+    fun bind(callbacks: Callbacks) {
+        this.callbacks = callbacks
     }
 
     interface Callbacks {

@@ -8,7 +8,6 @@
  */
 package it.diab.ui.graph
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.widget.TextView
 import com.github.mikephil.charting.components.MarkerView
@@ -17,7 +16,6 @@ import com.github.mikephil.charting.highlight.Highlight
 import com.github.mikephil.charting.utils.MPPointF
 import it.diab.R
 
-@SuppressLint("ViewConstructor")
 class OverviewMarker(context: Context) : MarkerView(context, R.layout.item_overview_graph_marker) {
     private val textView = findViewById<TextView>(R.id.item_overview_graph_marker_text)
     private lateinit var markerOffset: MPPointF

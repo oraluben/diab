@@ -16,20 +16,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import it.diab.ui.R
 
-class RecyclerViewExt : RecyclerView {
-    constructor(context: Context) : super(context) {
-        setup(context, null)
-    }
+class RecyclerViewExt @JvmOverloads constructor(
+    context: Context,
+    attrs: AttributeSet? = null,
+    style: Int = 0
+) : RecyclerView(context, attrs, style) {
 
-    constructor(context: Context, attrs: AttributeSet) : super(context, attrs) {
-        setup(context, attrs)
-    }
-
-    constructor(context: Context, attrs: AttributeSet, style: Int) : super(context, attrs, style) {
-        setup(context, attrs)
-    }
-
-    private fun setup(context: Context, attrs: AttributeSet?) {
+    init {
         val gridLayout: Boolean
         val gridColumns: Int
 

@@ -22,7 +22,11 @@ import it.diab.glucose.R
 
 import it.diab.glucose.util.VibrationUtil
 
-class NumericKeyboardView : LinearLayout {
+class NumericKeyboardView @JvmOverloads constructor(
+    context: Context,
+    attrs: AttributeSet? = null,
+    @AttrRes defStyleAttr: Int = 0
+) : LinearLayout(context, attrs, defStyleAttr) {
     private val btn0: View
     private val btn1: View
     private val btn2: View
@@ -42,13 +46,6 @@ class NumericKeyboardView : LinearLayout {
         get() =
             if (TextUtils.isEmpty(inputView.text)) -1
             else inputView.text.toString().toInt()
-
-    constructor(context: Context) : super(context)
-
-    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
-
-    constructor(context: Context, attrs: AttributeSet?, @AttrRes defStyleAttr: Int) :
-        super(context, attrs, defStyleAttr)
 
     init {
         View.inflate(context, R.layout.component_numeric_keyboard, this)

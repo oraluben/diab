@@ -19,15 +19,12 @@ import it.diab.glucose.suggestion.models.SuggestionModel
 import it.diab.glucose.suggestion.status.SuggestionStatus
 import it.diab.glucose.util.VibrationUtil
 
-class SuggestionView : LinearLayout, SuggestionUiInterface {
+class SuggestionView @JvmOverloads constructor(
+    context: Context,
+    attrs: AttributeSet? = null,
+    @AttrRes defStyleAttr: Int = 0
+) : LinearLayout(context, attrs, defStyleAttr), SuggestionUiInterface {
     private val textView: TextView
-
-    constructor(context: Context) : super(context)
-
-    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
-
-    constructor(context: Context, attrs: AttributeSet?, @AttrRes defStyleAttr: Int) :
-        super(context, attrs, defStyleAttr)
 
     init {
         View.inflate(context, R.layout.component_suggestion, this)

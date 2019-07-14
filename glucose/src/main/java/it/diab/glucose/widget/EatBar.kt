@@ -24,20 +24,17 @@ import androidx.core.content.ContextCompat
 import it.diab.data.entities.Glucose
 import it.diab.glucose.R
 
-class EatBar : LinearLayout {
+class EatBar @JvmOverloads constructor(
+    context: Context,
+    attrs: AttributeSet? = null,
+    @AttrRes defStyleAttr: Int = 0
+) : LinearLayout(context, attrs, defStyleAttr) {
 
     private val bar: AppCompatSeekBar
 
     private var currentColor: Int
     private var editable = false
     private lateinit var coloredProgressDrawable: Drawable
-
-    constructor(context: Context) : super(context)
-
-    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
-
-    constructor(context: Context, attrs: AttributeSet?, @AttrRes defStyleAttr: Int) :
-        super(context, attrs, defStyleAttr)
 
     init {
         View.inflate(context, R.layout.component_eat_bar, this)

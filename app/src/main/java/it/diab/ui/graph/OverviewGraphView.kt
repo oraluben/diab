@@ -10,26 +10,19 @@ package it.diab.ui.graph
 
 import android.content.Context
 import android.util.AttributeSet
+import androidx.annotation.AttrRes
 import androidx.annotation.StringRes
 import androidx.core.content.ContextCompat
 import com.github.mikephil.charting.charts.LineChart
 import it.diab.R
 
-class OverviewGraphView : LineChart {
+class OverviewGraphView @JvmOverloads constructor(
+    context: Context,
+    attrs: AttributeSet? = null,
+    @AttrRes defStyleAttr: Int = 0
+) : LineChart(context, attrs, defStyleAttr) {
 
-    constructor(context: Context) : super(context) {
-        setup(context)
-    }
-
-    constructor(context: Context, attrs: AttributeSet) : super(context, attrs) {
-        setup(context)
-    }
-
-    constructor(context: Context, attrs: AttributeSet, defs: Int) : super(context, attrs, defs) {
-        setup(context)
-    }
-
-    private fun setup(context: Context) {
+    init {
         // Legend
         mLegend.isEnabled = false
         description.isEnabled = false

@@ -11,26 +11,16 @@ package it.diab.settings.widgets
 import android.content.Context
 import android.util.AttributeSet
 import androidx.preference.ListPreference
-import it.diab.ui.util.UIUtils
 import it.diab.settings.R
+import it.diab.ui.util.UIUtils
+import it.diab.ui.util.extensions.getAttr
 
-class StylePreference : ListPreference {
-
-    @Suppress("unused")
-    constructor(context: Context) :
-        super(context)
-
-    @Suppress("unused")
-    constructor(context: Context, attrs: AttributeSet) :
-        super(context, attrs)
-
-    @Suppress("unused")
-    constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) :
-        super(context, attrs, defStyleAttr)
-
-    @Suppress("unused")
-    constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int, defStyleRes: Int) :
-        super(context, attrs, defStyleAttr, defStyleRes)
+class StylePreference @JvmOverloads constructor(
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyleAttr: Int = context.getAttr(R.attr.dialogPreferenceStyle, android.R.attr.dialogPreferenceStyle),
+    defStyleRes: Int = 0
+) : ListPreference(context, attrs, defStyleAttr, defStyleRes) {
 
     init {
         setupEntries()
