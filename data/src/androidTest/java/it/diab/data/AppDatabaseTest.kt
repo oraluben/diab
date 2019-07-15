@@ -16,8 +16,8 @@ import it.diab.data.entities.Glucose
 import it.diab.data.entities.TimeFrame
 import it.diab.data.extensions.glucose
 import it.diab.data.extensions.insulin
-import junit.framework.Assert.assertEquals
 import kotlinx.coroutines.runBlocking
+import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
 
@@ -45,7 +45,7 @@ class AppDatabaseTest {
 
         glucoseDao.insert(item)
         val test = glucoseDao.getById(1)[0]
-        assertEquals(test, item)
+        Assert.assertEquals(test, item)
     }
 
     @Test
@@ -58,7 +58,7 @@ class AppDatabaseTest {
         }.also { insulinDao.insert(it) }
 
         val test = insulinDao.getById(1)[0]
-        assertEquals(test, item)
+        Assert.assertEquals(test, item)
     }
 
     @Test
@@ -92,8 +92,8 @@ class AppDatabaseTest {
             val test1 = insulinDao.getById(insulinId0)[0]
             val test2 = insulinDao.getById(insulinId1)[0]
 
-            assertEquals(test1.uid, insulin.uid)
-            assertEquals(test2.uid, basal.uid)
+            Assert.assertEquals(test1.uid, insulin.uid)
+            Assert.assertEquals(test2.uid, basal.uid)
         }
     }
 }
