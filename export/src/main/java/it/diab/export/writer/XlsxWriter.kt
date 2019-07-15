@@ -11,7 +11,6 @@ package it.diab.export.writer
 import android.os.Build
 import android.os.ParcelFileDescriptor
 import android.util.Log
-import it.diab.core.util.extensions.forEachWithIndex
 import it.diab.core.util.extensions.format
 import it.diab.data.entities.Glucose
 import it.diab.data.repositories.GlucoseRepository
@@ -71,7 +70,7 @@ class XlsxWriter(
         insulinRepository: InsulinRepository,
         headers: List<String>
     ) {
-        headers.forEachWithIndex { i, str -> sheet.value(0, i, str) }
+        headers.forEachIndexed { i, str -> sheet.value(0, i, str) }
         sheet.style(0, headers.size - 1).bold()
 
         val list = glucoseRepository.getAllItems()
@@ -136,11 +135,11 @@ class XlsxWriter(
         insulinRepository: InsulinRepository,
         headers: List<String>
     ) {
-        headers.forEachWithIndex { i, str -> sheet.value(0, i, str) }
+        headers.forEachIndexed { i, str -> sheet.value(0, i, str) }
         sheet.style(0, headers.size - 1).bold()
 
         val list = insulinRepository.getInsulins()
-        list.forEachWithIndex { i, insulin ->
+        list.forEachIndexed { i, insulin ->
             val row = i + 1
             sheet.write(
                 insulin.name to (row to 0),
