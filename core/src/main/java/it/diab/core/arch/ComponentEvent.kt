@@ -9,6 +9,6 @@
 package it.diab.core.arch
 
 /**
- * An event to which an [UiComponent] can subscribe to and / or eventually create
+ * An event to which an [UiComponent] can subscribe to and / or emit [ViewStatus]es
  */
 interface ComponentEvent
