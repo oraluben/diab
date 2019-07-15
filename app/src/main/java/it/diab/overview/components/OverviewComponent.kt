@@ -24,7 +24,7 @@ class OverviewComponent(
     helper: OverviewListHelper
 ) : UiComponent {
 
-    val view = OverviewView(container, bus, helper)
+    private val view = OverviewView(container, bus, helper)
 
     init {
         bus.subscribe(OverviewEvent::class, scope) {
