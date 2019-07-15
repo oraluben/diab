@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package it.diab.ui
+package it.diab.ui.widgets.recyclerview
 
 import android.content.Context
 import android.graphics.Canvas
@@ -28,10 +28,10 @@ import android.text.TextPaint
 import android.text.style.AbsoluteSizeSpan
 import android.text.style.StyleSpan
 import androidx.recyclerview.widget.RecyclerView
-import it.diab.R
 import it.diab.core.util.extensions.getCalendar
-import it.diab.util.extensions.inSpans
-import it.diab.util.extensions.withTranslation
+import it.diab.ui.R
+import it.diab.ui.util.extensions.inSpans
+import it.diab.ui.util.extensions.withTranslation
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date

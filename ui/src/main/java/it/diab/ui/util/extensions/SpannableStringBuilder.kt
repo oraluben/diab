@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package it.diab.util.extensions
+package it.diab.ui.util.extensions
 
 import android.text.SpannableStringBuilder
 import android.text.Spanned.SPAN_INCLUSIVE_EXCLUSIVE

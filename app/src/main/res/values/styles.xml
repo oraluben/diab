@@ -12,12 +12,4 @@
     <style name="AppTheme.Main" parent="AppTheme.NoActionBar">
         <item name="android:navigationBarDividerColor" tools:targetApi="27">@color/navigationBar_color</item>
     </style>
-
-    <style name="AppTheme.TimeHeaders">
-        <item name="android:width">@dimen/header_keyline</item>
-        <item name="android:paddingTop">@dimen/date_header_padding_top</item>
-        <item name="android:textColor">?attr/colorAccent</item>
-        <item name="dayTextSize">@dimen/time_header_day_text_size</item>
-        <item name="monthTextSize">@dimen/time_header_month_text_size</item>
-    </style>
 </resources>

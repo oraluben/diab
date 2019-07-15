@@ -14,15 +14,15 @@ import it.diab.R
 import it.diab.core.arch.EventBusFactory
 import it.diab.core.arch.UiView
 import it.diab.core.arch.ViewStatus
-import it.diab.overview.util.OverviewListHelper
 import it.diab.overview.adapters.OverviewAdapter
 import it.diab.overview.components.status.DataStatus
 import it.diab.overview.components.status.HeaderStatus
 import it.diab.overview.events.OverviewEvent
-import it.diab.ui.TimeHeaderDecoration
+import it.diab.overview.util.OverviewListHelper
+import it.diab.ui.util.extensions.doOnNextLayout
+import it.diab.ui.util.extensions.removeAllItemDecorators
 import it.diab.ui.widgets.RecyclerViewExt
-import it.diab.util.extensions.doOnNextLayout
-import it.diab.util.extensions.removeAllItemDecorators
+import it.diab.ui.widgets.recyclerview.TimeHeaderDecoration
 
 class OverviewView(
     container: View,

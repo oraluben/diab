@@ -21,7 +21,7 @@ import it.diab.overview.events.OverviewEvent
 import it.diab.glucose.util.extensions.getColorAttr
 import it.diab.ui.util.extensions.setPreText
 import it.diab.overview.util.OverviewListHelper
-import it.diab.util.extensions.inSpans
+import it.diab.ui.util.extensions.inSpans
 
 class GlucoseHolder(
     view: View,

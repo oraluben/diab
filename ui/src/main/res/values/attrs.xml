@@ -26,4 +26,13 @@
         <attr name="gridLayout" format="boolean" />
         <attr name="gridColumns" format="integer" />
     </declare-styleable>
+
+    <!-- Time header decorator -->
+    <declare-styleable name="TimeHeader">
+        <attr name="android:width" />
+        <attr name="android:paddingTop" />
+        <attr name="android:textColor" />
+        <attr name="dayTextSize" format="dimension" />
+        <attr name="monthTextSize" format="dimension" />
+    </declare-styleable>
 </resources>
