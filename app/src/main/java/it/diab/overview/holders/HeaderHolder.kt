@@ -9,10 +9,13 @@
 package it.diab.overview.holders
 
 import android.view.View
+import android.widget.ImageView
 import android.widget.TextView
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
 import it.diab.R
+import it.diab.core.util.Activities
+import it.diab.core.util.intentTo
 import it.diab.overview.components.status.GraphData
 import it.diab.overview.components.status.HeaderItemStatus
 import it.diab.overview.components.status.LastGlucose
@@ -20,12 +23,20 @@ import it.diab.ui.graph.DataSetFactory
 import it.diab.ui.graph.OverviewGraphView
 
 class HeaderHolder(view: View) : BaseHolder(view) {
+    private val moreIcon: ImageView =
+        itemView.findViewById(R.id.header_more)
     private val lastValueText: TextView =
         itemView.findViewById(R.id.header_last_value)
     private val lastDescriptionText: TextView =
         itemView.findViewById(R.id.header_last_desc)
     private val overviewGraph: OverviewGraphView =
         itemView.findViewById(R.id.header_chart)
+
+    init {
+        moreIcon.setOnClickListener {
+            it.context.startActivity(intentTo(Activities.Settings))
+        }
+    }
 
     fun bind(model: HeaderItemStatus) {
         bindLast(model.last)
