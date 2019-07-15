@@ -29,6 +29,6 @@
 
     <color name="contentDivider">#0c000000</color>
 
-    <color name="listItem_fg">?android:textColorSecondary</color>
+    <color name="listItem_fg">#99000000</color>
     <color name="listItem_bg">#1c000000</color>
 </resources>

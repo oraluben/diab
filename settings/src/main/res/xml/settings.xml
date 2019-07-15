@@ -11,22 +11,30 @@
 
     <it.diab.settings.widgets.StylePreference
         app:defaultValue="1"
+        app:icon="@drawable/ic_pref_dark_theme"
         app:key="pref_ui_style"
         app:summary="%s"
         app:title="@string/settings_ui_theme_title" />
 
     <it.diab.settings.widgets.ExportPreference
-        app:key="pref_export_xlsx"
         app:dialogMessage="@string/export_ask_xlsx_message"
         app:dialogTitle="@string/export_ask_xlsx_title"
+        app:icon="@drawable/ic_pref_export"
+        app:key="pref_export_xlsx"
         app:summary="@string/export_ask_xlsx_summary"
         app:title="@string/export_ask_xlsx_title" />
 
-    <androidx.preference.PreferenceCategory app:title="@string/settings_glucose_thresholds_category">
+    <it.diab.settings.widgets.FitPreference
+        app:fragment="it.diab.settings"
+        app:key="pref_link_fit"
+        app:title="@string/settings_fit_title" />
+
+    <androidx.preference.PreferenceCategory app:title="@string/settings_category_glucose_thresholds">
 
         <androidx.preference.SeekBarPreference
             android:max="220"
             app:defaultValue="180"
+            app:icon="@drawable/ic_pref_threshold"
             app:key="pref_glucose_threshold_high"
             app:min="160"
             app:showSeekBarValue="true"
@@ -42,25 +50,18 @@
 
     </androidx.preference.PreferenceCategory>
 
-    <androidx.preference.PreferenceCategory
-        app:key="plugin_category"
-        app:title="@string/settings_plugin_category_title">
+    <androidx.preference.PreferenceCategory app:title="@string/settings_category_insulin">
 
         <androidx.preference.Preference
-            app:key="pref_plugin_manager"
+            app:icon="@drawable/ic_pref_insulin"
+            app:key="pref_link_insulin"
             app:persistent="false"
-            app:title="@string/settings_plugin_manage_title" />
+            app:summary="@string/settings_insulin_manage_summary"
+            app:title="@string/settings_insulin_manage_title" />
 
         <androidx.preference.Preference
-            app:key="pref_plugin_remover"
-            app:persistent="false"
-            app:title="@string/settings_plugin_remove" />
-
-        <it.diab.settings.widgets.ExportPreference
-            app:key="pref_export_ml_data"
-            app:persistent="false"
-            app:dialogMessage="@string/export_ask_ml_message"
-            app:dialogTitle="@string/export_ask_ml_title"
-            app:title="@string/export_ask_ml_title" />
+            app:fragment="it.diab.settings.ui.PluginPrefsFragment"
+            app:key="pref_link_plugin"
+            app:title="@string/settings_insulin_plugin_title" />
     </androidx.preference.PreferenceCategory>
 </androidx.preference.PreferenceScreen>

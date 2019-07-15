@@ -22,4 +22,8 @@
         <item name="diab_titleContrastColor">@color/colorAccent</item>
     </style>
 
+    <style name="AppTheme.Toolbar" parent="ThemeOverlay.MaterialComponents.Dark.ActionBar">
+        <item name="elevation">4dp</item>
+        <item name="titleTextAppearance">@style/AppTheme.Toolbar.Title</item>
+    </style>
 </resources>
