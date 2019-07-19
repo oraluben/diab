@@ -25,6 +25,7 @@ import it.diab.insulin.components.status.EditableInStatus
 import it.diab.insulin.events.EditEvent
 import it.diab.insulin.viewmodels.EditorViewModel
 import it.diab.insulin.viewmodels.EditorViewModelFactory
+import it.diab.ui.util.UIUtils
 import it.diab.ui.widgets.BottomSheetDialogFragmentExt
 
 class EditorFragment : BottomSheetDialogFragmentExt() {
@@ -47,6 +48,8 @@ class EditorFragment : BottomSheetDialogFragmentExt() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        UIUtils.setWhiteNavBarIfNeeded(view.context, dialog)
         EditableComponent(view, viewModel.viewModelScope, bus)
 
         val uid = arguments?.getLong(Activities.Insulin.EXTRA_EDITOR_UID, -1L) ?: -1L
