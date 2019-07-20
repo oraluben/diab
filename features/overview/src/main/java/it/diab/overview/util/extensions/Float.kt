@@ -6,8 +6,6 @@
  * The text of the license can be found in the LICENSE file
  * or at https://www.gnu.org/licenses/gpl.txt
  */
+package it.diab.overview.util.extensions
 
-include ':app', ':core', ':data', ':ui'
-include ':export', ':glucose', ':googlefit', ':insulin', ':settings'
-
-include ':features:overview'
+fun Float.isZeroOrNan() = 0f == this || isNaN()

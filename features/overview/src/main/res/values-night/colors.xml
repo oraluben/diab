@@ -1,5 +1,5 @@
 <!--
-  Copyright (c) 2018 Bevilacqua Joey
+  Copyright (c) 2019 Bevilacqua Joey
 
   Licensed under the GNU GPLv3 license
 
@@ -7,6 +7,6 @@
   or at https://www.gnu.org/licenses/gpl.txt
   -->
 <resources>
-    <string name="app_name">Diab</string>
-    <string name="app_shortcut_add_glucose">Aggiungi glicemia</string>
+    <color name="glucoseIndicator_high">#ffb84d</color>
+    <color name="glucoseIndicator_low">#fc6599</color>
 </resources>

@@ -9,12 +9,4 @@
 <resources>
     <string name="app_name">Diab</string>
     <string name="app_shortcut_add_glucose">Add glucose</string>
-
-    <!-- Overview -->
-    <string name="overview_last_desc">Last value</string>
-    <string name="overview_last_fallback">Hello</string>
-    <string name="overview_last_desc_fallback">Add a value by touching the blue button</string>
-
-    <string name="overview_graph_loading">Loading\u2026</string>
-    <string name="overview_graph_empty">No recent glucose found</string>
 </resources>

@@ -6,8 +6,9 @@
  * The text of the license can be found in the LICENSE file
  * or at https://www.gnu.org/licenses/gpl.txt
  */
+package it.diab.overview.holders
 
-include ':app', ':core', ':data', ':ui'
-include ':export', ':glucose', ':googlefit', ':insulin', ':settings'
+import android.view.View
+import androidx.recyclerview.widget.RecyclerView
 
-include ':features:overview'
+internal abstract class BaseHolder(view: View) : RecyclerView.ViewHolder(view)

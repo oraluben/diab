@@ -9,7 +9,6 @@
 
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
 
 android {
     compileSdkVersion 28
@@ -51,17 +50,11 @@ android {
 
 dependencies {
     implementation project(':core')
-    implementation project(':data')
     implementation project(':ui')
-    implementation project(':glucose')
-    implementation project(':insulin')
-    implementation project(':settings')
+
+    implementation project(':features:overview')
+
     googleFitImplementation project(':googlefit')
-
-    // UI
-    implementation "androidx.cardview:cardview:1.0.0"
-
-    implementation "com.github.PhilJay:MPAndroidChart:v3.1.0"
 }
 
 // Testing dependencies

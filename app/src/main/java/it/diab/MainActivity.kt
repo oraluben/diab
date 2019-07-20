@@ -11,6 +11,7 @@ package it.diab
 import android.os.Build
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import it.diab.overview.fragments.OverviewFragment
 import it.diab.util.ShortcutUtils
 
 class MainActivity : AppCompatActivity() {
@@ -18,7 +19,9 @@ class MainActivity : AppCompatActivity() {
     public override fun onCreate(savedInstance: Bundle?) {
         super.onCreate(savedInstance)
 
-        setContentView(R.layout.activity_main)
+        supportFragmentManager.beginTransaction()
+            .replace(android.R.id.content, OverviewFragment())
+            .commit()
         createShortcuts()
     }
 

@@ -6,7 +6,8 @@
   The text of the license can be found in the LICENSE file
   or at https://www.gnu.org/licenses/gpl.txt
   -->
-<resources>
-    <string name="app_name">Diab</string>
-    <string name="app_shortcut_add_glucose">ग्लूकोज जोड़ें</string>
-</resources>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="it.diab.overview">
+
+    <application android:theme="@style/AppTheme" />
+</manifest>
