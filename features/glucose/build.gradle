@@ -35,4 +35,4 @@ dependencies {
 }
 
 // Testing dependencies
-apply from: "../deps_test.gradle"
+apply from: "../../deps_test.gradle"

@@ -53,8 +53,10 @@ dependencies {
     implementation project(':libraries:ui')
 
     implementation project(':features:overview')
+    implementation project(':features:insulin')
+    implementation project(':features:settings')
 
-    googleFitImplementation project(':googlefit')
+    googleFitImplementation project(':features:googlefit')
 }
 
 // Testing dependencies

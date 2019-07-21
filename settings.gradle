@@ -13,6 +13,9 @@ include ':libraries:core'
 include ':libraries:data'
 include ':libraries:ui'
 
-include ':export', ':glucose', ':googlefit', ':insulin', ':settings'
-
+include ':features:export'
+include ':features:glucose'
+include ':features:googlefit'
+include ':features:insulin'
 include ':features:overview'
+include ':features:settings'
