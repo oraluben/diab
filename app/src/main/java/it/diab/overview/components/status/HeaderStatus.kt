@@ -9,10 +9,10 @@
 package it.diab.overview.components.status
 
 import com.github.mikephil.charting.data.Entry
-import java.util.Date
+import it.diab.core.time.DateTime
 
 data class HeaderStatus(
-    val dateList: List<Date>,
+    val dateList: List<DateTime>,
     val last: LastGlucose,
     val graphData: GraphData
 )

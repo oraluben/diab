@@ -8,11 +8,10 @@
  */
 package it.diab.data.extensions
 
-import it.diab.core.util.extensions.getHour
+import it.diab.core.time.DateTime
 import it.diab.data.entities.TimeFrame
-import java.util.Date
 
-fun Date.asTimeFrame() = when (getHour()) {
+fun DateTime.asTimeFrame() = when (get(DateTime.HOUR)) {
     in 6..9 -> TimeFrame.MORNING
     in 10..11 -> TimeFrame.LATE_MORNING
     in 12..13 -> TimeFrame.LUNCH

@@ -9,10 +9,10 @@
 package it.diab.glucose.events
 
 import it.diab.core.arch.ComponentEvent
+import it.diab.core.time.DateTime
 import it.diab.glucose.components.status.EditableInStatus
 import it.diab.glucose.components.status.EditableOutStatus
 import it.diab.glucose.suggestion.ui.SuggestionUiInterface
-import java.util.Date
 
 object EditorEvents {
 
@@ -25,7 +25,7 @@ object EditorEvents {
     sealed class Listeners : ComponentEvent {
         class IntentChangedValue(val value: Int) : Listeners()
 
-        class IntentChangedDate(val date: Date, val hasError: Boolean) : Listeners()
+        class IntentChangedDate(val date: DateTime, val hasError: Boolean) : Listeners()
 
         class IntentChangedValueError(val hasError: Boolean) : Listeners()
     }

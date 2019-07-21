@@ -20,6 +20,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.lifecycle.viewModelScope
 import com.google.android.material.snackbar.Snackbar
 import it.diab.core.override.BaseFitHandler
+import it.diab.core.time.DateTime
 import it.diab.core.util.Activities
 import it.diab.core.util.ComposableError
 import it.diab.core.util.PreferencesUtil
@@ -37,13 +38,13 @@ import it.diab.glucose.suggestion.models.CheckAgainSuggestion
 import it.diab.glucose.suggestion.models.InsulinSuggestion
 import it.diab.glucose.suggestion.status.CheckAgainStatus
 import it.diab.glucose.suggestion.status.InsulinStatus
+import it.diab.glucose.suggestion.status.SuggestionStatus
 import it.diab.glucose.suggestion.ui.SuggestionUiInterface
 import it.diab.glucose.ui.DateTimeDialog
 import it.diab.glucose.util.VibrationUtil
 import it.diab.glucose.util.extensions.forEachUntilTrueIndexed
 import it.diab.glucose.viewmodels.EditorViewModel
 import it.diab.glucose.viewmodels.EditorViewModelFactory
-import java.util.Date
 
 class EditorFragment : Fragment() {
 
@@ -142,7 +143,7 @@ class EditorFragment : Fragment() {
     }
 
     private fun onDateSelected(timeInMillis: Long) {
-        val date = Date(timeInMillis)
+        val date = DateTime(timeInMillis)
 
         if (timeInMillis <= System.currentTimeMillis()) {
             viewModel.date = date
@@ -170,28 +171,29 @@ class EditorFragment : Fragment() {
             this::setupCheckAgainSuggestion
         )
 
-        arrayOf(
-            InsulinStatus(
-                glucose.timeFrame,
-                glucose.insulinId0 > 0L,
-                proposedInsulin.uid,
-                proposedInsulin.hasHalfUnits,
-                this::onSuggestionApplied
-            ),
-            CheckAgainStatus(
-                glucose.value,
-                glucose.timeFrame,
-                PreferencesUtil.getGlucoseLowThreshold(context)
-            )
-        ).forEachUntilTrueIndexed { index, status ->
+        val insulinStatus: SuggestionStatus = InsulinStatus(
+            glucose.timeFrame,
+            glucose.insulinId0 > 0L,
+            proposedInsulin.uid,
+            proposedInsulin.hasHalfUnits,
+            this::onSuggestionApplied
+        )
+        val checkAgainStatus: SuggestionStatus = CheckAgainStatus(
+            glucose.value,
+            glucose.timeFrame,
+            PreferencesUtil.getGlucoseLowThreshold(context)
+        )
+
+        arrayOf(insulinStatus, checkAgainStatus).forEachUntilTrueIndexed { index, status ->
             setupFunctions[index](status, suggestionInterface)
         }
     }
 
     private fun setupInsulinSuggestion(
-        status: InsulinStatus,
+        status: SuggestionStatus,
         suggestionInterface: SuggestionUiInterface
     ): Boolean {
+        status as InsulinStatus
         val insulinSuggestion = InsulinSuggestion(status)
 
         if (!suggestionInterface.applyConfig(insulinSuggestion)) {
@@ -203,9 +205,10 @@ class EditorFragment : Fragment() {
     }
 
     private fun setupCheckAgainSuggestion(
-        status: CheckAgainStatus,
+        status: SuggestionStatus,
         suggestionInterface: SuggestionUiInterface
     ): Boolean {
+        status as CheckAgainStatus
         val checkAgainSuggestion = CheckAgainSuggestion(status)
 
         if (!suggestionInterface.applyConfig(checkAgainSuggestion)) {

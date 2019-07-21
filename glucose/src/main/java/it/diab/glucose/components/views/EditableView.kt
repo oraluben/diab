@@ -16,6 +16,7 @@ import androidx.transition.TransitionManager
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import it.diab.core.arch.EventBusFactory
 import it.diab.core.arch.UiView
+import it.diab.core.time.DateTime
 import it.diab.glucose.R
 import it.diab.glucose.components.status.EditableInStatus
 import it.diab.glucose.components.status.EditableOutStatus
@@ -26,7 +27,6 @@ import it.diab.glucose.util.extensions.setIconErrorStatus
 import it.diab.glucose.util.extensions.setTextErrorStatus
 import it.diab.glucose.widget.EatBar
 import it.diab.glucose.widget.NumericKeyboardView
-import java.util.Date
 
 class EditableView(
     container: View,
@@ -104,7 +104,7 @@ class EditableView(
         valueView.setTextErrorStatus(hasError)
     }
 
-    fun setDate(date: Date, hasError: Boolean) {
+    fun setDate(date: DateTime, hasError: Boolean) {
         dateView.text = date.getDetailedString()
 
         if (hasError == hasDateError) {

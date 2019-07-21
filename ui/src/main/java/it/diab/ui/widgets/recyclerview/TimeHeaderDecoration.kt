@@ -28,21 +28,18 @@ import android.text.TextPaint
 import android.text.style.AbsoluteSizeSpan
 import android.text.style.StyleSpan
 import androidx.recyclerview.widget.RecyclerView
-import it.diab.core.util.extensions.getCalendar
+import it.diab.core.time.DateTime
+import it.diab.core.time.DateTimeFormatter
 import it.diab.ui.R
 import it.diab.ui.util.extensions.inSpans
 import it.diab.ui.util.extensions.withTranslation
-import java.text.SimpleDateFormat
-import java.util.Calendar
-import java.util.Date
-import java.util.Locale
 
 /**
  * A [RecyclerView.ItemDecoration] which draws sticky headers for a given list of sessions.
  */
 class TimeHeaderDecoration(
     context: Context,
-    data: List<Date>,
+    data: List<DateTime>,
     private val shiftList: Int = 0
 ) : RecyclerView.ItemDecoration() {
 
@@ -50,8 +47,8 @@ class TimeHeaderDecoration(
     private val width: Int
     private val paddingTop: Int
     private val monthTextSize: Int
-    private val dayFormatter = SimpleDateFormat("dd", Locale.getDefault())
-    private val monthFormatter = SimpleDateFormat("MMM yyyy", Locale.getDefault())
+    private val dayFormatter = DateTimeFormatter("dd")
+    private val monthFormatter = DateTimeFormatter("MMM yyyy")
 
     init {
         val attrs = context.obtainStyledAttributes(
@@ -75,8 +72,8 @@ class TimeHeaderDecoration(
         data.mapIndexed { index, date ->
             index + shiftList to date
         }.distinctBy {
-            val cal = it.second.getCalendar()
-            (cal[Calendar.YEAR] shl 3) + cal[Calendar.DAY_OF_YEAR]
+            val dateTime = it.second
+            (dateTime[DateTime.YEAR] * 1000) + dateTime[DateTime.DAY_OF_YEAR]
         }.map {
             it.first to createHeader(it.second)
         }.toMap()
@@ -135,7 +132,7 @@ class TimeHeaderDecoration(
     /**
      * Create a header layout for the given [date].
      */
-    private fun createHeader(date: Date): StaticLayout {
+    private fun createHeader(date: DateTime): StaticLayout {
         val text = SpannableStringBuilder().apply {
             inSpans(StyleSpan(Typeface.BOLD)) {
                 append(dayFormatter.format(date))

@@ -9,13 +9,13 @@
 package it.diab.data.converters
 
 import androidx.room.TypeConverter
-import java.util.Date
+import it.diab.core.time.DateTime
 
 class DateConverter {
 
     @TypeConverter
-    fun toDate(value: Long?) = Date(value ?: 0)
+    fun toDate(value: Long?) = DateTime(value ?: 0L)
 
     @TypeConverter
-    fun toLong(value: Date?) = value?.time ?: 0L
+    fun toLong(value: DateTime?) = value?.epochMillis ?: 0L
 }

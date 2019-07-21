@@ -15,7 +15,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.LivePagedListBuilder
 import com.github.mikephil.charting.data.Entry
-import it.diab.core.util.DateUtils
+import it.diab.core.time.DateTime
+import it.diab.core.time.Days
 import it.diab.core.util.event.Event
 import it.diab.data.entities.Glucose
 import it.diab.data.entities.TimeFrame
@@ -24,8 +25,6 @@ import it.diab.data.repositories.GlucoseRepository
 import it.diab.overview.components.status.GraphData
 import it.diab.overview.components.status.HeaderStatus
 import it.diab.overview.components.status.LastGlucose
-import it.diab.util.extensions.getAsMinutes
-import it.diab.util.extensions.isToday
 import it.diab.util.extensions.isZeroOrNan
 import kotlinx.coroutines.Dispatchers.Default
 import kotlinx.coroutines.async
@@ -48,8 +47,8 @@ class OverviewViewModel internal constructor(
     }
 
     private suspend fun runUpdateHeaderData(): HeaderStatus = withContext(Default) {
-        val end = System.currentTimeMillis()
-        val start = end - DateUtils.WEEK
+        val end = DateTime.now
+        val start = end - Days(7)
         val data = glucoseRepository.getInDateRange(start, end)
 
         val todayDeferred = async { updateToday(data) }
@@ -72,8 +71,8 @@ class OverviewViewModel internal constructor(
 
     private fun updateToday(list: List<Glucose>) =
         list.filter { it.date.isToday() }
-            .sortedBy { it.date.time }
-            .map { Entry(it.date.getAsMinutes(), it.value.toFloat()) }
+            .sortedBy { it.date.epochMillis }
+            .map { Entry(it.date.asMinutes().toFloat(), it.value.toFloat()) }
             .distinctBy { it.x }
 
     private fun updateAverage(list: List<Glucose>): List<Entry> {

@@ -8,9 +8,9 @@
  */
 package it.diab.data.converters
 
-import org.junit.Assert.assertEquals
+import it.diab.core.time.DateTime
+import org.junit.Assert
 import org.junit.Test
-import java.util.Date
 
 class DateConverterTest {
     private val converter = DateConverter()
@@ -18,16 +18,15 @@ class DateConverterTest {
     @Test
     fun convertToDate() {
         val now = System.currentTimeMillis()
-        assertEquals(now, converter.toDate(now).time)
-
-        assertEquals(0, converter.toDate(null).time)
+        Assert.assertEquals(now, converter.toDate(now).epochMillis)
+        Assert.assertEquals(0, converter.toDate(null).epochMillis)
     }
 
     @Test
     fun convertToLong() {
-        val now = Date()
-        assertEquals(now.time, converter.toLong(now))
-
-        assertEquals(0, converter.toLong(null))
+        val now = System.currentTimeMillis()
+        val date = DateTime(now)
+        Assert.assertEquals(now, converter.toLong(date))
+        Assert.assertEquals(0, converter.toLong(null))
     }
 }

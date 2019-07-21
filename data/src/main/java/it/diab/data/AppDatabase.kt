@@ -16,6 +16,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
+import it.diab.core.time.DateTime
 import it.diab.core.util.SingletonHolder
 import it.diab.data.dao.GlucoseDao
 import it.diab.data.dao.Hba1cDao
@@ -24,7 +25,6 @@ import it.diab.data.entities.Glucose
 import it.diab.data.entities.Hba1c
 import it.diab.data.entities.Insulin
 import it.diab.data.extensions.asTimeFrame
-import java.util.Date
 
 @Database(
     entities = [
@@ -126,7 +126,7 @@ abstract class AppDatabase protected constructor() : RoomDatabase() {
                 do {
                     val item = ContentValues()
                     val uid = cursor.getLong(0)
-                    val date = Date(cursor.getLong(1))
+                    val date = DateTime(cursor.getLong(1))
                     item.put("timeFrame", date.asTimeFrame().toInt())
 
                     database.update(

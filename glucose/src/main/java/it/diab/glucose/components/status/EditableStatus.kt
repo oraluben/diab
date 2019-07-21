@@ -11,12 +11,12 @@
 package it.diab.glucose.components.status
 
 import it.diab.core.arch.ViewStatus
-import java.util.Date
+import it.diab.core.time.DateTime
 
 data class EditableInStatus(
     val glucoseUid: Long,
     val value: Int,
-    val date: Date,
+    val date: DateTime,
     val foodIntake: Int,
     val insulinUid: Long,
     val insulinDescription: String,

@@ -11,7 +11,6 @@ package it.diab.export.writer
 import android.os.Build
 import android.os.ParcelFileDescriptor
 import android.util.Log
-import it.diab.core.util.extensions.format
 import it.diab.data.entities.Glucose
 import it.diab.data.repositories.GlucoseRepository
 import it.diab.data.repositories.InsulinRepository
@@ -108,9 +107,7 @@ class XlsxWriter(
 
             write(
                 glucose.value to (row to 0),
-                // Java 8's java.time.LocalDateTime is required for this
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) glucose.date to (row to 1)
-                else glucose.date.format(DATE_FORMAT) to (row to 1),
+                glucose.date.format(DATE_FORMAT) to (row to 1),
                 glucose.eatLevel to (row to 2)
             )
 

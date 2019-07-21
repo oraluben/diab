@@ -15,9 +15,9 @@ import androidx.room.Ignore
 import androidx.room.Index
 import androidx.room.PrimaryKey
 import androidx.room.TypeConverters
+import it.diab.core.time.DateTime
 import it.diab.data.converters.DateConverter
 import it.diab.data.converters.TimeFrameConverter
-import java.util.Date
 
 @Entity(
     tableName = "glucose",
@@ -32,7 +32,7 @@ class Glucose {
     var value: Int = 0
     @ColumnInfo(name = "date")
     @TypeConverters(DateConverter::class)
-    var date: Date = Date()
+    var date: DateTime = DateTime.now
     @ColumnInfo(name = "insulinId0")
     var insulinId0: Long = -1
     @ColumnInfo(name = "insulinValue0")
@@ -54,7 +54,7 @@ class Glucose {
     constructor(
         uid: Long,
         value: Int,
-        date: Date,
+        date: DateTime,
         insulinId0: Long,
         insulinValue0: Float,
         insulinId1: Long,
@@ -83,7 +83,7 @@ class Glucose {
         }
 
         return other.value == value &&
-            other.date.time == date.time &&
+            other.date == date &&
             other.insulinId0 == insulinId0 &&
             other.insulinValue0 == insulinValue0 &&
             other.insulinId1 == insulinId1 &&

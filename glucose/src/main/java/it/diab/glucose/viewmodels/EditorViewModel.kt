@@ -13,6 +13,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import it.diab.core.time.DateTime
 import it.diab.data.entities.Glucose
 import it.diab.data.entities.Insulin
 import it.diab.data.entities.TimeFrame
@@ -25,7 +26,6 @@ import it.diab.glucose.components.status.EditableOutStatus
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
-import java.util.Date
 
 class EditorViewModel internal constructor(
     private val glucoseRepository: GlucoseRepository,
@@ -55,7 +55,7 @@ class EditorViewModel internal constructor(
     }
 
     var isEditMode = false
-    var date = Date()
+    var date = DateTime.now
     var value = 0
 
     private lateinit var insulins: List<Insulin>

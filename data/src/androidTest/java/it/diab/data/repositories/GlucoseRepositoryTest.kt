@@ -9,15 +9,15 @@
 package it.diab.data.repositories
 
 import androidx.test.platform.app.InstrumentationRegistry
+import it.diab.core.time.DateTime
+import it.diab.core.time.Days
 import it.diab.data.AppDatabase
-import it.diab.core.util.DateUtils
 import it.diab.data.extensions.glucose
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotEquals
 import org.junit.Before
 import org.junit.Test
-import java.util.Date
 
 class GlucoseRepositoryTest {
 
@@ -36,8 +36,8 @@ class GlucoseRepositoryTest {
         val daysRange = 3
         val baseValue = 42
 
-        val end = System.currentTimeMillis()
-        val start = end - (DateUtils.DAY * daysRange)
+        val end = DateTime.now
+        val start = end - Days(daysRange.toLong())
 
         // Clear old test data
         repository.getInDateRange(start, end).forEach {
@@ -47,7 +47,7 @@ class GlucoseRepositoryTest {
         val data = Array(7) {
             glucose {
                 value = baseValue * (it + 1)
-                date = Date(end - (DateUtils.DAY * it))
+                date = end - Days(it.toLong())
             }
         }
 

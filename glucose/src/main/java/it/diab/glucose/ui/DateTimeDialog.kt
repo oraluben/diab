@@ -14,27 +14,26 @@ import android.app.TimePickerDialog
 import android.content.DialogInterface
 import android.view.View
 import androidx.appcompat.app.AlertDialog
-import it.diab.core.util.DateUtils
+import it.diab.core.time.DateTime
+import it.diab.core.time.Days
 import it.diab.glucose.R
-import java.util.Calendar
-import java.util.Date
 
 class DateTimeDialog(
     private val activity: Activity,
     private val onSelected: (Long) -> Unit
 ) : DialogInterface.OnClickListener {
 
-    private var calendar = Calendar.getInstance()
+    private var dateTime = DateTime.now
 
     private val timePickerCallback = { _: View, hour: Int, minute: Int ->
-        calendar[Calendar.HOUR_OF_DAY] = hour
-        calendar[Calendar.MINUTE] = minute
+        dateTime = dateTime.with(DateTime.HOUR, hour)
+            .with(DateTime.MINUTE, minute)
 
-        onSelected(calendar.timeInMillis)
+        onSelected(dateTime.epochMillis)
     }
 
     private val datePickerCallback = { _: View, year: Int, month: Int, day: Int ->
-        calendar.set(year, month, day)
+        dateTime = DateTime(year, month, day)
 
         showTimePicker()
     }
@@ -43,13 +42,12 @@ class DateTimeDialog(
         when (which) {
             0 -> {
                 dialog?.dismiss()
-                val now = Calendar.getInstance()
-                calendar[Calendar.DAY_OF_YEAR] = now[Calendar.DAY_OF_YEAR]
+                dateTime = dateTime.with(DateTime.DAY_OF_YEAR, DateTime.now[DateTime.DAY_OF_YEAR])
                 showTimePicker()
             }
             1 -> {
                 dialog?.dismiss()
-                calendar.timeInMillis = System.currentTimeMillis() - DateUtils.DAY
+                dateTime -= Days(1)
                 showTimePicker()
             }
             2 -> {
@@ -59,8 +57,8 @@ class DateTimeDialog(
         }
     }
 
-    fun show(date: Date) {
-        calendar.time = date
+    fun show(date: DateTime) {
+        dateTime = date
 
         val options = activity.resources.run {
             arrayOf(
@@ -81,8 +79,8 @@ class DateTimeDialog(
             activity,
             R.style.AppTheme_DatePickerDialog,
             timePickerCallback,
-            calendar[Calendar.HOUR_OF_DAY],
-            calendar[Calendar.MINUTE],
+            dateTime[DateTime.HOUR],
+            dateTime[DateTime.MINUTE],
             true
         ).show()
     }
@@ -92,9 +90,9 @@ class DateTimeDialog(
             activity,
             R.style.AppTheme_DatePickerDialog,
             datePickerCallback,
-            calendar[Calendar.YEAR],
-            calendar[Calendar.MONTH],
-            calendar[Calendar.DAY_OF_MONTH]
+            dateTime[DateTime.YEAR],
+            dateTime[DateTime.MONTH],
+            dateTime[DateTime.DAY]
         ).show()
     }
 }

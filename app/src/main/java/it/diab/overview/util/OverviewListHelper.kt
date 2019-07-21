@@ -16,14 +16,13 @@ import androidx.annotation.ColorRes
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.content.ContextCompat
 import it.diab.R
+import it.diab.core.time.DateTime
+import it.diab.core.time.DateTimeFormatter
 import it.diab.core.util.PreferencesUtil
 import it.diab.overview.components.status.GraphData
 import it.diab.overview.components.status.HeaderStatus
 import it.diab.overview.components.status.LastGlucose
 import it.diab.util.UIUtils
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
 
 class OverviewListHelper(
     private val context: Context
@@ -40,7 +39,7 @@ class OverviewListHelper(
     private val highThreshold by lazy { PreferencesUtil.getGlucoseHighThreshold(context) }
     private val lowThreshold by lazy { PreferencesUtil.getGlucoseLowThreshold(context) }
 
-    private val hourFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
+    private val hourFormat = DateTimeFormatter("HH:mm")
 
     private lateinit var sharedView: View
 
@@ -52,7 +51,7 @@ class OverviewListHelper(
         sharedView = view
     }
 
-    fun fetchHourText(date: Date): String {
+    fun fetchHourText(date: DateTime): String {
         return hourFormat.format(date)
     }
 

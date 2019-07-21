@@ -8,13 +8,13 @@
  */
 package it.diab.data.entities
 
+import it.diab.core.time.DateTime
 import it.diab.data.extensions.glucose
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
-import java.util.Date
 
 @RunWith(JUnit4::class)
 class GlucoseTest {
@@ -37,13 +37,13 @@ class GlucoseTest {
         val a = glucose {
             uid = 1
             value = 100
-            date = Date(0)
+            date = DateTime(0)
         }
 
         val b = glucose {
             uid = 2
             value = 100
-            date = Date(0)
+            date = DateTime(0)
         }
 
         assertTrue(a == b)

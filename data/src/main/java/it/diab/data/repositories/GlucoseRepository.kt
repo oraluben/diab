@@ -9,6 +9,7 @@
 package it.diab.data.repositories
 
 import android.content.Context
+import it.diab.core.time.DateTime
 import it.diab.core.util.SingletonHolder
 import it.diab.data.AppDatabase
 import it.diab.data.dao.GlucoseDao
@@ -39,6 +40,9 @@ class GlucoseRepository private constructor(private val dao: GlucoseDao) : BaseR
     suspend fun getInDateRange(start: Long, end: Long) = withContext(IO) {
         dao.getInDateRange(start, end)
     }
+
+    suspend fun getInDateRange(start: DateTime, end: DateTime) =
+        getInDateRange(start.epochMillis, end.epochMillis)
 
     suspend fun insert(glucose: Glucose) = withContext(IO) {
         dao.insert(glucose)

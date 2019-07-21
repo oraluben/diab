@@ -101,7 +101,7 @@ class EditorViewModelTest {
 
             assertEquals(testGlucose.value, it.value)
             // Account for time diff due to save operations
-            assertTrue((testGlucose.date.time - it.date.time).absoluteValue < 1000)
+            assertTrue((testGlucose.date - it.date).absoluteValue < 1000)
         })
     }
 

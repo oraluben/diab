@@ -8,6 +8,7 @@
  */
 package it.diab.data.entities
 
+import it.diab.core.time.DateTime
 import it.diab.data.extensions.hba1c
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
@@ -15,7 +16,6 @@ import org.junit.Assert.assertTrue
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
-import java.util.Date
 
 @RunWith(JUnit4::class)
 class Hba1cTest {
@@ -30,19 +30,19 @@ class Hba1cTest {
         val a = hba1c {
             uid = 1
             value = 10f
-            date = Date(0)
+            date = DateTime(0)
         }
 
         val b = hba1c {
             uid = 2
             value = 10f
-            date = Date(0)
+            date = DateTime(0)
         }
 
         val c = hba1c {
             uid = 1
             value = 11f
-            date = Date(0)
+            date = DateTime(0)
         }
 
         assertTrue(a == b)

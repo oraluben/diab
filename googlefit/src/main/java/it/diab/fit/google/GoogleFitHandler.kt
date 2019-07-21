@@ -65,7 +65,7 @@ class GoogleFitHandler : BaseFitHandler() {
             return
         }
 
-        val timeStamp = item.date.time
+        val timeStamp = item.date.epochMillis
         val source = DataSource.Builder()
             .setType(DataSource.TYPE_RAW)
             .setDataType(HealthDataTypes.TYPE_BLOOD_GLUCOSE)

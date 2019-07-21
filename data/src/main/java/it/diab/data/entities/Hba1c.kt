@@ -13,8 +13,8 @@ import androidx.room.Entity
 import androidx.room.Ignore
 import androidx.room.PrimaryKey
 import androidx.room.TypeConverters
+import it.diab.core.time.DateTime
 import it.diab.data.converters.DateConverter
-import java.util.Date
 import kotlin.math.roundToInt
 
 @Entity(tableName = "hba1c")
@@ -28,12 +28,12 @@ class Hba1c {
 
     @ColumnInfo
     @TypeConverters(DateConverter::class)
-    var date: Date = Date()
+    var date: DateTime = DateTime.now
 
     @Ignore
     constructor()
 
-    constructor(uid: Long, value: Float, date: Date) {
+    constructor(uid: Long, value: Float, date: DateTime) {
         this.uid = uid
         this.value = value
         this.date = date

@@ -10,13 +10,13 @@
 
 package it.diab.overview.components.status
 
+import it.diab.core.time.DateTime
 import it.diab.data.entities.Insulin
-import java.util.Date
 
 data class GlucoseItemStatus(
     val uid: Long,
     val value: Int,
-    val date: Date,
+    val date: DateTime,
     val insulin: Insulin?,
     val insulinValue: Float,
     val basal: Insulin?,

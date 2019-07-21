@@ -17,13 +17,12 @@ import androidx.appcompat.app.AlertDialog
 import androidx.preference.Preference
 import androidx.preference.PreferenceCategory
 import androidx.preference.PreferenceFragmentCompat
-import it.diab.core.util.extensions.format
+import it.diab.core.time.DateTime
 import it.diab.core.util.extensions.get
 import it.diab.data.plugin.PluginManager
 import it.diab.export.utils.SecureFilePickerHelper
 import it.diab.settings.R
 import it.diab.settings.widgets.ExportPreference
-import java.util.Date
 
 class SettingsFragment : PreferenceFragmentCompat(),
     SharedPreferences.OnSharedPreferenceChangeListener,
@@ -105,7 +104,7 @@ class SettingsFragment : PreferenceFragmentCompat(),
             pluginRemoverPref.isVisible = true
             pluginManagerPref.summary = getString(
                 R.string.settings_plugin_manage_summary_installed,
-                Date(lastUpdated).format("yyyy-MM-dd HH:mm")
+                DateTime(lastUpdated).format("yyyy-MM-dd HH:mm")
             )
         }
     }

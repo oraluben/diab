@@ -8,7 +8,8 @@
  */
 package it.diab.export.writer
 
-import it.diab.core.util.DateUtils
+import it.diab.core.time.DateTime
+import it.diab.core.time.Days
 import it.diab.data.entities.Glucose
 import it.diab.data.entities.TimeFrame
 import it.diab.data.repositories.GlucoseRepository
@@ -26,8 +27,10 @@ class MlWriter(
 ) {
 
     suspend fun export(): Boolean {
-        val end = System.currentTimeMillis()
-        val start = end - DAYS_TO_EXPORT
+        val dateEnd = DateTime.now
+        val dateStart = dateEnd - Days(DAYS_TO_EXPORT)
+        val end = dateEnd.epochMillis
+        val start = dateStart.epochMillis
 
         ZipOutputStream(FileOutputStream(outDescriptor)).use { oStream ->
             return try {
@@ -126,7 +129,7 @@ class MlWriter(
 
     companion object {
         private const val COLUMNS_HEADER = "value,eatLevel,insulin\n"
-        private const val DAYS_TO_EXPORT = DateUtils.DAY * 60
+        private const val DAYS_TO_EXPORT = 60L
 
         private const val BASE_TRAIN = "train_%1\$s.csv"
         private const val BASE_TEST = "test_%1\$s.csv"
