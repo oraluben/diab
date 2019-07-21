@@ -20,7 +20,7 @@ import it.diab.data.entities.Hba1c
 
 @Dao
 @TypeConverters(DateConverter::class)
-interface Hba1cDao {
+internal interface Hba1cDao {
 
     @get:Query("SELECT * FROM hba1c ORDER BY date DESC")
     val all: LiveData<List<Hba1c>>

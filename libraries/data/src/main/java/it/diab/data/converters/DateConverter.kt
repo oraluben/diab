@@ -11,7 +11,7 @@ package it.diab.data.converters
 import androidx.room.TypeConverter
 import it.diab.core.time.DateTime
 
-class DateConverter {
+internal class DateConverter {
 
     @TypeConverter
     fun toDate(value: Long?) = DateTime(value ?: 0L)

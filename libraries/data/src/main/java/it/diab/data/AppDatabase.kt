@@ -33,7 +33,7 @@ import it.diab.data.extensions.asTimeFrame
         Insulin::class
     ], version = 5
 )
-abstract class AppDatabase protected constructor() : RoomDatabase() {
+internal abstract class AppDatabase protected constructor() : RoomDatabase() {
 
     abstract fun glucose(): GlucoseDao
     abstract fun insulin(): InsulinDao

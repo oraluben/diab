@@ -20,7 +20,7 @@ import it.diab.data.entities.Insulin
 
 @Dao
 @TypeConverters(TimeFrameConverter::class)
-interface InsulinDao {
+internal interface InsulinDao {
 
     @get:Query("SELECT * FROM insulin ORDER BY timeFrame")
     val all: DataSource.Factory<Int, Insulin>

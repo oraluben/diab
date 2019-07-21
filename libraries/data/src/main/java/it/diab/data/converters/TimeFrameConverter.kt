@@ -12,7 +12,7 @@ import androidx.room.TypeConverter
 import it.diab.data.entities.TimeFrame
 import it.diab.data.extensions.toTimeFrame
 
-class TimeFrameConverter {
+internal class TimeFrameConverter {
 
     @TypeConverter
     fun toInt(value: TimeFrame?) = (value ?: TimeFrame.EXTRA).toInt()

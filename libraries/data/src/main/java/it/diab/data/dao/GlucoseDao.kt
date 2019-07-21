@@ -25,7 +25,7 @@ import it.diab.data.entities.GlucoseWithInsulin
 
 @Dao
 @TypeConverters(DateConverter::class, TimeFrameConverter::class)
-interface GlucoseDao {
+internal interface GlucoseDao {
 
     @get:Query("SELECT * FROM glucose ORDER BY date DESC")
     val all: LiveData<List<Glucose>>
