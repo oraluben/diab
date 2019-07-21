@@ -18,7 +18,7 @@ import org.dhatim.fastexcel.Worksheet
  * @param x number or columns to apply the background onto
  * @param y number or rows to apply the background onto
  */
-fun Worksheet.setAlternateBackground(x: Int, y: Int) {
+internal fun Worksheet.setAlternateBackground(x: Int, y: Int) {
     range(0, 0, x, y)
         .style()
         .shadeAlternateRows(Color.GRAY2)
@@ -30,7 +30,7 @@ fun Worksheet.setAlternateBackground(x: Int, y: Int) {
  *
  * @param values pairs composed of [Any] (data) and [Pair] (x, y) coordinate in the sheet
  */
-fun Worksheet.write(vararg values: Pair<Any, Pair<Int, Int>>) {
+internal fun Worksheet.write(vararg values: Pair<Any, Pair<Int, Int>>) {
     values.forEach {
         value(it.second.first, it.second.second, it.first)
     }

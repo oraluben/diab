@@ -20,7 +20,7 @@ import java.io.IOException
 import java.util.zip.ZipEntry
 import java.util.zip.ZipOutputStream
 
-class MlWriter(
+internal class MlWriter(
     private val outDescriptor: FileDescriptor,
     private val repository: GlucoseRepository,
     private val filterRange: IntRange

@@ -8,11 +8,11 @@
  */
 package it.diab.export.utils.extensions
 
-import android.util.Log
 import java.util.Arrays
+import kotlin.math.ceil
 
-fun ByteArray.splitBy(chunkSize: Int): Array<ByteArray> {
-    val splitLen = Math.ceil(size / chunkSize.toDouble()).toInt()
+internal fun ByteArray.splitBy(chunkSize: Int): Array<ByteArray> {
+    val splitLen = ceil(size / chunkSize.toDouble()).toInt()
     return Array(splitLen) { position ->
         val start = chunkSize * position
         var end = start + chunkSize
@@ -22,7 +22,5 @@ fun ByteArray.splitBy(chunkSize: Int): Array<ByteArray> {
         }
 
         Arrays.copyOfRange(this, start, end)
-    }.also {
-        Log.d("OHAI", "${this.size} -> ${it.size} (${it.last().size})")
     }
 }

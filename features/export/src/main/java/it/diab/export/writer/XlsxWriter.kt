@@ -24,7 +24,7 @@ import org.dhatim.fastexcel.Worksheet
 import java.io.FileOutputStream
 import java.io.IOException
 
-class XlsxWriter(
+internal class XlsxWriter(
     private val scope: CoroutineScope,
     private val outDescriptor: ParcelFileDescriptor,
     private val glucoseRepository: GlucoseRepository,
