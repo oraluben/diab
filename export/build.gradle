@@ -25,9 +25,9 @@ android {
 }
 
 dependencies {
-    implementation project(':core')
-    implementation project(':data')
-    implementation project(':ui')
+    implementation project(':libraries::core')
+    implementation project(':libraries::data')
+    implementation project(':libraries::ui')
 
     implementation "org.dhatim:fastexcel:0.10.8"
 }

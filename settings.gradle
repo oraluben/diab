@@ -7,7 +7,12 @@
  * or at https://www.gnu.org/licenses/gpl.txt
  */
 
-include ':app', ':core', ':data', ':ui'
+include ':app'
+
+include ':libraries:core'
+include ':libraries:data'
+include ':libraries:ui'
+
 include ':export', ':glucose', ':googlefit', ':insulin', ':settings'
 
 include ':features:overview'

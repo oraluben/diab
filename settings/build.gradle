@@ -25,10 +25,11 @@ android {
 }
 
 dependencies {
-    implementation project(':core')
-    implementation project(':data')
+    implementation project(':libraries::core')
+    implementation project(':libraries::data')
+    implementation project(':libraries::ui')
+
     implementation project(':export')
-    implementation project(':ui')
 
     implementation "androidx.preference:preference:1.0.0"
 }

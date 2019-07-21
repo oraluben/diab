@@ -26,9 +26,9 @@ android {
 }
 
 dependencies {
-    implementation project(':core')
-    implementation project(':data')
-    implementation project(':ui')
+    implementation project(':libraries:core')
+    implementation project(':libraries:data')
+    implementation project(':libraries:ui')
 
     implementation project(':glucose')
     implementation project(':settings')

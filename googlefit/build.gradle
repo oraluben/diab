@@ -25,9 +25,9 @@ android {
 }
 
 dependencies {
-    implementation project(':core')
-    implementation project(':data')
-    implementation project(':ui')
+    implementation project(':libraries::core')
+    implementation project(':libraries::data')
+    implementation project(':libraries::ui')
 
     implementation "com.google.android.gms:play-services-auth:17.0.0"
     implementation "com.google.android.gms:play-services-fitness:17.0.0"
