@@ -12,7 +12,7 @@ import it.diab.core.arch.ComponentEvent
 import it.diab.insulin.components.status.EditableInStatus
 import it.diab.insulin.components.status.EditableOutStatus
 
-sealed class EditEvent : ComponentEvent {
+internal sealed class EditEvent : ComponentEvent {
 
     class IntentEdit(val status: EditableInStatus) : EditEvent()
 

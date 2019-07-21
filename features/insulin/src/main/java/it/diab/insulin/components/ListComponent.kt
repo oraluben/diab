@@ -16,7 +16,7 @@ import it.diab.insulin.components.views.ListView
 import it.diab.insulin.events.ListEvent
 import kotlinx.coroutines.CoroutineScope
 
-class ListComponent(
+internal class ListComponent(
     container: View,
     scope: CoroutineScope,
     bus: EventBusFactory

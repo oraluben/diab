@@ -22,7 +22,7 @@ import it.diab.insulin.components.status.EditableInStatus
 import it.diab.insulin.components.status.EditableOutStatus
 import it.diab.insulin.events.EditEvent
 
-class EditableView(
+internal class EditableView(
     container: View,
     bus: EventBusFactory
 ) : UiView<EditableInStatus, EditableOutStatus>(container) {

@@ -12,7 +12,7 @@ import androidx.paging.PagedList
 import it.diab.core.arch.ComponentEvent
 import it.diab.data.entities.Insulin
 
-sealed class ListEvent : ComponentEvent {
+internal sealed class ListEvent : ComponentEvent {
 
     class UpdateEvent(val pagedList: PagedList<Insulin>) : ListEvent()
 

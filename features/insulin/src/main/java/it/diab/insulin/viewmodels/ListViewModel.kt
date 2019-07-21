@@ -12,7 +12,7 @@ import androidx.lifecycle.ViewModel
 import androidx.paging.LivePagedListBuilder
 import it.diab.data.repositories.InsulinRepository
 
-class ListViewModel internal constructor(
+internal class ListViewModel internal constructor(
     insulinRepository: InsulinRepository
 ) : ViewModel() {
 

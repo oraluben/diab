@@ -17,7 +17,7 @@ import it.diab.data.repositories.InsulinRepository
 import it.diab.insulin.components.status.EditableOutStatus
 import kotlinx.coroutines.launch
 
-class EditorViewModel internal constructor(
+internal class EditorViewModel internal constructor(
     private val repo: InsulinRepository
 ) : ViewModel() {
 

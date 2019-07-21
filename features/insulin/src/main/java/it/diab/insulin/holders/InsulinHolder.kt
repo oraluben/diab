@@ -18,7 +18,7 @@ import it.diab.insulin.components.status.ListItemStatus
 import it.diab.insulin.events.ListEvent
 import it.diab.ui.util.extensions.setPreText
 
-class InsulinHolder(
+internal class InsulinHolder(
     view: View,
     private val bus: EventBusFactory
 ) : RecyclerView.ViewHolder(view) {

@@ -25,7 +25,7 @@ import it.diab.insulin.events.ListEvent
 import it.diab.insulin.viewmodels.ListViewModel
 import it.diab.insulin.viewmodels.ListViewModelFactory
 
-class ListFragment : Fragment() {
+internal class ListFragment : Fragment() {
 
     private lateinit var viewModel: ListViewModel
 

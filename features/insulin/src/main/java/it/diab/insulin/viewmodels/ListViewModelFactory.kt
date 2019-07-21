@@ -12,7 +12,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import it.diab.data.repositories.InsulinRepository
 
-class ListViewModelFactory(
+internal class ListViewModelFactory(
     private val insulinRepository: InsulinRepository
 ) : ViewModelProvider.NewInstanceFactory() {
 

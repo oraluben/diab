@@ -12,7 +12,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import it.diab.data.repositories.InsulinRepository
 
-class EditorViewModelFactory(
+internal class EditorViewModelFactory(
     private val repo: InsulinRepository
 ) : ViewModelProvider.NewInstanceFactory() {
 

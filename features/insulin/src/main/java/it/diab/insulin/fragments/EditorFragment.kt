@@ -28,7 +28,7 @@ import it.diab.insulin.viewmodels.EditorViewModelFactory
 import it.diab.ui.util.UIUtils
 import it.diab.ui.widgets.BottomSheetDialogFragmentExt
 
-class EditorFragment : BottomSheetDialogFragmentExt() {
+internal class EditorFragment : BottomSheetDialogFragmentExt() {
 
     private lateinit var viewModel: EditorViewModel
 

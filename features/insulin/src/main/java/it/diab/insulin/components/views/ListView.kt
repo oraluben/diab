@@ -17,7 +17,7 @@ import it.diab.insulin.adapters.InsulinAdapter
 import it.diab.insulin.components.status.ListStatus
 import it.diab.ui.widgets.RecyclerViewExt
 
-class ListView(
+internal class ListView(
     container: View,
     bus: EventBusFactory
 ) : UiView<ListStatus, ViewStatus>(container) {

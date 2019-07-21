@@ -18,7 +18,7 @@ import it.diab.insulin.R
 import it.diab.insulin.components.status.ListItemStatus
 import it.diab.insulin.holders.InsulinHolder
 
-class InsulinAdapter(private val bus: EventBusFactory) : PagedListAdapter<Insulin, InsulinHolder>(CALLBACK) {
+internal class InsulinAdapter(private val bus: EventBusFactory) : PagedListAdapter<Insulin, InsulinHolder>(CALLBACK) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): InsulinHolder {
         return InsulinHolder(

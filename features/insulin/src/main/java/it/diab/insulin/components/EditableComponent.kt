@@ -15,7 +15,7 @@ import it.diab.insulin.components.views.EditableView
 import it.diab.insulin.events.EditEvent
 import kotlinx.coroutines.CoroutineScope
 
-class EditableComponent(
+internal class EditableComponent(
     container: View,
     scope: CoroutineScope,
     bus: EventBusFactory

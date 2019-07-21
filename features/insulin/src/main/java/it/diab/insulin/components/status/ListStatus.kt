@@ -15,11 +15,11 @@ import androidx.paging.PagedList
 import it.diab.core.arch.ViewStatus
 import it.diab.data.entities.Insulin
 
-data class ListStatus(
+internal data class ListStatus(
     val pagedList: PagedList<Insulin>
 ) : ViewStatus
 
-data class ListItemStatus(
+internal data class ListItemStatus(
     val uid: Long,
     val name: String,
     @DrawableRes val icon: Int

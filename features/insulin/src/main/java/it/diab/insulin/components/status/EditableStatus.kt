@@ -12,7 +12,7 @@ package it.diab.insulin.components.status
 
 import it.diab.core.arch.ViewStatus
 
-data class EditableInStatus(
+internal data class EditableInStatus(
     val isEdit: Boolean,
     val name: String,
     val timeFrameIndex: Int,
@@ -21,7 +21,7 @@ data class EditableInStatus(
     val isBasal: Boolean
 ) : ViewStatus
 
-data class EditableOutStatus(
+internal data class EditableOutStatus(
     val name: String = "",
     val timeFrameIndex: Int = 1,
     val hasHalfUnits: Boolean = false,
