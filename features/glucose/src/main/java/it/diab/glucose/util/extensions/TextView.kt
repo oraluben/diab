@@ -13,6 +13,7 @@ import android.graphics.PorterDuff
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import it.diab.glucose.R
+import it.diab.ui.util.extensions.getColorAttr
 
 internal fun TextView.setIconErrorStatus(toError: Boolean) {
     val originalColor = ContextCompat.getColor(context, R.color.colorAccent)

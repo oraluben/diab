@@ -14,14 +14,14 @@ import android.text.style.RelativeSizeSpan
 import android.view.View
 import android.widget.ImageView
 import androidx.appcompat.widget.AppCompatTextView
+import it.diab.core.arch.EventBusFactory
 import it.diab.overview.R
 import it.diab.overview.components.status.GlucoseItemStatus
-import it.diab.core.arch.EventBusFactory
 import it.diab.overview.events.OverviewEvent
-import it.diab.glucose.util.extensions.getColorAttr
-import it.diab.ui.util.extensions.setPreText
 import it.diab.overview.util.OverviewListHelper
+import it.diab.ui.util.extensions.getColorAttr
 import it.diab.ui.util.extensions.inSpans
+import it.diab.ui.util.extensions.setPreText
 
 internal class GlucoseHolder(
     view: View,
