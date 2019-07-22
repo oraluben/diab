@@ -16,7 +16,7 @@ import androidx.preference.DialogPreference
 import it.diab.settings.R
 import it.diab.ui.util.extensions.getAttr
 
-class ExportPreference @JvmOverloads constructor(
+internal class ExportPreference @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = context.getAttr(R.attr.dialogPreferenceStyle, android.R.attr.dialogPreferenceStyle),

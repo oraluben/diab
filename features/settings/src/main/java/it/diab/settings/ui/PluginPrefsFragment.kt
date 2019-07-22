@@ -23,7 +23,7 @@ import it.diab.export.utils.SecureFilePickerHelper
 import it.diab.settings.R
 import it.diab.settings.widgets.ExportPreference
 
-class PluginPrefsFragment : PreferenceFragmentCompat(),
+internal class PluginPrefsFragment : PreferenceFragmentCompat(),
     SharedPreferences.OnSharedPreferenceChangeListener,
     SecureFilePickerHelper.Callbacks {
 

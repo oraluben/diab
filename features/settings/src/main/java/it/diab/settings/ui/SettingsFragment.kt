@@ -19,7 +19,7 @@ import it.diab.export.utils.SecureFilePickerHelper
 import it.diab.settings.R
 import it.diab.settings.widgets.ExportPreference
 
-class SettingsFragment : PreferenceFragmentCompat(), SecureFilePickerHelper.Callbacks {
+internal class SettingsFragment : PreferenceFragmentCompat(), SecureFilePickerHelper.Callbacks {
     private lateinit var prefs: SharedPreferences
     private lateinit var secureFilePicker: SecureFilePickerHelper
 
