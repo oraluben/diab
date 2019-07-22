@@ -12,7 +12,7 @@ import it.diab.core.arch.ComponentEvent
 import it.diab.glucose.components.status.InsulinDialogInStatus
 import it.diab.glucose.components.status.InsulinDialogOutStatus
 
-sealed class InsulinDialogEvent : ComponentEvent {
+internal sealed class InsulinDialogEvent : ComponentEvent {
 
     class IntentEdit(val status: InsulinDialogInStatus) : InsulinDialogEvent()
 

@@ -18,7 +18,7 @@ import it.diab.core.time.DateTime
 import it.diab.core.time.Days
 import it.diab.glucose.R
 
-class DateTimeDialog(
+internal class DateTimeDialog(
     private val activity: Activity,
     private val onSelected: (Long) -> Unit
 ) : DialogInterface.OnClickListener {

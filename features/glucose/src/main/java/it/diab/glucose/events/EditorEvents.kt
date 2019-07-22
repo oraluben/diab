@@ -14,7 +14,7 @@ import it.diab.glucose.components.status.EditableInStatus
 import it.diab.glucose.components.status.EditableOutStatus
 import it.diab.glucose.suggestion.ui.SuggestionUiInterface
 
-object EditorEvents {
+internal object EditorEvents {
 
     sealed class Edit : ComponentEvent {
         class IntentEdit(val status: EditableInStatus) : Edit()

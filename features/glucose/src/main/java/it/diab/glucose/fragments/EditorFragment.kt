@@ -46,7 +46,7 @@ import it.diab.glucose.util.extensions.forEachUntilTrueIndexed
 import it.diab.glucose.viewmodels.EditorViewModel
 import it.diab.glucose.viewmodels.EditorViewModelFactory
 
-class EditorFragment : Fragment() {
+internal class EditorFragment : Fragment() {
 
     private lateinit var viewModel: EditorViewModel
     private val error = ComposableError()

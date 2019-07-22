@@ -27,7 +27,7 @@ import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
-class EditorViewModel internal constructor(
+internal class EditorViewModel internal constructor(
     private val glucoseRepository: GlucoseRepository,
     private val insulinRepository: InsulinRepository
 ) : ViewModel() {

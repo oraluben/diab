@@ -11,5 +11,5 @@ package it.diab.glucose.util.extensions
 import it.diab.core.time.DateTime
 import it.diab.core.time.DateTimeFormatter
 
-fun DateTime.getDetailedString() =
+internal fun DateTime.getDetailedString() =
     DateTimeFormatter("EEE dd-MM HH:mm").format(this).upperCaseFirstChar()

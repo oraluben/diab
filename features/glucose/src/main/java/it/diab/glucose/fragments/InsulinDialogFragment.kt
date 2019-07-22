@@ -29,7 +29,7 @@ import it.diab.glucose.viewmodels.InsulinDialogViewModelFactory
 import it.diab.ui.util.UIUtils
 import it.diab.ui.widgets.BottomSheetDialogFragmentExt
 
-class InsulinDialogFragment : BottomSheetDialogFragmentExt() {
+internal class InsulinDialogFragment : BottomSheetDialogFragmentExt() {
     private lateinit var viewModel: InsulinDialogViewModel
 
     private var wantsBasal = false

@@ -24,7 +24,7 @@ import it.diab.glucose.components.status.InsulinDialogInStatus
 import it.diab.glucose.components.status.InsulinDialogOutStatus
 import it.diab.glucose.events.InsulinDialogEvent
 
-class InsulinDialogView(
+internal class InsulinDialogView(
     container: View,
     private val bus: EventBusFactory
 ) : UiView<InsulinDialogInStatus, InsulinDialogOutStatus>(container) {

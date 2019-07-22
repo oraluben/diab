@@ -10,7 +10,7 @@ package it.diab.glucose.suggestion.status
 
 import it.diab.data.entities.TimeFrame
 
-data class CheckAgainStatus(
+internal data class CheckAgainStatus(
     val value: Int,
     val timeFrame: TimeFrame,
     val lowThreshold: Int

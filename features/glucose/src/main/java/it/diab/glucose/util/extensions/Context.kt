@@ -15,7 +15,7 @@ import androidx.annotation.ColorInt
 import androidx.annotation.StyleRes
 
 @ColorInt
-fun Context.getColorAttr(@StyleRes style: Int, @AttrRes attr: Int): Int {
+internal fun Context.getColorAttr(@StyleRes style: Int, @AttrRes attr: Int): Int {
     val attrs = intArrayOf(attr)
     val typedArray = obtainStyledAttributes(style, attrs)
     return typedArray.getColor(0, Color.BLACK).also { typedArray.recycle() }

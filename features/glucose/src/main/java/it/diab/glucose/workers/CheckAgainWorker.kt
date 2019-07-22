@@ -22,7 +22,7 @@ import it.diab.core.util.Activities
 import it.diab.core.util.intentTo
 import it.diab.glucose.R
 
-class CheckAgainWorker(
+internal class CheckAgainWorker(
     private val context: Context,
     params: WorkerParameters
 ) : Worker(context, params) {

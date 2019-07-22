@@ -15,7 +15,7 @@ import android.os.Vibrator
 import android.view.HapticFeedbackConstants
 import android.view.View
 
-object VibrationUtil {
+internal object VibrationUtil {
 
     fun vibrateForError(context: Context) {
         context.getSystemService(Vibrator::class.java).apply {

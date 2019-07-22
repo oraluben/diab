@@ -10,7 +10,7 @@ package it.diab.glucose.suggestion.status
 
 import it.diab.data.entities.TimeFrame
 
-data class InsulinStatus(
+internal data class InsulinStatus(
     val timeFrame: TimeFrame,
     val hasInsulin: Boolean,
     val proposedInsulinUid: Long,

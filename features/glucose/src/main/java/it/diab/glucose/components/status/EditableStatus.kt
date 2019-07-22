@@ -13,7 +13,7 @@ package it.diab.glucose.components.status
 import it.diab.core.arch.ViewStatus
 import it.diab.core.time.DateTime
 
-data class EditableInStatus(
+internal data class EditableInStatus(
     val glucoseUid: Long,
     val value: Int,
     val date: DateTime,
@@ -26,7 +26,7 @@ data class EditableInStatus(
     val supportsBasal: Boolean
 ) : ViewStatus
 
-data class EditableOutStatus(
+internal data class EditableOutStatus(
     val value: Int,
     val foodIntake: Int
 ) : ViewStatus

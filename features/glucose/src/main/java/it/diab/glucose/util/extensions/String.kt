@@ -8,5 +8,5 @@
  */
 package it.diab.glucose.util.extensions
 
-fun String.upperCaseFirstChar() =
+internal fun String.upperCaseFirstChar() =
     substring(0, 1).toUpperCase() + substring(1, length)

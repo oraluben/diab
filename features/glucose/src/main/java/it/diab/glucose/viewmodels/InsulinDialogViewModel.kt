@@ -20,7 +20,7 @@ import it.diab.glucose.components.status.InsulinDialogOutStatus
 import it.diab.glucose.util.InsulinSelector
 import kotlinx.coroutines.launch
 
-class InsulinDialogViewModel internal constructor(
+internal class InsulinDialogViewModel internal constructor(
     private val glucoseRepository: GlucoseRepository,
     private val insulinRepository: InsulinRepository
 ) : ViewModel() {

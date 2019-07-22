@@ -14,7 +14,7 @@ import it.diab.glucose.components.views.InsulinDialogView
 import it.diab.glucose.events.InsulinDialogEvent
 import kotlinx.coroutines.CoroutineScope
 
-class InsulinDialogComponent(
+internal class InsulinDialogComponent(
     container: View,
     scope: CoroutineScope,
     bus: EventBusFactory

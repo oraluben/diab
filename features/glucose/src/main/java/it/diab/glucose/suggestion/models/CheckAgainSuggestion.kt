@@ -17,7 +17,7 @@ import it.diab.glucose.suggestion.status.CheckAgainStatus
 import it.diab.glucose.workers.CheckAgainWorker
 import java.util.concurrent.TimeUnit
 
-class CheckAgainSuggestion(status: CheckAgainStatus) : SuggestionModel<Int, CheckAgainStatus>(status) {
+internal class CheckAgainSuggestion(status: CheckAgainStatus) : SuggestionModel<Int, CheckAgainStatus>(status) {
 
     override fun isValid() = when (status.timeFrame) {
         TimeFrame.MORNING,

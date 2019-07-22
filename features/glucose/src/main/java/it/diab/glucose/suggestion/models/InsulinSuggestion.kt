@@ -15,7 +15,7 @@ import it.diab.glucose.R
 import it.diab.glucose.suggestion.status.InsulinStatus
 import kotlin.math.roundToInt
 
-class InsulinSuggestion(status: InsulinStatus) : SuggestionModel<Float, InsulinStatus>(status) {
+internal class InsulinSuggestion(status: InsulinStatus) : SuggestionModel<Float, InsulinStatus>(status) {
 
     override fun isValid(): Boolean {
         val validTF = when (status.timeFrame) {

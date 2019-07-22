@@ -12,7 +12,7 @@ package it.diab.glucose.components.status
 
 import it.diab.core.arch.ViewStatus
 
-sealed class InsulinDialogInStatus : ViewStatus {
+internal sealed class InsulinDialogInStatus : ViewStatus {
     data class Edit(
         val isEditing: Boolean,
         val preferrableIndex: Int,
@@ -23,7 +23,7 @@ sealed class InsulinDialogInStatus : ViewStatus {
     object Empty : InsulinDialogInStatus()
 }
 
-data class InsulinDialogOutStatus(
+internal data class InsulinDialogOutStatus(
     val selectedInsulin: Int,
     val value: Float
 ) : ViewStatus

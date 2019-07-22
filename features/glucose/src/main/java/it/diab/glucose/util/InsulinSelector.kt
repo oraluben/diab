@@ -11,7 +11,7 @@ package it.diab.glucose.util
 import it.diab.data.entities.Insulin
 import it.diab.data.entities.TimeFrame
 
-class InsulinSelector(private val timeFrame: TimeFrame) {
+internal class InsulinSelector(private val timeFrame: TimeFrame) {
 
     fun suggestInsulin(list: Collection<Insulin>, currentId: Long) =
         suggest(list, currentId, false)

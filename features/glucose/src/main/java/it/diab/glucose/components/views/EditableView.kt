@@ -28,7 +28,7 @@ import it.diab.glucose.util.extensions.setTextErrorStatus
 import it.diab.glucose.widget.EatBar
 import it.diab.glucose.widget.NumericKeyboardView
 
-class EditableView(
+internal class EditableView(
     container: View,
     private val bus: EventBusFactory
 ) : UiView<EditableInStatus, EditableOutStatus>(container) {
