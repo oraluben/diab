@@ -12,7 +12,7 @@
     <application>
 
         <activity
-            android:name="it.diab.fit.google.ui.FitActivity"
+            android:name="it.diab.fit.google.ui.GoogleFitFragment"
             android:label="@string/fit_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>

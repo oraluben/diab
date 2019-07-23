@@ -10,7 +10,6 @@ package it.diab.glucose.fragments
 
 import android.os.Bundle
 import android.os.Handler
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -275,9 +274,8 @@ internal class EditorFragment : Fragment() {
         handler.upload(
             activity,
             toUpload,
-            !viewModel.isEditMode,
-            activity::onBackPressed
-        ) { e -> Log.e(TAG, e.message) }
+            !viewModel.isEditMode
+        ) { success -> if (success) activity.onBackPressed() }
     }
 
     companion object {

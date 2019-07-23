@@ -6,11 +6,9 @@
  * The text of the license can be found in the LICENSE file
  * or at https://www.gnu.org/licenses/gpl.txt
  */
-package it.diab.fit.google.viewmodels
+package it.diab.fit.google.util
 
 import android.app.Activity
-import android.content.Context
-import androidx.lifecycle.ViewModel
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -20,7 +18,9 @@ import com.google.android.gms.fitness.data.HealthDataTypes
 import com.google.android.gms.fitness.request.DataDeleteRequest
 import java.util.concurrent.TimeUnit
 
-class FitViewModel : ViewModel() {
+internal class GoogleFitManager(
+    private val activity: Activity
+) {
     private val options = FitnessOptions.builder()
         .addDataType(HealthDataTypes.TYPE_BLOOD_GLUCOSE, FitnessOptions.ACCESS_WRITE)
         .build()
@@ -28,18 +28,18 @@ class FitViewModel : ViewModel() {
 
     fun isConnected() = GoogleSignIn.hasPermissions(account, options)
 
-    fun connect(activity: Activity, requestCode: Int) {
+    fun connect(requestCode: Int) {
         if (account == null) {
             account = GoogleSignIn.getLastSignedInAccount(activity)
         }
         GoogleSignIn.requestPermissions(activity, requestCode, account, options)
     }
 
-    fun disconnect(context: Context) {
+    fun disconnect(onCompletion: (Boolean) -> Unit) {
         val account = account ?: return
 
         // Disable fitness client
-        Fitness.getConfigClient(context, account)
+        Fitness.getConfigClient(activity, account)
             .disableFit()
 
         // Log out
@@ -47,11 +47,13 @@ class FitViewModel : ViewModel() {
             .addExtension(options)
             .build()
 
-        val client = GoogleSignIn.getClient(context, signInOptions)
-        client.revokeAccess()
+        GoogleSignIn.getClient(activity, signInOptions)
+            .revokeAccess()
+            .addOnCompleteListener { onCompletion(true) }
+            .addOnFailureListener { onCompletion(false) }
     }
 
-    fun deleteAllData(context: Context, onSuccess: () -> Unit, onFailure: () -> Unit) {
+    fun deleteAllData(onCompletion: (Boolean) -> Unit) {
         val account = account ?: return
 
         val request = DataDeleteRequest.Builder()
@@ -59,9 +61,9 @@ class FitViewModel : ViewModel() {
             .setTimeInterval(1L, System.currentTimeMillis(), TimeUnit.MILLISECONDS)
             .build()
 
-        Fitness.getHistoryClient(context, account)
+        Fitness.getHistoryClient(activity, account)
             .deleteData(request)
-            .addOnCompleteListener { onSuccess() }
-            .addOnFailureListener { onFailure() }
+            .addOnCompleteListener { onCompletion(true) }
+            .addOnFailureListener { onCompletion(false) }
     }
 }

@@ -2,6 +2,7 @@ package it.diab.settings.widgets
 
 import android.content.Context
 import android.util.AttributeSet
+import androidx.fragment.app.Fragment
 import androidx.preference.Preference
 import it.diab.core.override.BaseFitHandler
 import it.diab.core.util.SystemUtil
@@ -19,19 +20,12 @@ internal class FitPreference @JvmOverloads constructor(
     )
 
     init {
-        if (fitHandler.isEnabled) {
-            setOnPreferenceClickListener { openFitHandler() }
-        } else {
+        if (!fitHandler.isEnabled) {
             isVisible = false
         }
     }
 
-    private fun openFitHandler(): Boolean {
-        if (!fitHandler.isEnabled) {
-            return false
-        }
-
-        fitHandler.openFitActivity(context)
-        return true
-    }
+    fun getFitFragment(): Fragment? =
+        if (fitHandler.isEnabled) fitHandler.getFragment()
+        else null
 }

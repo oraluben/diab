@@ -11,8 +11,9 @@ package it.diab.fit.google.viewmodels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 
-class FitViewModelFactory : ViewModelProvider.NewInstanceFactory() {
+class GoogleFitViewModelFactory : ViewModelProvider.NewInstanceFactory() {
 
     @Suppress("unchecked_cast")
-    override fun <T : ViewModel?> create(modelClass: Class<T>) = FitViewModel() as T
+    override fun <T : ViewModel?> create(modelClass: Class<T>) =
+        GoogleFitViewModel() as T
 }

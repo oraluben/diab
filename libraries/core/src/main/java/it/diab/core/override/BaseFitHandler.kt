@@ -9,6 +9,7 @@
 package it.diab.core.override
 
 import android.content.Context
+import androidx.fragment.app.Fragment
 
 /**
  * Base class for Fitness services integration.
@@ -29,11 +30,11 @@ open class BaseFitHandler {
     open fun hasFit(context: Context) = false
 
     /**
-     * Open the fitness activity
-     *
-     * @param context Context of the caller
+     * Get the fragment for managing fitness
      */
-    open fun openFitActivity(context: Context) = Unit
+    open fun getFragment(): Fragment {
+        throw UnsupportedOperationException("No fragment available")
+    }
 
     /**
      * Upload the glucose data to the fitness service
@@ -42,7 +43,6 @@ open class BaseFitHandler {
         context: Context,
         item: Any,
         isNew: Boolean,
-        onSuccess: () -> Unit,
-        onFailure: (Exception) -> Unit
+        onCompletion: (Boolean) -> Unit
     ) = Unit
 }
