@@ -279,8 +279,6 @@ internal class EditorFragment : Fragment() {
     }
 
     companion object {
-        private const val TAG = "EditorFragment"
-
         private const val ERROR_VALUE = 1
         private const val ERROR_DATE = 1 shl 1
     }

@@ -11,7 +11,6 @@ package it.diab.insulin.viewmodels
 import android.content.Context
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.test.core.app.ApplicationProvider
-import it.diab.data.AppDatabase
 import it.diab.data.entities.TimeFrame
 import it.diab.data.extensions.insulin
 import it.diab.data.repositories.InsulinRepository
@@ -32,10 +31,9 @@ class EditorViewModelTest {
 
     @Before
     fun setup() {
-        AppDatabase.TEST_MODE = true
 
         val context = ApplicationProvider.getApplicationContext<Context>()
-        repository = InsulinRepository.getInstance(context)
+        repository = InsulinRepository.getInstance(context).apply { setDebugMode() }
         viewModel = EditorViewModel(repository)
     }
 
