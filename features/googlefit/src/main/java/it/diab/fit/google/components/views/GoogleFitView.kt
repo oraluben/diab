@@ -38,6 +38,8 @@ class GoogleFitView(
     private val deleteAllButton: MaterialButton =
         container.findViewById(R.id.fit_delete_all_button)
 
+    private var isConnected = false
+
     init {
         connectButton.setOnClickListener {
             bus.emit(GoogleFitEvents::class, GoogleFitEvents.ConnectEvent)
@@ -51,23 +53,39 @@ class GoogleFitView(
     override fun setStatus(status: GoogleFitStatus) {
         when (status) {
             is GoogleFitStatus.DataDeleted -> onDataDeleted(status.success)
-            is GoogleFitStatus.Connected -> setupConnected()
-            is GoogleFitStatus.Disconnected -> setupDisconnected()
+            is GoogleFitStatus.Connected -> setupConnected(status.success)
+            is GoogleFitStatus.Disconnected -> setupDisconnected(status.success)
         }
     }
 
-    private fun setupConnected() {
+    private fun setupConnected(success: Boolean) {
+        if (!success) {
+            showSnack(R.string.fit_login_error)
+            return
+        }
+
         headerText.setText(R.string.fit_status_connected)
         connectButton.visibility = View.GONE
         disconnectButton.isEnabled = true
         deleteAllButton.isEnabled = true
+        isConnected = true
     }
 
-    private fun setupDisconnected() {
+    private fun setupDisconnected(success: Boolean) {
+        if (!success) {
+            showSnack(R.string.fit_login_error)
+            return
+        }
+
         headerText.setText(R.string.fit_status_prompt)
         connectButton.visibility = View.VISIBLE
         disconnectButton.isEnabled = false
         deleteAllButton.isEnabled = false
+
+        if (isConnected) {
+            showSnack(R.string.fit_disconnect_success)
+        }
+        isConnected = false
     }
 
     private fun onDataDeleted(success: Boolean) {
