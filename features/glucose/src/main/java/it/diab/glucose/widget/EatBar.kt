@@ -33,7 +33,6 @@ class EatBar @JvmOverloads constructor(
     private val bar: AppCompatSeekBar
 
     private var currentColor: Int
-    private var editable = false
     private lateinit var coloredProgressDrawable: Drawable
 
     init {
@@ -55,7 +54,7 @@ class EatBar @JvmOverloads constructor(
                 override fun onStopTrackingTouch(seekBar: SeekBar?) = Unit
             })
 
-            setOnTouchListener { _, _ -> !editable }
+            setOnTouchListener { _, _ -> !this@EatBar.isEnabled }
         }
     }
 
@@ -66,14 +65,6 @@ class EatBar @JvmOverloads constructor(
 
     fun setProgress(progress: Int) {
         bar.progress = progress
-    }
-
-    fun lock() {
-        editable = false
-    }
-
-    fun unlock() {
-        editable = true
     }
 
     private fun recolor(@ColorRes color: Int) {

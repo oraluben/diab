@@ -21,12 +21,14 @@
     <style name="AppTheme.GlucoseEditor_Value">
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">56dp</item>
+        <item name="android:background">@drawable/bg_editor_field_value</item>
         <item name="android:drawablePadding">16dp</item>
         <item name="android:gravity">center_vertical</item>
         <item name="android:maxLines">1</item>
-        <item name="android:paddingStart">16dp</item>
-        <item name="android:paddingEnd">16dp</item>
-        <item name="android:textColor">?android:textColorPrimary</item>
+        <item name="android:layout_marginStart">16dp</item>
+        <item name="android:layout_marginEnd">16dp</item>
+        <item name="android:layout_marginTop">8dp</item>
+        <item name="android:textColor">@color/textPrimary</item>
         <item name="android:textSize">24sp</item>
     </style>
 

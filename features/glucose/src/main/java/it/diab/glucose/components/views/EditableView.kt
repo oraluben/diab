@@ -122,8 +122,8 @@ internal class EditableView(
     private fun setupView(status: EditableInStatus) {
         constraint.setState(R.id.editor_state_view, 0, 0)
 
-        eatView.lock()
-        dateView.setOnClickListener {}
+        dateView.isEnabled = false
+        eatView.isEnabled = false
         fabView.setImageResource(R.drawable.ic_edit)
         setupInsulins(status)
 
@@ -164,13 +164,14 @@ internal class EditableView(
 
     private fun setupEdit(animate: Boolean) {
         keyboardView.bindTextView(valueView, this::onValueChanged)
-        eatView.unlock()
         dateView.setOnClickListener {
             bus.emit(EditorEvents.Requests::class, EditorEvents.Requests.IntentRequestDate)
         }
         fabView.setImageResource(R.drawable.ic_done)
 
         constraint.setState(R.id.editor_state_edit, 0, 0)
+        dateView.isEnabled = true
+        eatView.isEnabled = true
         if (animate) {
             TransitionManager.beginDelayedTransition(constraint)
         }
