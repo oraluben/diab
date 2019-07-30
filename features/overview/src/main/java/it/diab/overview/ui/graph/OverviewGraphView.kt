@@ -14,6 +14,7 @@ import androidx.annotation.AttrRes
 import androidx.annotation.StringRes
 import androidx.core.content.ContextCompat
 import com.github.mikephil.charting.charts.LineChart
+import com.github.mikephil.charting.utils.Utils
 import it.diab.overview.R
 
 internal class OverviewGraphView @JvmOverloads constructor(
@@ -62,8 +63,9 @@ internal class OverviewGraphView @JvmOverloads constructor(
         setExtraOffsets(horizontalOffset, 0f, horizontalOffset, 0f)
 
         // No Data text
-        setNoDataTextColor(ContextCompat.getColor(context, R.color.textPrimary))
+        setNoDataTextColor(ContextCompat.getColor(context, R.color.textSecondary))
         setNoDataText(R.string.overview_graph_empty)
+        mInfoPaint.textSize = Utils.convertDpToPixel(16f)
     }
 
     fun setNoDataText(@StringRes stringId: Int) {

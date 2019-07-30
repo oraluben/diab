@@ -8,6 +8,8 @@
  */
 package it.diab.overview.holders
 
+import android.text.SpannableStringBuilder
+import android.text.style.RelativeSizeSpan
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
@@ -21,6 +23,7 @@ import it.diab.overview.components.status.HeaderItemStatus
 import it.diab.overview.components.status.LastGlucose
 import it.diab.overview.ui.graph.OverviewGraphView
 import it.diab.overview.ui.graph.DataSetFactory
+import it.diab.ui.util.extensions.inSpans
 
 internal class HeaderHolder(view: View) : BaseHolder(view) {
     private val moreIcon: ImageView =
@@ -51,7 +54,12 @@ internal class HeaderHolder(view: View) : BaseHolder(view) {
     }
 
     private fun setLastEmpty() {
-        lastValueText.setText(R.string.overview_last_fallback)
+        val context = itemView.context
+        lastValueText.text = SpannableStringBuilder().apply {
+            inSpans(RelativeSizeSpan(0.75f)) {
+                append(context.getString(R.string.overview_last_fallback))
+            }
+        }
         lastDescriptionText.setText(R.string.overview_last_desc_fallback)
     }
 
