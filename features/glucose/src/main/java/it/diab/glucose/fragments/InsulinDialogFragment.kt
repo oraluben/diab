@@ -28,6 +28,7 @@ import it.diab.glucose.viewmodels.InsulinDialogViewModel
 import it.diab.glucose.viewmodels.InsulinDialogViewModelFactory
 import it.diab.ui.util.UIUtils
 import it.diab.ui.widgets.BottomSheetDialogFragmentExt
+import kotlinx.coroutines.launch
 
 internal class InsulinDialogFragment : BottomSheetDialogFragmentExt() {
     private lateinit var viewModel: InsulinDialogViewModel
@@ -79,13 +80,17 @@ internal class InsulinDialogFragment : BottomSheetDialogFragmentExt() {
     }
 
     private fun onDelete() {
-        viewModel.removeInsulin()
-        dismiss()
+        viewModel.viewModelScope.launch {
+            viewModel.removeInsulin()
+            dismiss()
+        }
     }
 
     private fun onSave(status: InsulinDialogOutStatus) {
-        viewModel.setInsulin(status)
-        dismiss()
+        viewModel.viewModelScope.launch {
+            viewModel.setInsulin(status)
+            dismiss()
+        }
     }
 
     private fun openEditor() {

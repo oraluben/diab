@@ -36,23 +36,23 @@ internal class InsulinDialogViewModel internal constructor(
         }
     }
 
-    fun setInsulin(status: InsulinDialogOutStatus) {
-        viewModelScope.launch {
-            if (wantsBasal) {
-                runSetBasal(status)
-            } else {
-                runSetInsulin(status)
-            }
+    suspend fun setInsulin(status: InsulinDialogOutStatus) {
+        if (status.value <= 0f) {
+            return
+        }
+
+        if (wantsBasal) {
+            runSetBasal(status)
+        } else {
+            runSetInsulin(status)
         }
     }
 
-    fun removeInsulin() {
-        viewModelScope.launch {
-            if (wantsBasal) {
-                runRemoveBasal()
-            } else {
-                runRemoveInsulin()
-            }
+    suspend fun removeInsulin() {
+        if (wantsBasal) {
+            runRemoveBasal()
+        } else {
+            runRemoveInsulin()
         }
     }
 
@@ -84,10 +84,6 @@ internal class InsulinDialogViewModel internal constructor(
 
     @VisibleForTesting
     suspend fun runSetInsulin(status: InsulinDialogOutStatus) {
-        if (status.value <= 0f) {
-            return
-        }
-
         glucoseRepository.insert(glucose.apply {
             insulinId0 = insulins[status.selectedInsulin].uid
             insulinValue0 = status.value
@@ -96,10 +92,6 @@ internal class InsulinDialogViewModel internal constructor(
 
     @VisibleForTesting
     suspend fun runSetBasal(status: InsulinDialogOutStatus) {
-        if (status.value <= 0f) {
-            return
-        }
-
         glucoseRepository.insert(glucose.apply {
             insulinId1 = insulins[status.selectedInsulin].uid
             insulinValue1 = status.value
