@@ -11,7 +11,7 @@
 
     <uses-permission android:name="android.permission.VIBRATE" />
 
-    <application>
+    <application android:theme="@style/AppTheme">
 
         <activity
             android:name=".ui.GlucoseActivity"

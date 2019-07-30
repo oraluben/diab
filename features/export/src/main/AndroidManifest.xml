@@ -15,7 +15,7 @@
         android:name="it.diab.export.ALLOW_EXPORT"
         android:protectionLevel="dangerous" />
 
-    <application>
+    <application android:theme="@style/AppTheme">
 
         <service
             android:name=".ExportService"

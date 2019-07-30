@@ -9,15 +9,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="it.diab.fit.google">
 
-    <application>
-
-        <activity
-            android:name="it.diab.fit.google.ui.GoogleFitFragment"
-            android:label="@string/fit_name"
-            android:theme="@style/AppTheme.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-            </intent-filter>
-        </activity>
-    </application>
+    <application android:theme="@style/AppTheme" />
 </manifest>
