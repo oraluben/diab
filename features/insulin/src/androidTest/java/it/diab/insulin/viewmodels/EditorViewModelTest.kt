@@ -62,7 +62,7 @@ class EditorViewModelTest {
         repository.insert(insulin)
 
         viewModel.runSetInsulin(insulin.uid)
-        viewModel.runDelete()
+        viewModel.delete()
 
         assertNotEquals(insulin.uid, repository.getById(insulin.uid).uid)
     }
@@ -72,7 +72,7 @@ class EditorViewModelTest {
         val origSize = repository.getInsulins().size
 
         viewModel.runSetInsulin(-1)
-        viewModel.runSave(
+        viewModel.save(
             EditableOutStatus(
                 name = "BarFoo",
                 timeFrameIndex = TimeFrame.LATE_MORNING.ordinal,

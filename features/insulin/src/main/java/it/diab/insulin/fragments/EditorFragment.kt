@@ -27,6 +27,7 @@ import it.diab.insulin.viewmodels.EditorViewModel
 import it.diab.insulin.viewmodels.EditorViewModelFactory
 import it.diab.ui.util.UIUtils
 import it.diab.ui.widgets.BottomSheetDialogFragmentExt
+import kotlinx.coroutines.launch
 
 internal class EditorFragment : BottomSheetDialogFragmentExt() {
 
@@ -60,12 +61,16 @@ internal class EditorFragment : BottomSheetDialogFragmentExt() {
         bus.subscribe(EditEvent::class, viewModel.viewModelScope) {
             when (it) {
                 is EditEvent.IntentSave -> {
-                    viewModel.save(it.status)
-                    dismiss()
+                    viewModel.viewModelScope.launch {
+                        viewModel.save(it.status)
+                        dismiss()
+                    }
                 }
                 is EditEvent.IntentRequestDelete -> {
-                    viewModel.delete()
-                    dismiss()
+                    viewModel.viewModelScope.launch {
+                        viewModel.delete()
+                        dismiss()
+                    }
                 }
             }
         }

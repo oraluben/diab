@@ -30,30 +30,11 @@ internal class EditorViewModel internal constructor(
         }
     }
 
-    fun delete() {
-        viewModelScope.launch {
-            runDelete()
-        }
-    }
-
-    fun save(status: EditableOutStatus) {
-        viewModelScope.launch {
-            runSave(status)
-        }
-    }
-
-    @VisibleForTesting
-    suspend fun runSetInsulin(uid: Long) {
-        insulin = repo.getById(uid)
-    }
-
-    @VisibleForTesting
-    suspend fun runDelete() {
+    suspend fun delete() {
         repo.delete(insulin)
     }
 
-    @VisibleForTesting
-    suspend fun runSave(status: EditableOutStatus) {
+    suspend fun save(status: EditableOutStatus) {
         insulin.apply {
             name = status.name
             timeFrame = (status.timeFrameIndex - 1).toTimeFrame()
@@ -62,5 +43,10 @@ internal class EditorViewModel internal constructor(
         }
 
         repo.insert(insulin)
+    }
+
+    @VisibleForTesting
+    suspend fun runSetInsulin(uid: Long) {
+        insulin = repo.getById(uid)
     }
 }
