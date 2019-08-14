@@ -11,12 +11,12 @@ package it.diab.data.extensions
 import it.diab.data.entities.TimeFrame
 
 fun Int.toTimeFrame() = when (this) {
-    0 -> TimeFrame.MORNING
-    1 -> TimeFrame.LATE_MORNING
-    2 -> TimeFrame.LUNCH
-    3 -> TimeFrame.AFTERNOON
-    4 -> TimeFrame.DINNER
-    5 -> TimeFrame.NIGHT
-    6 -> TimeFrame.UNUSED
+    1 -> TimeFrame.MORNING
+    2 -> TimeFrame.LATE_MORNING
+    3 -> TimeFrame.LUNCH
+    4 -> TimeFrame.AFTERNOON
+    5 -> TimeFrame.DINNER
+    6 -> TimeFrame.NIGHT
+    7 -> TimeFrame.UNUSED
     else -> TimeFrame.EXTRA
 }

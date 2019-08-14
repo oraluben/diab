@@ -23,7 +23,7 @@ internal data class EditableInStatus(
 
 internal data class EditableOutStatus(
     val name: String = "",
-    val timeFrameIndex: Int = 1,
+    val timeFrameIndex: Int = 0,
     val hasHalfUnits: Boolean = false,
     val isBasal: Boolean = false
 ) : ViewStatus

@@ -66,12 +66,12 @@ class Insulin {
             return false
         }
 
-        return other.name == name && other.timeFrame.toInt() == timeFrame.toInt() &&
+        return other.name == name && other.timeFrame == timeFrame &&
             other.isBasal == isBasal && other.hasHalfUnits == hasHalfUnits
     }
 
     override fun hashCode() = name.hashCode() or timeFrame.hashCode() or
         isBasal.hashCode() or hasHalfUnits.hashCode()
 
-    override fun toString() = "$name: $uid, ${timeFrame.toInt()}, $isBasal, $hasHalfUnits"
+    override fun toString() = "$name: $uid, ${timeFrame.ordinal}, $isBasal, $hasHalfUnits"
 }

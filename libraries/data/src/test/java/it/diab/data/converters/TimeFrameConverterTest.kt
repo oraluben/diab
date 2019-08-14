@@ -17,13 +17,13 @@ class TimeFrameConverterTest {
 
     @Test
     fun convertToInt() {
-        assertEquals(1, converter.toInt(TimeFrame.LATE_MORNING))
-        assertEquals(TimeFrame.EXTRA.toInt(), converter.toInt(null))
+        assertEquals(2, converter.toInt(TimeFrame.LATE_MORNING))
+        assertEquals(TimeFrame.EXTRA.ordinal, converter.toInt(null))
     }
 
     @Test
     fun convertToTimeFrame() {
-        assertEquals(TimeFrame.LATE_MORNING, converter.toTimeFrame(1))
+        assertEquals(TimeFrame.LATE_MORNING, converter.toTimeFrame(2))
         assertEquals(TimeFrame.EXTRA, converter.toTimeFrame(null))
     }
 }

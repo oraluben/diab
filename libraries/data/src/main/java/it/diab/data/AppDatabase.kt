@@ -31,7 +31,7 @@ import it.diab.data.extensions.asTimeFrame
         Glucose::class,
         Hba1c::class,
         Insulin::class
-    ], version = 5
+    ], version = 6
 )
 internal abstract class AppDatabase protected constructor() : RoomDatabase() {
 
@@ -50,7 +50,8 @@ internal abstract class AppDatabase protected constructor() : RoomDatabase() {
                     AppDatabase.MIGRATION_1_2,
                     AppDatabase.MIGRATION_2_3,
                     AppDatabase.MIGRATION_3_4,
-                    AppDatabase.MIGRATION_4_5
+                    AppDatabase.MIGRATION_4_5,
+                    AppDatabase.MIGRATION_5_6
                 )
                 .build()
     }) {
@@ -127,7 +128,7 @@ internal abstract class AppDatabase protected constructor() : RoomDatabase() {
                     val item = ContentValues()
                     val uid = cursor.getLong(0)
                     val date = DateTime(cursor.getLong(1))
-                    item.put("timeFrame", date.asTimeFrame().toInt())
+                    item.put("timeFrame", date.asTimeFrame().ordinal - 1)
 
                     database.update(
                         "glucose", SQLiteDatabase.CONFLICT_REPLACE, item,
@@ -148,6 +149,21 @@ internal abstract class AppDatabase protected constructor() : RoomDatabase() {
             override fun migrate(database: SupportSQLiteDatabase) {
                 /* Hba1c */
                 database.execSQL("CREATE TABLE IF NOT EXISTS `hba1c` (`uid` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `value` REAL NOT NULL, `date` INTEGER NOT NULL)")
+            }
+        }
+
+        /*
+         * DB version 6
+         *
+         * Glucose
+         *     Increase all "timeFrame" values by 1
+         * Insulin
+         *     Increase all "timeFrame" values by 1
+         */
+        private val MIGRATION_5_6 = object : Migration(5, 6) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                database.execSQL("UPDATE glucose SET timeFrame = timeFrame + 1")
+                database.execSQL("UPDATE insulin SET timeFrame = timeFrame + 1")
             }
         }
     }

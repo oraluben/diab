@@ -80,8 +80,8 @@ internal class EditorFragment : BottomSheetDialogFragmentExt() {
                 EditableInStatus(
                     insulin.uid > 0L,
                     insulin.name,
-                    insulin.timeFrame.toInt() + 1,
-                    TimeFrame.values().map(TimeFrame::string),
+                    insulin.timeFrame.ordinal,
+                    TimeFrame.values().map(TimeFrame::nameRes),
                     insulin.hasHalfUnits,
                     insulin.isBasal
                 )

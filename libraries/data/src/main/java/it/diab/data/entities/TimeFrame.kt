@@ -14,80 +14,41 @@ import androidx.annotation.StringRes
 import it.diab.data.R
 
 enum class TimeFrame {
-    EXTRA {
-        @DrawableRes
-        override val icon = R.drawable.ic_time_extra
-        @StringRes
-        override val string = R.string.time_extra
-        override val reprHour = -1
-        override fun toInt() = -1
-    },
+    EXTRA, MORNING, LATE_MORNING, LUNCH, AFTERNOON, DINNER, NIGHT, UNUSED;
 
-    MORNING {
-        @DrawableRes
-        override val icon = R.drawable.ic_time_morning
-        @StringRes
-        override val string = R.string.time_morning
-        override val reprHour = 6
-        override fun toInt() = 0
-    },
+    @get:DrawableRes
+    val icon: Int
+        get() = when (this) {
+            MORNING,
+            LATE_MORNING -> R.drawable.ic_time_morning
+            LUNCH -> R.drawable.ic_time_lunch
+            AFTERNOON -> R.drawable.ic_time_afternoon
+            DINNER -> R.drawable.ic_time_dinner
+            NIGHT -> R.drawable.ic_time_night
+            else -> R.drawable.ic_time_extra
+        }
 
-    LATE_MORNING {
-        @DrawableRes
-        override val icon = R.drawable.ic_time_morning
-        @StringRes
-        override val string = R.string.time_late_morning
-        override val reprHour = 10
-        override fun toInt() = 1
-    },
+    @get:StringRes
+    val nameRes: Int
+        get() = when (this) {
+            EXTRA -> R.string.time_extra
+            MORNING -> R.string.time_morning
+            LATE_MORNING -> R.string.time_late_morning
+            LUNCH -> R.string.time_lunch
+            AFTERNOON -> R.string.time_afternoon
+            DINNER -> R.string.time_dinner
+            NIGHT -> R.string.time_night
+            UNUSED -> R.string.time_unused
+        }
 
-    LUNCH {
-        @DrawableRes
-        override val icon = R.drawable.ic_time_lunch
-        @StringRes
-        override val string = R.string.time_lunch
-        override val reprHour = 13
-        override fun toInt() = 2
-    },
-
-    AFTERNOON {
-        @DrawableRes
-        override val icon = R.drawable.ic_time_afternoon
-        @StringRes
-        override val string = R.string.time_afternoon
-        override val reprHour = 16
-        override fun toInt() = 3
-    },
-
-    DINNER {
-        @DrawableRes
-        override val icon = R.drawable.ic_time_dinner
-        @StringRes
-        override val string = R.string.time_dinner
-        override val reprHour = 19
-        override fun toInt() = 4
-    },
-
-    NIGHT {
-        @DrawableRes
-        override val icon = R.drawable.ic_time_night
-        @StringRes
-        override val string = R.string.time_night
-        override val reprHour = 22
-        override fun toInt() = 5
-    },
-
-    UNUSED {
-        @DrawableRes
-        override val icon = R.drawable.ic_time_extra
-        @StringRes
-        override val string = R.string.time_unused
-        override val reprHour = -1
-        override fun toInt() = 6
-    };
-
-    abstract val icon: Int
-    abstract val string: Int
-    abstract val reprHour: Int
-    abstract fun toInt(): Int
+    val reprHour: Int
+        get() = when (this) {
+            MORNING -> 6
+            LATE_MORNING -> 10
+            LUNCH -> 13
+            AFTERNOON -> 16
+            DINNER -> 19
+            NIGHT -> 22
+            else -> -1
+        }
 }

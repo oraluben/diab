@@ -15,7 +15,7 @@ import it.diab.data.extensions.toTimeFrame
 internal class TimeFrameConverter {
 
     @TypeConverter
-    fun toInt(value: TimeFrame?) = (value ?: TimeFrame.EXTRA).toInt()
+    fun toInt(value: TimeFrame?) = (value ?: TimeFrame.EXTRA).ordinal
 
     @TypeConverter
     fun toTimeFrame(value: Int?) = value?.toTimeFrame() ?: TimeFrame.EXTRA

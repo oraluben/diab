@@ -32,7 +32,7 @@ class InsulinTest {
     @Test
     fun setTimeFrame() {
         val insulin = insulin { timeFrame = TimeFrame.MORNING }
-        insulin.setTimeFrame(5)
+        insulin.setTimeFrame(6)
 
         assertEquals(TimeFrame.NIGHT, insulin.timeFrame)
     }

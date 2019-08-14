@@ -77,10 +77,11 @@ internal class OverviewViewModel internal constructor(
 
     private fun updateAverage(list: List<Glucose>): List<Entry> {
         val average = SparseArray<Float>()
-        // -1 for "DEPRECATED" and -1 for "EXTRA"
-        val numTimeFrames = TimeFrame.values().size - 2
+        // -1 for "DEPRECATED"
+        val numTimeFrames = TimeFrame.values().size - 1
 
-        for (i in 0..numTimeFrames) {
+        // Start from 1 to skip element at index 0 ("EXTRA")
+        for (i in 1..numTimeFrames) {
             val timeFrame = i.toTimeFrame()
             val lastWeek = list.filter { it.timeFrame == timeFrame }
             val averageValue = lastWeek.sumBy { it.value } / lastWeek.size.toFloat()

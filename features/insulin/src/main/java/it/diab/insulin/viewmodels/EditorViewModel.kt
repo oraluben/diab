@@ -37,7 +37,7 @@ internal class EditorViewModel internal constructor(
     suspend fun save(status: EditableOutStatus) {
         insulin.apply {
             name = status.name
-            timeFrame = (status.timeFrameIndex - 1).toTimeFrame()
+            timeFrame = status.timeFrameIndex.toTimeFrame()
             hasHalfUnits = status.hasHalfUnits
             isBasal = status.isBasal
         }
