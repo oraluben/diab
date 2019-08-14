@@ -208,7 +208,8 @@ internal class EditorFragment : Fragment() {
         suggestionInterface: SuggestionUiInterface
     ): Boolean {
         status as CheckAgainStatus
-        val checkAgainSuggestion = CheckAgainSuggestion(status)
+        val context = context ?: return false
+        val checkAgainSuggestion = CheckAgainSuggestion(status, context)
 
         if (!suggestionInterface.applyConfig(checkAgainSuggestion)) {
             return false
