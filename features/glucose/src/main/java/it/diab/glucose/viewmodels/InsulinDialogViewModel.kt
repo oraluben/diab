@@ -101,7 +101,7 @@ internal class InsulinDialogViewModel internal constructor(
     @VisibleForTesting
     suspend fun runRemoveInsulin() {
         glucoseRepository.insert(glucose.apply {
-            insulinId0 = 0L
+            insulinId0 = -1L
             insulinValue0 = 0f
         })
     }
@@ -109,7 +109,7 @@ internal class InsulinDialogViewModel internal constructor(
     @VisibleForTesting
     suspend fun runRemoveBasal() {
         glucoseRepository.insert(glucose.apply {
-            insulinId1 = 0L
+            insulinId1 = -1L
             insulinValue1 = 0f
         })
     }
