@@ -30,7 +30,7 @@
     <!-- Time header decorator -->
     <declare-styleable name="TimeHeader">
         <attr name="android:width" />
-        <attr name="android:paddingTop" />
+        <attr name="android:padding" />
         <attr name="android:textColor" />
         <attr name="dayTextSize" format="dimension" />
         <attr name="monthTextSize" format="dimension" />

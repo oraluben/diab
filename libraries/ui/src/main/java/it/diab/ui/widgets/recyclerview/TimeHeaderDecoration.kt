@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 Google LLC
+ * Copyright 2019 Google LLC
  * Copyright 2019 Bevilacqua Joey
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -27,11 +27,13 @@ import android.text.StaticLayout
 import android.text.TextPaint
 import android.text.style.AbsoluteSizeSpan
 import android.text.style.StyleSpan
+import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import it.diab.core.time.DateTime
 import it.diab.core.time.DateTimeFormatter
 import it.diab.ui.R
 import it.diab.ui.util.extensions.inSpans
+import it.diab.ui.util.extensions.layoutIsRtl
 import it.diab.ui.util.extensions.withTranslation
 
 /**
@@ -45,10 +47,14 @@ class TimeHeaderDecoration(
 
     private val paint: TextPaint
     private val width: Int
-    private val paddingTop: Int
-    private val monthTextSize: Int
+    private val padding: Int
+
     private val dayFormatter = DateTimeFormatter("dd")
     private val monthFormatter = DateTimeFormatter("MMM yyyy")
+
+    private val timeTextSizeSpan: AbsoluteSizeSpan
+    private val monthTextSizeSpan: AbsoluteSizeSpan
+    private val boldSpan = StyleSpan(Typeface.BOLD)
 
     init {
         val attrs = context.obtainStyledAttributes(
@@ -58,12 +64,15 @@ class TimeHeaderDecoration(
 
         paint = TextPaint(Paint.ANTI_ALIAS_FLAG).apply {
             color = attrs.getColor(R.styleable.TimeHeader_android_textColor, Color.BLACK)
-            textSize = attrs.getDimension(R.styleable.TimeHeader_dayTextSize, 0f)
         }
 
         width = attrs.getDimensionPixelSize(R.styleable.TimeHeader_android_width, 0)
-        paddingTop = attrs.getDimensionPixelSize(R.styleable.TimeHeader_android_paddingTop, 0)
-        monthTextSize = attrs.getDimensionPixelSize(R.styleable.TimeHeader_monthTextSize, 0)
+        padding = attrs.getDimensionPixelSize(R.styleable.TimeHeader_android_padding, 0)
+
+        val timeTextSize = attrs.getDimensionPixelSize(R.styleable.TimeHeader_dayTextSize, 0)
+        val monthTextSize = attrs.getDimensionPixelSize(R.styleable.TimeHeader_monthTextSize, 0)
+        timeTextSizeSpan = AbsoluteSizeSpan(timeTextSize)
+        monthTextSizeSpan = AbsoluteSizeSpan(monthTextSize)
 
         attrs.recycle()
     }
@@ -88,44 +97,85 @@ class TimeHeaderDecoration(
             return
         }
 
-        var earliestFoundHeaderPos = -1
-        var prevHeaderTop = Int.MAX_VALUE
+        val isRtl = parent.layoutIsRtl
+        if (isRtl) {
+            c.apply {
+                save()
+                translate((parent.width - width).toFloat(), 0f)
+            }
+        }
 
+        var earliestPosition = Int.MAX_VALUE
+        var previousHeaderPosition = -1
+        var previousHasHeader = false
+        var earliestChild: View? = null
         for (i in parent.childCount - 1 downTo 0) {
-            val view = parent.getChildAt(i) ?: continue
-            val viewTop = view.top + view.translationY.toInt()
-            if (view.bottom > 0 && viewTop < parent.height) {
-                val position = parent.getChildAdapterPosition(view)
-                daySlots[position]?.let { layout ->
-                    paint.alpha = (view.alpha * 255).toInt()
-                    val top = (viewTop + paddingTop)
-                        .coerceAtLeast(paddingTop)
-                        .coerceAtMost(prevHeaderTop - layout.height)
-                    c.withTranslation(y = top.toFloat()) {
-                        layout.draw(c)
-                    }
-                    earliestFoundHeaderPos = position
-                    prevHeaderTop = viewTop
-                }
+            // This should not be null, but observed null at times.
+            val child = parent.getChildAt(i) ?: continue
+
+            if (child.y > parent.height || (child.y + child.height) < 0) {
+                // Can't see this child
+                continue
+            }
+
+            val position = parent.getChildAdapterPosition(child)
+            if (position < 0) {
+                continue
+            }
+            if (position < earliestPosition) {
+                earliestPosition = position
+                earliestChild = child
+            }
+
+            val header = daySlots[position]
+            if (header != null) {
+                drawHeader(c, child, header, child.alpha, previousHasHeader)
+                previousHeaderPosition = position
+                previousHasHeader = true
+            } else {
+                previousHasHeader = false
             }
         }
 
-        // If no headers found, ensure header of the first shown item is drawn.
-        if (earliestFoundHeaderPos < 0) {
-            earliestFoundHeaderPos = parent.getChildAdapterPosition(parent.getChildAt(0)) + 1
+        if (earliestChild != null && earliestPosition != previousHeaderPosition) {
+            // This child needs a sticky header
+            findHeaderBeforePosition(earliestPosition)?.let { stickyHeader ->
+                previousHasHeader = previousHeaderPosition - earliestPosition == 1
+                drawHeader(c, earliestChild, stickyHeader, 1f, previousHasHeader)
+            }
         }
 
-        // Look back over headers to see if a prior item should be drawn sticky.
+        if (isRtl) {
+            c.restore()
+        }
+    }
+
+    private fun findHeaderBeforePosition(position: Int): StaticLayout? {
         for (headerPos in daySlots.keys.reversed()) {
-            if (headerPos < earliestFoundHeaderPos) {
-                daySlots[headerPos]?.let {
-                    val top = (prevHeaderTop - it.height).coerceAtMost(paddingTop)
-                    c.withTranslation(y = top.toFloat()) {
-                        it.draw(c)
-                    }
-                }
-                break
+            if (headerPos < position) {
+                return daySlots[headerPos]
             }
+        }
+
+        return null
+    }
+
+    private fun drawHeader(
+        canvas: Canvas,
+        child: View,
+        header: StaticLayout,
+        headerAlpha: Float,
+        previousHasHeader: Boolean
+    ) {
+        val childTop = child.y.toInt()
+        val childBottom = childTop + child.height
+        var top = (childTop + padding).coerceAtLeast(padding)
+        if (previousHasHeader) {
+            top = top.coerceAtMost(childBottom - header.height - padding)
+        }
+        paint.alpha = (headerAlpha * 255).toInt()
+        canvas.withTranslation(y = top.toFloat()) {
+            header.draw(canvas)
         }
     }
 
@@ -134,11 +184,13 @@ class TimeHeaderDecoration(
      */
     private fun createHeader(date: DateTime): StaticLayout {
         val text = SpannableStringBuilder().apply {
-            inSpans(StyleSpan(Typeface.BOLD)) {
-                append(dayFormatter.format(date))
+            inSpans(boldSpan) {
+                inSpans(timeTextSizeSpan) {
+                    append(dayFormatter.format(date))
+                }
             }
             append("\n")
-            inSpans(AbsoluteSizeSpan(monthTextSize)) {
+            inSpans(monthTextSizeSpan) {
                 append(monthFormatter.format(date))
             }
         }
