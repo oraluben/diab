@@ -38,7 +38,7 @@ internal class XlsxWriter(
         outDescriptor.use { parcelDescriptor ->
             // We need to make sure the parcel descriptor is also closed when we're done
             FileOutputStream(parcelDescriptor.fileDescriptor).use {
-                val workBook = Workbook(it, BuildConfig.APPLICATION_ID, null)
+                val workBook = Workbook(it, BuildConfig.LIBRARY_PACKAGE_NAME, null)
                 val glucoseSheet = workBook.newWorksheet("Glucose")
                 val insulinSheet = workBook.newWorksheet("Insulin")
 
