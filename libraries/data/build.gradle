@@ -10,12 +10,16 @@ apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 
+import it.diab.build.Config
+import it.diab.build.Deps.AndroidX
+import it.diab.build.Deps.Lib
+
 android {
-    compileSdkVersion 28
+    compileSdkVersion Config.compileSdk
 
     defaultConfig {
-        minSdkVersion 23
-        targetSdkVersion 28
+        minSdkVersion Config.minSdk
+        targetSdkVersion Config.targetSdk
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
@@ -31,13 +35,13 @@ android {
 }
 
 dependencies {
-    implementation project(':libraries:core')
+    implementation project(Lib.core)
 
-    implementation "androidx.room:room-ktx:2.1.0"
-    implementation "androidx.room:room-runtime:2.1.0"
-    kapt "androidx.room:room-compiler:2.1.0"
+    implementation AndroidX.Room.ktx
+    implementation AndroidX.Room.runtime
+    kapt AndroidX.Room.compiler
 
-    api "androidx.paging:paging-runtime:2.1.0"
+    api AndroidX.paging
 }
 
 // Testing dependencies

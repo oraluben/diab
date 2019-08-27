@@ -10,16 +10,20 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 
+import it.diab.build.Config
+import it.diab.build.Deps.Feature
+import it.diab.build.Deps.Lib
+
 android {
-    compileSdkVersion 28
+    compileSdkVersion Config.compileSdk
 
     defaultConfig {
-        applicationId "it.diab"
-        minSdkVersion 23
-        targetSdkVersion 28
+        applicationId Config.packageName
+        minSdkVersion Config.minSdk
+        targetSdkVersion Config.targetSdk
 
         versionCode appVersionCode
-        versionName "1.3"
+        versionName Config.versionName
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -49,14 +53,15 @@ android {
 }
 
 dependencies {
-    implementation project(':libraries:core')
-    implementation project(':libraries:ui')
+    implementation project(Lib.core)
+    implementation project(Lib.ui)
 
-    implementation project(':features:overview')
-    implementation project(':features:insulin')
-    implementation project(':features:settings')
+    implementation project(Feature.overview)
+    implementation project(Feature.glucose)
+    implementation project(Feature.insulin)
+    implementation project(Feature.settings)
 
-    googleFitImplementation project(':features:googlefit')
+    googleFitImplementation project(Feature.googleFit)
 }
 
 // Testing dependencies

@@ -9,12 +9,17 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 
+import it.diab.build.Config
+import it.diab.build.Deps.AndroidX
+import it.diab.build.Deps.Google
+import it.diab.build.Deps.Lib
+
 android {
-    compileSdkVersion 28
+    compileSdkVersion Config.compileSdk
 
     defaultConfig {
-        minSdkVersion 23
-        targetSdkVersion 28
+        minSdkVersion Config.minSdk
+        targetSdkVersion Config.targetSdk
     }
 
     compileOptions {
@@ -24,12 +29,9 @@ android {
 }
 
 dependencies {
-    implementation project(':libraries:core')
+    implementation project(Lib.core)
 
-    // AppCompat
-    api "androidx.appcompat:appcompat:1.0.2"
-
-    // UI
-    api "com.google.android.material:material:1.0.0"
-    api "androidx.constraintlayout:constraintlayout:2.0.0-beta1"
+    api AndroidX.appCompat
+    api AndroidX.constraintLayout
+    api Google.materialDesign
 }

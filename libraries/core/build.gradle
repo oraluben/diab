@@ -11,12 +11,14 @@ apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 
+import it.diab.build.Config
+
 android {
-    compileSdkVersion 28
+    compileSdkVersion Config.compileSdk
 
     defaultConfig {
-        minSdkVersion 23
-        targetSdkVersion 28
+        minSdkVersion Config.minSdk
+        targetSdkVersion Config.targetSdk
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }

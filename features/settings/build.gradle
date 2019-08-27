@@ -10,12 +10,17 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 
+import it.diab.build.Config
+import it.diab.build.Deps.AndroidX
+import it.diab.build.Deps.Feature
+import it.diab.build.Deps.Lib
+
 android {
-    compileSdkVersion 28
+    compileSdkVersion Config.compileSdk
 
     defaultConfig {
-        minSdkVersion 23
-        targetSdkVersion 28
+        minSdkVersion Config.minSdk
+        targetSdkVersion Config.targetSdk
     }
 
     compileOptions {
@@ -25,11 +30,11 @@ android {
 }
 
 dependencies {
-    implementation project(':libraries::core')
-    implementation project(':libraries::data')
-    implementation project(':libraries::ui')
+    implementation project(Lib.core)
+    implementation project(Lib.data)
+    implementation project(Lib.ui)
 
-    implementation project(':features:export')
+    implementation project(Feature.export)
 
-    implementation "androidx.preference:preference:1.0.0"
+    implementation AndroidX.preference
 }

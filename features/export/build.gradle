@@ -10,12 +10,16 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 
+import it.diab.build.Config
+import it.diab.build.Deps.Ext
+import it.diab.build.Deps.Lib
+
 android {
-    compileSdkVersion 28
+    compileSdkVersion Config.compileSdk
 
     defaultConfig {
-        minSdkVersion 23
-        targetSdkVersion 28
+        minSdkVersion Config.minSdk
+        targetSdkVersion Config.targetSdk
     }
 
     compileOptions {
@@ -25,9 +29,9 @@ android {
 }
 
 dependencies {
-    implementation project(':libraries::core')
-    implementation project(':libraries::data')
-    implementation project(':libraries::ui')
+    implementation project(Lib.core)
+    implementation project(Lib.data)
+    implementation project(Lib.ui)
 
-    implementation "org.dhatim:fastexcel:0.10.8"
+    implementation Ext.fastExcel
 }
