@@ -45,4 +45,3 @@ internal val View.layoutIsRtl: Boolean
     get() {
         return layoutDirection == View.LAYOUT_DIRECTION_RTL
     }
-
