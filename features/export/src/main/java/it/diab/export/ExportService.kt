@@ -124,7 +124,7 @@ class ExportService : Service() {
         val lowThreshold = PreferencesUtil.getGlucoseLowThreshold(this)
         val highThreshold = PreferencesUtil.getGlucoseHighThreshold(this)
 
-        val descriptor = contentResolver.openFileDescriptor(outUri, "w")?.fileDescriptor
+        val descriptor = contentResolver.openFileDescriptor(outUri, "w")
         if (descriptor == null) {
             onTaskCompleted(false)
             return

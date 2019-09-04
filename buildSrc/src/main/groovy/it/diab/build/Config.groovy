@@ -11,10 +11,9 @@ package it.diab.build
 class Config {
     public static final String packageName = "it.diab"
 
-    public static final int compileSdk = 28
+    public static final int compileSdk = 29
     public static final int minSdk = 23
-    public static final int targetSdk = 28
+    public static final int targetSdk = 29
 
-    public static final String buildTools = "29.0.1"
     public static final String versionName = "1.3"
 }

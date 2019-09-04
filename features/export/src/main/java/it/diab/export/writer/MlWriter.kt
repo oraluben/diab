@@ -8,20 +8,20 @@
  */
 package it.diab.export.writer
 
+import android.os.ParcelFileDescriptor
 import it.diab.core.time.DateTime
 import it.diab.core.time.Days
 import it.diab.data.entities.Glucose
 import it.diab.data.entities.TimeFrame
 import it.diab.data.repositories.GlucoseRepository
 import it.diab.export.utils.extensions.splitBy
-import java.io.FileDescriptor
 import java.io.FileOutputStream
 import java.io.IOException
 import java.util.zip.ZipEntry
 import java.util.zip.ZipOutputStream
 
 internal class MlWriter(
-    private val outDescriptor: FileDescriptor,
+    private val parcelDescriptor: ParcelFileDescriptor,
     private val repository: GlucoseRepository,
     private val filterRange: IntRange
 ) {
@@ -32,7 +32,7 @@ internal class MlWriter(
         val end = dateEnd.epochMillis
         val start = dateStart.epochMillis
 
-        ZipOutputStream(FileOutputStream(outDescriptor)).use { oStream ->
+        ZipOutputStream(FileOutputStream(parcelDescriptor.fileDescriptor)).use { oStream ->
             return try {
                 exportTrain(oStream, TimeFrame.MORNING, start, end)
                 exportTrain(oStream, TimeFrame.LUNCH, start, end)
