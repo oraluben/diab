@@ -12,9 +12,9 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.os.Build
-import android.preference.PreferenceManager
 import androidx.annotation.WorkerThread
 import androidx.core.content.ContextCompat
+import androidx.preference.PreferenceManager
 import it.diab.core.util.extensions.set
 import it.diab.data.entities.Glucose
 import it.diab.data.entities.TimeFrame

@@ -8,7 +8,6 @@
  */
 package it.diab.export.utils.extensions
 
-import java.util.Arrays
 import kotlin.math.ceil
 
 internal fun ByteArray.splitBy(chunkSize: Int): Array<ByteArray> {
@@ -21,6 +20,6 @@ internal fun ByteArray.splitBy(chunkSize: Int): Array<ByteArray> {
             end = size - 1
         }
 
-        Arrays.copyOfRange(this, start, end)
+        copyOfRange(start, end)
     }
 }

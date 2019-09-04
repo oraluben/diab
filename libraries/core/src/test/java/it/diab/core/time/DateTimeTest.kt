@@ -72,7 +72,7 @@ class DateTimeTest {
     @Test
     fun with() {
         val now = DateTime.now
-        val date = DateTime.now.with(DateTime.DAY, 3)
+        val date = now.with(DateTime.DAY, 3)
 
         Assert.assertEquals(3, date[DateTime.DAY])
         Assert.assertEquals(now[DateTime.YEAR], date[DateTime.YEAR])

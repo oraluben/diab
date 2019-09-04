@@ -10,9 +10,12 @@ package it.diab.glucose.widget
 
 import android.animation.ValueAnimator
 import android.content.Context
+import android.graphics.BlendMode
+import android.graphics.BlendModeColorFilter
 import android.graphics.PorterDuff
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.LayerDrawable
+import android.os.Build
 import android.util.AttributeSet
 import android.view.View
 import android.widget.LinearLayout
@@ -67,6 +70,7 @@ class EatBar @JvmOverloads constructor(
         bar.progress = progress
     }
 
+    @Suppress("DEPRECATION")
     private fun recolor(@ColorRes color: Int) {
         if (!::coloredProgressDrawable.isInitialized && bar.progressDrawable is LayerDrawable) {
             coloredProgressDrawable = (bar.progressDrawable as LayerDrawable)
@@ -78,8 +82,14 @@ class EatBar @JvmOverloads constructor(
         animator.addUpdateListener { value ->
             val animColor = value.animatedValue as Int
 
-            coloredProgressDrawable.setColorFilter(animColor, PorterDuff.Mode.SRC_IN)
-            bar.thumb?.setColorFilter(animColor, PorterDuff.Mode.SRC_IN)
+            if (Build.VERSION.SDK_INT >= 29) {
+                val colorFilter = BlendModeColorFilter(animColor, BlendMode.SRC_IN)
+                coloredProgressDrawable.colorFilter = colorFilter
+                bar.thumb?.colorFilter = colorFilter
+            } else {
+                coloredProgressDrawable.setColorFilter(animColor, PorterDuff.Mode.SRC_IN)
+                bar.thumb?.setColorFilter(animColor, PorterDuff.Mode.SRC_IN)
+            }
         }
         animator.start()
 

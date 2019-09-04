@@ -15,6 +15,7 @@ import android.app.Service
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
+import android.os.IBinder
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
@@ -74,7 +75,7 @@ class ExportService : Service() {
         return START_NOT_STICKY
     }
 
-    override fun onBind(intent: Intent?) = null
+    override fun onBind(intent: Intent?): IBinder? = null
 
     private fun buildNotification() = NotificationCompat.Builder(this, CHANNEL)
         .setSmallIcon(R.drawable.ic_export)
