@@ -31,9 +31,9 @@ internal class PluginPrefsFragment : PreferenceFragmentCompat(),
     private lateinit var pluginManager: PluginManager
     private lateinit var secureFilePicker: SecureFilePickerHelper
 
-    private lateinit var exportPref: ExportPreference
-    private lateinit var managerPref: Preference
-    private lateinit var removerPref: Preference
+    private var exportPref: ExportPreference? = null
+    private var managerPref: Preference? = null
+    private var removerPref: Preference? = null
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.prefs_plugin, rootKey)
@@ -42,14 +42,14 @@ internal class PluginPrefsFragment : PreferenceFragmentCompat(),
         pluginManager = PluginManager(requireContext())
         secureFilePicker = SecureFilePickerHelper(this, this)
 
-        exportPref = findPreference("pref_plugin_export") as ExportPreference
+        exportPref = findPreference("pref_plugin_export") as ExportPreference?
         managerPref = findPreference("pref_plugin_manager")
         removerPref = findPreference("pref_plugin_remover")
 
-        managerPref.setOnPreferenceClickListener { fetchPluginFile() }
-        removerPref.setOnPreferenceClickListener { askPluginRemoval() }
+        managerPref?.setOnPreferenceClickListener { fetchPluginFile() }
+        removerPref?.setOnPreferenceClickListener { askPluginRemoval() }
 
-        exportPref.bind(object : ExportPreference.Callbacks {
+        exportPref?.bind(object : ExportPreference.Callbacks {
             override fun getActivity() = activity
             override fun startExport() { secureFilePicker.authenticate(SecureFilePickerHelper.ML) }
         })
@@ -109,14 +109,14 @@ internal class PluginPrefsFragment : PreferenceFragmentCompat(),
         val lastUpdated = prefs[PluginManager.LAST_UPDATE, 0L]
 
         if (lastUpdated == 0L) {
-            managerPref.setSummary(R.string.settings_insulin_plugin_manage_summary_new)
-            removerPref.isVisible = false
+            managerPref?.setSummary(R.string.settings_insulin_plugin_manage_summary_new)
+            removerPref?.isVisible = false
         } else {
-            managerPref.summary = getString(
+            managerPref?.summary = getString(
                 R.string.settings_insulin_plugin_manage_summary_installed,
                 DateTime(lastUpdated).format("yyyy-MM-dd HH:mm")
             )
-            removerPref.isVisible = true
+            removerPref?.isVisible = true
         }
     }
 

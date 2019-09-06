@@ -49,7 +49,7 @@ class PluginManager(context: Context) {
         ByteArrayInputStream("{\n}".toByteArray(Charsets.UTF_8))
     }
 
-    fun isInstalled() = pluginDir.exists() && pluginDir.list().isNotEmpty()
+    fun isInstalled() = pluginDir.exists() && pluginDir.list()?.isEmpty() == false
 
     fun install(iStream: InputStream) {
         scope.launch(IO) {

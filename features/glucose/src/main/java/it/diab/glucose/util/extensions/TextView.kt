@@ -9,7 +9,10 @@
 package it.diab.glucose.util.extensions
 
 import android.animation.ValueAnimator
+import android.graphics.BlendMode
+import android.graphics.BlendModeColorFilter
 import android.graphics.PorterDuff
+import android.os.Build
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import it.diab.glucose.R
@@ -27,7 +30,13 @@ internal fun TextView.setIconErrorStatus(toError: Boolean) {
     val drawable = compoundDrawables[0]
 
     animator.addUpdateListener { animation ->
-        drawable.setColorFilter(animation.animatedValue as Int, PorterDuff.Mode.SRC_ATOP)
+        val animColor = animation.animatedValue as Int
+        if (Build.VERSION.SDK_INT >= 29) {
+            drawable.colorFilter = BlendModeColorFilter(animColor, BlendMode.SRC_ATOP)
+        } else {
+            @Suppress("DEPRECATION")
+            drawable.setColorFilter(animColor, PorterDuff.Mode.SRC_ATOP)
+        }
     }
 
     animator.start()

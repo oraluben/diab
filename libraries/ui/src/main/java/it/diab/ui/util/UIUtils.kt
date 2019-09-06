@@ -33,7 +33,11 @@ object UIUtils {
     }
 
     @SuppressLint("PrivateResource")
-    fun setWhiteNavBarIfNeeded(context: Context, dialog: Dialog) {
+    fun setWhiteNavBarIfNeeded(context: Context, dialog: Dialog?) {
+        if (dialog == null) {
+            return
+        }
+
         val isLight = context.resources.getBoolean(R.bool.is_light)
         if (!isLight) {
             return

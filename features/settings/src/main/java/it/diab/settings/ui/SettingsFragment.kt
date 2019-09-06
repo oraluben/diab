@@ -12,6 +12,7 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.widget.Toast
+import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import it.diab.core.util.Activities
 import it.diab.core.util.intentTo
@@ -29,14 +30,14 @@ internal class SettingsFragment : PreferenceFragmentCompat(), SecureFilePickerHe
         prefs = preferenceManager.sharedPreferences
         secureFilePicker = SecureFilePickerHelper(this, this)
 
-        val exportXlsx = findPreference("pref_export_xlsx") as ExportPreference
-        exportXlsx.bind(object : ExportPreference.Callbacks {
+        val exportXlsx = findPreference("pref_export_xlsx") as ExportPreference?
+        exportXlsx?.bind(object : ExportPreference.Callbacks {
             override fun getActivity() = activity
             override fun startExport() { secureFilePicker.authenticate(SecureFilePickerHelper.XLSX) }
         })
 
-        val manageInsulins = findPreference("pref_link_insulin")
-        manageInsulins.setOnPreferenceClickListener { openInsulinView() }
+        val manageInsulins: Preference? = findPreference("pref_link_insulin")
+        manageInsulins?.setOnPreferenceClickListener { openInsulinView() }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
