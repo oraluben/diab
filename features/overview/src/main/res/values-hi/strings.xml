@@ -13,5 +13,5 @@
     <string name="overview_last_desc_fallback">नीले बटन को दबाकर एक मान जोड़ें</string>
 
     <string name="overview_graph_loading">Loading\u2026</string>
-    <string name="overview_graph_empty">🤔\nNo recent glucose found</string>
+    <string name="overview_graph_empty">No recent glucose found</string>
 </resources>
