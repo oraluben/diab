@@ -73,7 +73,7 @@ class Deps {
     class Ext {
         public static final String fastExcel = "org.dhatim:fastexcel:0.10.9"
 
-        public static final String mokito = "org.mockito:mockito-android:3.0.0"
+        public static final String mockito = "org.mockito:mockito-android:3.0.0"
 
         public static final String mpChart = "com.github.PhilJay:MPAndroidChart:v3.1.0"
 

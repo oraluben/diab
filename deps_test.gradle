@@ -15,6 +15,6 @@ dependencies {
     androidTestImplementation AndroidX.Test.Espresso.core
     androidTestImplementation AndroidX.Test.Espresso.contrib
     androidTestImplementation AndroidX.Test.Espresso.intents
-    androidTestImplementation Ext.mokito
+    androidTestImplementation Ext.mockito
     testImplementation Ext.junit4
 }
