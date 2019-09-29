@@ -10,7 +10,7 @@
 
 package it.diab.insulin.components.status
 
-import androidx.annotation.DrawableRes
+import androidx.annotation.StringRes
 import androidx.paging.PagedList
 import it.diab.core.arch.ViewStatus
 import it.diab.data.entities.Insulin
@@ -22,5 +22,7 @@ internal data class ListStatus(
 internal data class ListItemStatus(
     val uid: Long,
     val name: String,
-    @DrawableRes val icon: Int
+    @StringRes
+    val timeFrameRes: Int,
+    val isBasal: Boolean
 ) : ViewStatus

@@ -17,4 +17,5 @@
     <dimen name="time_header_day_text_size">28dp</dimen>
     <dimen name="time_header_month_text_size">12dp</dimen>
 
+    <dimen name="fab_margin_base">24dp</dimen>
 </resources>

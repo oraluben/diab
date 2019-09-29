@@ -28,15 +28,7 @@ internal class InsulinAdapter(private val bus: EventBusFactory) : PagedListAdapt
         )
     }
 
-    override fun getItemCount() = super.getItemCount() + 1
-
     override fun onBindViewHolder(holder: InsulinHolder, position: Int) {
-        if (position == itemCount - 1) {
-            // Last item: add new insulin
-            holder.onBind()
-            return
-        }
-
         val item = getItem(position)
         if (item == null) {
             holder.onLoading()
@@ -45,7 +37,8 @@ internal class InsulinAdapter(private val bus: EventBusFactory) : PagedListAdapt
                 ListItemStatus(
                     item.uid,
                     item.name,
-                    item.timeFrame.icon
+                    item.timeFrame.nameRes,
+                    item.isBasal
                 )
             )
         }

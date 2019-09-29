@@ -9,7 +9,7 @@
 <resources>
 
     <!-- Insulin -->
-    <string name="insulin_add_item">Add</string>
+    <string name="insulin_list_title">Insulins</string>
 
     <!-- Insulin Editor -->
     <string name="insulin_editor_add">Add insulin</string>

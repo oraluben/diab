@@ -8,25 +8,11 @@
  */
 package it.diab.data.entities
 
-import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
-
 import it.diab.data.R
 
 enum class TimeFrame {
     EXTRA, MORNING, LATE_MORNING, LUNCH, AFTERNOON, DINNER, NIGHT, UNUSED;
-
-    @get:DrawableRes
-    val icon: Int
-        get() = when (this) {
-            MORNING,
-            LATE_MORNING -> R.drawable.ic_time_morning
-            LUNCH -> R.drawable.ic_time_lunch
-            AFTERNOON -> R.drawable.ic_time_afternoon
-            DINNER -> R.drawable.ic_time_dinner
-            NIGHT -> R.drawable.ic_time_night
-            else -> R.drawable.ic_time_extra
-        }
 
     @get:StringRes
     val nameRes: Int

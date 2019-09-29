@@ -10,6 +10,7 @@ package it.diab.insulin.ui
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import it.diab.insulin.R
 
 class InsulinActivity : AppCompatActivity() {
@@ -18,5 +19,11 @@ class InsulinActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_insulin)
+
+        findViewById<Toolbar>(R.id.toolbar).apply {
+            setSupportActionBar(this)
+            setNavigationIcon(R.drawable.ic_toolbar_back)
+            setNavigationOnClickListener { onBackPressed() }
+        }
     }
 }

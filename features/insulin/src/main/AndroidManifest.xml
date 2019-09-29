@@ -9,11 +9,14 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="it.diab.insulin">
 
-    <application android:theme="@style/AppTheme">
+    <application
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
 
         <activity
             android:name=".ui.InsulinActivity"
             android:excludeFromRecents="true"
+            android:label="@string/insulin_list_title"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />

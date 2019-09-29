@@ -6,15 +6,27 @@
   The text of the license can be found in the LICENSE file
   or at https://www.gnu.org/licenses/gpl.txt
   -->
-<it.diab.ui.widgets.RecyclerViewExt xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/insulin_list"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_marginTop="?actionBarSize"
-    android:paddingStart="4dp"
-    android:paddingEnd="4dp"
-    app:gridColumns="2"
-    app:gridLayout="true"
-    tools:listitem="@layout/item_list_insulin" />
+    android:layout_height="match_parent">
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/insulin_fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/fab_margin_base"
+        android:src="@drawable/ic_add"
+        android:stateListAnimator="@animator/lift_on_touch" />
+
+    <it.diab.ui.widgets.RecyclerViewExt
+        android:id="@+id/insulin_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="?actionBarSize"
+        android:outlineAmbientShadowColor="@color/importantShadow"
+        android:outlineSpotShadowColor="@color/importantShadow"
+        tools:targetApi="28"
+        tools:listitem="@layout/item_list_insulin" />
+</FrameLayout>

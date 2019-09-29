@@ -6,9 +6,19 @@
   The text of the license can be found in the LICENSE file
   or at https://www.gnu.org/licenses/gpl.txt
   -->
-<fragment xmlns:android="http://schemas.android.com/apk/res/android"
-    android:name="it.diab.insulin.fragments.ListFragment"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
-    android:tag="it.diab.insulin.fragments.ListFragment" />
+    android:layout_height="match_parent">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        style="@style/AppTheme.Toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize" />
+
+    <fragment
+        android:name="it.diab.insulin.fragments.ListFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:tag="it.diab.insulin.fragments.ListFragment" />
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

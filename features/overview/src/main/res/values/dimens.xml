@@ -7,8 +7,6 @@
   or at https://www.gnu.org/licenses/gpl.txt
   -->
 <resources>
-    <dimen name="fab_margin_base">24dp</dimen>
-
     <dimen name="overview_graph_height">192sp</dimen>
     <dimen name="overview_graph_text">6sp</dimen>
     <dimen name="overview_graph_line_thickness">1dp</dimen>
