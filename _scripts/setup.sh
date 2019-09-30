@@ -12,7 +12,7 @@ function install_pre_push() {
 
 function install_ktlint() {
   echo "Downloading ktlint..."
-  curl -o ${KTLINT_BIN} -sSLO https://github.com/pinterest/ktlint/releases/download/0.33.0/ktlint
+  curl -o ${KTLINT_BIN} -sSLO https://github.com/pinterest/ktlint/releases/download/0.34.2/ktlint
   chmod a+x ${KTLINT_BIN}
   ./${KTLINT_BIN} --apply-to-idea-project --android -y
   ./${KTLINT_BIN} --install-git-pre-commit-hook
