@@ -9,5 +9,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="it.diab.fit.google">
 
-    <application android:theme="@style/AppTheme" />
+    <application
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme" />
 </manifest>
