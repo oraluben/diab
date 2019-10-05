@@ -57,7 +57,7 @@ class Deps {
 
         public static final String fitness = "com.google.android.gms:play-services-fitness:17.0.0"
 
-        public static final String materialDesign = "com.google.android.material:material:1.0.0"
+        public static final String materialDesign = "com.google.android.material:material:1.1.0-beta01"
     }
 
     class Kotlin {

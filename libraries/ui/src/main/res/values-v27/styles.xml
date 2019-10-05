@@ -10,8 +10,14 @@
 
     <style name="AppTheme" parent="DiabTheme">
         <item name="bottomSheetDialogTheme">@style/AppTheme.BottomSheetDialog</item>
+        <item name="buttonBarButtonStyle">@style/AppTheme.DialogButton</item>
+        <item name="buttonBarPositiveButtonStyle">@style/AppTheme.DialogButton</item>
+        <item name="buttonBarNegativeButtonStyle">@style/AppTheme.DialogButton</item>
+        <item name="buttonBarNeutralButtonStyle">@style/AppTheme.DialogButton.Flush</item>
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorSecondary">?attr/colorAccent</item>
+        <item name="colorOnSecondary">?attr/diab_importantForeground</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="dialogCornerRadius">@dimen/app_radius</item>
         <item name="isLightTheme">@bool/is_light</item>

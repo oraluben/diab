@@ -24,8 +24,14 @@
 
     <style name="AppTheme" parent="DiabTheme">
         <item name="bottomSheetDialogTheme">@style/AppTheme.BottomSheetDialog</item>
+        <item name="buttonBarButtonStyle">@style/AppTheme.DialogButton</item>
+        <item name="buttonBarPositiveButtonStyle">@style/AppTheme.DialogButton</item>
+        <item name="buttonBarNegativeButtonStyle">@style/AppTheme.DialogButton</item>
+        <item name="buttonBarNeutralButtonStyle">@style/AppTheme.DialogButton.Flush</item>
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorSecondary">?attr/colorAccent</item>
+        <item name="colorOnSecondary">?attr/diab_importantForeground</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="dialogCornerRadius">@dimen/app_radius</item>
         <item name="isLightTheme">@bool/is_light</item>
@@ -48,6 +54,14 @@
 
     <style name="AppTheme.BottomSheetDialog" parent="Theme.Design.Light.BottomSheetDialog">
         <item name="bottomSheetStyle">@style/AppTheme.ModalStyle</item>
+    </style>
+
+    <style name="AppTheme.DialogButton" parent="Widget.MaterialComponents.Button.TextButton.Dialog">
+        <item name="android:textColor">?attr/diab_editorFormIcon</item>
+    </style>
+
+    <style name="AppTheme.DialogButton.Flush" parent="Widget.MaterialComponents.Button.TextButton.Dialog.Flush">
+        <item name="android:textColor">?attr/diab_editorFormIcon</item>
     </style>
 
     <style name="AppTheme.ModalStyle" parent="Widget.Design.BottomSheet.Modal">
