@@ -62,7 +62,7 @@ class Deps {
 
     class Kotlin {
         private static final String VERSION_STD = "1.3.50"
-        private static final String VERSION_COROUTINES = "1.3.0"
+        private static final String VERSION_COROUTINES = "1.3.2"
 
         public static final String stdLib = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$VERSION_STD"
 
