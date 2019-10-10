@@ -31,7 +31,7 @@ class Deps {
         }
 
         class Room {
-            private static final String VERSION = "2.2.0-rc01"
+            private static final String VERSION = "2.2.0"
 
             public static final String compiler = "androidx.room:room-compiler:$VERSION"
             public static final String ktx = "androidx.room:room-ktx:$VERSION"
