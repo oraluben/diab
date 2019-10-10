@@ -13,6 +13,7 @@ import android.widget.TextView
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AlertDialog
 import com.google.android.material.button.MaterialButton
+import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
 import it.diab.core.arch.EventBusFactory
 import it.diab.core.arch.UiView
@@ -115,7 +116,10 @@ class GoogleFitView(
     }
 
     private fun showSnack(@StringRes message: Int) {
-        Snackbar.make(container, container.context.getString(message), Snackbar.LENGTH_LONG)
-            .show()
+        Snackbar.make(
+            container,
+            container.context.getString(message),
+            BaseTransientBottomBar.LENGTH_LONG
+        ).show()
     }
 }

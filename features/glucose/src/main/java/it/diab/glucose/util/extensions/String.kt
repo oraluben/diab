@@ -8,5 +8,7 @@
  */
 package it.diab.glucose.util.extensions
 
+import java.util.Locale
+
 internal fun String.upperCaseFirstChar() =
-    substring(0, 1).toUpperCase() + substring(1, length)
+    substring(0, 1).toUpperCase(Locale.ROOT) + substring(1, length)
