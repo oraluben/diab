@@ -95,7 +95,7 @@ internal class InsulinDialogView(
         selectorView.setSelection(status.preferrableIndex)
 
         if (status.value > 0f) {
-            val quantityStr = "%.0f".format(status.value)
+            val quantityStr = "%.1f".format(status.value)
             quantityView.setText(quantityStr)
         }
 
