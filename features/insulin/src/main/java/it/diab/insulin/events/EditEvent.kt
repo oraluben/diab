@@ -18,7 +18,9 @@ internal sealed class EditEvent : ComponentEvent {
 
     class IntentSave(val status: EditableOutStatus) : EditEvent()
 
-    object IntentRequestSave : EditEvent()
+    class IntentAskDelete(val name: String) : EditEvent()
 
-    object IntentRequestDelete : EditEvent()
+    class IntentRequestDelete(val deleteValues: Boolean) : EditEvent()
+
+    object IntentRequestSave : EditEvent()
 }

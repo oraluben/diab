@@ -18,8 +18,10 @@ import it.diab.core.util.Activities
 import it.diab.core.util.extensions.bus
 import it.diab.data.entities.Insulin
 import it.diab.data.entities.TimeFrame
+import it.diab.data.repositories.GlucoseRepository
 import it.diab.data.repositories.InsulinRepository
 import it.diab.insulin.R
+import it.diab.insulin.components.DeleteDialogComponent
 import it.diab.insulin.components.EditableComponent
 import it.diab.insulin.components.status.EditableInStatus
 import it.diab.insulin.events.EditEvent
@@ -37,7 +39,10 @@ internal class EditorFragment : BottomSheetDialogFragmentExt() {
         super.onCreate(savedInstanceState)
 
         val context = context ?: return
-        val factory = EditorViewModelFactory(InsulinRepository.getInstance(context))
+        val factory = EditorViewModelFactory(
+            GlucoseRepository.getInstance(context),
+            InsulinRepository.getInstance(context)
+        )
         viewModel = ViewModelProviders.of(this, factory)[EditorViewModel::class.java]
     }
 
@@ -52,6 +57,7 @@ internal class EditorFragment : BottomSheetDialogFragmentExt() {
 
         UIUtils.setWhiteNavBarIfNeeded(view.context, dialog)
         EditableComponent(view, viewModel.viewModelScope, bus)
+        DeleteDialogComponent(view.context, viewModel.viewModelScope, bus)
 
         val uid = arguments?.getLong(Activities.Insulin.EXTRA_EDITOR_UID, -1L) ?: -1L
         viewModel.setInsulin(uid, this::setup)
@@ -68,7 +74,7 @@ internal class EditorFragment : BottomSheetDialogFragmentExt() {
                 }
                 is EditEvent.IntentRequestDelete -> {
                     viewModel.viewModelScope.launch {
-                        viewModel.delete()
+                        viewModel.delete(it.deleteValues)
                         dismiss()
                     }
                 }

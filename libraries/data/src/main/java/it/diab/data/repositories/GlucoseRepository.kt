@@ -14,6 +14,7 @@ import it.diab.core.util.SingletonHolder
 import it.diab.data.AppDatabase
 import it.diab.data.dao.GlucoseDao
 import it.diab.data.entities.Glucose
+import it.diab.data.entities.Insulin
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.withContext
 
@@ -50,6 +51,22 @@ class GlucoseRepository private constructor(private val dao: GlucoseDao) : BaseR
 
     suspend fun delete(glucose: Glucose) = withContext(IO) {
         dao.delete(glucose)
+    }
+
+    suspend fun deleteInsulinValues(insulin: Insulin) = withContext(IO) {
+        val insulinUid = insulin.uid
+        val all = dao.getAllItems()
+        all.filter { it.insulinId0 == insulinUid }
+            .forEach {
+                it.insulinId0 = -1
+                it.insulinValue0 = 0f
+            }
+
+        all.filter { it.insulinId1 == insulinUid }
+            .forEach {
+                it.insulinId1 = -1
+                it.insulinValue1 = 0f
+            }
     }
 
     companion object : SingletonHolder<GlucoseRepository, Context>({

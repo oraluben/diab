@@ -10,14 +10,16 @@ package it.diab.insulin.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import it.diab.data.repositories.GlucoseRepository
 import it.diab.data.repositories.InsulinRepository
 
 internal class EditorViewModelFactory(
-    private val repo: InsulinRepository
+    private val glucoseRepo: GlucoseRepository,
+    private val insulinRepo: InsulinRepository
 ) : ViewModelProvider.NewInstanceFactory() {
 
     @Suppress("unchecked_cast")
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        return EditorViewModel(repo) as T
+        return EditorViewModel(glucoseRepo, insulinRepo) as T
     }
 }

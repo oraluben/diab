@@ -18,4 +18,9 @@
     <string name="insulin_editor_basal">Basale</string>
     <string name="insulin_editor_half_units">Mezze unit\u00E0</string>
     <string name="insulin_editor_save">Salva</string>
+
+    <string name="insulin_delete_title">Delete insulin</string>
+    <string name="insulin_delete_msg">Confermi l\'eliminazione di \"%1$s\"?\nQuest\'azione non pu\u00F3 essere annullata</string>
+    <string name="insulin_delete_values">Rimuovi anche tutti i valori associati nelle glicemie</string>
+    <string name="insulin_delete_positive">Rimuovi</string>
 </resources>

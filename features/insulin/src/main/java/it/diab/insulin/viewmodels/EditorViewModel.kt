@@ -13,12 +13,14 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import it.diab.data.entities.Insulin
 import it.diab.data.extensions.toTimeFrame
+import it.diab.data.repositories.GlucoseRepository
 import it.diab.data.repositories.InsulinRepository
 import it.diab.insulin.components.status.EditableOutStatus
 import kotlinx.coroutines.launch
 
 internal class EditorViewModel internal constructor(
-    private val repo: InsulinRepository
+    private val glucoseRepo: GlucoseRepository,
+    private val insulinRepo: InsulinRepository
 ) : ViewModel() {
 
     private lateinit var insulin: Insulin
@@ -30,8 +32,12 @@ internal class EditorViewModel internal constructor(
         }
     }
 
-    suspend fun delete() {
-        repo.delete(insulin)
+    suspend fun delete(deleteValues: Boolean) {
+        insulinRepo.delete(insulin)
+
+        if (deleteValues) {
+            glucoseRepo.deleteInsulinValues(insulin)
+        }
     }
 
     suspend fun save(status: EditableOutStatus) {
@@ -42,11 +48,11 @@ internal class EditorViewModel internal constructor(
             isBasal = status.isBasal
         }
 
-        repo.insert(insulin)
+        insulinRepo.insert(insulin)
     }
 
     @VisibleForTesting
     suspend fun runSetInsulin(uid: Long) {
-        insulin = repo.getById(uid)
+        insulin = insulinRepo.getById(uid)
     }
 }

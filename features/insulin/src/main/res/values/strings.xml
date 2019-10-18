@@ -18,4 +18,9 @@
     <string name="insulin_editor_basal">Basal</string>
     <string name="insulin_editor_half_units">Half units</string>
     <string name="insulin_editor_save">Save</string>
+
+    <string name="insulin_delete_title">Delete insulin</string>
+    <string name="insulin_delete_msg">Are you sure you want to delete insulin \"%1$s\"? This action cannot be undone</string>
+    <string name="insulin_delete_values">Also remove all its values from glucose readings</string>
+    <string name="insulin_delete_positive">Delete</string>
 </resources>

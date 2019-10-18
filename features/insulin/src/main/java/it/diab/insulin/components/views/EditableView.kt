@@ -24,7 +24,7 @@ import it.diab.insulin.events.EditEvent
 
 internal class EditableView(
     container: View,
-    bus: EventBusFactory
+    private val bus: EventBusFactory
 ) : UiView<EditableInStatus, EditableOutStatus>(container) {
 
     private val title: TextView =
@@ -52,10 +52,6 @@ internal class EditableView(
         save.setOnClickListener {
             bus.emit(EditEvent::class, EditEvent.IntentRequestSave)
         }
-
-        delete.setOnClickListener {
-            bus.emit(EditEvent::class, EditEvent.IntentRequestDelete)
-        }
     }
 
     override fun setStatus(status: EditableInStatus) {
@@ -73,6 +69,9 @@ internal class EditableView(
         isBasal.isChecked = status.isBasal
 
         delete.visibility = if (status.isEdit) View.VISIBLE else View.GONE
+        delete.setOnClickListener {
+            bus.emit(EditEvent::class, EditEvent.IntentAskDelete(status.name))
+        }
     }
 
     override fun getStatus() = EditableOutStatus(
