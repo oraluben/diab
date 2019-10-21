@@ -8,9 +8,9 @@
  */
 package it.diab.core.time
 
+import java.util.Date
 import org.junit.Assert
 import org.junit.Test
-import java.util.Date
 
 class DateTimeTest {
 

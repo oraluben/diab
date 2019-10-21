@@ -23,6 +23,7 @@ import it.diab.data.plugin.PluginManager
 import it.diab.data.repositories.GlucoseRepository
 import it.diab.data.repositories.InsulinRepository
 import it.diab.glucose.components.status.EditableOutStatus
+import kotlin.math.absoluteValue
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
@@ -32,7 +33,6 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mockito.mock
 import org.mockito.junit.MockitoJUnitRunner
-import kotlin.math.absoluteValue
 
 @RunWith(MockitoJUnitRunner::class)
 class EditorViewModelTest {

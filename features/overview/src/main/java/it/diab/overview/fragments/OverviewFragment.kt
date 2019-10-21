@@ -17,13 +17,13 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagedList
-import it.diab.overview.R
 import it.diab.core.util.Activities
 import it.diab.core.util.event.EventObserver
 import it.diab.core.util.extensions.bus
 import it.diab.core.util.intentTo
 import it.diab.data.entities.GlucoseWithInsulin
 import it.diab.data.repositories.GlucoseRepository
+import it.diab.overview.R
 import it.diab.overview.components.OverviewComponent
 import it.diab.overview.components.status.HeaderStatus
 import it.diab.overview.events.OverviewEvent

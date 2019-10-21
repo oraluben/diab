@@ -21,8 +21,8 @@ import it.diab.overview.R
 import it.diab.overview.components.status.GraphData
 import it.diab.overview.components.status.HeaderItemStatus
 import it.diab.overview.components.status.LastGlucose
-import it.diab.overview.ui.graph.OverviewGraphView
 import it.diab.overview.ui.graph.DataSetFactory
+import it.diab.overview.ui.graph.OverviewGraphView
 import it.diab.ui.util.extensions.inSpans
 
 internal class HeaderHolder(view: View) : BaseHolder(view) {

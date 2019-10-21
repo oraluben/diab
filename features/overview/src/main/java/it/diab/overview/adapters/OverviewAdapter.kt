@@ -12,16 +12,16 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncDifferConfig
 import androidx.recyclerview.widget.DiffUtil
-import it.diab.overview.R
 import it.diab.core.arch.EventBusFactory
 import it.diab.data.entities.GlucoseWithInsulin
-import it.diab.overview.holders.BaseHolder
-import it.diab.overview.util.OverviewListHelper
+import it.diab.overview.R
 import it.diab.overview.components.status.GlucoseItemStatus
 import it.diab.overview.components.status.HeaderItemStatus
+import it.diab.overview.holders.BaseHolder
 import it.diab.overview.holders.GlucoseHolder
 import it.diab.overview.holders.HeaderHolder
 import it.diab.overview.ui.ShiftedAdapter
+import it.diab.overview.util.OverviewListHelper
 
 internal class OverviewAdapter(
     private val bus: EventBusFactory,

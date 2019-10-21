@@ -19,7 +19,6 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.annotation.AttrRes
 import it.diab.glucose.R
-
 import it.diab.glucose.util.VibrationUtil
 
 class NumericKeyboardView @JvmOverloads constructor(

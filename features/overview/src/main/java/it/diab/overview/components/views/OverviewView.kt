@@ -10,10 +10,10 @@ package it.diab.overview.components.views
 
 import android.view.View
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import it.diab.overview.R
 import it.diab.core.arch.EventBusFactory
 import it.diab.core.arch.UiView
 import it.diab.core.arch.ViewStatus
+import it.diab.overview.R
 import it.diab.overview.adapters.OverviewAdapter
 import it.diab.overview.components.status.DataStatus
 import it.diab.overview.components.status.HeaderStatus

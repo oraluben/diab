@@ -17,12 +17,12 @@ import it.diab.data.repositories.InsulinRepository
 import it.diab.export.BuildConfig
 import it.diab.export.utils.extensions.setAlternateBackground
 import it.diab.export.utils.extensions.write
+import java.io.FileOutputStream
+import java.io.IOException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.async
 import org.dhatim.fastexcel.Workbook
 import org.dhatim.fastexcel.Worksheet
-import java.io.FileOutputStream
-import java.io.IOException
 
 internal class XlsxWriter(
     private val scope: CoroutineScope,

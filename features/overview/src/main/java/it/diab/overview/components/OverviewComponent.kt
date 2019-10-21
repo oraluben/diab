@@ -11,10 +11,10 @@ package it.diab.overview.components
 import android.view.View
 import it.diab.core.arch.EventBusFactory
 import it.diab.core.arch.UiComponent
-import it.diab.overview.util.OverviewListHelper
 import it.diab.overview.components.status.DataStatus
 import it.diab.overview.components.views.OverviewView
 import it.diab.overview.events.OverviewEvent
+import it.diab.overview.util.OverviewListHelper
 import kotlinx.coroutines.CoroutineScope
 
 internal class OverviewComponent(

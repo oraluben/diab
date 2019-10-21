@@ -18,14 +18,6 @@ import androidx.preference.PreferenceManager
 import it.diab.core.util.extensions.set
 import it.diab.data.entities.Glucose
 import it.diab.data.entities.TimeFrame
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Dispatchers.IO
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import org.json.JSONObject
 import java.io.BufferedReader
 import java.io.ByteArrayInputStream
 import java.io.File
@@ -37,6 +29,14 @@ import java.util.regex.Pattern
 import java.util.stream.Collectors
 import java.util.zip.ZipEntry
 import java.util.zip.ZipInputStream
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import org.json.JSONObject
 
 class PluginManager(context: Context) {
     private val job = Job()
