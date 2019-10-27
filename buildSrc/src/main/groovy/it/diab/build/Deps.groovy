@@ -14,7 +14,7 @@ class Deps {
     class AndroidX {
         public static final String appCompat = "androidx.appcompat:appcompat:1.1.0"
 
-        public static final String constraintLayout = "androidx.constraintlayout:constraintlayout:2.0.0-beta1"
+        public static final String constraintLayout = "androidx.constraintlayout:constraintlayout:2.0.0-beta3"
 
         public static final String paging = "androidx.paging:paging-runtime:2.1.0"
 
@@ -23,7 +23,7 @@ class Deps {
         public static final String workManager = "androidx.work:work-runtime-ktx:2.2.0"
 
         class Lifecycle {
-            private static final String VERSION = "2.1.0"
+            private static final String VERSION = "2.2.0-rc01"
 
             public static final String compiler = "androidx.lifecycle:lifecycle-compiler:$VERSION"
             public static final String extensions = "androidx.lifecycle:lifecycle-extensions:$VERSION"
@@ -31,7 +31,7 @@ class Deps {
         }
 
         class Room {
-            private static final String VERSION = "2.2.0"
+            private static final String VERSION = "2.2.1"
 
             public static final String compiler = "androidx.room:room-compiler:$VERSION"
             public static final String ktx = "androidx.room:room-ktx:$VERSION"
@@ -101,6 +101,5 @@ class Deps {
         public static final String insulin = ":features:insulin"
         public static final String overview = ":features:overview"
         public static final String settings = ":features:settings"
-
     }
 }
