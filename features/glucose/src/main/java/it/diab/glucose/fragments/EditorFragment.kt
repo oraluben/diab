@@ -77,7 +77,7 @@ internal class EditorFragment : Fragment() {
         val context = context ?: return
         viewModel.prepare(uid, PluginManager(context)) {
             // Bind glucose observer now that everything is ready
-            viewModel.model.observe(this, Observer(this::setup))
+            viewModel.model.observe(viewLifecycleOwner, Observer(this::setup))
             subscribe()
         }
     }

@@ -55,7 +55,7 @@ internal class ListFragment : Fragment() {
             }
         }
 
-        viewModel.list.observe(this, Observer { list ->
+        viewModel.list.observe(viewLifecycleOwner, Observer { list ->
             bus.emit(ListEvent::class, ListEvent.UpdateEvent(list))
         })
     }

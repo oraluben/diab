@@ -63,8 +63,8 @@ class OverviewFragment : Fragment() {
             }
         }
 
-        viewModel.pagedList.observe(this, Observer(this::onListChanged))
-        viewModel.headerData.observe(this, EventObserver(this::onHeaderChanged))
+        viewModel.pagedList.observe(viewLifecycleOwner, Observer(this::onListChanged))
+        viewModel.headerData.observe(viewLifecycleOwner, EventObserver(this::onHeaderChanged))
     }
 
     private fun onListChanged(pagedList: PagedList<GlucoseWithInsulin>?) {
