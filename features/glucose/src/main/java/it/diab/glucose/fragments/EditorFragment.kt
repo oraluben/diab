@@ -15,7 +15,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.google.android.material.snackbar.Snackbar
 import it.diab.core.override.BaseFitHandler
@@ -58,7 +58,7 @@ internal class EditorFragment : Fragment() {
             GlucoseRepository.getInstance(context),
             InsulinRepository.getInstance(context)
         )
-        viewModel = ViewModelProviders.of(this, factory)[EditorViewModel::class.java]
+        viewModel = ViewModelProvider(this, factory)[EditorViewModel::class.java]
     }
 
     override fun onCreateView(

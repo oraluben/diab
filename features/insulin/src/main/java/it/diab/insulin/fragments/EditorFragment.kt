@@ -12,7 +12,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import it.diab.core.util.Activities
 import it.diab.core.util.extensions.bus
@@ -43,7 +43,7 @@ internal class EditorFragment : BottomSheetDialogFragmentExt() {
             GlucoseRepository.getInstance(context),
             InsulinRepository.getInstance(context)
         )
-        viewModel = ViewModelProviders.of(this, factory)[EditorViewModel::class.java]
+        viewModel = ViewModelProvider(this, factory)[EditorViewModel::class.java]
     }
 
     override fun onCreateDialogView(

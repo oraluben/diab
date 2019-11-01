@@ -14,7 +14,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagedList
 import it.diab.core.util.Activities
@@ -42,7 +42,7 @@ class OverviewFragment : Fragment() {
         val context = context ?: return
 
         val factory = OverviewViewModelFactory(GlucoseRepository.getInstance(context))
-        viewModel = ViewModelProviders.of(this, factory)[OverviewViewModel::class.java]
+        viewModel = ViewModelProvider(this, factory)[OverviewViewModel::class.java]
         helper = OverviewListHelper(context)
     }
 

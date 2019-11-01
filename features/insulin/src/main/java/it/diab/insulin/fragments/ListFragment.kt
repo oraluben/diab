@@ -12,9 +12,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.Keep
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import it.diab.core.util.Activities
 import it.diab.core.util.extensions.bus
@@ -25,6 +26,9 @@ import it.diab.insulin.events.ListEvent
 import it.diab.insulin.viewmodels.ListViewModel
 import it.diab.insulin.viewmodels.ListViewModelFactory
 
+// Android Studio does not recognize usage from FragmentContainerView
+@Keep
+@Suppress("unused")
 internal class ListFragment : Fragment() {
 
     private lateinit var viewModel: ListViewModel
@@ -35,7 +39,7 @@ internal class ListFragment : Fragment() {
         val context = context ?: return
 
         val factory = ListViewModelFactory(InsulinRepository.getInstance(context))
-        viewModel = ViewModelProviders.of(this, factory)[ListViewModel::class.java]
+        viewModel = ViewModelProvider(this, factory)[ListViewModel::class.java]
     }
 
     override fun onCreateView(

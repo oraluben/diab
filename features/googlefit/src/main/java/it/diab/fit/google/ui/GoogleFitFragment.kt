@@ -15,7 +15,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import it.diab.core.util.extensions.bus
 import it.diab.fit.google.R
@@ -33,7 +33,7 @@ class GoogleFitFragment : Fragment() {
         super.onCreate(savedInstanceState)
 
         val factory = GoogleFitViewModelFactory()
-        viewModel = ViewModelProviders.of(this, factory)[GoogleFitViewModel::class.java]
+        viewModel = ViewModelProvider(this, factory)[GoogleFitViewModel::class.java]
 
         val activity = activity ?: return
         fitManager = GoogleFitManager(activity)
