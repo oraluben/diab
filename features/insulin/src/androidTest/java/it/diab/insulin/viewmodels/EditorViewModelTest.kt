@@ -13,6 +13,7 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.test.core.app.ApplicationProvider
 import it.diab.data.entities.TimeFrame
 import it.diab.data.extensions.insulin
+import it.diab.data.repositories.GlucoseRepository
 import it.diab.data.repositories.InsulinRepository
 import it.diab.insulin.components.status.EditableOutStatus
 import kotlinx.coroutines.runBlocking
@@ -23,7 +24,8 @@ import org.junit.Rule
 import org.junit.Test
 
 class EditorViewModelTest {
-    private lateinit var repository: InsulinRepository
+    private lateinit var glucoseRepository: GlucoseRepository
+    private lateinit var insulinRepository: InsulinRepository
     private lateinit var viewModel: EditorViewModel
 
     @get:Rule
@@ -33,8 +35,9 @@ class EditorViewModelTest {
     fun setup() {
 
         val context = ApplicationProvider.getApplicationContext<Context>()
-        repository = InsulinRepository.getInstance(context).apply { setDebugMode() }
-        viewModel = EditorViewModel(repository)
+        glucoseRepository = GlucoseRepository.getInstance(context).apply { setDebugMode() }
+        insulinRepository = InsulinRepository.getInstance(context).apply { setDebugMode() }
+        viewModel = EditorViewModel(glucoseRepository, insulinRepository)
     }
 
     @Test
@@ -44,7 +47,7 @@ class EditorViewModelTest {
             name = "FooBar"
         }
 
-        repository.insert(insulin)
+        insulinRepository.insert(insulin)
 
         viewModel.setInsulin(insulin.uid) { result ->
             assertEquals(insulin.uid, result.uid)
@@ -59,17 +62,17 @@ class EditorViewModelTest {
             name = "FooBar"
         }
 
-        repository.insert(insulin)
+        insulinRepository.insert(insulin)
 
         viewModel.runSetInsulin(insulin.uid)
-        viewModel.delete()
+        viewModel.delete(false)
 
-        assertNotEquals(insulin.uid, repository.getById(insulin.uid).uid)
+        assertNotEquals(insulin.uid, insulinRepository.getById(insulin.uid).uid)
     }
 
     @Test
     fun save() = runBlocking {
-        val origSize = repository.getInsulins().size
+        val origSize = insulinRepository.getInsulins().size
 
         viewModel.runSetInsulin(-1)
         viewModel.save(
@@ -81,6 +84,6 @@ class EditorViewModelTest {
             )
         )
 
-        assertEquals(origSize + 1, repository.getInsulins().size)
+        assertEquals(origSize + 1, insulinRepository.getInsulins().size)
     }
 }
