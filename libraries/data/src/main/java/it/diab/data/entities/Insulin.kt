@@ -14,6 +14,7 @@ import androidx.room.Ignore
 import androidx.room.PrimaryKey
 import androidx.room.TypeConverters
 import it.diab.data.converters.TimeFrameConverter
+import java.util.Locale
 
 @Entity(tableName = "insulin")
 class Insulin {
@@ -54,8 +55,8 @@ class Insulin {
 
     fun getDisplayedString(value: Float) = StringBuilder()
         .run {
-            if (value % 1 == 0f) append(value.toInt())
-            else append(value)
+            val formatStr = if (value % 1 == 0f) "%.0f" else "%.1f"
+            append(formatStr.format(Locale.ROOT, value))
         }
         .append(" ")
         .append(name)

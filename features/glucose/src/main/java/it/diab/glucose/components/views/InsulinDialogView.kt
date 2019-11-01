@@ -23,6 +23,7 @@ import it.diab.glucose.R
 import it.diab.glucose.components.status.InsulinDialogInStatus
 import it.diab.glucose.components.status.InsulinDialogOutStatus
 import it.diab.glucose.events.InsulinDialogEvent
+import java.util.Locale
 
 internal class InsulinDialogView(
     container: View,
@@ -95,7 +96,7 @@ internal class InsulinDialogView(
         selectorView.setSelection(status.preferrableIndex)
 
         if (status.value > 0f) {
-            val quantityStr = "%.1f".format(status.value)
+            val quantityStr = "%.1f".format(Locale.ROOT, status.value)
             quantityView.setText(quantityStr)
         }
 
